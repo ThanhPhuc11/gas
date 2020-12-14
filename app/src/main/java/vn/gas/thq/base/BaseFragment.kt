@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import vn.hongha.ga.R
 
 abstract class BaseFragment : Fragment() {
-//    lateinit var viewModel
+    //    lateinit var viewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())

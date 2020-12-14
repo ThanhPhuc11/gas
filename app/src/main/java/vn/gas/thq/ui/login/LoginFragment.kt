@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.ui.home.HomeFragment
+import vn.gas.thq.ui.retail.RetailFragment
 import vn.gas.thq.util.ActivityUtils
 import vn.hongha.ga.R
 
@@ -42,7 +43,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnLogin.setOnClickListener {
-            ActivityUtils.pushFragment("main", HomeFragment.newInstance(), R.id.flContainer, fragmentManager)
+            ActivityUtils.pushFragment("main", RetailFragment.newInstance(), R.id.flContainer, fragmentManager)
         }
     }
 }
