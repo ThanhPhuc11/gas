@@ -9,4 +9,5 @@
     <string name="login">Đăng nhập</string>
     <string name="forgot_password">Quên mật khẩu?</string>
     <string name="choose_customer">Chọn khách hàng</string>
+    <string name="all">Tất cả</string>
 </resources>

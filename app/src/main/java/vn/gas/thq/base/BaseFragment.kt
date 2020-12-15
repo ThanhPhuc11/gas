@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
 
 abstract class BaseFragment : Fragment() {
     //    lateinit var viewModel
+    var viewController: ViewController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())
@@ -29,12 +31,15 @@ abstract class BaseFragment : Fragment() {
 //            parseArgs(arguments)
 //        }
 //        showTopBar(false)
+//        viewController = ViewController(getFragmentContainerId(), supportFragmentManager)
+        setViewController()
         initView()
         initObserver()
         initData()
 //        hideTopBar()
     }
 
+    abstract fun setViewController()
     abstract fun initView()
     abstract fun getLayoutId(): Int
     abstract fun initObserver()

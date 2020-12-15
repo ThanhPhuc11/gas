@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.hongha.ga.R
 
@@ -32,6 +33,10 @@ class HomeFragment : BaseFragment() {
 
     override fun initData() {
         Toast.makeText(context, "hahaha", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun setViewController() {
+        viewController = (activity as MainActivity).viewController
     }
 
     override fun initView() {
