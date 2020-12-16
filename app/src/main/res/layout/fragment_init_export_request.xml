@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_F1F5F8"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/tvLabel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="LXBH"
+            android:textColor="@color/black_2E353F"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Tuyến xe"
+            android:textColor="@color/black_2E353F"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabel1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:text="Tên tôi là"
+            android:textColor="@color/black_2E353F"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/tvLabel2"
+            app:layout_constraintTop_toTopOf="@id/tvLabel1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:text="haha 00001"
+            android:textColor="@color/black_2E353F"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/tvLabel2"
+            app:layout_constraintTop_toTopOf="@id/tvLabel2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        style="@style/textStyleHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:text="Chọn sản phẩm"
+        android:textColor="@color/blue_2C5181" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="9dp" />
+
+</LinearLayout>
