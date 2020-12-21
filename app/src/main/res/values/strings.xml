@@ -10,4 +10,8 @@
     <string name="forgot_password">Quên mật khẩu?</string>
     <string name="choose_customer">Chọn khách hàng</string>
     <string name="all">Tất cả</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_sell">Bán hàng</string>
+    <string name="title_setting">Điều hành</string>
+    <string name="title_other">Khác</string>
 </resources>

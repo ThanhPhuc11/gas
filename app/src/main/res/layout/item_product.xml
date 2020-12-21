@@ -20,10 +20,11 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            app:cardBackgroundColor="@color/blue_F1F5F8"
             app:cardCornerRadius="10dp">
+            <!--app:cardBackgroundColor="@color/blue_F1F5F8"-->
 
             <ImageView
+                android:id="@+id/imgIconType"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
                 android:layout_gravity="center"
