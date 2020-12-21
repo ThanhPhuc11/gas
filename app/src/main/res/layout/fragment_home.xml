@@ -56,9 +56,119 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_159sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                app:cardBackgroundColor="@color/gray_404A57">
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Doanh thu ngày"
+                        android:textColor="@color/blue_576C8A"
+                        android:textSize="@dimen/text_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="22,000,000 đ"
+                        android:textColor="@color/blue_2C5181"
+                        android:textSize="@dimen/text_24sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E0E0E0" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tvLabel1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Doanh thu ngày"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toStartOf="@id/tvLabel2"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvLabel2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Chờ duyệt giá"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toStartOf="@id/tvLabel3"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toEndOf="@id/tvLabel1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvLabel3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Đã giao"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toEndOf="@id/tvLabel2"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="6"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tvLabel1"
+                            app:layout_constraintStart_toStartOf="@id/tvLabel1"
+                            app:layout_constraintTop_toBottomOf="@id/tvLabel1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="1"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tvLabel2"
+                            app:layout_constraintStart_toStartOf="@id/tvLabel2"
+                            app:layout_constraintTop_toBottomOf="@id/tvLabel2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="10"
+                            android:textColor="@color/blue_576C8A"
+                            android:textSize="@dimen/text_14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tvLabel3"
+                            app:layout_constraintStart_toStartOf="@id/tvLabel3"
+                            app:layout_constraintTop_toBottomOf="@id/tvLabel3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 

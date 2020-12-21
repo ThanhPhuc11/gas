@@ -24,7 +24,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_retail
+        return R.layout.fragment_home
     }
 
     override fun initObserver() {
