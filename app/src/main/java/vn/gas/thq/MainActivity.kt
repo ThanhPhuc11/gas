@@ -1,12 +1,9 @@
 package vn.gas.thq
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.marcotejeda.mvp_retrofit_kotlin.data.datasourse.prefrerences.PrefsUtil
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import vn.gas.thq.base.BaseActivity
 import vn.gas.thq.ui.login.LoginFragment
-import vn.gas.thq.util.ActivityUtils
 import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
 
@@ -32,6 +29,7 @@ open class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         viewController = ViewController(getFragmentContainerId(), supportFragmentManager)
 //        ActivityUtils.pushFragment(
 //            "Login", LoginFragment.newInstance(), R.id.flContainer, supportFragmentManager

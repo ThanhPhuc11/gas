@@ -1,16 +1,11 @@
 package vn.gas.thq.ui.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
-import vn.gas.thq.ui.home.HomeFragment
+import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.ui.retail.RetailFragment
-import vn.gas.thq.util.ActivityUtils
 import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
@@ -67,7 +62,7 @@ class LoginFragment : BaseFragment() {
 
     override fun initData() {
         btnLogin.setOnClickListener {
-            viewController?.pushFragment("Login", RetailFragment.newInstance())
+            viewController?.pushFragment("Login", MainFragment.newInstance())
         }
     }
 }

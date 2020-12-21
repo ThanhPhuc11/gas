@@ -26,7 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun initData()
 
     override fun onBackPressed() {
-        super.onBackPressed()
+//        super.onBackPressed()
         viewController.popFragment()
     }
 }
