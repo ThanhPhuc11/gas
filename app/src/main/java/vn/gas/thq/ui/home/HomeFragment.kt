@@ -32,11 +32,14 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initData() {
-        Toast.makeText(context, "hahaha", Toast.LENGTH_SHORT).show()
     }
 
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
+    }
+
+    override fun setupViewModel() {
+
     }
 
     override fun initView() {

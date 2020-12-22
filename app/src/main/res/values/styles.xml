@@ -67,4 +67,23 @@
         <!--        <item name="android:textStyle">bold</item>-->
     </style>
 
+    <declare-styleable name="ItemProductType1">
+        <attr name="tenSanPham" format="string" />
+        <attr name="soLuong" format="string" />
+        <attr name="gia" format="string" />
+        <attr name="hinhAnh" format="enum">
+            <enum name="khi" value="0" />
+            <enum name="vo" value="1" />
+        </attr>
+    </declare-styleable>
+
+<!--    <declare-styleable name="ItemProductType2">-->
+<!--        <attr name="tenSanPham" format="string" />-->
+<!--        <attr name="soLuong" format="string" />-->
+<!--        <attr name="hinhAnh" format="enum">-->
+<!--            <enum name="khi" value="0" />-->
+<!--            <enum name="vo" value="1" />-->
+<!--        </attr>-->
+<!--    </declare-styleable>-->
+
 </resources>

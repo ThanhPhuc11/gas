@@ -21,6 +21,7 @@
         android:layout_height="80dp"
         android:background="@color/white_ffffff"
         app:itemTextColor="@drawable/bottom_navigation_colors"
+        app:itemIconTint="@drawable/bottom_navigation_colors"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_bottom_navigation" />

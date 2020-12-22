@@ -1,6 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutFrm"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="vn.gas.thq.ui.login.LoginFragment">
@@ -16,64 +17,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/wrUserName"
+        app:layout_constraintBottom_toTopOf="@+id/edtuserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--UserName-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/wrUserName"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtuserName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_35sdp"
         android:layout_marginLeft="@dimen/_25sdp"
         android:layout_marginRight="@dimen/_25sdp"
-        android:textColorHint="@color/blue_2C5181"
-        android:textSize="@dimen/_16sdp"
-        app:hintEnabled="true"
-        app:layout_constraintBottom_toBottomOf="@id/guideline">
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_border"
+        android:hint="@string/account_name"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/edt_login_password"
+        android:paddingHorizontal="@dimen/_11sdp"
+        android:singleLine="true"
+        android:textColor="@color/blue_2C5181"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_login_account"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/bg_border"
-            android:hint="@string/account_name"
-            android:imeOptions="actionNext"
-            android:nextFocusDown="@+id/edt_login_password"
-            android:paddingHorizontal="@dimen/_11sdp"
-            android:singleLine="true"
-            android:textColor="@color/blue_2C5181"
-            android:textSize="@dimen/_13sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Password-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/wrPassword"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_35sdp"
         android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="@dimen/_25sdp"
-        android:textColorHint="@color/blue_2C5181"
-        android:textSize="@dimen/_16sdp"
-        app:hintEnabled="true"
-        app:layout_constraintTop_toTopOf="@id/guideline"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_login_password"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/bg_border"
-            android:hint="@string/password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:nextFocusDown="@+id/bt_login"
-            android:paddingHorizontal="@dimen/_11sdp"
-            android:singleLine="true"
-            android:textColor="@color/blue_2C5181"
-            android:textSize="@dimen/_13sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:background="@drawable/bg_border"
+        android:hint="@string/password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:nextFocusDown="@+id/bt_login"
+        android:paddingHorizontal="@dimen/_11sdp"
+        android:singleLine="true"
+        android:textColor="@color/blue_2C5181"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintTop_toTopOf="@id/guideline" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -87,7 +70,7 @@
         android:textAllCaps="true"
         android:textColor="@color/white_ffffff"
         android:textSize="@dimen/_12sdp"
-        app:layout_constraintTop_toBottomOf="@id/wrPassword" />
+        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
 
     <TextView
         android:id="@+id/tvForgotPassword"

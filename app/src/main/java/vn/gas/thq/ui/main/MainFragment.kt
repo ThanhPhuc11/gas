@@ -1,9 +1,7 @@
 package vn.gas.thq.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,6 +14,10 @@ import vn.hongha.ga.R
 
 class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelectedListener {
     private var preFragment: String? = null
+    lateinit var homeFragment: HomeFragment
+    lateinit var retailFragment: RetailFragment
+    lateinit var approvalRequestFragment: ApprovalRequestFragment
+//    lateinit var homeFragment: HomeFragment
 
     companion object {
         fun newInstance(): MainFragment {
@@ -31,7 +33,16 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
 
     }
 
+    override fun setupViewModel() {
+
+    }
+
     override fun initView() {
+        homeFragment = HomeFragment.newInstance()
+        retailFragment = RetailFragment.newInstance()
+        approvalRequestFragment = ApprovalRequestFragment.newInstance()
+//        val homeFragment = HomeFragment.newInstance()
+
     }
 
     override fun getLayoutId(): Int {
@@ -43,23 +54,22 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
     }
 
     override fun initData() {
-//        fragmentManager?.beginTransaction()
-//            ?.add(R.id.flContainerFrm, HomeFragment.newInstance())
-//            ?.commitAllowingStateLoss()
 //        pushToTab(HomeFragment.newInstance())
+
         bottomNavigation?.setOnNavigationItemSelectedListener(this)
+        pushToTab(homeFragment)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.navigation_home -> {
-                pushToTab(HomeFragment.newInstance())
+                pushToTab(homeFragment)
             }
             R.id.navigation_buy -> {
-                pushToTab(RetailFragment.newInstance())
+                pushToTab(retailFragment)
             }
             R.id.navigation_setting -> {
-                pushToTab(ApprovalRequestFragment.newInstance())
+                pushToTab(approvalRequestFragment)
             }
             R.id.navigation_other -> {
             }
@@ -98,10 +108,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
             transaction.add(R.id.flContainerFrm, fragment, fragment.javaClass.name)
         }
         preFragment = fragment.javaClass.name
-        transaction.commit()
-        childFragmentManager.fragments.forEach {
-            Log.e("Phuc", it.tag + "")
-        }
+        transaction.commitAllowingStateLoss()
     }
 
 //    fun showBottomNavigation() {

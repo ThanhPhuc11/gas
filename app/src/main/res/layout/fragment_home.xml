@@ -20,6 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -29,8 +30,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
                     android:layout_marginStart="@dimen/_25sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon_user"
@@ -43,7 +44,7 @@
                     android:layout_marginStart="@dimen/_16sdp"
                     android:text="Mai Thanh Phúc"
                     android:textColor="@color/white_ffffff"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/text_20sp" />
 
                 <ImageView
                     android:layout_width="match_parent"

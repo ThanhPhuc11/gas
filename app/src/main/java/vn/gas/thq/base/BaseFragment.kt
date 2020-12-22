@@ -1,19 +1,21 @@
 package vn.gas.thq.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import vn.gas.thq.util.ViewController
-import vn.hongha.ga.R
 
 abstract class BaseFragment : Fragment() {
     //    lateinit var viewModel
+//    var viewModel = null
+    private var mActivity: BaseActivity? = null
     var viewController: ViewController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupViewModel()
 //        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())
     }
 
@@ -39,9 +41,24 @@ abstract class BaseFragment : Fragment() {
 //        hideTopBar()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is BaseActivity) {
+            this.mActivity = context
+//            context.onFragmentAttached()
+        }
+    }
+
     abstract fun setViewController()
+    abstract fun setupViewModel()
     abstract fun initView()
     abstract fun getLayoutId(): Int
     abstract fun initObserver()
     abstract fun initData()
+
+    open fun hideKeyboard() {
+        if (mActivity != null) {
+            mActivity!!.hideKeyboard()
+        }
+    }
 }

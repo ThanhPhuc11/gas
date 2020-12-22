@@ -23,6 +23,10 @@ class ApprovalRequestFragment : BaseFragment() {
         viewController = (activity as MainActivity).viewController
     }
 
+    override fun setupViewModel() {
+
+    }
+
     override fun initView() {
 
     }

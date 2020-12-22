@@ -35,6 +35,10 @@ class RetailFragment : BaseFragment() {
         viewController = (activity as MainActivity).viewController
     }
 
+    override fun setupViewModel() {
+
+    }
+
     override fun initData() {
         btnNext.setOnClickListener {
             viewController?.pushFragment("yc", ApprovalRequestFragment.newInstance())

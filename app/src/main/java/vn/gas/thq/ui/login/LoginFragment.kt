@@ -1,16 +1,18 @@
 package vn.gas.thq.ui.login
 
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
+import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
-import vn.gas.thq.ui.retail.RetailFragment
 import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
+    //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        arguments?.let {
 ////            param1 = it.getString(ARG_PARAM1)
@@ -24,6 +26,7 @@ class LoginFragment : BaseFragment() {
 //    ): View? {
 //        return inflater.inflate(R.layout.fragment_login, container, false)
 //    }
+    private lateinit var viewModel: LoginViewModel
 
     companion object {
         // TODO: Rename and change types and number of parameters
@@ -48,7 +51,16 @@ class LoginFragment : BaseFragment() {
         viewController = (activity as MainActivity).viewController
     }
 
+    override fun setupViewModel() {
+        viewModel =
+            ViewModelProviders.of(this, ViewModelFactory(RetrofitBuilder.apiService))
+                .get(LoginViewModel::class.java)
+    }
+
     override fun initView() {
+        layoutFrm.setOnClickListener {
+            hideKeyboard()
+        }
 
     }
 
@@ -62,7 +74,8 @@ class LoginFragment : BaseFragment() {
 
     override fun initData() {
         btnLogin.setOnClickListener {
-            viewController?.pushFragment("Login", MainFragment.newInstance())
+            viewModel.onGetData()
+//            viewController?.pushFragment("Login", MainFragment.newInstance())
         }
     }
 }
