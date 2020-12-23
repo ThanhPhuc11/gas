@@ -1,10 +1,9 @@
-package com.marcotejeda.mvp_retrofit_kotlin.data.datasourse.rest
+package vn.gas.thq.datasourse.rest
 
 
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.Buffer
-import org.jetbrains.annotations.Nullable
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

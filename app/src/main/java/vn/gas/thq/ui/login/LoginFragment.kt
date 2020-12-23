@@ -74,8 +74,8 @@ class LoginFragment : BaseFragment() {
 
     override fun initData() {
         btnLogin.setOnClickListener {
-            viewModel.onGetData()
-//            viewController?.pushFragment("Login", MainFragment.newInstance())
+//            viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
+            viewController?.pushFragment("Login", MainFragment.newInstance())
         }
     }
 }

@@ -1,8 +1,7 @@
 package vn.gas.thq.network
 
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import vn.gas.thq.base.User
 import vn.gas.thq.model.ResponseModel
 import vn.gas.thq.ui.login.LoginModel
@@ -11,6 +10,14 @@ interface ApiService {
     @GET("users")
     suspend fun getUsers(): List<User>
 
+    @Headers("Accept: application/json")
+    @FormUrlEncoded
     @POST("staff/oauth/token")
-    suspend fun login(): Flow<ResponseModel<LoginModel>>
+    suspend fun login(
+        @Field("client_id") client_id: String,
+        @Field("client_secret") client_secret: String,
+        @Field("grant_type") grant_type: String,
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Flow<ResponseModel<LoginModel>>
 }

@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.*
+import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.approvalrequests.ApprovalRequestFragment
 import vn.gas.thq.ui.home.HomeFragment
 import vn.gas.thq.ui.retail.RetailFragment
+import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
 class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -30,7 +32,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
     }
 
     override fun setViewController() {
-
+        viewController = (activity as MainActivity).viewController
     }
 
     override fun setupViewModel() {
@@ -39,7 +41,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
 
     override fun initView() {
         homeFragment = HomeFragment.newInstance()
-        retailFragment = RetailFragment.newInstance()
+//        retailFragment = RetailFragment.newInstance()
         approvalRequestFragment = ApprovalRequestFragment.newInstance()
 //        val homeFragment = HomeFragment.newInstance()
 
@@ -66,7 +68,8 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
                 pushToTab(homeFragment)
             }
             R.id.navigation_buy -> {
-                pushToTab(retailFragment)
+//                pushToTab(retailFragment)
+                viewController?.pushFragment(ScreenId.SCREEN_RETAIL, RetailFragment.newInstance())
             }
             R.id.navigation_setting -> {
                 pushToTab(approvalRequestFragment)
