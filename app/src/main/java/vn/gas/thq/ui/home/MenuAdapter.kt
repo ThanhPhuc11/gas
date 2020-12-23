@@ -1,6 +1,5 @@
 package vn.gas.thq.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import de.hdodenhof.circleimageview.CircleImageView
 import vn.hongha.ga.R
 
 class MenuAdapter(private val mList: MutableList<MenuModel>) :
@@ -17,13 +15,19 @@ class MenuAdapter(private val mList: MutableList<MenuModel>) :
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_option_menu, parent, false)
+        val view = if (viewType == 7) {
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_option_menu_more, parent, false)
+        } else {
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_option_menu, parent, false)
+        }
+
         return MenuViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        var menu: MenuModel = mList[position]
+        val menu: MenuModel = mList[position]
         holder.tvTitle.text = menu.resString
         holder.imgIcon.setImageResource(menu.resDrawable)
 //        holder.imgIcon.setImageResource(R.drawable.ic_menu_2)
@@ -31,6 +35,10 @@ class MenuAdapter(private val mList: MutableList<MenuModel>) :
 
     override fun getItemCount(): Int {
         return mList.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     inner class MenuViewHolder constructor(itemView: View) :

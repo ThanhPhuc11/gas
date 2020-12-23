@@ -23,7 +23,7 @@ class LoginModel {
 
     @SerializedName("refresh_token_expires_in")
     @Expose
-    var refreshTokenExpiresIn: Any? = null
+    var refreshTokenExpiresIn: String? = null
 
     @SerializedName("correlation_id")
     @Expose

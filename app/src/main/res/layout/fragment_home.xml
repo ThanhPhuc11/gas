@@ -177,7 +177,9 @@
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_43sdp" />
+                android:layout_marginTop="43dp"
+                android:overScrollMode="never"
+                android:paddingHorizontal="10dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

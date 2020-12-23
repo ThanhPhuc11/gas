@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
 import vn.hongha.ga.R
@@ -53,7 +54,13 @@ class LoginFragment : BaseFragment() {
 
     override fun setupViewModel() {
         viewModel =
-            ViewModelProviders.of(this, ViewModelFactory(RetrofitBuilder.apiService))
+            ViewModelProviders.of(this,
+                context?.let {
+                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
+                        ?.let { apiService ->
+                            ViewModelFactory(apiService)
+                        }
+                })
                 .get(LoginViewModel::class.java)
     }
 
@@ -74,8 +81,8 @@ class LoginFragment : BaseFragment() {
 
     override fun initData() {
         btnLogin.setOnClickListener {
-//            viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
-            viewController?.pushFragment("Login", MainFragment.newInstance())
+            viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
+//            viewController?.pushFragment("Login", MainFragment.newInstance())
         }
     }
 }
