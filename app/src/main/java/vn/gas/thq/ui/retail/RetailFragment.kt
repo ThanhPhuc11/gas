@@ -2,6 +2,7 @@ package vn.gas.thq.ui.retail
 
 import android.os.Bundle
 import kotlinx.android.synthetic.main.fragment_retail.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.approvalrequests.ApprovalRequestFragment
@@ -20,7 +21,9 @@ class RetailFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        imgBack.setOnClickListener {
+            viewController?.popFragment()
+        }
     }
 
     override fun getLayoutId(): Int {
