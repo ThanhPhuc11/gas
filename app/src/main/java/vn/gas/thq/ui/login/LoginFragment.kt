@@ -12,21 +12,6 @@ import vn.gas.thq.ui.main.MainFragment
 import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
-
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-////            param1 = it.getString(ARG_PARAM1)
-////            param2 = it.getString(ARG_PARAM2)
-//        }
-//    }
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.fragment_login, container, false)
-//    }
     private lateinit var viewModel: LoginViewModel
 
     companion object {
@@ -40,13 +25,6 @@ class LoginFragment : BaseFragment() {
                 }
             }
     }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        btnLogin.setOnClickListener {
-//            ActivityUtils.pushFragment("main", RetailFragment.newInstance(), R.id.flContainer, fragmentManager)
-//        }
-//    }
 
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
@@ -65,9 +43,6 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
-        layoutFrm.setOnClickListener {
-            hideKeyboard()
-        }
 
     }
 
@@ -75,14 +50,21 @@ class LoginFragment : BaseFragment() {
         return R.layout.fragment_login
     }
 
-    override fun initObserver() {
-
-    }
-
     override fun initData() {
         btnLogin.setOnClickListener {
+            showLoading()
             viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
-//            viewController?.pushFragment("Login", MainFragment.newInstance())
         }
+    }
+
+    override fun initObserver() {
+        viewModel.getStatusAccessToken().observe(this, {
+            if (it) {
+                viewController?.pushFragment("abc", MainFragment.newInstance())
+                hideLoading()
+            } else {
+                hideLoading()
+            }
+        })
     }
 }

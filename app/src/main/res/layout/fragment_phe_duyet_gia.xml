@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:clickable="true"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <include layout="@layout/layout_toolbar" />
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="Khách hàng"
+                android:text="Lái xe bán hàng"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
 
@@ -161,20 +161,19 @@
                 android:textStyle="bold" />
 
             <include
-                android:id="@+id/wrapClick1"
-                layout="@layout/layout_item_approval_request"
+                layout="@layout/layout_item_phe_duyet_gia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
             <include
-                layout="@layout/layout_item_approval_request"
+                layout="@layout/layout_item_phe_duyet_gia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp" />
 
             <include
-                layout="@layout/layout_item_approval_request"
+                layout="@layout/layout_item_phe_duyet_gia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp" />

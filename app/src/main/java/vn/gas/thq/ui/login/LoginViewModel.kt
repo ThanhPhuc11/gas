@@ -14,7 +14,10 @@ import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.base.User
 
 class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
-//    private val liveDataA = MutableLiveData<List<User>>()
+    //    private val liveDataA = MutableLiveData<List<User>>()
+    private val loginLiveData = MutableLiveData<LoginModel>()
+    private val checkAccesToken = MutableLiveData<Boolean>()
+    private var loginModel: LoginModel? = null
 
     fun doLogin(username: String, password: String) {
         if (TextUtils.isEmpty(username)) {
@@ -37,15 +40,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
                     Log.e("Phuc", "onStart")
                 }
                 .onCompletion {
-//                    liveDataA.value = listData
-                    Log.e("Phuc", it.toString()+"onCom")
+                    Log.e("Phuc complete", it.toString() + "onCom")
+                    if (!TextUtils.isEmpty(loginModel?.accessToken)) {
+                        checkAccesToken.value = true
+                    }
                 }
                 .catch {
-//                    Log.e("Phuc", it.message.toString())
-                    println("Error")
+                    checkAccesToken.value = false
                 }
                 .collect {
-                    Log.e("Phuc", it.toString()+"onColect")
+                    Log.e("Phuc", it.toString() + "onColect")
+                    loginModel = it
                 }
 
 //            loginRepository.getUsers()
@@ -67,5 +72,5 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         }
     }
 
-//    fun getLiveData() = liveDataA
+    fun getStatusAccessToken() = checkAccesToken
 }

@@ -1,14 +1,19 @@
 package vn.gas.thq.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
+import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
+import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
+import vn.gas.thq.ui.retail.RetailFragment
+import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     private lateinit var menuAdapter: MenuAdapter
 
     companion object {
@@ -59,5 +64,20 @@ class HomeFragment : BaseFragment() {
         mList.add(MenuModel("Chức năng 7", R.drawable.ic_menu_4))
         mList.add(MenuModel("Xem thêm", R.drawable.ic_more_arrow))
         menuAdapter = MenuAdapter(mList)
+        menuAdapter.setClickListener(this)
+    }
+
+    override fun onItemTopClick(view: View?, position: Int) {
+        when (position) {
+            0 -> viewController?.pushFragment(ScreenId.SCREEN_RETAIL, RetailFragment.newInstance())
+            1 -> viewController?.pushFragment(
+                ScreenId.SCREEN_PHE_DUYET_GIA,
+                PheDuyetGiaFragment.newInstance()
+            )
+            4 -> viewController?.pushFragment(
+                ScreenId.SCREEN_PHE_DUYET_GIA,
+                QuanLyYeuCauDuyetGiaFragment.newInstance()
+            )
+        }
     }
 }
