@@ -38,15 +38,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
                 }
                 .onCompletion {
 //                    liveDataA.value = listData
-                    Log.e("Phuc", it.toString())
+                    Log.e("Phuc", it.toString()+"onCom")
                 }
                 .catch {
 //                    Log.e("Phuc", it.message.toString())
-                        cause ->
                     println("Error")
                 }
                 .collect {
-                    Log.e("Phuc", it.toString())
+                    Log.e("Phuc", it.toString()+"onColect")
                 }
 
 //            loginRepository.getUsers()
