@@ -36,6 +36,7 @@
         android:nextFocusDown="@+id/edt_login_password"
         android:paddingHorizontal="@dimen/_11sdp"
         android:singleLine="true"
+        android:text="admin"
         android:textColor="@color/blue_2C5181"
         android:textSize="@dimen/_13sdp"
         app:layout_constraintBottom_toBottomOf="@id/guideline" />
@@ -54,6 +55,7 @@
         android:nextFocusDown="@+id/bt_login"
         android:paddingHorizontal="@dimen/_11sdp"
         android:singleLine="true"
+        android:text="123456"
         android:textColor="@color/blue_2C5181"
         android:textSize="@dimen/_13sdp"
         app:layout_constraintTop_toTopOf="@id/guideline" />

@@ -38,7 +38,7 @@ open class RetailContainerFragment : BaseFragment() {
         childViewController = ViewController(R.id.flContainerRetail, childFragmentManager)
         childViewController?.pushFragment(
             ScreenId.SCREEN_RETAIL_STEP_1,
-            RetailFragment.newInstance()
+            RetailFragment.newInstance(null)
         )
 //        pushToTab(RetailFragment.newInstance())
     }

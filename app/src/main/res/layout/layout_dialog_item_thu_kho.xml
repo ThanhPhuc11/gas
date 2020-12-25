@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="15dp"
+        android:src="@drawable/ic_close" />
+
+    <TextView
+        style="@style/textStyleH6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mã yêu cầu 7823863411096"
+        android:textColor="@color/blue_2C5181" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="22dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ngày đặt hàng:" />
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="28/10/2020 08:47:38" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LXBH:" />
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Ngô Bảo Ngọc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginVertical="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Trạng thái:" />
+
+        <TextView
+            style="@style/textStyleBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Chờ duyệt" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <vn.gas.thq.customview.ItemProductType1
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gia="100"
+                app:hinhAnh="khi"
+                app:soLuong="100"
+                app:tenSanPham="Khí 12Kg" />
+
+            <vn.gas.thq.customview.ItemProductType1
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gia="100"
+                app:hinhAnh="khi"
+                app:soLuong="100"
+                app:tenSanPham="Khí 12Kg" />
+
+            <vn.gas.thq.customview.ItemProductType1
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gia="100"
+                app:hinhAnh="khi"
+                app:soLuong="100"
+                app:tenSanPham="Khí 12Kg" />
+
+            <vn.gas.thq.customview.ItemProductType1
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gia="100"
+                app:hinhAnh="khi"
+                app:soLuong="100"
+                app:tenSanPham="Khí 12Kg" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
