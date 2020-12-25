@@ -1,22 +1,23 @@
 package vn.gas.thq.base
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ViewController
 
 abstract class BaseFragment : Fragment() {
-    //    lateinit var viewModel
-//    var viewModel = null
+    private var mProgressDialog: ProgressDialog? = null
+
     private var mActivity: BaseActivity? = null
     var viewController: ViewController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViewModel()
-//        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())
     }
 
     override fun onCreateView(
@@ -59,6 +60,17 @@ abstract class BaseFragment : Fragment() {
     open fun hideKeyboard() {
         if (mActivity != null) {
             mActivity!!.hideKeyboard()
+        }
+    }
+
+    open fun showLoading() {
+        hideLoading()
+        mProgressDialog = CommonUtils.showLoadingDialog(this.context)
+    }
+
+    open fun hideLoading() {
+        if (mProgressDialog != null && mProgressDialog!!.isShowing) {
+            mProgressDialog!!.cancel()
         }
     }
 }

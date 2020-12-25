@@ -1,19 +1,18 @@
-package vn.gas.thq.ui.approvalrequests
+package vn.gas.thq.ui.qlyeucauxuatkho
 
 import android.os.Bundle
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
-import vn.gas.thq.ui.retail.RetailFragment
 import vn.hongha.ga.R
 
-class ApprovalRequestFragment : BaseFragment() {
+class QLYCXuatKhoContainFragment : BaseFragment() {
     companion object {
         @JvmStatic
-        fun newInstance(): ApprovalRequestFragment {
+        fun newInstance(): QLYCXuatKhoContainFragment {
             val args = Bundle()
 
-            val fragment = ApprovalRequestFragment()
+            val fragment = QLYCXuatKhoContainFragment()
             fragment.arguments = args
             return fragment
         }
@@ -28,17 +27,19 @@ class ApprovalRequestFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        tvTitle.text = "Quản lý yêu cầu"
+        imgBack.setOnClickListener {
+            viewController?.popFragment()
+        }
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_approval_requests
+        return R.layout.fragment_qlyc_xuatkho_container
     }
 
     override fun initObserver() {
     }
 
     override fun initData() {
-        tvTitle.text = "Quản lý yêu cầu duyệt giá"
     }
 }

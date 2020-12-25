@@ -8,8 +8,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
-import vn.gas.thq.ui.approvalrequests.ApprovalRequestFragment
+import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.home.HomeFragment
+import vn.gas.thq.ui.qlyeucauxuatkho.QLYCXuatKhoContainFragment
 import vn.gas.thq.ui.retail.RetailFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
@@ -18,7 +19,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
     private var preFragment: String? = null
     lateinit var homeFragment: HomeFragment
     lateinit var retailFragment: RetailFragment
-    lateinit var approvalRequestFragment: ApprovalRequestFragment
+    lateinit var quanLyYeuCauDuyetGiaFragment: QuanLyYeuCauDuyetGiaFragment
 //    lateinit var homeFragment: HomeFragment
 
     companion object {
@@ -42,7 +43,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
     override fun initView() {
         homeFragment = HomeFragment.newInstance()
 //        retailFragment = RetailFragment.newInstance()
-        approvalRequestFragment = ApprovalRequestFragment.newInstance()
+        quanLyYeuCauDuyetGiaFragment = QuanLyYeuCauDuyetGiaFragment.newInstance()
 //        val homeFragment = HomeFragment.newInstance()
 
     }
@@ -72,7 +73,8 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
                 viewController?.pushFragment(ScreenId.SCREEN_RETAIL, RetailFragment.newInstance())
             }
             R.id.navigation_setting -> {
-                pushToTab(approvalRequestFragment)
+//                pushToTab(quanLyYeuCauDuyetGiaFragment)
+                viewController?.pushFragment(ScreenId.SCREEN_QL_YC_DUYET_GIA_CONTAINER, QLYCXuatKhoContainFragment.newInstance())
             }
             R.id.navigation_other -> {
             }

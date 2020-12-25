@@ -4,6 +4,7 @@
     xmlns:phuc="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:clickable="true"
     android:orientation="vertical">
 
@@ -11,7 +12,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,28 +37,29 @@
                     android:textSize="@dimen/text_16sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/wrPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textColorHint="@color/black_2E353F"
-                    android:textSize="@dimen/_16sdp"
-                    app:hintEnabled="true">
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    android:id="@+id/wrPassword"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
+                <!--                    android:textColorHint="@color/black_2E353F"-->
+                <!--                    android:textSize="@dimen/_16sdp"-->
+                <!--                    app:hintEnabled="true">-->
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/bg_border_nomal"
-                        android:drawableEnd="@drawable/ic_arrow_down"
-                        android:hint="@string/choose_customer"
-                        android:imeOptions="actionDone"
-                        android:nextFocusDown="@+id/bt_login"
-                        android:paddingHorizontal="@dimen/_11sdp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/_13sdp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_border_nomal"
+                    android:drawableEnd="@drawable/ic_arrow_down"
+                    android:hint="@string/choose_customer"
+                    android:imeOptions="actionDone"
+                    android:nextFocusDown="@+id/bt_login"
+                    android:paddingHorizontal="@dimen/_11sdp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_13sdp" />
+                <!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -169,29 +172,38 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvLabelBanKhi"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Bán khí"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="@dimen/text_16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
-                <vn.gas.thq.customview.ItemProductType1
+                <LinearLayout
+                    android:id="@+id/linearBanKhi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="khi"
-                    app:soLuong="100"
-                    app:tenSanPham="Khí 12Kg" />
+                    android:orientation="vertical">
 
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="khi"
+                        app:soLuong="100"
+                        app:tenSanPham="Khí 12Kg" />
 
-                <vn.gas.thq.customview.ItemProductType1
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="khi"
-                    app:soLuong="100"
-                    app:tenSanPham="Khí 45Kg" />
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="khi"
+                        app:soLuong="100"
+                        app:tenSanPham="Khí 45Kg" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <View
@@ -209,6 +221,7 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
+                    android:id="@+id/tvLabelThuHoiVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Thu hồi vỏ"
@@ -217,19 +230,26 @@
                     android:textStyle="bold"
                     app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
-                <vn.gas.thq.customview.ItemProductType2
+                <LinearLayout
+                    android:id="@+id/linearThuHoiVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hinhAnh="vo"
-                    app:soLuong="200"
-                    app:tenSanPham="Vỏ 12Kg" />
+                    android:orientation="vertical">
 
-                <vn.gas.thq.customview.ItemProductType2
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hinhAnh="vo"
-                    app:soLuong="200"
-                    app:tenSanPham="Vỏ 45Kg" />
+                    <vn.gas.thq.customview.ItemProductType2
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hinhAnh="vo"
+                        app:soLuong="200"
+                        app:tenSanPham="Vỏ 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType2
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hinhAnh="vo"
+                        app:soLuong="200"
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -247,29 +267,39 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvLabelBanVo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Bán vỏ"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="@dimen/text_16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
-                <vn.gas.thq.customview.ItemProductType1
+                <LinearLayout
+                    android:id="@+id/linearBanVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="vo"
-                    app:soLuong="100"
-                    app:tenSanPham="Vỏ 12Kg" />
+                    android:orientation="vertical">
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="vo"
+                        app:soLuong="100"
+                        app:tenSanPham="Vỏ 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="vo"
+                        app:soLuong="100"
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
 
 
-                <vn.gas.thq.customview.ItemProductType1
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="vo"
-                    app:soLuong="100"
-                    app:tenSanPham="Vỏ 45Kg" />
             </LinearLayout>
 
             <View
@@ -287,29 +317,38 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvLabelMuaVo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mua vỏ"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="@dimen/text_16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
-                <vn.gas.thq.customview.ItemProductType1
+                <LinearLayout
+                    android:id="@+id/linearMuaVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="vo"
-                    app:soLuong="100"
-                    app:tenSanPham="Vỏ 12Kg" />
+                    android:orientation="vertical">
 
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="vo"
+                        app:soLuong="100"
+                        app:tenSanPham="Vỏ 12Kg" />
 
-                <vn.gas.thq.customview.ItemProductType1
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:gia="100"
-                    app:hinhAnh="vo"
-                    app:soLuong="100"
-                    app:tenSanPham="Vỏ 45Kg" />
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia="100"
+                        app:hinhAnh="vo"
+                        app:soLuong="100"
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <View
@@ -327,6 +366,7 @@
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
+                    android:id="@+id/tvLabelCongNoKH"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Công nợ khách hàng"
@@ -336,6 +376,7 @@
                     app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/linearCongNoKH"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_134sdp"
                     android:elevation="10dp"
@@ -463,6 +504,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -489,6 +531,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -515,6 +558,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -541,6 +585,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -567,6 +612,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -593,6 +639,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -621,6 +668,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal">
 
@@ -646,22 +694,22 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp">
-
-                <Button
-                    android:id="@+id/btnNext"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginHorizontal="@dimen/_30sdp"
-                    android:background="@drawable/bg_border_login"
-                    android:text="Tạo yêu cầu"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_ffffff" />
-            </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp">
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:background="@drawable/bg_border_login"
+            android:text="Tạo yêu cầu"
+            android:textAllCaps="true"
+            android:textColor="@color/white_ffffff" />
+    </LinearLayout>
 </LinearLayout>
