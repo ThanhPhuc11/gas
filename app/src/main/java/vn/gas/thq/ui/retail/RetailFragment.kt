@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.fragment_retail.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
+import vn.gas.thq.util.ScreenId
+import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
 
 class RetailFragment : BaseFragment() {
@@ -23,9 +24,9 @@ class RetailFragment : BaseFragment() {
     }
 
     override fun initView() {
-        imgBack.setOnClickListener {
-            viewController?.popFragment()
-        }
+//        imgBack.setOnClickListener {
+//            viewController?.popFragment()
+//        }
     }
 
     override fun getLayoutId(): Int {
@@ -38,6 +39,7 @@ class RetailFragment : BaseFragment() {
 
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
+        childViewController = (parentFragment as RetailContainerFragment).childViewController
     }
 
     override fun setupViewModel() {
@@ -45,8 +47,11 @@ class RetailFragment : BaseFragment() {
     }
 
     override fun initData() {
-        btnNext.setOnClickListener {
-            viewController?.pushFragment("yc", QuanLyYeuCauDuyetGiaFragment.newInstance())
+        btnSubmit.setOnClickListener {
+            childViewController?.pushFragment(
+                ScreenId.SCREEN_RETAIL_STEP_2,
+                newInstance()
+            )
         }
 
         tvLabelThuHoiVo.setOnClickListener { this.expand(linearThuHoiVo) }

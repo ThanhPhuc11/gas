@@ -9,6 +9,7 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
+import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retail.RetailFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
@@ -69,7 +70,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     override fun onItemTopClick(view: View?, position: Int) {
         when (position) {
-            0 -> viewController?.pushFragment(ScreenId.SCREEN_RETAIL, RetailFragment.newInstance())
+            0 -> viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance())
             1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()

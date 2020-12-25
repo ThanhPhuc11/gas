@@ -60,7 +60,7 @@ class LoginFragment : BaseFragment() {
     override fun initObserver() {
         viewModel.getStatusAccessToken().observe(this, {
             if (it) {
-                viewController?.pushFragment("abc", MainFragment.newInstance())
+                viewController?.replaceByFragment("abc", MainFragment.newInstance())
                 hideLoading()
             } else {
                 hideLoading()

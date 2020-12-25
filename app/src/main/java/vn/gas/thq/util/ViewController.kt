@@ -24,7 +24,7 @@ class ViewController(var flContainer: Int, var fragmentManager: FragmentManager?
         fragment: Fragment,
     ) {
         fragmentManager?.beginTransaction()
-            ?.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_exit, R.anim.pop_enter)
+//            ?.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_exit, R.anim.pop_enter)
             ?.replace(flContainer, fragment)
             ?.addToBackStack(screenId)
             ?.commitAllowingStateLoss()
