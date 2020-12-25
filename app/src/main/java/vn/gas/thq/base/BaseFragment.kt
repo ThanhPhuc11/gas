@@ -15,6 +15,7 @@ abstract class BaseFragment : Fragment() {
 
     private var mActivity: BaseActivity? = null
     var viewController: ViewController? = null
+    var childViewController: ViewController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViewModel()

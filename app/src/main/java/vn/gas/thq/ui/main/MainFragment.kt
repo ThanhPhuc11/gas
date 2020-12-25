@@ -11,6 +11,7 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.home.HomeFragment
 import vn.gas.thq.ui.qlyeucauxuatkho.QLYCXuatKhoContainFragment
+import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retail.RetailFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
@@ -70,7 +71,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
             }
             R.id.navigation_buy -> {
 //                pushToTab(retailFragment)
-                viewController?.pushFragment(ScreenId.SCREEN_RETAIL, RetailFragment.newInstance())
+                viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance())
             }
             R.id.navigation_setting -> {
 //                pushToTab(quanLyYeuCauDuyetGiaFragment)
