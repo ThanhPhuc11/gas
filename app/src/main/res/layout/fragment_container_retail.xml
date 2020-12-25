@@ -8,7 +8,10 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <include layout="@layout/layout_step_toolbar" />
+    <vn.gas.thq.customview.StepView
+        android:id="@+id/stepView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/flContainerRetail"

@@ -13,6 +13,7 @@ import vn.gas.thq.ui.home.HomeFragment
 import vn.gas.thq.ui.qlyeucauxuatkho.QLYCXuatKhoContainFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retail.RetailFragment
+import vn.gas.thq.ui.thukho.ThuKhoFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -75,7 +76,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
             }
             R.id.navigation_setting -> {
 //                pushToTab(quanLyYeuCauDuyetGiaFragment)
-                viewController?.pushFragment(ScreenId.SCREEN_QL_YC_DUYET_GIA_CONTAINER, QLYCXuatKhoContainFragment.newInstance())
+                viewController?.pushFragment(ScreenId.SCREEN_THU_KHO, ThuKhoFragment.newInstance())
             }
             R.id.navigation_other -> {
             }

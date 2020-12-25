@@ -2,6 +2,7 @@ package vn.gas.thq.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +11,15 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,6 +34,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +48,95 @@ public final class CommonUtils {
 
     private CommonUtils() {
         // This utility class is not publicly instantiable
+    }
+
+    public static void showCalendarDialog(Context context, String currentDate, CalendarListener listener) {
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        String fromMothStr = "";
+        int tempMonth = mMonth + 1;
+        if (tempMonth < 10) {
+            fromMothStr = "0" + tempMonth;
+        } else {
+            fromMothStr = "" + tempMonth;
+        }
+
+        String fromDayStr = "";
+        if (mDay < 10) {
+            fromDayStr = "0" + mDay;
+        } else {
+            fromDayStr = "" + mDay;
+        }
+
+        String dateDefault = fromDayStr + "/" + fromMothStr + "/" + mYear;
+
+        //dinh dnag ngay dd/MM/yyyy
+        if (currentDate.length() > 0) {
+            mDay = Integer.parseInt(currentDate.split("/")[0]);
+            mMonth = Integer.parseInt(currentDate.split("/")[1]) - 1;
+            mYear = Integer.parseInt(currentDate.split("/")[2]);
+        }
+        final String[] strDate = {""};
+
+//        strDate[0] =  strDate[0] = mDay+"/"+mMonth+"/"+mYear;
+        Dialog dialogCalendar = new Dialog(context);
+        dialogCalendar.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogCalendar.setContentView(R.layout.layout_date_picker);
+        TextView tvOk = dialogCalendar.findViewById(R.id.tvOk);
+        TextView tvCancel = dialogCalendar.findViewById(R.id.tvCancel);
+        DatePicker datepicker = dialogCalendar.findViewById(R.id.date_picker);
+
+        if (TextUtils.isEmpty(currentDate) || currentDate.trim().length() == 0) {
+            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.GONE);
+        } else {
+            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.VISIBLE);
+        }
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            datepicker.setSpinnersShown(true);
+            datepicker.setCalendarViewShown(true);
+        }
+
+        datepicker.init(mYear, mMonth, mDay, (datePicker, year, month, dayOfMonth) -> {
+            String fromMothStr1 = "";
+            int tempMonth1 = month + 1;
+            if (tempMonth1 < 10) {
+                fromMothStr1 = "0" + tempMonth1;
+            } else {
+                fromMothStr1 = "" + tempMonth1;
+            }
+
+            String fromDayStr1 = "";
+            if (dayOfMonth < 10) {
+                fromDayStr1 = "0" + dayOfMonth;
+            } else {
+                fromDayStr1 = "" + dayOfMonth;
+            }
+            strDate[0] = fromDayStr1 + "/" + fromMothStr1 + "/" + year;
+        });
+        dialogCalendar.findViewById(R.id.tvClear).setOnClickListener(view -> {
+            listener.onChooseDone("");
+            dialogCalendar.dismiss();
+        });
+        tvCancel.setOnClickListener(view -> dialogCalendar.dismiss());
+        tvOk.setOnClickListener(view -> {
+            if (strDate[0] != null && strDate[0].length() > 0) {
+                listener.onChooseDone(strDate[0]);
+            } else {
+                if (currentDate != null && currentDate.length() > 0) {
+                    listener.onChooseDone(currentDate);
+                } else {
+                    listener.onChooseDone(dateDefault);
+                }
+
+            }
+
+            dialogCalendar.dismiss();
+        });
+        dialogCalendar.show();
     }
 
     public static ProgressDialog showLoadingDialog(Context context) {

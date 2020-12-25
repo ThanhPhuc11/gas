@@ -167,20 +167,23 @@
                 android:textStyle="bold" />
 
             <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnItem1"
+                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
             <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnItem2"
+                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp" />
 
             <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnItem3"
+                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp" />
 

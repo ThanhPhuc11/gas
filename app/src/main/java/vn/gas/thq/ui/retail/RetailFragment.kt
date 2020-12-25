@@ -3,6 +3,7 @@ package vn.gas.thq.ui.retail
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_retail.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -14,11 +15,13 @@ import vn.hongha.ga.R
 class RetailFragment : BaseFragment() {
     companion object {
         @JvmStatic
-        fun newInstance(): RetailFragment {
-            val args = Bundle()
-
+        fun newInstance(step: String?): RetailFragment {
+            val bundle = Bundle()
+            bundle.apply {
+                putString("STEP", step)
+            }
             val fragment = RetailFragment()
-            fragment.arguments = args
+            fragment.arguments = bundle
             return fragment
         }
     }
@@ -27,6 +30,9 @@ class RetailFragment : BaseFragment() {
 //        imgBack.setOnClickListener {
 //            viewController?.popFragment()
 //        }
+        if ("STEP_2" == arguments?.getString("STEP")) {
+            btnSubmit.text = "BÁN HÀNG"
+        }
     }
 
     override fun getLayoutId(): Int {
@@ -48,10 +54,15 @@ class RetailFragment : BaseFragment() {
 
     override fun initData() {
         btnSubmit.setOnClickListener {
+            if ("STEP_2" == arguments?.getString("STEP")) {
+                (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
+                return@setOnClickListener
+            }
             childViewController?.pushFragment(
                 ScreenId.SCREEN_RETAIL_STEP_2,
-                newInstance()
+                newInstance("STEP_2")
             )
+            (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
         }
 
         tvLabelThuHoiVo.setOnClickListener { this.expand(linearThuHoiVo) }

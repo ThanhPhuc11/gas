@@ -11,6 +11,7 @@ import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retail.RetailFragment
+import vn.gas.thq.ui.thukho.ThuKhoFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -74,6 +75,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
             1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()
+            )
+            3 -> viewController?.pushFragment(
+                ScreenId.SCREEN_THU_KHO,
+                ThuKhoFragment.newInstance()
             )
             4 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
