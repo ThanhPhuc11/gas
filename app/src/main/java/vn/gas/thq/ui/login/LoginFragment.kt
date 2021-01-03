@@ -9,6 +9,7 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
+import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
@@ -60,7 +61,7 @@ class LoginFragment : BaseFragment() {
     override fun initObserver() {
         viewModel.getStatusAccessToken().observe(this, {
             if (it) {
-                viewController?.replaceByFragment("abc", MainFragment.newInstance())
+                viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
                 hideLoading()
             } else {
                 hideLoading()
