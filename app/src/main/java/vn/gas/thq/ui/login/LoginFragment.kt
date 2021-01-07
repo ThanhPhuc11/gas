@@ -7,7 +7,7 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
-import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.network.LoginRetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
@@ -35,9 +35,9 @@ class LoginFragment : BaseFragment() {
         viewModel =
             ViewModelProviders.of(this,
                 context?.let {
-                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
+                    LoginRetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
                         ?.let { apiService ->
-                            ViewModelFactory(apiService)
+                            ViewModelFactory(apiService, context)
                         }
                 })
                 .get(LoginViewModel::class.java)

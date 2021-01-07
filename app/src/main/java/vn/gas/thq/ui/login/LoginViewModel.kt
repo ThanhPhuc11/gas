@@ -1,5 +1,6 @@
 package vn.gas.thq.ui.login
 
+import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -11,13 +12,15 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
-import vn.gas.thq.base.User
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.model.TokenModel
 
-class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
+class LoginViewModel(private val loginRepository: LoginRepository, private val context: Context?) :
+    BaseViewModel() {
     //    private val liveDataA = MutableLiveData<List<User>>()
-    private val loginLiveData = MutableLiveData<LoginModel>()
+    private val loginLiveData = MutableLiveData<TokenModel>()
     private val checkAccesToken = MutableLiveData<Boolean>()
-    private var loginModel: LoginModel? = null
+    private var tokenModel: TokenModel? = null
 
     fun doLogin(username: String, password: String) {
         if (TextUtils.isEmpty(username)) {
@@ -41,7 +44,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
                 }
                 .onCompletion {
                     Log.e("Phuc complete", it.toString() + "onCom")
-                    if (!TextUtils.isEmpty(loginModel?.accessToken)) {
+                    AppPreferencesHelper(context).tokenModel = tokenModel
+                    if (!TextUtils.isEmpty(tokenModel?.accessToken)) {
                         checkAccesToken.value = true
                     }
                 }
@@ -50,7 +54,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
                 }
                 .collect {
                     Log.e("Phuc", it.toString() + "onColect")
-                    loginModel = it
+                    tokenModel = it
                 }
 
 //            loginRepository.getUsers()

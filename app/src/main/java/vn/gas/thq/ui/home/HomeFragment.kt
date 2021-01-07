@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
+import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
+import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retail.RetailFragment
@@ -62,7 +64,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         mList.add(MenuModel("Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
         mList.add(MenuModel("Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
         mList.add(MenuModel("Quản lý yêu cầu giảm giá", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Chức năng 6", R.drawable.ic_menu_4))
+        mList.add(MenuModel("Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
         mList.add(MenuModel("Chức năng 7", R.drawable.ic_menu_4))
         mList.add(MenuModel("Xem thêm", R.drawable.ic_more_arrow))
         menuAdapter = MenuAdapter(mList)
@@ -76,6 +78,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()
             )
+            2 -> viewController?.pushFragment(
+                ScreenId.SCREEN_LAP_YC_XUAT_KHO,
+                LapYCXuatKhoFragment.newInstance()
+            )
             3 -> viewController?.pushFragment(
                 ScreenId.SCREEN_THU_KHO,
                 ThuKhoFragment.newInstance()
@@ -83,6 +89,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
             4 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 QuanLyYeuCauDuyetGiaFragment.newInstance()
+            )
+            5 -> viewController?.pushFragment(
+                ScreenId.SCREEN_QLYC_CA_NHAN,
+                QLYCCaNhanFragment.newInstance()
             )
         }
     }

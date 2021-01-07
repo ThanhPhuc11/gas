@@ -38,8 +38,8 @@ abstract class BaseFragment : Fragment() {
 //        viewController = ViewController(getFragmentContainerId(), supportFragmentManager)
         setViewController()
         initView()
-        initObserver()
         initData()
+        initObserver()
 //        hideTopBar()
     }
 

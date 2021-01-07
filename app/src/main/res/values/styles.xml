@@ -70,11 +70,20 @@
     <declare-styleable name="ItemProductType1">
         <attr name="tenSanPham" format="string" />
         <attr name="soLuong" format="string" />
+        <attr name="sku" format="string" />
         <attr name="gia" format="string" />
         <attr name="hinhAnh" format="enum">
             <enum name="khi" value="0" />
             <enum name="vo" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ItemRequestType">
+        <attr name="trangThai" format="enum" >
+            <enum name="newStatus" value="1" />
+<!--            <enum name="vo" value="2" />-->
+        </attr>
+        <attr name="thoiGian" format="string" />
     </declare-styleable>
 
     <declare-styleable name="StepView">
@@ -112,6 +121,11 @@
         <!--<item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>-->
         <!--  <item name="android:windowEnterAnimation">@anim/fadein</item>
           <item name="android:windowExitAnimation">@anim/fadeout</item>-->
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_alpha_dialog</item>
+        <item name="android:windowExitAnimation">@anim/exit_alpha_dialog</item>
     </style>
 
     <style name="calendar_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">

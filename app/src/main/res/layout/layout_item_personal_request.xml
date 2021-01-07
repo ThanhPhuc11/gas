@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="6dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Loại yêu cầu"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bán hàng"
+                android:textColor="@color/blue_2C5181" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trạng thái"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Từ chối"
+                android:textColor="@color/blue_2C5181" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ngày đặt"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvOrderTime"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="28/10/2020 08:47:38"
+                android:textColor="@color/blue_2C5181" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
