@@ -1,10 +1,11 @@
 package vn.gas.thq.network
 
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.*
 import vn.gas.thq.base.User
-import vn.gas.thq.model.ResponseModel
-import vn.gas.thq.ui.login.LoginModel
+import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.ProductShopModel
+import vn.gas.thq.model.TokenModel
+import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 
 interface ApiService {
     @GET("users")
@@ -18,5 +19,20 @@ interface ApiService {
         @Field("grant_type") grant_type: String,
         @Field("username") username: String,
         @Field("password") password: String
-    ): LoginModel
+    ): TokenModel
+
+    @GET("stocks/shop")
+    suspend fun getProductFromShop(): List<ProductShopModel>
+
+    @POST("orders/shop")
+    suspend fun initExport(@Body obj: InitExportRequest)
+
+    @GET("orders/shop")
+    suspend fun searchRequest(
+        @Query("status") status: String?,
+        @Query("fromDate") fromDate: String,
+        @Query("toDate") toDate: String,
+        @Query("offset") offset: Int,
+        @Query("size") size: Int,
+    ): List<BussinesRequestModel>
 }

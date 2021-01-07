@@ -6,8 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
-import vn.gas.thq.model.TokenModel
 import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
 import java.io.IOException
@@ -24,27 +22,17 @@ import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 
-object RetrofitBuilder {
+object LoginRetrofitBuilder {
     private var retrofit: Retrofit? = null
-    private var token: String? = null
 
     //    private const val BASE_URL = BuildConfig.BASE_URL
     private const val BASE_URL = "https://thq-gas.duckdns.org:8090/thq-gas/"
     private var httpClientBuilder: OkHttpClient.Builder? = null
     fun getInstance(context: Context): Retrofit? {
-
-        //      if (retrofit == null) {
-        // get token
-        val pref = AppPreferencesHelper(context)
-        val tokenModel: TokenModel = pref.tokenModel
-        if (tokenModel != null) {
-            token = tokenModel.accessToken
-        }
         if (retrofit == null) {
             httpClientBuilder = OkHttpClient.Builder().readTimeout(5, TimeUnit.SECONDS)
             httpClientBuilder?.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
                     .addHeader("Accept", "application/json")
                     .addHeader("client_id", "DIF4R04G1MCPGATCJ3O4ZYTX2KC19TAD")
                     .addHeader(

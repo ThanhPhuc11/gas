@@ -31,7 +31,7 @@ class VNCharacterUtils {
             'o', 'o', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u',
             'u', 'u', 'u'
         )
-
+        @JvmStatic
         fun removeAccent(ch: Char): Char {
             var ch = ch
             val index = Arrays.binarySearch(SOURCE_CHARACTERS, ch)

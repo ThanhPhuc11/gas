@@ -34,6 +34,7 @@ class QuanLyYeuCauDuyetGiaFragment : BaseFragment() {
     }
 
     override fun initView() {
+        tvTitle.text = "Quản lý yêu cầu duyệt giá"
         imgBack.setOnClickListener {
             viewController?.popFragment()
         }
@@ -47,7 +48,6 @@ class QuanLyYeuCauDuyetGiaFragment : BaseFragment() {
     }
 
     override fun initData() {
-        tvTitle.text = "Quản lý yêu cầu duyệt giá"
         wrapClick1.setOnClickListener {
             showDiglog1Button()
         }

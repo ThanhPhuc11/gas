@@ -52,7 +52,7 @@ open class MainActivity : BaseActivity() {
             }
             this.doubleBackToExitPressedOnce = true
             Toast.makeText(this, "Nhấn một lần nữa để thoát", Toast.LENGTH_SHORT).show()
-            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+            Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
         } else {
             super.onBackPressed()
         }
