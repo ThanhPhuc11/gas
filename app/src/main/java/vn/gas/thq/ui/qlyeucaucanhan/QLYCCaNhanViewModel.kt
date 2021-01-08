@@ -20,6 +20,13 @@ class QLYCCaNhanViewModel(
 ) :
     BaseViewModel() {
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
+
+    val showMessCallback = MutableLiveData<String>()
+
+    val callbackStart = MutableLiveData<Unit>()
+    val callbackSuccess = MutableLiveData<Unit>()
+    val callbackFail = MutableLiveData<Unit>()
+
     private val mList = mutableListOf<BussinesRequestModel>()
     fun onSubmitData(status: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -31,7 +38,7 @@ class QLYCCaNhanViewModel(
 //                    mLiveData.value = mList
                 }
                 .catch {
-                    Log.e("Phuc catch", it.message.toString())
+                    showMessCallback.value = it.message
                 }
                 .collect {
                     mLiveData.value = it as MutableList<BussinesRequestModel>

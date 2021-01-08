@@ -50,6 +50,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtStatus"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -133,6 +134,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="42dp"
@@ -166,26 +168,19 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <include
-                android:id="@+id/btnItem1"
-                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+<!--            <include-->
+<!--                android:id="@+id/btnItem1"-->
+<!--                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp" />-->
 
-            <include
-                android:id="@+id/btnItem2"
-                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRequestItem"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp" />
-
-            <include
-                android:id="@+id/btnItem3"
-                layout="@layout/layout_item_thu_kho_qlyc_xuat_kho"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="9dp" />
 
 
         </LinearLayout>

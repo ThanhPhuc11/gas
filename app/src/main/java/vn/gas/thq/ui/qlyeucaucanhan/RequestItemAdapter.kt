@@ -11,7 +11,7 @@ import vn.hongha.ga.R
 
 class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
     RecyclerView.Adapter<RequestItemAdapter.RequestViewHolder>() {
-    lateinit var mClickListener: ItemClickListener
+    var mClickListener: ItemClickListener? = null
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
@@ -23,13 +23,21 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val obj: BussinesRequestModel = mList[position]
-        if (obj.status == "NEW") {
-            holder.itemRequestType1.setTrangThai("1")
-        } else {
-            holder.itemRequestType1.setTrangThai("2")
+
+        when (obj.status) {
+            1 -> {
+                holder.itemRequestType1.setTrangThai("1")
+            }
+            2 -> {
+                holder.itemRequestType1.setTrangThai("2")
+            }
+            3 -> {
+                holder.itemRequestType1.setTrangThai("3")
+            }
         }
 
         holder.itemRequestType1.setThoiGian(obj.created_date)
+        holder.itemRequestType1.setTen(obj.staff_name)
     }
 
     override fun getItemCount(): Int {
@@ -46,11 +54,11 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
         var itemRequestType1: ItemRequestType1 = itemView.findViewById(R.id.itemRequest)
 
         init {
-//            itemProductType.setOnClickListener(this)
+            itemRequestType1.setOnClickListener(this)
         }
 
         override fun onClick(p0: View?) {
-            mClickListener.onItemTopClick(p0, adapterPosition)
+            mClickListener?.onItemClick(p0, adapterPosition)
         }
     }
 
@@ -59,7 +67,7 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
     }
 
     interface ItemClickListener {
-        fun onItemTopClick(view: View?, position: Int)
+        fun onItemClick(view: View?, position: Int)
 //        fun onItemIncreaseClick(view: View?, position: Int)
 //        fun onItemDecreaseClick(view: View?, position: Int)
     }

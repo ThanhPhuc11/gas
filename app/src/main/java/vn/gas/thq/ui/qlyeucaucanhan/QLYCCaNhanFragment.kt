@@ -2,6 +2,7 @@ package vn.gas.thq.ui.qlyeucaucanhan
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,7 +11,6 @@ import kotlinx.android.synthetic.main.fragment_init_export_request.rvRequestItem
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtEndDate
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtStartDate
-import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -76,22 +76,28 @@ class QLYCCaNhanFragment : BaseFragment() {
         viewModel.mLiveData.observe(this, {
             mList.clear()
             mList.addAll(it)
-//            adapter = RequestItemAdapter(it)
-//            rvRequestItem.adapter = adapter
             adapter.notifyDataSetChanged()
+        })
+
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
 
     override fun initData() {
-
-//        mList.add(BussinesRequestModel("", "NEW", "2021-01-01", "", 1))
-        adapter = RequestItemAdapter(mList)
-//        productAdapter.setClickListener(this)
-
-        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
-        rvRequestItem.layoutManager = linearLayoutManager
-        rvRequestItem.adapter = adapter
-
+        initRecyclerView()
         edtStartDate.setText(AppDateUtils.getCurrentDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
@@ -111,6 +117,15 @@ class QLYCCaNhanFragment : BaseFragment() {
         btnSearch.setOnClickListener(this::onSubmitData)
     }
 
+    private fun initRecyclerView() {
+        adapter = RequestItemAdapter(mList)
+//        productAdapter.setClickListener(this)
+
+        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        rvRequestItem.layoutManager = linearLayoutManager
+        rvRequestItem.adapter = adapter
+    }
+
     private fun onChooseStatus(view: View) {
         var doc = DialogList()
         var mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
@@ -120,8 +135,6 @@ class QLYCCaNhanFragment : BaseFragment() {
             getString(R.string.enter_text_search)
         ) { item ->
             if (AppConstants.NOT_SELECT == item.id) {
-//                edtStatus.setText("")
-//                genderType = ""
                 return@show
             }
             status = item.id

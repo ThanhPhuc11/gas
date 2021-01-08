@@ -6,6 +6,7 @@ import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.ProductShopModel
 import vn.gas.thq.model.TokenModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.thukho.RequestDetailModel
 
 interface ApiService {
     @GET("users")
@@ -30,9 +31,24 @@ interface ApiService {
     @GET("orders/shop")
     suspend fun searchRequest(
         @Query("status") status: String?,
-        @Query("fromDate") fromDate: String,
-        @Query("toDate") toDate: String,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
         @Query("offset") offset: Int,
         @Query("size") size: Int,
     ): List<BussinesRequestModel>
+
+    @GET("orders/shop/{orderId}")
+    suspend fun detailRequest(
+        @Path("orderId") orderId: String?
+    ): RequestDetailModel
+
+    @POST("orders/shop/{orderId}/accept")
+    suspend fun accpetRequest(
+        @Path("orderId") orderId: String?
+    ): Unit
+
+    @POST("orders/shop/{orderId}/reject")
+    suspend fun rejectRequest(
+        @Path("orderId") orderId: String?
+    ): Unit
 }

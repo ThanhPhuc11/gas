@@ -85,7 +85,7 @@
                 android:background="@drawable/bg_border_nomal_1"
                 android:gravity="center"
                 android:inputType="number"
-                android:text="0"
+                android:text="1"
                 android:textColor="@color/blue_2C5181"
                 android:textSize="14sp" />
 

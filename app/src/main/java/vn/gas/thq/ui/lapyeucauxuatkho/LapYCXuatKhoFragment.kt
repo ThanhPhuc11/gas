@@ -94,7 +94,7 @@ class LapYCXuatKhoFragment : BaseFragment() {
 //            val productTemp =
 //        }
         var initExportRequest = InitExportRequest()
-        var productModel = ProductModel("", "TANK12", "", "", 1)
+        var productModel = ProductModel("", "TANK45", "", "", 1)
         initExportRequest.item = mutableListOf()
         initExportRequest.item?.add(productModel)
         viewModel.onSubmitData(initExportRequest)

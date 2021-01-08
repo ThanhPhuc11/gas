@@ -18,6 +18,7 @@
         android:src="@drawable/ic_close" />
 
     <TextView
+        android:id="@+id/tvOrderId"
         style="@style/textStyleH6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
             android:text="Ngày đặt hàng:" />
 
         <TextView
+            android:id="@+id/tvDate"
             style="@style/textStyleBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,6 +63,7 @@
             android:text="LXBH:" />
 
         <TextView
+            android:id="@+id/tvName"
             style="@style/textStyleBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,6 +86,7 @@
             android:text="Trạng thái:" />
 
         <TextView
+            android:id="@+id/tvStatus"
             style="@style/textStyleBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -90,46 +94,40 @@
             android:text="Chờ duyệt" />
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProductDialog"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <vn.gas.thq.customview.ItemProductType1
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:gia="100"
-                app:hinhAnh="khi"
-                app:soLuong="100"
-                app:tenSanPham="Khí 12Kg" />
+    <LinearLayout
+        android:id="@+id/linearAccept"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
 
-            <vn.gas.thq.customview.ItemProductType1
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:gia="100"
-                app:hinhAnh="khi"
-                app:soLuong="100"
-                app:tenSanPham="Khí 12Kg" />
+        <Button
+            android:id="@+id/btnTuChoi"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_border_login_1"
+            android:text="Từ chối"
+            android:textAllCaps="true"
+            android:textColor="@color/blue_2C5181" />
 
-            <vn.gas.thq.customview.ItemProductType1
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:gia="100"
-                app:hinhAnh="khi"
-                app:soLuong="100"
-                app:tenSanPham="Khí 12Kg" />
-
-            <vn.gas.thq.customview.ItemProductType1
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:gia="100"
-                app:hinhAnh="khi"
-                app:soLuong="100"
-                app:tenSanPham="Khí 12Kg" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        <Button
+            android:id="@+id/btnDongY"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_border_login"
+            android:text="Đồng ý"
+            android:textAllCaps="true"
+            android:textColor="@color/white_ffffff" />
+    </LinearLayout>
 
 </LinearLayout>

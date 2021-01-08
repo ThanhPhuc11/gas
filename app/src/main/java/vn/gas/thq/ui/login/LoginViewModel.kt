@@ -20,6 +20,8 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val c
     //    private val liveDataA = MutableLiveData<List<User>>()
     private val loginLiveData = MutableLiveData<TokenModel>()
     private val checkAccesToken = MutableLiveData<Boolean>()
+    private val loginSuccess = MutableLiveData<Unit>()
+    private val loginFail = MutableLiveData<Unit>()
     private var tokenModel: TokenModel? = null
 
     fun doLogin(username: String, password: String) {
@@ -46,11 +48,12 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val c
                     Log.e("Phuc complete", it.toString() + "onCom")
                     AppPreferencesHelper(context).tokenModel = tokenModel
                     if (!TextUtils.isEmpty(tokenModel?.accessToken)) {
-                        checkAccesToken.value = true
+                        loginSuccess.value = Unit
                     }
                 }
                 .catch {
-                    checkAccesToken.value = false
+//                    checkAccesToken.value = false
+                    loginFail.value = Unit
                 }
                 .collect {
                     Log.e("Phuc", it.toString() + "onColect")
@@ -77,4 +80,6 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val c
     }
 
     fun getStatusAccessToken() = checkAccesToken
+    fun getSuccessToken() = loginSuccess
+    fun getFailToken() = loginFail
 }

@@ -59,13 +59,21 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initObserver() {
-        viewModel.getStatusAccessToken().observe(this, {
-            if (it) {
-                viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
-                hideLoading()
-            } else {
-                hideLoading()
-            }
+//        viewModel.getStatusAccessToken().observe(this, {
+//            if (it) {
+//                viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
+//                hideLoading()
+//            } else {
+//                hideLoading()
+//            }
+//        })
+        viewModel.getSuccessToken().observe(viewLifecycleOwner, {
+            viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
+            hideLoading()
+        })
+
+        viewModel.getFailToken().observe(viewLifecycleOwner, {
+            hideLoading()
         })
     }
 }

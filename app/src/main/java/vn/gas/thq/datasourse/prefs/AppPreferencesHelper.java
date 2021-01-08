@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import vn.gas.thq.model.TokenModel;
+import vn.gas.thq.model.UserModel;
 import vn.gas.thq.util.AppConstants;
 
 
@@ -22,7 +23,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public static final String DATA_LICENSE_CHECKED = "DATA_LICENSE_CHECKED";
     public static final String CONTRACT_MODEL_SELECT = "CONTRACT_MODEL_SELECT";
     public static final String STATION_STAGE = "STATION_STAGE";
-
+    private static final String PREF_KEY_USER = "PREF_KEY_USER";
     // SharedPreferences
     private final SharedPreferences mPrefs;
     private Context mContext;
@@ -48,6 +49,25 @@ public class AppPreferencesHelper implements PreferencesHelper {
             mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, json).apply();
         } else {
             mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, "").apply();
+        }
+    }
+
+    @Override
+    public UserModel getUserModel() {
+        Gson gson = new Gson();
+        String json = mPrefs.getString(PREF_KEY_USER, "");
+        UserModel userModel = gson.fromJson(json, UserModel.class);
+        return userModel;
+    }
+
+    @Override
+    public void setUserModel(UserModel userModel) {
+        if (userModel != null) {
+            Gson gson = new Gson();
+            String json = gson.toJson(userModel);
+            mPrefs.edit().putString(PREF_KEY_USER, json).apply();
+        } else {
+            mPrefs.edit().putString(PREF_KEY_USER, "").apply();
         }
     }
 
