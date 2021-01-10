@@ -25,11 +25,11 @@ class ThuKhoXuatKhoViewModel(
     val mAcceptData = MutableLiveData<Unit>()
 //    val mRejectData = MutableLiveData<Unit>()
 
-    val showMessCallback = MutableLiveData<String>()
-
-    val callbackStart = MutableLiveData<Unit>()
-    val callbackSuccess = MutableLiveData<Unit>()
-    val callbackFail = MutableLiveData<Unit>()
+//    val showMessCallback = MutableLiveData<String>()
+//
+//    val callbackStart = MutableLiveData<Unit>()
+//    val callbackSuccess = MutableLiveData<Unit>()
+//    val callbackFail = MutableLiveData<Unit>()
 
     var status: String? = null
     lateinit var fromDate: String
@@ -48,8 +48,7 @@ class ThuKhoXuatKhoViewModel(
                 .onCompletion {
                 }
                 .catch {
-                    showMessCallback.value = it.message
-                    callbackFail.value = Unit
+                    handleError(it)
                 }
                 .collect {
                     mLiveData.value = it as MutableList<BussinesRequestModel>
@@ -66,8 +65,7 @@ class ThuKhoXuatKhoViewModel(
                 }
                 .onCompletion { }
                 .catch {
-                    showMessCallback.value = it.message
-                    callbackFail.value = Unit
+                    handleError(it)
                 }
                 .collect {
                     mDetailData.value = it
@@ -85,8 +83,7 @@ class ThuKhoXuatKhoViewModel(
                     }
                     .onCompletion { }
                     .catch {
-                        showMessCallback.value = it.message
-                        callbackFail.value = Unit
+                        handleError(it)
                     }
                     .collect {
                         callbackSuccess.value = Unit
@@ -103,8 +100,7 @@ class ThuKhoXuatKhoViewModel(
                 }
                 .onCompletion { }
                 .catch {
-                    showMessCallback.value = it.message
-                    callbackFail.value = Unit
+                    handleError(it)
                 }
                 .collect {
                     callbackSuccess.value = Unit

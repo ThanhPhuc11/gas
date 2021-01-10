@@ -8,6 +8,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
 import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.*
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.imgClose
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.linearAccept
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.rvProductDialog
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvDate
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvName
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvOrderId
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvStatus
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -82,7 +90,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
 
         viewModel.mDetailData.observe(viewLifecycleOwner, {
             mDetalData = it
-            showDiglog1Button()
+            showDiglogDetail()
         })
 
         viewModel.mAcceptData.observe(viewLifecycleOwner, {
@@ -172,7 +180,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         viewModel.onSearchRequest(status, fromDate, endDate)
     }
 
-    private fun showDiglog1Button(
+    private fun showDiglogDetail(
 //        title: String,
 //        message: String,
 //        callback: ConfirmDialogCallback?
@@ -191,14 +199,17 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
             when (mDetalData?.status) {
                 1 -> {
                     tvStatus.text = "Chờ duyệt"
+                    tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
                 2 -> {
                     tvStatus.text = "Đã duyệt"
+                    tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                 }
                 3 -> {
                     tvStatus.text = "Đã huỷ"
+                    tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
                 }
             }

@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.lapyeucauxuatkho
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
@@ -16,7 +17,7 @@ import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.hongha.ga.R
 
-class LapYCXuatKhoFragment : BaseFragment() {
+class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListener {
     private lateinit var viewModel: LapYCXuatKhoViewModel
     private lateinit var productAdapter: ProductItemAdapter
     var mList = mutableListOf<ProductModel>()
@@ -67,20 +68,28 @@ class LapYCXuatKhoFragment : BaseFragment() {
             }
             productAdapter.notifyDataSetChanged()
         })
-        viewModel.successCallBack2.observe(this, {
-            Toast.makeText(context, "Thành công", Toast.LENGTH_SHORT).show()
-            viewController?.popFragment()
+
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
 
     override fun initData() {
-//        mList.add(ProductModel("Khí 12Kg", "Khi12kg", "SKU: Binh gas 12kg", "Khí", 0))
-//        mList.add(ProductModel("Khí 45Kg", "Khi45kg", "SKU: Binh gas 45kg", "Khí", 0))
-//        mList.add(ProductModel("Vỏ 12Kg", "Vo12kg", "SKU: Binh gas 12kg", "Vỏ", 0))
-//        mList.add(ProductModel("Vỏ 45Kg", "Vo45kg", "SKU: Binh gas 45kg", "Vỏ", 0))
         viewModel.getDataFromShop()
         productAdapter = ProductItemAdapter(mList)
-//        productAdapter.setClickListener(this)
+        productAdapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
@@ -90,13 +99,14 @@ class LapYCXuatKhoFragment : BaseFragment() {
     }
 
     private fun onSubmitData(view: View) {
-//        for (obj: ProductModel in productAdapter) {
-//            val productTemp =
-//        }
         var initExportRequest = InitExportRequest()
-        var productModel = ProductModel("", "TANK45", "", "", 1)
         initExportRequest.item = mutableListOf()
-        initExportRequest.item?.add(productModel)
+        initExportRequest.item?.addAll(mList)
         viewModel.onSubmitData(initExportRequest)
+    }
+
+    override fun onItemSLChanged(position: Int, count: Int) {
+        mList[position].quantity = count
+        Log.e("POSITION: $position", "SL $count")
     }
 }
