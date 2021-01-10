@@ -6,10 +6,12 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.cardview.widget.CardView
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.item_product_type_4.view.*
 import vn.hongha.ga.R
 
 class ItemProductType4 : CardView {
+    //    var edtSL: TextInputEditText
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -77,5 +79,17 @@ class ItemProductType4 : CardView {
 
     fun getSL() {
         edtSL.text.toString().toInt()
+    }
+
+    fun getViewSL(): TextInputEditText? {
+        return edtSL
+    }
+
+    fun isReadOnly() {
+        edtSL.isEnabled = false
+        imgTang.isEnabled = false
+        imgGiam.isEnabled = false
+        imgTang.visibility = View.INVISIBLE
+        imgGiam.visibility = View.INVISIBLE
     }
 }

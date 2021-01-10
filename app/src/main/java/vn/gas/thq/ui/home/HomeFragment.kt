@@ -3,7 +3,6 @@ package vn.gas.thq.ui.home
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -12,8 +11,7 @@ import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
-import vn.gas.thq.ui.retail.RetailFragment
-import vn.gas.thq.ui.thukho.ThuKhoFragment
+import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -84,7 +82,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
             )
             3 -> viewController?.pushFragment(
                 ScreenId.SCREEN_THU_KHO,
-                ThuKhoFragment.newInstance()
+                ThuKhoXuatKhoFragment.newInstance()
             )
             4 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,

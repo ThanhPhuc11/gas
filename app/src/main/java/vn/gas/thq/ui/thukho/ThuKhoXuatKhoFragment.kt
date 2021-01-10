@@ -1,15 +1,20 @@
-package vn.gas.thq.ui.qlyeucaucanhan
+package vn.gas.thq.ui.thukho
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_init_export_request.*
-import kotlinx.android.synthetic.main.fragment_init_export_request.rvRequestItem
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.*
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.imgClose
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.linearAccept
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.rvProductDialog
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvDate
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvName
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvOrderId
+import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvStatus
 import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
@@ -18,35 +23,32 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
-import vn.gas.thq.ui.thukho.RequestDetailModel
-import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
+import vn.gas.thq.ui.qlyeucaucanhan.RequestItemAdapter
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
-import vn.gas.thq.util.AppDateUtils.FORMAT_2
-import vn.gas.thq.util.AppDateUtils.FORMAT_5
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
 import java.util.*
 
-class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener {
-    private lateinit var viewModel: QLYCCaNhanViewModel
-    private lateinit var viewModelThuKho: ThuKhoXuatKhoViewModel
+class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListener {
+
+    private lateinit var viewModel: ThuKhoXuatKhoViewModel
     private lateinit var adapter: RequestItemAdapter
-    private lateinit var adapterDetailYCXK: DetailItemProduct4Adapter
+    private lateinit var adapterDetail: DetailItemProduct2Adapter
     private var alertDialog: AlertDialog? = null
-    private var orderId = ""
     private var mDetalData: RequestDetailModel? = null
-    var mList = mutableListOf<BussinesRequestModel>()
     private var status: String? = null
+    private var mList = mutableListOf<BussinesRequestModel>()
+    private var orderId = ""
 
     companion object {
         @JvmStatic
-        fun newInstance(): QLYCCaNhanFragment {
+        fun newInstance(): ThuKhoXuatKhoFragment {
             val args = Bundle()
 
-            val fragment = QLYCCaNhanFragment()
+            val fragment = ThuKhoXuatKhoFragment()
             fragment.arguments = args
             return fragment
         }
@@ -65,16 +67,6 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                             ViewModelFactory(apiService, context)
                         }
                 })
-                .get(QLYCCaNhanViewModel::class.java)
-
-        viewModelThuKho =
-            ViewModelProviders.of(this,
-                context?.let {
-                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
-                        ?.let { apiService ->
-                            ViewModelFactory(apiService, context)
-                        }
-                })
                 .get(ThuKhoXuatKhoViewModel::class.java)
     }
 
@@ -86,14 +78,23 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_qlyc_ca_nhan
+        return R.layout.fragment_thu_kho_qlyc_xuat_kho
     }
 
     override fun initObserver() {
-        viewModel.mLiveData.observe(this, {
+        viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             mList.addAll(it)
             adapter.notifyDataSetChanged()
+        })
+
+        viewModel.mDetailData.observe(viewLifecycleOwner, {
+            mDetalData = it
+            showDiglogDetail()
+        })
+
+        viewModel.mAcceptData.observe(viewLifecycleOwner, {
+            alertDialog?.dismiss()
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -109,28 +110,6 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         })
 
         viewModel.showMessCallback.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
-
-        //TODO: Thu Kho
-        viewModelThuKho.mDetailData.observe(viewLifecycleOwner, {
-            mDetalData = it
-            showDiglogDetail()
-        })
-
-        viewModelThuKho.callbackStart.observe(viewLifecycleOwner, {
-            showLoading()
-        })
-
-        viewModelThuKho.callbackSuccess.observe(viewLifecycleOwner, {
-            hideLoading()
-        })
-
-        viewModelThuKho.callbackFail.observe(viewLifecycleOwner, {
-            hideLoading()
-        })
-
-        viewModelThuKho.showMessCallback.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
@@ -154,13 +133,17 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         }
         edtStatus.setOnClickListener(this::onChooseStatus)
         btnSearch.setOnClickListener(this::onSubmitData)
+
+//        btnItem1.setOnClickListener {
+//            showDiglog1Button()
+//        }
     }
 
     private fun initRecyclerView() {
         adapter = RequestItemAdapter(mList)
         adapter.setClickListener(this)
 
-        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = adapter
     }
@@ -183,10 +166,18 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
     private fun onSubmitData(view: View) {
         var fromDate =
-            AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
+            AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_2,
+                AppDateUtils.FORMAT_5,
+                edtStartDate.text.toString()
+            )
         var endDate =
-            AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
-        viewModel.onSubmitData(status, fromDate, endDate)
+            AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_2,
+                AppDateUtils.FORMAT_5,
+                edtEndDate.text.toString()
+            )
+        viewModel.onSearchRequest(status, fromDate, endDate)
     }
 
     private fun showDiglogDetail(
@@ -196,10 +187,10 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     ) {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
-        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_ycxk, null)
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_thu_kho, null)
         builder?.setView(dialogView)
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapterDetailYCXK = DetailItemProduct4Adapter(mDetalData!!.item)
+        adapterDetail = DetailItemProduct2Adapter(mDetalData!!.item)
 
         dialogView.apply {
             imgClose.setOnClickListener {
@@ -215,13 +206,11 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                     tvStatus.text = "Đã duyệt"
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
-                    adapterDetailYCXK.isReadOnly()
                 }
                 3 -> {
                     tvStatus.text = "Đã huỷ"
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
-                    adapterDetailYCXK.isReadOnly()
                 }
             }
             tvName.text = mDetalData?.staffName
@@ -229,14 +218,13 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             tvOrderId.text = "Mã yêu cầu $orderId"
 
             rvProductDialog.layoutManager = linearLayoutManager
-            rvProductDialog.adapter = adapterDetailYCXK
+            rvProductDialog.adapter = adapterDetail
 
-
-            btnHuyYC.setOnClickListener {
-//                viewModelThuKho.acceptOrNotRequest(orderId, false)
+            btnTuChoi.setOnClickListener {
+                viewModel.acceptOrNotRequest(orderId, false)
             }
-            btnCapNhat.setOnClickListener {
-//                viewModelThuKho.acceptOrNotRequest(orderId, true)
+            btnDongY.setOnClickListener {
+                viewModel.acceptOrNotRequest(orderId, true)
             }
         }
         alertDialog = builder?.create()
@@ -245,7 +233,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        viewModelThuKho.onDetailRequest(mList[position].stock_trans_id.toString())
+        viewModel.onDetailRequest(mList[position].stock_trans_id.toString())
         orderId = mList[position].stock_trans_id.toString()
     }
 }

@@ -53,7 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             style="@style/textStyleBody"
@@ -108,24 +109,24 @@
         android:padding="15dp">
 
         <Button
-            android:id="@+id/btnTuChoi"
+            android:id="@+id/btnHuyYC"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
             android:background="@drawable/bg_border_login_1"
-            android:text="Từ chối"
+            android:text="Huỷ yêu cầu"
             android:textAllCaps="true"
             android:textColor="@color/blue_2C5181" />
 
         <Button
-            android:id="@+id/btnDongY"
+            android:id="@+id/btnCapNhat"
             android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
             android:background="@drawable/bg_border_login"
-            android:text="Đồng ý"
+            android:text="Cập nhật"
             android:textAllCaps="true"
             android:textColor="@color/white_ffffff" />
     </LinearLayout>

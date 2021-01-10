@@ -20,20 +20,28 @@ class QLYCCaNhanViewModel(
 ) :
     BaseViewModel() {
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
+
+//    val showMessCallback = MutableLiveData<String>()
+//
+//    val callbackStart = MutableLiveData<Unit>()
+//    val callbackSuccess = MutableLiveData<Unit>()
+//    val callbackFail = MutableLiveData<Unit>()
+
     private val mList = mutableListOf<BussinesRequestModel>()
     fun onSubmitData(status: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
             qlycCaNhanRepository.onSubmitRequest(status, fromDate, toDate)
                 .onStart {
+                    callbackStart.value = Unit
                 }
                 .onCompletion {
-                    Toast.makeText(context, "Thành công", Toast.LENGTH_SHORT).show()
-//                    mLiveData.value = mList
+
                 }
                 .catch {
-                    Log.e("Phuc catch", it.message.toString())
+                    handleError(it)
                 }
                 .collect {
+                    callbackSuccess.value = Unit
                     mLiveData.value = it as MutableList<BussinesRequestModel>
                 }
         }
