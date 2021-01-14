@@ -23,4 +23,11 @@
     <color name="red_FF5936">#FF5936</color>
     <color name="red_DB4755">#DB4755</color>
     <color name="red_EA7035">#EA7035</color>
+    <color name="orange_FDD3B0">#FDD3B0</color>
+    <color name="orange_FFFFCCA7">#FFFFCCA7</color>
+    <color name="orange_FFE2CD">#FFE2CD</color>
+    <color name="orange_F37F36">#F37F36</color>
+    <color name="gray_EBEBEB">#EBEBEB</color>
+    <color name="gray_707070">#707070</color>
+    <color name="gray_D8D8D8">#D8D8D8</color>
 </resources>

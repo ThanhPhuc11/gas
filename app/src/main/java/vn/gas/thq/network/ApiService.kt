@@ -6,6 +6,7 @@ import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.ProductShopModel
 import vn.gas.thq.model.TokenModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.thukho.RequestDetailModel
 
 interface ApiService {
@@ -45,10 +46,16 @@ interface ApiService {
     @POST("orders/shop/{orderId}/accept")
     suspend fun accpetRequest(
         @Path("orderId") orderId: String?
-    ): Unit
+    )
 
     @POST("orders/shop/{orderId}/reject")
     suspend fun rejectRequest(
         @Path("orderId") orderId: String?
-    ): Unit
+    )
+
+    @GET("customers/nearby")
+    suspend fun getListCustomer(
+        @Query("lat") lat: String?,
+        @Query("lng") lng: String?
+    ): List<Customer>
 }

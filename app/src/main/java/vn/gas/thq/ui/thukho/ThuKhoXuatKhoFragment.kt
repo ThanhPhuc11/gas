@@ -94,7 +94,10 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         })
 
         viewModel.mAcceptData.observe(viewLifecycleOwner, {
-            alertDialog?.dismiss()
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+                view?.let { it1 -> onSubmitData(it1) }
+            }
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -221,10 +224,26 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
             rvProductDialog.adapter = adapterDetail
 
             btnTuChoi.setOnClickListener {
-                viewModel.acceptOrNotRequest(orderId, false)
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        viewModel.acceptOrNotRequest(orderId, false)
+                    }
+                }
             }
             btnDongY.setOnClickListener {
-                viewModel.acceptOrNotRequest(orderId, true)
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        viewModel.acceptOrNotRequest(orderId, true)
+                    }
+                }
             }
         }
         alertDialog = builder?.create()

@@ -10,6 +10,8 @@ import vn.gas.thq.ui.login.LoginRepository
 import vn.gas.thq.ui.login.LoginViewModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanViewModel
+import vn.gas.thq.ui.retail.RetailRepository
+import vn.gas.thq.ui.retail.RetailViewModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoRepository
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 
@@ -25,6 +27,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             QLYCCaNhanViewModel(QLYCCaNhanRepository(apiService), context)
         creators[ThuKhoXuatKhoViewModel::class.java] =
             ThuKhoXuatKhoViewModel(ThuKhoXuatKhoRepository(apiService), context)
+        creators[RetailViewModel::class.java] =
+            RetailViewModel(RetailRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
