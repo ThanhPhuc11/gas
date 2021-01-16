@@ -15,6 +15,8 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.util.AppConstants
+import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
 
 class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListener {
@@ -62,11 +64,18 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
     }
 
     override fun initObserver() {
-        viewModel.mLiveData.observe(this, {
+        viewModel.mLiveData.observe(viewLifecycleOwner, {
+            mList.clear()
             it.forEach {
                 mList.add(ProductModel(it.productName, it.productCode, "", "", 0))
             }
             productAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.callbackInitSuccess.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Lập yêu cầu thành công") {
+                viewModel.getDataFromShop()
+            }
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -101,8 +110,23 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
     private fun onSubmitData(view: View) {
         var initExportRequest = InitExportRequest()
         initExportRequest.item = mutableListOf()
-        initExportRequest.item?.addAll(mList)
-        viewModel.onSubmitData(initExportRequest)
+        val requestList = mList.filter { it.quantity!! > 0 }
+        if (requestList.isNotEmpty()) {
+            initExportRequest.item?.addAll(requestList)
+            CommonUtils.showConfirmDiglog2Button(
+                activity, "Xác nhận", "Bạn có chắc chặn muốn tạo yêu cầu xuất kho?", getString(
+                    R.string.biometric_negative_button_text
+                ), getString(R.string.text_ok)
+            ) {
+                if (it == AppConstants.YES) {
+                    viewModel.onSubmitData(initExportRequest)
+                }
+            }
+//            viewModel.onSubmitData(initExportRequest)
+            return
+        }
+        showMess("Bạn chưa chọn sản phẩm nào")
+
     }
 
     override fun onItemSLChanged(position: Int, count: Int) {

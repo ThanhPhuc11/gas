@@ -25,6 +25,7 @@ class LapYCXuatKhoViewModel(
 ) :
     BaseViewModel() {
     val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
+    val callbackInitSuccess = MutableLiveData<Unit>()
 
     fun getDataFromShop() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -58,7 +59,8 @@ class LapYCXuatKhoViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    showMessCallback.value = "Thành công"
+                    callbackInitSuccess.value = Unit
+//                    showMessCallback.value = "Thành công"
                 }
         }
     }

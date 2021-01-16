@@ -1,8 +1,5 @@
-package vn.gas.thq.ui.qlyeucaucanhan
+package vn.gas.thq.ui.retail
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -12,19 +9,13 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
-import vn.gas.thq.model.BussinesRequestModel
 
-class QLYCCaNhanViewModel(
-    private val qlycCaNhanRepository: QLYCCaNhanRepository,
-    private val context: Context?
-) :
-    BaseViewModel() {
-    val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
+class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
+    val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
 
-    private val mList = mutableListOf<BussinesRequestModel>()
-    fun onSubmitData(status: String?, fromDate: String, toDate: String) {
+    fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSubmitRequest(status, fromDate, toDate)
+            retailRepository.onGetListCustomer(lat, lng)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -36,9 +27,8 @@ class QLYCCaNhanViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<BussinesRequestModel>
+                    mLiveDataCustomer.value = it as MutableList<Customer>
                 }
         }
     }
-
 }

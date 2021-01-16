@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import androidx.cardview.widget.CardView
 import vn.hongha.ga.R
 import kotlinx.android.synthetic.main.item_product_type_2.view.*
@@ -44,11 +45,15 @@ class ItemProductType2 : CardView {
 
     fun setTen(name: String?) {
         if (name != null)
-            tvProductName.text = name
+            tvProductName.text = name.trim()
     }
 
     fun setSoLuong(sl: String?) {
         if (sl != null)
-            btnAmount.text = sl
+            edtAmount.setText(sl.trim())
+    }
+
+    fun getViewSL(): EditText {
+        return edtAmount
     }
 }

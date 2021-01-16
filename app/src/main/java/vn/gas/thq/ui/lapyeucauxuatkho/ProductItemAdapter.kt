@@ -27,7 +27,8 @@ class ProductItemAdapter(private val mList: MutableList<ProductModel>) :
         val obj: ProductModel = mList[position]
         holder.itemProductType.setTen(obj.name)
         holder.itemProductType.setSKU(obj.description)
-        holder.itemProductType.setIcon("1")
+//        holder.itemProductType.setIcon("1")
+        holder.itemProductType.setSoLuong(obj.quantity.toString())
         when (obj.code) {
             "GAS12" -> {
                 holder.itemProductType.setIcon("0")

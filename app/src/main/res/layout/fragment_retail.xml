@@ -8,7 +8,7 @@
     android:clickable="true"
     android:orientation="vertical">
 
-<!--    <include layout="@layout/layout_toolbar" />-->
+    <!--    <include layout="@layout/layout_toolbar" />-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -47,24 +47,27 @@
                 <!--                    app:hintEnabled="true">-->
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_border_nomal"
                     android:drawableEnd="@drawable/ic_arrow_down"
-                    android:text="@string/choose_customer"
-                    android:imeOptions="actionDone"
                     android:focusable="false"
+                    android:imeOptions="actionDone"
                     android:paddingHorizontal="@dimen/_11sdp"
                     android:singleLine="true"
+                    android:text="@string/choose_customer"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_13sdp" />
                 <!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutCustomerInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/imgCustomerStatus"
@@ -168,8 +171,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvLabelBanKhi"
@@ -185,22 +188,25 @@
                     android:id="@+id/linearBanKhi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productBanKhi12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="khi"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Khí 12Kg" />
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productBanKhi45"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="khi"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Khí 45Kg" />
                 </LinearLayout>
 
@@ -217,8 +223,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvLabelThuHoiVo"
@@ -237,17 +243,19 @@
                     android:orientation="vertical">
 
                     <vn.gas.thq.customview.ItemProductType2
+                        android:id="@+id/productVoThuHoi12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hinhAnh="vo"
-                        app:soLuong="200"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 12Kg" />
 
                     <vn.gas.thq.customview.ItemProductType2
+                        android:id="@+id/productVoThuHoi45"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hinhAnh="vo"
-                        app:soLuong="200"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 45Kg" />
                 </LinearLayout>
             </LinearLayout>
@@ -263,8 +271,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvLabelBanVo"
@@ -274,28 +282,31 @@
                     android:textColor="@color/blue_2C5181"
                     android:textSize="@dimen/text_16sp"
                     android:textStyle="bold"
-                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+                    app:drawableEndCompat="@drawable/ic_arrow_right_circle" />
 
                 <LinearLayout
                     android:id="@+id/linearBanVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoBan12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="vo"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 12Kg" />
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoBan45"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="vo"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 45Kg" />
                 </LinearLayout>
 
@@ -313,8 +324,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvLabelMuaVo"
@@ -324,28 +335,31 @@
                     android:textColor="@color/blue_2C5181"
                     android:textSize="@dimen/text_16sp"
                     android:textStyle="bold"
-                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+                    app:drawableEndCompat="@drawable/ic_arrow_right_circle" />
 
                 <LinearLayout
                     android:id="@+id/linearMuaVo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoMua12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="vo"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 12Kg" />
 
                     <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoMua45"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:gia="100"
+                        app:gia=""
                         app:hinhAnh="vo"
-                        app:soLuong="100"
+                        app:soLuong=""
                         app:tenSanPham="Vỏ 45Kg" />
                 </LinearLayout>
 
@@ -362,8 +376,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvLabelCongNoKH"
@@ -387,7 +401,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -407,11 +423,12 @@
                                 android:textSize="14sp" />
 
                             <Button
+                                android:id="@+id/btnCongNo12"
                                 android:layout_width="160dp"
                                 android:layout_height="36dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/bg_border_nomal_1"
-                                android:text="30"
+                                android:text="0"
                                 android:textColor="@color/blue_2C5181"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -419,6 +436,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical|right"
                             android:orientation="horizontal">
@@ -434,11 +452,12 @@
                                 android:textSize="14sp" />
 
                             <Button
+                                android:id="@+id/btnCongNo45"
                                 android:layout_width="160dp"
                                 android:layout_height="36dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/bg_border_nomal_1"
-                                android:text="30"
+                                android:text="0"
                                 android:textColor="@color/blue_2C5181"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -446,6 +465,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical|right"
                             android:orientation="horizontal">
@@ -460,12 +480,15 @@
                                 android:textColor="@color/blue_3D4E63"
                                 android:textSize="14sp" />
 
-                            <Button
+                            <EditText
+                                android:id="@+id/edtCongNoTien"
                                 android:layout_width="160dp"
                                 android:layout_height="36dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/bg_border_nomal_1"
-                                android:text="30"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textAlignment="center"
                                 android:textColor="@color/blue_2C5181"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -519,10 +542,11 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvTienKhi12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="9,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp" />
@@ -546,10 +570,11 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvTienKhi45"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="9,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp" />
@@ -573,10 +598,11 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvTienBanVo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="9,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp" />
@@ -600,10 +626,11 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvTienMuaVo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="9,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp" />
@@ -627,10 +654,11 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvTienNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="9,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp" />
@@ -655,10 +683,11 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvTongTienCanTT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            android:text="119,450,000 đ"
+                            android:text="0 đ"
                             android:textAlignment="textEnd"
                             android:textColor="@color/blue_0082B7"
                             android:textSize="13sp"
@@ -683,11 +712,12 @@
                             android:textSize="14sp" />
 
                         <Button
+                            android:id="@+id/btnTienThucTe"
                             android:layout_width="160dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="20dp"
                             android:background="@drawable/bg_border_nomal_1"
-                            android:text="1,000,000,000"
+                            android:text="0"
                             android:textColor="@color/blue_2C5181"
                             android:textSize="14sp" />
                     </LinearLayout>
