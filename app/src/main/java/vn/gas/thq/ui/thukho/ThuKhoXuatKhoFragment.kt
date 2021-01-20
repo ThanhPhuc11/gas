@@ -41,6 +41,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     private lateinit var adapterDetail: DetailItemProduct2Adapter
     private var alertDialog: AlertDialog? = null
     private var mDetalData: RequestDetailModel? = null
+    private var staffCode: String? = null
     private var status: String? = null
     private var staffId: String? = null
     private var mList = mutableListOf<BussinesRequestModel>()
@@ -154,7 +155,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     private fun initRecyclerView() {
-        adapter = RequestItemAdapter(mList)
+        adapter = RequestItemAdapter(mList, "Xuất kho")
         adapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -167,7 +168,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         var mArrayList = ArrayList<DialogListModel>()
         mArrayList.add(0, DialogListModel(AppConstants.SELECT_ALL, getString(R.string.all)))
         mListStaff.forEach {
-            mArrayList.add(DialogListModel(it.staffId.toString(), it.name))
+            mArrayList.add(DialogListModel(it.staffCode, it.name))
         }
         doc.show(
             activity, mArrayList,
@@ -177,11 +178,11 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
 //            if (AppConstants.NOT_SELECT == item.id) {
 //                return@show
 //            }
-            staffId = item.id
+            staffCode = item.id
             edtLXBH.setText(item.name)
 
             if (AppConstants.SELECT_ALL == item.id) {
-                staffId = null
+                staffCode = null
             }
         }
     }
@@ -218,7 +219,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onSearchRequest(status, fromDate, endDate)
+        viewModel.onSearchRequest(staffCode, status, fromDate, endDate)
     }
 
     private fun showDiglogDetail(
@@ -238,18 +239,23 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 alertDialog?.dismiss()
             }
             when (mDetalData?.status) {
+                0 -> {
+                    tvStatus.text = resources.getString(R.string.cancel_status)
+                    tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
+                    linearAccept.visibility = View.GONE
+                }
                 1 -> {
-                    tvStatus.text = "Chờ duyệt"
+                    tvStatus.text = resources.getString(R.string.new_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
                 2 -> {
-                    tvStatus.text = "Đã duyệt"
+                    tvStatus.text = resources.getString(R.string.approved_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                 }
                 3 -> {
-                    tvStatus.text = "Đã huỷ"
+                    tvStatus.text = resources.getString(R.string.reject_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
                 }

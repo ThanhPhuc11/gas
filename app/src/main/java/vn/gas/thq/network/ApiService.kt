@@ -28,8 +28,10 @@ interface ApiService {
     @POST("orders/shop")
     suspend fun initExport(@Body obj: InitExportRequest): IdentityModel
 
+    //Tim kiem ycxk
     @GET("orders/shop")
     suspend fun searchRequest(
+        @Query("staff_code") staff_code: String?,
         @Query("status") status: String?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String,
@@ -68,4 +70,16 @@ interface ApiService {
 
     @POST("orders/sale")
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
+
+    @GET(" orders/sale")
+    suspend fun searchRequestRetail(
+        @Query("status") status: String?,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("offset") offset: Int,
+        @Query("size") size: Int,
+    ): List<BussinesRequestModel>
+
+    @GET("enums/sale-order-status")
+    suspend fun saleOrderStatus(): List<StatusValueModel>
 }

@@ -12,4 +12,6 @@ class RetailRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun doRequestRetail(obj: RequestInitRetail) = flow {
         emit(apiService.doRequestRetail(obj))
     }
+
+
 }

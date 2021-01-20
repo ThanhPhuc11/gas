@@ -1,7 +1,5 @@
 package vn.gas.thq.ui.retail
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -10,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
@@ -24,6 +23,7 @@ import vn.gas.thq.customview.ItemProductType2
 import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ScreenId
@@ -37,6 +37,7 @@ class RetailFragment : BaseFragment() {
     private var custId: String? = null
     private lateinit var viewModel: RetailViewModel
     private var mListCustomer = mutableListOf<Customer>()
+    private var alertDialog: AlertDialog? = null
     private var tienKhiBan12 = 0
     private var tienKhiBan45 = 0
     private var tienVoBan12 = 0
@@ -82,6 +83,10 @@ class RetailFragment : BaseFragment() {
     override fun initObserver() {
         viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
             mListCustomer.addAll(it)
+        })
+
+        viewModel.initRequestSuccess.observe(viewLifecycleOwner, {
+            handleNextPage(it)
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -148,6 +153,19 @@ class RetailFragment : BaseFragment() {
             tienThucTe = getRealNumberV2(it)
             totalDebit()
         })
+    }
+
+    private fun handleNextPage(it: Boolean?) {
+        if (it == true) {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_QLYC_CA_NHAN,
+                    QLYCCaNhanFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1)
+                )
+            }
+            return
+        }
     }
 
     private fun onSubmitData(view: View) {

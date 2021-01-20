@@ -62,4 +62,8 @@ class ItemRequestType1 : CardView {
     fun setTen(name: String?) {
         tvName.text = name ?: ""
     }
+
+    fun setLoaiYC(loaiYC: String?) {
+        tvLoaiYC.text = loaiYC ?: ""
+    }
 }

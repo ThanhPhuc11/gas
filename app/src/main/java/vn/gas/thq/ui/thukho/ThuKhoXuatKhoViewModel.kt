@@ -27,23 +27,24 @@ class ThuKhoXuatKhoViewModel(
     val mListStaffData = MutableLiveData<MutableList<UserModel>>()
 //    val mRejectData = MutableLiveData<Unit>()
 
-//    val showMessCallback = MutableLiveData<String>()
+    //    val showMessCallback = MutableLiveData<String>()
 //
 //    val callbackStart = MutableLiveData<Unit>()
 //    val callbackSuccess = MutableLiveData<Unit>()
 //    val callbackFail = MutableLiveData<Unit>()
-
+    var staffCode: String? = null
     var status: String? = null
     lateinit var fromDate: String
     lateinit var toDate: String
 
-    fun onSearchRequest(status: String?, fromDate: String, toDate: String) {
+    fun onSearchRequest(staffCode: String?, status: String?, fromDate: String, toDate: String) {
+        this.staffCode = staffCode
         this.status = status
         this.fromDate = fromDate
         this.toDate = toDate
 
         viewModelScope.launch(Dispatchers.Main) {
-            thuKhoXuatKhoRepository.onSearchRequest(status, fromDate, toDate)
+            thuKhoXuatKhoRepository.onSearchRequest(staffCode, status, fromDate, toDate)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -107,7 +108,7 @@ class ThuKhoXuatKhoViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mAcceptData.value = Unit
-                    onSearchRequest(status, fromDate, toDate)
+                    onSearchRequest(staffCode, status, fromDate, toDate)
                 }
         }
     }

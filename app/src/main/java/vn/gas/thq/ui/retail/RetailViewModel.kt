@@ -12,6 +12,7 @@ import vn.gas.thq.base.BaseViewModel
 
 class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
+    val initRequestSuccess = MutableLiveData<Boolean>()
 
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -46,7 +47,7 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    showMessCallback.value = it.id.toString()
+                    initRequestSuccess.value = it.needApprove
                 }
         }
     }

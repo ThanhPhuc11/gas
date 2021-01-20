@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.StatusValueModel
 
 class QLYCCaNhanViewModel(
     private val qlycCaNhanRepository: QLYCCaNhanRepository,
@@ -21,8 +22,8 @@ class QLYCCaNhanViewModel(
     BaseViewModel() {
     var mCancelData = MutableLiveData<Unit>()
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
+    val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
 
-    private val mList = mutableListOf<BussinesRequestModel>()
     fun onSubmitData(status: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
             qlycCaNhanRepository.onSubmitRequest(status, fromDate, toDate)
@@ -55,6 +56,42 @@ class QLYCCaNhanViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mCancelData.value = Unit
+                }
+        }
+    }
+
+    fun onGetSaleOrderStatus() {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.onGetSaleOrderStatus()
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    listStatus.value = it as MutableList
+                }
+        }
+    }
+
+    fun onSearchRetail(status: String?, fromDate: String, toDate: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.onSearchRetail(status, fromDate, toDate)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    mLiveData.value = it as MutableList<BussinesRequestModel>
                 }
         }
     }

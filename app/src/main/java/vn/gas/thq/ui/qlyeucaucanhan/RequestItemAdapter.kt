@@ -9,7 +9,10 @@ import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
 import vn.hongha.ga.R
 
-class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
+class RequestItemAdapter(
+    private val mList: MutableList<BussinesRequestModel>,
+    private val loaiYC: String?
+) :
     RecyclerView.Adapter<RequestItemAdapter.RequestViewHolder>() {
     var mClickListener: ItemClickListener? = null
 
@@ -41,6 +44,7 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
 
         holder.itemRequestType1.setThoiGian(obj.created_date)
         holder.itemRequestType1.setTen(obj.staff_name)
+        holder.itemRequestType1.setLoaiYC(loaiYC)
     }
 
     override fun getItemCount(): Int {

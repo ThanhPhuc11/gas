@@ -5,10 +5,15 @@ import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
 class ThuKhoXuatKhoRepository(private val apiService: ApiService) : BaseRepository() {
-    suspend fun onSearchRequest(status: String?, fromDate: String, toDate: String) = flow {
+    suspend fun onSearchRequest(
+        staffCode: String?,
+        status: String?,
+        fromDate: String,
+        toDate: String
+    ) = flow {
         emit(
             apiService.searchRequest(
-                status, fromDate, toDate, 0, 100
+                staffCode, status, fromDate, toDate, 0, 100
             )
         )
     }
