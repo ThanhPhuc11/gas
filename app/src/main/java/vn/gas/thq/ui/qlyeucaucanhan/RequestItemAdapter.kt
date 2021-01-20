@@ -25,6 +25,9 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
         val obj: BussinesRequestModel = mList[position]
 
         when (obj.status) {
+            0 -> {
+                holder.itemRequestType1.setTrangThai("0")
+            }
             1 -> {
                 holder.itemRequestType1.setTrangThai("1")
             }

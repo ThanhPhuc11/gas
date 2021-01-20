@@ -92,11 +92,11 @@ public final class CommonUtils {
         TextView tvCancel = dialogCalendar.findViewById(R.id.tvCancel);
         DatePicker datepicker = dialogCalendar.findViewById(R.id.date_picker);
 
-        if (TextUtils.isEmpty(currentDate) || currentDate.trim().length() == 0) {
-            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.GONE);
-        } else {
-            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.VISIBLE);
-        }
+//        if (TextUtils.isEmpty(currentDate) || currentDate.trim().length() == 0) {
+//            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.GONE);
+//        } else {
+//            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.VISIBLE);
+//        }
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             datepicker.setSpinnersShown(true);

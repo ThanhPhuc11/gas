@@ -6,10 +6,10 @@ import vn.gas.thq.network.ApiService
 
 class RetailRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun onGetListCustomer(lat: String?, lng: String?) = flow {
-        emit(
-            apiService.getListCustomer(
-                lat, lng
-            )
-        )
+        emit(apiService.getListCustomer(lat, lng))
+    }
+
+    suspend fun doRequestRetail(obj: RequestInitRetail) = flow {
+        emit(apiService.doRequestRetail(obj))
     }
 }

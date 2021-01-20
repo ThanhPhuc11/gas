@@ -21,6 +21,7 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
+import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.util.AppConstants
@@ -33,6 +34,7 @@ import java.util.*
 
 
 class RetailFragment : BaseFragment() {
+    private var custId: String? = null
     private lateinit var viewModel: RetailViewModel
     private var mListCustomer = mutableListOf<Customer>()
     private var tienKhiBan12 = 0
@@ -65,9 +67,11 @@ class RetailFragment : BaseFragment() {
 //            viewController?.popFragment()
 //        }
         if ("STEP_2" == arguments?.getString("STEP")) {
+            (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
             btnSubmit.text = "BÁN HÀNG"
             return
         }
+//        btnSubmit.visibility = View.GONE
         viewModel.onGetListCustomer("21", "105")
     }
 
@@ -116,17 +120,7 @@ class RetailFragment : BaseFragment() {
 
     override fun initData() {
         edtCustomer.setOnClickListener(this::chooseCustomer)
-        btnSubmit.setOnClickListener {
-            if ("STEP_2" == arguments?.getString("STEP")) {
-                (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
-                return@setOnClickListener
-            }
-            childViewController?.pushFragment(
-                ScreenId.SCREEN_RETAIL_STEP_2,
-                newInstance("STEP_2")
-            )
-            (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
-        }
+        btnSubmit.setOnClickListener(this::onSubmitData)
 
         tvLabelThuHoiVo.setOnClickListener { this.expand(tvLabelThuHoiVo, linearThuHoiVo) }
         tvLabelBanVo.setOnClickListener { this.expand(tvLabelBanVo, linearBanVo) }
@@ -150,11 +144,106 @@ class RetailFragment : BaseFragment() {
             btnCongNo45,
             tvTienKhi45
         )
-        edtCongNoTien.addTextChangedListener(afterTextChanged = {
-            tienNo = getRealNumberV2(it)
-            tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
-            realPay()
+        edtTienThucTe.addTextChangedListener(afterTextChanged = {
+            tienThucTe = getRealNumberV2(it)
+            totalDebit()
         })
+    }
+
+    private fun onSubmitData(view: View) {
+        // Neu la buoc 2
+        if ("STEP_2" == arguments?.getString("STEP")) {
+            return
+        }
+        if (layoutCustomerInfo.visibility == View.GONE) {
+            showMess("Vui lòng chọn khách hàng")
+            return
+        }
+//        childViewController?.pushFragment(
+//            ScreenId.SCREEN_RETAIL_STEP_2,
+//            newInstance("STEP_2")
+//        )
+//        (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
+        val requestInitRetail = RequestInitRetail()
+        requestInitRetail.customerId = custId?.toInt()
+        requestInitRetail.debit = tienNo
+        requestInitRetail.lat = 100
+        requestInitRetail.lng = 100
+        val listProductRetailModel = mutableListOf<ProductRetailModel>()
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "GAS12",
+                getRealNumber(productBanKhi12.getEditTextSL()),
+                getRealNumber(productBanKhi12.getEditTextGia()),
+                "1"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "GAS45",
+                getRealNumber(productBanKhi45.getEditTextSL()),
+                getRealNumber(productBanKhi45.getEditTextGia()),
+                "1"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK12",
+                getRealNumber(productVoThuHoi12.getViewSL()),
+                0,
+                "2"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK45",
+                getRealNumber(productVoThuHoi45.getViewSL()),
+                0,
+                "2"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK12",
+                getRealNumber(productVoBan12.getEditTextSL()),
+                getRealNumber(productVoBan12.getEditTextGia()),
+                "1"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK45",
+                getRealNumber(productVoBan45.getEditTextSL()),
+                getRealNumber(productVoBan45.getEditTextGia()),
+                "1"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK12",
+                getRealNumber(productVoMua12.getEditTextSL()),
+                getRealNumber(productVoMua12.getEditTextGia()),
+                "3"
+            )
+        )
+        listProductRetailModel.add(
+            ProductRetailModel(
+                "TANK45",
+                getRealNumber(productVoMua45.getEditTextSL()),
+                getRealNumber(productVoMua45.getEditTextGia()),
+                "3"
+            )
+        )
+        requestInitRetail.item = listProductRetailModel
+        CommonUtils.showConfirmDiglog2Button(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu bán lẻ?", getString(
+                R.string.biometric_negative_button_text
+            ), getString(R.string.text_ok)
+        ) {
+            if (it == AppConstants.YES) {
+                viewModel.doRequestRetail(requestInitRetail)
+            }
+        }
     }
 
     private fun chooseCustomer(view: View) {
@@ -185,13 +274,14 @@ class RetailFragment : BaseFragment() {
                 tvCustId.text = it.customerId
                 tvPhoneNumber.text = it.telContact
                 tvAddress.text = it.address
+
+                custId = it.customerId
             }
         }
     }
 
     private fun expand(titleGroup: TextView, container: View) {
         if (container.isVisible) {
-//            container.visibility = View.GONE
             titleGroup.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -200,7 +290,6 @@ class RetailFragment : BaseFragment() {
             )
             CommonUtils.collapse(container)
         } else {
-//            container.visibility = View.VISIBLE
             titleGroup.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -231,7 +320,7 @@ class RetailFragment : BaseFragment() {
                 tienKhiBan45 = slBanKhi * giaBanKhi
             }
             totalMustPay()
-            realPay()
+            totalDebit()
         })
 
         bankhi.getEditTextGia().addTextChangedListener(afterTextChanged = {
@@ -246,7 +335,7 @@ class RetailFragment : BaseFragment() {
                 tienKhiBan45 = slBanKhi * giaBanKhi
             }
             totalMustPay()
-            realPay()
+            totalDebit()
         })
 
         thuHoiVo.getViewSL().addTextChangedListener(afterTextChanged = {
@@ -276,7 +365,7 @@ class RetailFragment : BaseFragment() {
             }
 
             totalMustPay()
-            realPay()
+            totalDebit()
         })
 
         voBan.getEditTextGia().addTextChangedListener(afterTextChanged = {
@@ -295,7 +384,7 @@ class RetailFragment : BaseFragment() {
             }
 
             totalMustPay()
-            realPay()
+            totalDebit()
         })
 
         voMua.getEditTextSL().addTextChangedListener(afterTextChanged = {
@@ -314,7 +403,7 @@ class RetailFragment : BaseFragment() {
             }
 
             totalMustPay()
-            realPay()
+            totalDebit()
         })
 
         voMua.getEditTextGia().addTextChangedListener(afterTextChanged = {
@@ -333,7 +422,7 @@ class RetailFragment : BaseFragment() {
             }
 
             totalMustPay()
-            realPay()
+            totalDebit()
         })
     }
 
@@ -343,9 +432,15 @@ class RetailFragment : BaseFragment() {
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
     }
 
-    private fun realPay() {
-        tienThucTe = tongTien - tienNo
-        btnTienThucTe.text = CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())
+//    private fun realPay() {
+//        tienThucTe = tongTien - tienNo
+//        btnTienThucTe.text = CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())
+//    }
+
+    private fun totalDebit() {
+        tienNo = tongTien - tienThucTe
+        btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
+        tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
     }
 
     private fun getRealNumber(view: EditText): Int {

@@ -128,7 +128,8 @@
             android:background="@drawable/bg_border_login"
             android:text="Cập nhật"
             android:textAllCaps="true"
-            android:textColor="@color/white_ffffff" />
+            android:textColor="@color/white_ffffff"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

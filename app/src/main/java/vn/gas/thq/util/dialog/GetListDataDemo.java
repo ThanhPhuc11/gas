@@ -18,6 +18,7 @@ public class GetListDataDemo {
 
     public static ArrayList<DialogListModel> getListStatus(Context mContext) {
         ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
+        modelArrayList.add(new DialogListModel("-2", mContext.getString(R.string.all)));
         modelArrayList.add(new DialogListModel("NEW", mContext.getString(R.string.new_status)));
         modelArrayList.add(new DialogListModel("APPROVED", mContext.getString(R.string.approved_status)));
         modelArrayList.add(new DialogListModel("REJECTED", mContext.getString(R.string.reject_status)));

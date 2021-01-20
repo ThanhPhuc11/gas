@@ -31,4 +31,10 @@ class ThuKhoXuatKhoRepository(private val apiService: ApiService) : BaseReposito
         )
     }
 
+    suspend fun getListStaff() = flow {
+        emit(
+            apiService.getListStaff()
+        )
+    }
+
 }

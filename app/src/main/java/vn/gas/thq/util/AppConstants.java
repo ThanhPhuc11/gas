@@ -25,6 +25,7 @@ public final class AppConstants {
     public static final String RELOAD_LIST = "RELOAD_LIST";
 
     public static final  String NOT_SELECT = "-1";
+    public static final  String SELECT_ALL = "-2";
     public static final int PAGE_SIZE = 30;
 
     private AppConstants() {

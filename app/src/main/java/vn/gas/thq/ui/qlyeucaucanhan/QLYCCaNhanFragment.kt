@@ -7,14 +7,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_init_export_request.*
-import kotlinx.android.synthetic.main.fragment_init_export_request.rvRequestItem
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.btnSearch
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtEndDate
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtStartDate
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtStatus
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.rvRequestItem
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
 import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -96,6 +101,13 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             adapter.notifyDataSetChanged()
         })
 
+        viewModel.mCancelData.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+                view?.let { it1 -> onSubmitData(it1) }
+            }
+        })
+
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
@@ -136,6 +148,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun initData() {
+        getInfo()
         initRecyclerView()
         edtStartDate.setText(AppDateUtils.getCurrentDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
@@ -156,6 +169,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         btnSearch.setOnClickListener(this::onSubmitData)
     }
 
+    private fun getInfo() {
+        val userModel = AppPreferencesHelper(context).userModel
+        tvName.text = userModel?.name
+        tvTuyen.text = userModel?.email
+    }
+
     private fun initRecyclerView() {
         adapter = RequestItemAdapter(mList)
         adapter.setClickListener(this)
@@ -173,11 +192,14 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             getString(R.string.status),
             getString(R.string.enter_text_search)
         ) { item ->
-            if (AppConstants.NOT_SELECT == item.id) {
-                return@show
-            }
+//            if (AppConstants.NOT_SELECT == item.id) {
+//                return@show
+//            }
             status = item.id
             edtStatus.setText(item.name)
+            if (AppConstants.SELECT_ALL == item.id) {
+                status = null
+            }
         }
     }
 
@@ -206,6 +228,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                 alertDialog?.dismiss()
             }
             when (mDetalData?.status) {
+                0 -> {
+                    tvStatus.text = "Đã huỷ"
+                    tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
+                    linearAccept.visibility = View.GONE
+                    adapterDetailYCXK.isReadOnly()
+                }
                 1 -> {
                     tvStatus.text = "Chờ duyệt"
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
@@ -218,7 +246,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                     adapterDetailYCXK.isReadOnly()
                 }
                 3 -> {
-                    tvStatus.text = "Đã huỷ"
+                    tvStatus.text = "Từ chối"
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
                     adapterDetailYCXK.isReadOnly()
@@ -233,7 +261,15 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
 
             btnHuyYC.setOnClickListener {
-//                viewModelThuKho.acceptOrNotRequest(orderId, false)
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        viewModel.onCancelRequest(orderId)
+                    }
+                }
             }
             btnCapNhat.setOnClickListener {
 //                viewModelThuKho.acceptOrNotRequest(orderId, true)

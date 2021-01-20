@@ -7,11 +7,11 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 
 class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun onSubmitRequest(status: String?, fromDate: String, toDate: String) = flow {
-        emit(
-            apiService.searchRequest(
-                status, fromDate, toDate, 0, 100
-            )
-        )
+        emit(apiService.searchRequest(status, fromDate, toDate, 0, 100))
+    }
+
+    suspend fun onCancelRequest(orderId: String?) = flow {
+        emit(apiService.deleteRequest(orderId))
     }
 
 }

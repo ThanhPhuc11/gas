@@ -1,17 +1,16 @@
 package vn.gas.thq.network
 
 import retrofit2.http.*
-import vn.gas.thq.base.User
-import vn.gas.thq.model.BussinesRequestModel
-import vn.gas.thq.model.ProductShopModel
-import vn.gas.thq.model.TokenModel
+import vn.gas.thq.model.*
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.retail.Customer
+import vn.gas.thq.ui.retail.RequestInitRetail
+import vn.gas.thq.ui.retail.ResponseInitRetail
 import vn.gas.thq.ui.thukho.RequestDetailModel
 
 interface ApiService {
-    @GET("users")
-    suspend fun getUsers(): List<User>
+    @GET("staffs")
+    suspend fun getUsers(): UserModel
 
     @FormUrlEncoded
     @POST("staff/oauth/token")
@@ -27,7 +26,7 @@ interface ApiService {
     suspend fun getProductFromShop(): List<ProductShopModel>
 
     @POST("orders/shop")
-    suspend fun initExport(@Body obj: InitExportRequest)
+    suspend fun initExport(@Body obj: InitExportRequest): IdentityModel
 
     @GET("orders/shop")
     suspend fun searchRequest(
@@ -53,9 +52,20 @@ interface ApiService {
         @Path("orderId") orderId: String?
     )
 
+    @DELETE("orders/shop/{orderId}")
+    suspend fun deleteRequest(
+        @Path("orderId") orderId: String?
+    )
+
+    @GET("staffs/driver")
+    suspend fun getListStaff(): List<UserModel>
+
     @GET("customers/nearby")
     suspend fun getListCustomer(
         @Query("lat") lat: String?,
         @Query("lng") lng: String?
     ): List<Customer>
+
+    @POST("orders/sale")
+    suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
 }

@@ -31,4 +31,23 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
                 }
         }
     }
+
+    fun doRequestRetail(obj: RequestInitRetail) {
+        viewModelScope.launch(Dispatchers.Main) {
+            retailRepository.doRequestRetail(obj)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    showMessCallback.value = it.id.toString()
+                }
+        }
+    }
 }

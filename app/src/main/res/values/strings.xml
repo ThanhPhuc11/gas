@@ -15,6 +15,7 @@
     <string name="title_setting">Điều hành</string>
     <string name="title_other">Khác</string>
     <string name="status">Trạng thái</string>
+    <string name="lxbh">LXBH</string>
     <string name="customer">Khách hàng</string>
     <string name="enter_text_search">Nhập từ khoá tìm kiếm</string>
     <string name="new_status">Chờ duyệt</string>

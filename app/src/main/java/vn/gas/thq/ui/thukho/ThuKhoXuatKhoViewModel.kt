@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.UserModel
 
 class ThuKhoXuatKhoViewModel(
     private val thuKhoXuatKhoRepository: ThuKhoXuatKhoRepository,
@@ -23,6 +24,7 @@ class ThuKhoXuatKhoViewModel(
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
     val mDetailData = MutableLiveData<RequestDetailModel>()
     val mAcceptData = MutableLiveData<Unit>()
+    val mListStaffData = MutableLiveData<MutableList<UserModel>>()
 //    val mRejectData = MutableLiveData<Unit>()
 
 //    val showMessCallback = MutableLiveData<String>()
@@ -108,7 +110,23 @@ class ThuKhoXuatKhoViewModel(
                     onSearchRequest(status, fromDate, toDate)
                 }
         }
+    }
 
+    fun getListStaff() {
+        viewModelScope.launch(Dispatchers.Main) {
+            thuKhoXuatKhoRepository.getListStaff()
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    mListStaffData.value = it as MutableList
+                }
+        }
     }
 
 }

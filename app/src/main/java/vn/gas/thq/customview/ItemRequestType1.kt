@@ -34,6 +34,10 @@ class ItemRequestType1 : CardView {
 
     fun setTrangThai(trangThai: String?) {
         when (trangThai) {
+            "0" -> {
+                tvStatus.text = "Đã huỷ"
+                tvStatus.setTextColor(resources.getColor(R.color.red_DB4755))
+            }
             "1" -> {
                 tvStatus.text = "Chờ duyệt"
                 tvStatus.setTextColor(resources.getColor(R.color.blue_2C5181))
@@ -43,7 +47,7 @@ class ItemRequestType1 : CardView {
                 tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
             }
             "3" -> {
-                tvStatus.text = "Đã huỷ"
+                tvStatus.text = "Từ chối"
                 tvStatus.setTextColor(resources.getColor(R.color.red_DB4755))
             }
         }

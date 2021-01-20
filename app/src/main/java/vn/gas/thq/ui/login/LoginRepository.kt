@@ -24,6 +24,4 @@ class LoginRepository(private val apiService: ApiService) : BaseRepository() {
         )
 
     }
-
-    suspend fun getUsers() = apiService.getUsers().asFlow()
 }

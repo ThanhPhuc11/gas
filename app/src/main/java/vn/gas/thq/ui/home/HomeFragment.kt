@@ -2,11 +2,19 @@ package vn.gas.thq.ui.home
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
+import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.model.UserModel
+import vn.gas.thq.network.ApiService
+import vn.gas.thq.network.LoginRetrofitBuilder
+import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
+import vn.gas.thq.ui.login.LoginViewModel
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
@@ -16,6 +24,7 @@ import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
 class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
+    private lateinit var viewModel: HomeViewModel
     private lateinit var menuAdapter: MenuAdapter
 
     companion object {
@@ -34,10 +43,29 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     }
 
     override fun initObserver() {
+        viewModel.userModelCallback.observe(viewLifecycleOwner, {
+            showInfo(it)
+        })
 
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun initData() {
+        viewModel.getUserInfo()
     }
 
     override fun setViewController() {
@@ -45,7 +73,15 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     }
 
     override fun setupViewModel() {
-
+        viewModel =
+            ViewModelProviders.of(this,
+                context?.let {
+                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
+                        ?.let { apiService ->
+                            ViewModelFactory(apiService, context)
+                        }
+                })
+                .get(HomeViewModel::class.java)
     }
 
     override fun initView() {
@@ -53,6 +89,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         val gridLayoutManager = GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
         rvMenu.layoutManager = gridLayoutManager
         rvMenu.adapter = menuAdapter
+    }
+
+    private fun showInfo(user: UserModel) {
+        tvUserName.text = user.name
     }
 
     private fun initMenuData() {
@@ -71,7 +111,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     override fun onItemTopClick(view: View?, position: Int) {
         when (position) {
-            0 -> viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance())
+            0 -> viewController?.pushFragment(
+                ScreenId.SCREEN_RETAIL_CONTAINER,
+                RetailContainerFragment.newInstance()
+            )
             1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()

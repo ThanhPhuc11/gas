@@ -19,6 +19,7 @@ class QLYCCaNhanViewModel(
     private val context: Context?
 ) :
     BaseViewModel() {
+    var mCancelData = MutableLiveData<Unit>()
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
 
     private val mList = mutableListOf<BussinesRequestModel>()
@@ -37,6 +38,23 @@ class QLYCCaNhanViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveData.value = it as MutableList<BussinesRequestModel>
+                }
+        }
+    }
+
+    fun onCancelRequest(orderId: String?) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.onCancelRequest(orderId)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    mCancelData.value = Unit
                 }
         }
     }
