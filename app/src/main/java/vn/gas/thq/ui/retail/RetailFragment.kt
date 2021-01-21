@@ -21,6 +21,7 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
 import vn.gas.thq.model.ProductRetailModel
+import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
@@ -38,6 +39,7 @@ class RetailFragment : BaseFragment() {
     private lateinit var viewModel: RetailViewModel
     private var mListCustomer = mutableListOf<Customer>()
     private var alertDialog: AlertDialog? = null
+    private var transferRetailModel: TransferRetailModel? = null
     private var tienKhiBan12 = 0
     private var tienKhiBan45 = 0
     private var tienVoBan12 = 0
@@ -47,15 +49,17 @@ class RetailFragment : BaseFragment() {
     private var tongTien = 0
     private var tienNo = 0
     private var tienThucTe = 0
+    private var gasRemain = 0
 //    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
 //    private var banKhi45 = productBanKhi45.getEditTextSL().text.toString()
 
     companion object {
         @JvmStatic
-        fun newInstance(step: String?): RetailFragment {
+        fun newInstance(step: String?, transferData: TransferRetailModel?): RetailFragment {
             val bundle = Bundle()
             bundle.apply {
                 putString("STEP", step)
+                transferData?.let { putSerializable("DATA", it) }
             }
             val fragment = RetailFragment()
             fragment.arguments = bundle
@@ -69,10 +73,14 @@ class RetailFragment : BaseFragment() {
 //        }
         if ("STEP_2" == arguments?.getString("STEP")) {
             (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
+            linearGasRemain.visibility = View.VISIBLE
             btnSubmit.text = "BÁN HÀNG"
+            transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
+
+            disableInput()
             return
         }
-//        btnSubmit.visibility = View.GONE
+        linearGasRemain.visibility = View.GONE
         viewModel.onGetListCustomer("21", "105")
     }
 
@@ -87,6 +95,13 @@ class RetailFragment : BaseFragment() {
 
         viewModel.initRequestSuccess.observe(viewLifecycleOwner, {
             handleNextPage(it)
+        })
+
+        viewModel.doRetailSuccess.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Bán thành công") {
+                alertDialog?.dismiss()
+                viewController?.popFragment()
+            }
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -153,10 +168,12 @@ class RetailFragment : BaseFragment() {
             tienThucTe = getRealNumberV2(it)
             totalDebit()
         })
+
+        fillData(transferRetailModel)
     }
 
-    private fun handleNextPage(it: Boolean?) {
-        if (it == true) {
+    private fun handleNextPage(it: ResponseInitRetail?) {
+        if (it?.needApprove == true) {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
                 alertDialog?.dismiss()
                 viewController?.pushFragment(
@@ -166,11 +183,46 @@ class RetailFragment : BaseFragment() {
             }
             return
         }
+        transferRetailModel = TransferRetailModel(
+            it?.id?.toString(),
+            getRealNumber(productBanKhi12.getEditTextSL()),
+            getRealNumber(productBanKhi12.getEditTextGia()),
+            getRealNumber(productBanKhi45.getEditTextSL()),
+            getRealNumber(productBanKhi45.getEditTextGia()),
+            getRealNumber(productVoThuHoi12.getViewSL()),
+            getRealNumber(productVoThuHoi45.getViewSL()),
+            getRealNumber(productVoBan12.getEditTextSL()),
+            getRealNumber(productVoBan12.getEditTextGia()),
+            getRealNumber(productVoBan45.getEditTextSL()),
+            getRealNumber(productVoBan45.getEditTextGia()),
+            getRealNumber(productVoMua12.getEditTextSL()),
+            getRealNumber(productVoMua12.getEditTextGia()),
+            getRealNumber(productVoMua45.getEditTextSL()),
+            getRealNumber(productVoMua45.getEditTextGia()),
+            tienThucTe
+        )
+        childViewController?.pushFragment(
+            ScreenId.SCREEN_RETAIL_STEP_2,
+            newInstance("STEP_2", transferRetailModel)
+        )
+        (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
     }
 
     private fun onSubmitData(view: View) {
         // Neu la buoc 2
         if ("STEP_2" == arguments?.getString("STEP")) {
+
+            CommonUtils.showConfirmDiglog2Button(
+                activity, "Xác nhận", "Bạn có chắc chắn muốn Bán lẻ?", getString(
+                    R.string.biometric_negative_button_text
+                ), getString(R.string.text_ok)
+            ) {
+                if (it == AppConstants.YES) {
+                    val gasRemainModel = GasRemainModel()
+                    gasRemainModel.gasRemain = this.gasRemain
+                    viewModel.doRetailLXBH(transferRetailModel?.orderId, gasRemainModel)
+                }
+            }
             return
         }
         if (layoutCustomerInfo.visibility == View.GONE) {
@@ -469,5 +521,68 @@ class RetailFragment : BaseFragment() {
     private fun getRealNumberV2(view: Editable?): Int {
         return if (TextUtils.isEmpty(view.toString().trim())) 0 else view.toString()
             .trim().toInt()
+    }
+
+    private fun disableInput() {
+        productBanKhi12.getEditTextSL().isFocusable = false
+        productBanKhi12.getEditTextSL().isEnabled = false
+        productBanKhi12.getEditTextGia().isFocusable = false
+        productBanKhi12.getEditTextGia().isEnabled = false
+
+        productBanKhi45.getEditTextSL().isFocusable = false
+        productBanKhi45.getEditTextSL().isEnabled = false
+        productBanKhi45.getEditTextGia().isFocusable = false
+        productBanKhi45.getEditTextGia().isEnabled = false
+
+        productVoThuHoi12.getViewSL().isFocusable = false
+        productVoThuHoi12.getViewSL().isEnabled = false
+        productVoThuHoi45.getViewSL().isFocusable = false
+        productVoThuHoi45.getViewSL().isEnabled = false
+
+        productVoBan12.getEditTextSL().isFocusable = false
+        productVoBan12.getEditTextSL().isEnabled = false
+        productVoBan12.getEditTextGia().isFocusable = false
+        productVoBan12.getEditTextGia().isEnabled = false
+
+        productVoBan45.getEditTextSL().isFocusable = false
+        productVoBan45.getEditTextSL().isEnabled = false
+        productVoBan45.getEditTextGia().isFocusable = false
+        productVoBan45.getEditTextGia().isEnabled = false
+
+        productVoMua12.getEditTextSL().isFocusable = false
+        productVoMua12.getEditTextSL().isEnabled = false
+        productVoMua12.getEditTextGia().isFocusable = false
+        productVoMua12.getEditTextGia().isEnabled = false
+
+        productVoMua45.getEditTextSL().isFocusable = false
+        productVoMua45.getEditTextSL().isEnabled = false
+        productVoMua45.getEditTextGia().isFocusable = false
+        productVoMua45.getEditTextGia().isEnabled = false
+
+        edtTienThucTe.isFocusable = false
+        edtTienThucTe.isEnabled = false
+    }
+
+    private fun fillData(obj: TransferRetailModel?) {
+        if (obj == null) return
+        productBanKhi12.setSoLuong(obj.khiBan12?.toString())
+        productBanKhi12.setGia(CommonUtils.priceWithoutDecimal(obj.khiBanPrice12?.toDouble()))
+        productBanKhi45.setSoLuong(obj.khiBan45?.toString())
+        productBanKhi45.setGia(CommonUtils.priceWithoutDecimal(obj.khiBanPrice45?.toDouble()))
+
+        productVoThuHoi12.setSoLuong(obj.voThu12?.toString())
+        productVoThuHoi45.setSoLuong(obj.voThu45?.toString())
+
+        productVoBan12.setSoLuong(obj.voBan12?.toString())
+        productVoBan12.setGia(CommonUtils.priceWithoutDecimal(obj.voBanPrice12?.toDouble()))
+        productVoBan45.setSoLuong(obj.voBan45?.toString())
+        productVoBan45.setGia(CommonUtils.priceWithoutDecimal(obj.voBanPrice45?.toDouble()))
+
+        productVoMua12.setSoLuong(obj.voMua12?.toString())
+        productVoMua12.setGia(CommonUtils.priceWithoutDecimal(obj.voMuaPrice12?.toDouble()))
+        productVoMua45.setSoLuong(obj.voMua45?.toString())
+        productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj.voMuaPrice45?.toDouble()))
+
+        edtTienThucTe.setText(CommonUtils.priceWithoutDecimal(obj.tienThucTe?.toDouble()))
     }
 }

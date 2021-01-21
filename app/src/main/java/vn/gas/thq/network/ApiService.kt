@@ -3,9 +3,7 @@ package vn.gas.thq.network
 import retrofit2.http.*
 import vn.gas.thq.model.*
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
-import vn.gas.thq.ui.retail.Customer
-import vn.gas.thq.ui.retail.RequestInitRetail
-import vn.gas.thq.ui.retail.ResponseInitRetail
+import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
 
 interface ApiService {
@@ -71,6 +69,9 @@ interface ApiService {
     @POST("orders/sale")
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
 
+    @GET("enums/sale-order-status")
+    suspend fun saleOrderStatus(): List<StatusValueModel>
+
     @GET(" orders/sale")
     suspend fun searchRequestRetail(
         @Query("status") status: String?,
@@ -80,6 +81,16 @@ interface ApiService {
         @Query("size") size: Int,
     ): List<BussinesRequestModel>
 
-    @GET("enums/sale-order-status")
-    suspend fun saleOrderStatus(): List<StatusValueModel>
+    @GET("orders/sale/{orderId}")
+    suspend fun detailApproveLXBH(
+        @Path("orderId") orderId: String?
+    ): ApproveRequestModel
+
+    //Thuc hien Ban le
+    @POST("orders/sale/{orderId}/process")
+    suspend fun doRetailLXBH(
+        @Path("orderId") orderId: String?,
+        @Body obj: GasRemainModel
+    )
+
 }

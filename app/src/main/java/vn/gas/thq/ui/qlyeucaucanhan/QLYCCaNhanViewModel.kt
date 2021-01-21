@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.ui.retail.ApproveRequestModel
 
 class QLYCCaNhanViewModel(
     private val qlycCaNhanRepository: QLYCCaNhanRepository,
@@ -23,6 +24,7 @@ class QLYCCaNhanViewModel(
     var mCancelData = MutableLiveData<Unit>()
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
+    val detailApproveCallback = MutableLiveData<ApproveRequestModel>()
 
     fun onSubmitData(status: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -92,6 +94,25 @@ class QLYCCaNhanViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveData.value = it as MutableList<BussinesRequestModel>
+                }
+        }
+    }
+
+    fun detailApproveLXBH(orderId: String?) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.detailApproveLXBH(orderId)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    detailApproveCallback.value = it
                 }
         }
     }

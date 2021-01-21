@@ -2,18 +2,22 @@ package vn.gas.thq.ui.qlyeucaucanhan
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.btnSearch
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtEndDate
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtStartDate
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.edtStatus
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.rvRequestItem
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.tvName
 import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.btnHuyYC
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.imgClose
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.linearAccept
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvName
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvOrderId
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -23,6 +27,7 @@ import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.retail.ApproveRequestModel
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.util.AppConstants
@@ -44,7 +49,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private lateinit var adapterDetailYCXK: DetailItemProduct4Adapter
     private var alertDialog: AlertDialog? = null
     private var orderId = ""
-    private var mDetalData: RequestDetailModel? = null
+    private var mDetailYCXKData: RequestDetailModel? = null
+    private var mDetailRetailData: ApproveRequestModel? = null
     var mList = mutableListOf<BussinesRequestModel>()
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
     private var loaiYC: String? = "Xuất kho"
@@ -107,11 +113,6 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             adapter.notifyDataSetChanged()
         })
 
-        viewModel.listStatus.observe(viewLifecycleOwner, {
-            listStatusOrderSale.clear()
-            listStatusOrderSale.addAll(it)
-        })
-
         viewModel.mCancelData.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
                 alertDialog?.dismiss()
@@ -119,6 +120,18 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             }
         })
 
+        //TODO: Retail
+        viewModel.listStatus.observe(viewLifecycleOwner, {
+            listStatusOrderSale.clear()
+            listStatusOrderSale.addAll(it)
+        })
+
+        viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
+            mDetailRetailData = it
+            showDiglogDetailRetail()
+        })
+
+        //TODO: chung
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
@@ -137,8 +150,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
         //TODO: Thu Kho
         viewModelThuKho.mDetailData.observe(viewLifecycleOwner, {
-            mDetalData = it
-            showDiglogDetail()
+            mDetailYCXKData = it
+            showDiglogDetailYCXK()
         })
 
         viewModelThuKho.callbackStart.observe(viewLifecycleOwner, {
@@ -279,7 +292,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         viewModel.onSubmitData(status, fromDate, endDate)
     }
 
-    private fun showDiglogDetail(
+    private fun showDiglogDetailYCXK(
 //        title: String,
 //        message: String,
 //        callback: ConfirmDialogCallback?
@@ -289,13 +302,13 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_ycxk, null)
         builder?.setView(dialogView)
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapterDetailYCXK = DetailItemProduct4Adapter(mDetalData!!.item)
+        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)
 
         dialogView.apply {
             imgClose.setOnClickListener {
                 alertDialog?.dismiss()
             }
-            when (mDetalData?.status) {
+            when (mDetailYCXKData?.status) {
                 0 -> {
                     tvStatus.text = resources.getString(R.string.cancel_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
@@ -320,8 +333,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                     adapterDetailYCXK.isReadOnly()
                 }
             }
-            tvName.text = mDetalData?.staffName
-            tvDate.text = mDetalData?.createdDate
+            tvName.text = mDetailYCXKData?.staffName
+            tvDate.text = mDetailYCXKData?.createdDate
             tvOrderId.text = "Mã yêu cầu $orderId"
 
             rvProductDialog.layoutManager = linearLayoutManager
@@ -348,8 +361,67 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         alertDialog?.show()
     }
 
+    private fun showDiglogDetailRetail() {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_retail, null)
+        builder?.setView(dialogView)
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)
+
+        val imgClose = dialogView.findViewById<ImageView>(R.id.imgClose)
+        val btnHuy = dialogView.findViewById<Button>(R.id.btnHuy)
+        val tvOrderId = dialogView.findViewById<TextView>(R.id.tvOrderId)
+
+        val tvName: TextView = dialogView.findViewById(R.id.tvName)
+        val tvAddress: TextView = dialogView.findViewById(R.id.tvAddress)
+        val tvPhone: TextView = dialogView.findViewById(R.id.tvPhone)
+
+        val btnCongNo12: Button = dialogView.findViewById(R.id.btnCongNo12)
+        val btnCongNo45: Button = dialogView.findViewById(R.id.btnCongNo45)
+        val btnCongNoTien: Button = dialogView.findViewById(R.id.btnCongNoTien)
+
+        dialogView.apply {
+            imgClose.setOnClickListener {
+                alertDialog?.dismiss()
+            }
+            tvOrderId.text = "Mã yêu cầu $orderId"
+            tvName.text = mDetailRetailData?.customerName ?: "- -"
+            tvAddress.text = mDetailRetailData?.customerAddress ?: "- -"
+            tvPhone.text = mDetailRetailData?.customerTelContact ?: "- -"
+
+            btnCongNo12.text = mDetailRetailData?.debtAmountTank12?.toString() ?: "0"
+            btnCongNo45.text = mDetailRetailData?.debtAmountTank45?.toString() ?: "0"
+            btnCongNoTien.text =
+                "${CommonUtils.priceWithoutDecimal(mDetailRetailData?.debtAmount?.toDouble())}"
+//            rvProductDialog.layoutManager = linearLayoutManager
+//            rvProductDialog.adapter = adapterDetailYCXK
+
+
+            btnHuy.setOnClickListener {
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+//                        viewModel.onCancelRequest(orderId)
+                    }
+                }
+            }
+        }
+        alertDialog = builder?.create()
+        alertDialog?.window?.setLayout(500, 200)
+        alertDialog?.show()
+    }
+
     override fun onItemClick(view: View?, position: Int) {
-        viewModelThuKho.onDetailRequest(mList[position].stock_trans_id.toString())
-        orderId = mList[position].stock_trans_id.toString()
+        if (type == "1") {
+            orderId = mList[position].stock_trans_id.toString()
+            viewModelThuKho.onDetailRequest(orderId)
+        } else if (type == "2") {
+            orderId = mList[position].order_id.toString()
+            viewModel.detailApproveLXBH(orderId)
+        }
     }
 }

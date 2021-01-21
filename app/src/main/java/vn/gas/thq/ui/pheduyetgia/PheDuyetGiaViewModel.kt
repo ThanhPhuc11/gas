@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.retail
+package vn.gas.thq.ui.pheduyetgia
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,54 +9,53 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.model.UserModel
 
-class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
-    val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
-    val initRequestSuccess = MutableLiveData<ResponseInitRetail>()
-    val doRetailSuccess = MutableLiveData<Unit>()
+class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaRepository) :
+    BaseViewModel() {
+    val mListStaffData = MutableLiveData<MutableList<UserModel>>()
+    val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
+    val mListDataSearch = MutableLiveData<MutableList<BussinesRequestModel>>()
 
-    fun onGetListCustomer(lat: String?, lng: String?) {
+    fun getListStaff() {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.onGetListCustomer(lat, lng)
+            pheDuyetGiaRepository.getListStaff()
                 .onStart {
                     callbackStart.value = Unit
                 }
-                .onCompletion {
-
-                }
+                .onCompletion { }
                 .catch {
                     handleError(it)
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveDataCustomer.value = it as MutableList<Customer>
+                    mListStaffData.value = it as MutableList
                 }
         }
     }
 
-    fun doRequestRetail(obj: RequestInitRetail) {
+    fun onGetSaleOrderStatus() {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.doRequestRetail(obj)
+            pheDuyetGiaRepository.onGetSaleOrderStatus()
                 .onStart {
                     callbackStart.value = Unit
                 }
-                .onCompletion {
-
-                }
+                .onCompletion { }
                 .catch {
                     handleError(it)
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    initRequestSuccess.value = it
+                    listStatus.value = it as MutableList
                 }
         }
     }
 
-    //TODO: STEP 2
-    fun doRetailLXBH(orderId: String?, obj: GasRemainModel) {
+    fun onSearchRetail(status: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.doRetailLXBH(orderId, obj)
+            pheDuyetGiaRepository.onSearchRetail(status, fromDate, toDate)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -68,7 +67,7 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    doRetailSuccess.value = Unit
+                    mListDataSearch.value = it as MutableList<BussinesRequestModel>
                 }
         }
     }
