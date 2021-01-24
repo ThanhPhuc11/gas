@@ -9,11 +9,15 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.util.AppConstants
 
 class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
     val initRequestSuccess = MutableLiveData<ResponseInitRetail>()
     val doRetailSuccess = MutableLiveData<Unit>()
+    val giaTANK12 = MutableLiveData<Int>()
+    val giaTANK45 = MutableLiveData<Int>()
 
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -30,6 +34,36 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveDataCustomer.value = it as MutableList<Customer>
+                }
+        }
+    }
+
+    fun getGiaNiemYet(customer_id: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            retailRepository.getGiaNiemYet(customer_id, "TANK12", "1")
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    giaTANK12.value = it.price
+                }
+
+            retailRepository.getGiaNiemYet(customer_id, "TANK45", "1")
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    giaTANK45.value = it.price
                 }
         }
     }

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.UserModel
+import vn.gas.thq.util.AppConstants
 
 class HomeViewModel(private val homeRepository: HomeRepository, private val context: Context?) :
     BaseViewModel() {
@@ -32,7 +33,13 @@ class HomeViewModel(private val homeRepository: HomeRepository, private val cont
                     AppPreferencesHelper(context).userModel = it
                     userModelCallback.value = it
                     callbackSuccess.value = Unit
+
+//                    getGiaNiemYet("1", "GAS12", "1")
                 }
         }
+    }
+
+    fun layGiaNiemYet() {
+//        getGiaNiemYet()
     }
 }

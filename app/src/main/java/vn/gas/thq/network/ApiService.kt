@@ -3,6 +3,7 @@ package vn.gas.thq.network
 import retrofit2.http.*
 import vn.gas.thq.model.*
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
 
@@ -20,6 +21,14 @@ interface ApiService {
         @Field("password") password: String
     ): TokenModel
 
+    @GET("prices/today")
+    suspend fun getGiaNiemYet(
+        @Query("customer_id") customer_id: String,
+        @Query("product_code") product_code: String,
+        @Query("sale_trans_type") sale_type: String
+    ): PriceModel
+
+    //Gia niem yet
     @GET("stocks/shop")
     suspend fun getProductFromShop(): List<ProductShopModel>
 
@@ -91,6 +100,18 @@ interface ApiService {
     suspend fun doRetailLXBH(
         @Path("orderId") orderId: String?,
         @Body obj: GasRemainModel
+    )
+
+    @POST("orders/sale/{orderId}/accept")
+    suspend fun doAcceptDuyetGia(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
+    )
+
+    @POST("orders/sale/{orderId}/reject")
+    suspend fun doRejectDuyetGia(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
     )
 
 }

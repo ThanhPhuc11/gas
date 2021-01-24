@@ -28,6 +28,11 @@ public final class AppConstants {
     public static final  String SELECT_ALL = "-2";
     public static final int PAGE_SIZE = 30;
 
+    public static final String GAS_12_SALE_1 = "GAS_12_SALE_1";
+    public static final String GAS_45_SALE_1 = "GAS_45_SALE_1";
+    public static final String TANK_12_SALE_3 = "TANK_12_SALE_3";
+    public static final String TANK_45_SALE_3 = "TANK_45_SALE_3";
+
     private AppConstants() {
     }
 

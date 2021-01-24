@@ -15,6 +15,14 @@ class ProductRetailModel constructor(
     var quantity: Int? = quantity
     var price: Int? = price
 
+    @SerializedName("price_plan")
+    @Expose
+    var pricePlan: Int? = 0
+
+    @SerializedName("price_standard")
+    @Expose
+    var priceStandard: Int? = 0
+
     @SerializedName("sale_type")
     @Expose
     var saleType: String? = saleType

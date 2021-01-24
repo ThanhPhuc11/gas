@@ -53,6 +53,11 @@ class ItemRequestType1 : CardView {
         }
     }
 
+    fun setTrangThaiBanLe(approveStatus: String?) {
+        tvStatus.text = approveStatus ?: ""
+        tvStatus.setTextColor(resources.getColor(R.color.blue_2C5181))
+    }
+
     fun setThoiGian(thoigian: String?) {
         if (thoigian != null) {
             tvOrderTime.text = thoigian

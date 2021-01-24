@@ -7,11 +7,13 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.StatusValueModel
 import vn.hongha.ga.R
 
 class RequestItemAdapter(
     private val mList: MutableList<BussinesRequestModel>,
-    private val loaiYC: String?
+    private val loaiYC: String?,
+    private val enumStatus: MutableList<StatusValueModel>?
 ) :
     RecyclerView.Adapter<RequestItemAdapter.RequestViewHolder>() {
     var mClickListener: ItemClickListener? = null
@@ -27,20 +29,31 @@ class RequestItemAdapter(
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val obj: BussinesRequestModel = mList[position]
 
-        when (obj.status) {
-            0 -> {
-                holder.itemRequestType1.setTrangThai("0")
+        if (obj.approve_status == null) {
+            when (obj.status) {
+                0 -> {
+                    holder.itemRequestType1.setTrangThai("0")
+                }
+                1 -> {
+                    holder.itemRequestType1.setTrangThai("1")
+                }
+                2 -> {
+                    holder.itemRequestType1.setTrangThai("2")
+                }
+                3 -> {
+                    holder.itemRequestType1.setTrangThai("3")
+                }
             }
-            1 -> {
-                holder.itemRequestType1.setTrangThai("1")
-            }
-            2 -> {
-                holder.itemRequestType1.setTrangThai("2")
-            }
-            3 -> {
-                holder.itemRequestType1.setTrangThai("3")
+        } else {
+            holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
+            enumStatus?.forEach {
+                if (it.value == "${obj.status};${obj.approve_status}") {
+                    holder.itemRequestType1.setTrangThaiBanLe(it.name)
+                    return@forEach
+                }
             }
         }
+
 
         holder.itemRequestType1.setThoiGian(obj.created_date)
         holder.itemRequestType1.setTen(obj.staff_name)

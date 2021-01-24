@@ -20,6 +20,7 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
@@ -39,6 +40,9 @@ class RetailFragment : BaseFragment() {
     private lateinit var viewModel: RetailViewModel
     private var mListCustomer = mutableListOf<Customer>()
     private var alertDialog: AlertDialog? = null
+
+    private var giaTank12: Int? = 0
+    private var giaTank45: Int? = 0
     private var transferRetailModel: TransferRetailModel? = null
     private var tienKhiBan12 = 0
     private var tienKhiBan45 = 0
@@ -74,6 +78,7 @@ class RetailFragment : BaseFragment() {
         if ("STEP_2" == arguments?.getString("STEP")) {
             (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
             linearGasRemain.visibility = View.VISIBLE
+            linearGasRemainPrice.visibility = View.VISIBLE
             btnSubmit.text = "BÁN HÀNG"
             transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
 
@@ -81,6 +86,7 @@ class RetailFragment : BaseFragment() {
             return
         }
         linearGasRemain.visibility = View.GONE
+        linearGasRemainPrice.visibility = View.GONE
         viewModel.onGetListCustomer("21", "105")
     }
 
@@ -91,6 +97,18 @@ class RetailFragment : BaseFragment() {
     override fun initObserver() {
         viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
             mListCustomer.addAll(it)
+        })
+
+        viewModel.giaTANK12.observe(viewLifecycleOwner, {
+            giaTank12 = it
+            productVoMua12.setGia(giaTank12?.toString())
+            productVoBan12.setGia(giaTank12?.toString())
+        })
+
+        viewModel.giaTANK45.observe(viewLifecycleOwner, {
+            giaTank45 = it
+            productVoMua45.setGia(giaTank45?.toString())
+            productVoBan45.setGia(giaTank45?.toString())
         })
 
         viewModel.initRequestSuccess.observe(viewLifecycleOwner, {
@@ -168,7 +186,6 @@ class RetailFragment : BaseFragment() {
             tienThucTe = getRealNumberV2(it)
             totalDebit()
         })
-
         fillData(transferRetailModel)
     }
 
@@ -333,6 +350,7 @@ class RetailFragment : BaseFragment() {
 //            status = item.id
             edtCustomer.setText(item.name)
             expandCustomerInfor(item.id)
+            viewModel.getGiaNiemYet(item.id)
         }
     }
 
@@ -464,12 +482,21 @@ class RetailFragment : BaseFragment() {
 
             if (voMua == productVoMua12) {
                 tienVoMua12 = tienMuaVoComponent
-                tvTienMuaVo.text =
-                    "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
+                if (tienVoMua45 + tienMuaVoComponent == 0) {
+                    tvTienMuaVo.text =
+                        "0 đ"
+                } else {
+                    tvTienMuaVo.text =
+                        "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
+                }
             } else {
                 tienVoMua45 = tienMuaVoComponent
-                tvTienMuaVo.text =
-                    "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
+                if (tienVoMua12 + tienMuaVoComponent == 0) {
+                    tvTienMuaVo.text = "0 đ"
+                } else {
+                    tvTienMuaVo.text =
+                        "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
+                }
             }
 
             totalMustPay()
@@ -566,23 +593,23 @@ class RetailFragment : BaseFragment() {
     private fun fillData(obj: TransferRetailModel?) {
         if (obj == null) return
         productBanKhi12.setSoLuong(obj.khiBan12?.toString())
-        productBanKhi12.setGia(CommonUtils.priceWithoutDecimal(obj.khiBanPrice12?.toDouble()))
+        productBanKhi12.setGia("${obj.khiBanPrice12}")
         productBanKhi45.setSoLuong(obj.khiBan45?.toString())
-        productBanKhi45.setGia(CommonUtils.priceWithoutDecimal(obj.khiBanPrice45?.toDouble()))
+        productBanKhi45.setGia("${obj.khiBanPrice45}")
 
         productVoThuHoi12.setSoLuong(obj.voThu12?.toString())
         productVoThuHoi45.setSoLuong(obj.voThu45?.toString())
 
         productVoBan12.setSoLuong(obj.voBan12?.toString())
-        productVoBan12.setGia(CommonUtils.priceWithoutDecimal(obj.voBanPrice12?.toDouble()))
+        productVoBan12.setGia("${obj.voBanPrice12}")
         productVoBan45.setSoLuong(obj.voBan45?.toString())
-        productVoBan45.setGia(CommonUtils.priceWithoutDecimal(obj.voBanPrice45?.toDouble()))
+        productVoBan45.setGia("${obj.voBanPrice45}")
 
         productVoMua12.setSoLuong(obj.voMua12?.toString())
-        productVoMua12.setGia(CommonUtils.priceWithoutDecimal(obj.voMuaPrice12?.toDouble()))
+        productVoMua12.setGia("${obj.voMuaPrice12}")
         productVoMua45.setSoLuong(obj.voMua45?.toString())
-        productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj.voMuaPrice45?.toDouble()))
+        productVoMua45.setGia("${obj.voMuaPrice45}")
 
-        edtTienThucTe.setText(CommonUtils.priceWithoutDecimal(obj.tienThucTe?.toDouble()))
+        edtTienThucTe.setText(obj.tienThucTe?.toString())
     }
 }

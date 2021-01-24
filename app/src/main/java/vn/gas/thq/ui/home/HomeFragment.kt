@@ -113,7 +113,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         when (position) {
             0 -> viewController?.pushFragment(
                 ScreenId.SCREEN_RETAIL_CONTAINER,
-                RetailContainerFragment.newInstance()
+                RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
             )
             1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,

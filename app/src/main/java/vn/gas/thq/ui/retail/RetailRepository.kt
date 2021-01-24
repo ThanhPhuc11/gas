@@ -9,6 +9,9 @@ class RetailRepository(private val apiService: ApiService) : BaseRepository() {
         emit(apiService.getListCustomer(lat, lng))
     }
 
+    suspend fun getGiaNiemYet(customer_id: String, product_code: String, sale_type: String) =
+        flow { emit(apiService.getGiaNiemYet(customer_id, product_code, sale_type)) }
+
     suspend fun doRequestRetail(obj: RequestInitRetail) = flow {
         emit(apiService.doRequestRetail(obj))
     }

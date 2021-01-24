@@ -155,7 +155,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     private fun initRecyclerView() {
-        adapter = RequestItemAdapter(mList, "Xuất kho")
+        adapter = RequestItemAdapter(mList, "Xuất kho", null)
         adapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

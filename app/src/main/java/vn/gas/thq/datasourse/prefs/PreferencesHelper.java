@@ -11,4 +11,8 @@ public interface PreferencesHelper {
     UserModel getUserModel();
 
     void setUserModel(UserModel userModel);
+
+    String getGiaNiemYet(String type);
+
+    void setGiaNiemYet(String price, String type);
 }

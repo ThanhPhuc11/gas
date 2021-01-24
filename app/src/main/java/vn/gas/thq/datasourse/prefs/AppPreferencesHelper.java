@@ -24,6 +24,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public static final String CONTRACT_MODEL_SELECT = "CONTRACT_MODEL_SELECT";
     public static final String STATION_STAGE = "STATION_STAGE";
     private static final String PREF_KEY_USER = "PREF_KEY_USER";
+
     // SharedPreferences
     private final SharedPreferences mPrefs;
     private Context mContext;
@@ -68,6 +69,21 @@ public class AppPreferencesHelper implements PreferencesHelper {
             mPrefs.edit().putString(PREF_KEY_USER, json).apply();
         } else {
             mPrefs.edit().putString(PREF_KEY_USER, "").apply();
+        }
+    }
+
+    @Override
+    public String getGiaNiemYet(String type) {
+        String gia = mPrefs.getString(type, "");
+        return gia;
+    }
+
+    @Override
+    public void setGiaNiemYet(String price, String type) {
+        if (price != null) {
+            mPrefs.edit().putString(type, price).apply();
+        } else {
+            mPrefs.edit().putString(type, "").apply();
         }
     }
 

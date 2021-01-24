@@ -104,10 +104,215 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvProductRetailDialog"
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/rvProductRetailDialog"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent" />-->
+
+            <!--Bán khí-->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tvLabelBanKhi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bán khí"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+
+                <LinearLayout
+                    android:id="@+id/linearBanKhi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productBanKhi12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="khi"
+                        app:soLuong=""
+                        app:tenSanPham="Khí 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productBanKhi45"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="khi"
+                        app:soLuong=""
+                        app:tenSanPham="Khí 45Kg" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_E7E7E7" />
+
+            <!--Thu hồi vỏ-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tvLabelThuHoiVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thu hồi vỏ"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+
+                <LinearLayout
+                    android:id="@+id/linearThuHoiVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <vn.gas.thq.customview.ItemProductType2
+                        android:id="@+id/productVoThuHoi12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType2
+                        android:id="@+id/productVoThuHoi45"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_E7E7E7" />
+
+            <!--Bán vỏ-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tvLabelBanVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bán vỏ"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+
+                <LinearLayout
+                    android:id="@+id/linearBanVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoBan12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoBan45"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_E7E7E7" />
+
+            <!--Mua vỏ-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tvLabelMuaVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mua vỏ"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
+
+                <LinearLayout
+                    android:id="@+id/linearMuaVo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoMua12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 12Kg" />
+
+                    <vn.gas.thq.customview.ItemProductType1
+                        android:id="@+id/productVoMua45"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:gia=""
+                        app:hinhAnh="vo"
+                        app:soLuong=""
+                        app:tenSanPham="Vỏ 45Kg" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_E7E7E7" />
 
             <!--Công nợ khách hàng-->
             <LinearLayout
@@ -471,7 +676,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:visibility="gone">
 
         <Button
             android:layout_width="0dp"
