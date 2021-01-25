@@ -30,6 +30,7 @@ class RequestItemAdapter(
         val obj: BussinesRequestModel = mList[position]
 
         if (obj.approve_status == null) {
+            holder.itemRequestType1.isVisibleKH(false)
             when (obj.status) {
                 0 -> {
                     holder.itemRequestType1.setTrangThai("0")
@@ -45,6 +46,14 @@ class RequestItemAdapter(
                 }
             }
         } else {
+            holder.itemRequestType1.setColorTrangThaiBanLe(R.color.yellow_FFBF00)
+            if (obj.status == 8 || obj.status == 9) {
+                holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_14AFB4)
+            } else if (obj.approve_status.contains("4")) {
+                holder.itemRequestType1.setColorTrangThaiBanLe(R.color.red_DB4755)
+            }
+            holder.itemRequestType1.isVisibleKH(true)
+            holder.itemRequestType1.setTenKH(obj.customer_name)
             holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
             enumStatus?.forEach {
                 if (it.value == "${obj.status};${obj.approve_status}") {

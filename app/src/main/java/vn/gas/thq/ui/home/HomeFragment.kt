@@ -20,6 +20,7 @@ import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
+import vn.gas.thq.ui.xemkho.XemKhoFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -102,7 +103,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         mList.add(MenuModel("Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
         mList.add(MenuModel("Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
         mList.add(MenuModel("Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Chức năng 6", R.drawable.ic_menu_4))
+        mList.add(MenuModel("Xem kho", R.drawable.ic_menu_4))
         mList.add(MenuModel("Chức năng 7", R.drawable.ic_menu_4))
         mList.add(MenuModel("Xem thêm", R.drawable.ic_more_arrow))
         menuAdapter = MenuAdapter(mList)
@@ -131,10 +132,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
                 ScreenId.SCREEN_QLYC_CA_NHAN,
                 QLYCCaNhanFragment.newInstance(ScreenId.HOME_SCREEN)
             )
-//            5 -> viewController?.pushFragment(
-//                ScreenId.SCREEN_PHE_DUYET_GIA,
-//                QuanLyYeuCauDuyetGiaFragment.newInstance()
-//            )
+            5 -> viewController?.pushFragment(
+                ScreenId.SCREEN_XEM_KHO,
+                XemKhoFragment.newInstance()
+            )
         }
     }
 }

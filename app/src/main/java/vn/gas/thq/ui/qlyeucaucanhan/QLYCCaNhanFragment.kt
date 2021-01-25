@@ -290,18 +290,18 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun initData() {
-        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
-            isRetail = true
-            loaiYC = "Bán hàng"
-            type = "2"
-            edtRequestType.setText("Bán lẻ")
-            viewModel.onGetSaleOrderStatus()
-        } else {
-            isRetail = false
-            loaiYC = "Xuất kho"
-            type = "1"
-            edtRequestType.setText("Xuất kho")
-        }
+//        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
+        isRetail = true
+        loaiYC = "Bán hàng"
+        type = "2"
+        edtRequestType.setText("Bán lẻ")
+        viewModel.onGetSaleOrderStatus()
+//        } else {
+//            isRetail = false
+//            loaiYC = "Xuất kho"
+//            type = "1"
+//            edtRequestType.setText("Xuất kho")
+//        }
         getInfo()
         initRecyclerView()
         edtStartDate.setText(AppDateUtils.getCurrentDate())

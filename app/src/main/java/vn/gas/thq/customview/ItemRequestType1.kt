@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.layout_item_personal_request.view.*
 import vn.hongha.ga.R
 
@@ -40,7 +41,7 @@ class ItemRequestType1 : CardView {
             }
             "1" -> {
                 tvStatus.text = "Chờ duyệt"
-                tvStatus.setTextColor(resources.getColor(R.color.blue_2C5181))
+                tvStatus.setTextColor(resources.getColor(R.color.yellow_FFBF00))
             }
             "2" -> {
                 tvStatus.text = "Đã duyệt"
@@ -55,7 +56,10 @@ class ItemRequestType1 : CardView {
 
     fun setTrangThaiBanLe(approveStatus: String?) {
         tvStatus.text = approveStatus ?: ""
-        tvStatus.setTextColor(resources.getColor(R.color.blue_2C5181))
+    }
+
+    fun setColorTrangThaiBanLe(color: Int) {
+        tvStatus.setTextColor(resources.getColor(color))
     }
 
     fun setThoiGian(thoigian: String?) {
@@ -70,5 +74,13 @@ class ItemRequestType1 : CardView {
 
     fun setLoaiYC(loaiYC: String?) {
         tvLoaiYC.text = loaiYC ?: ""
+    }
+
+    fun isVisibleKH(isVisible: Boolean) {
+        llCustomer.isVisible = isVisible
+    }
+
+    fun setTenKH(custName: String?) {
+        tvCustName.text = custName ?: "- -"
     }
 }

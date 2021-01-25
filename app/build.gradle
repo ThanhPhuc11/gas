@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId "vn.gas.thq"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
-        versionCode 12
-        versionName "1.0.12"
+        versionCode 15
+        versionName "1.0.15"
         flavorDimensions "default"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

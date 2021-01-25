@@ -18,6 +18,8 @@ import vn.gas.thq.ui.retail.RetailRepository
 import vn.gas.thq.ui.retail.RetailViewModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoRepository
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
+import vn.gas.thq.ui.xemkho.XemKhoRepository
+import vn.gas.thq.ui.xemkho.XemKhoViewModel
 
 class ViewModelFactory(apiService: ApiService, context: Context?) :
     ViewModelProvider.Factory {
@@ -36,6 +38,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             RetailViewModel(RetailRepository(apiService))
         creators[PheDuyetGiaViewModel::class.java] =
             PheDuyetGiaViewModel(PheDuyetGiaRepository(apiService))
+        creators[XemKhoViewModel::class.java] =
+            XemKhoViewModel(XemKhoRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

@@ -182,7 +182,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun initRecyclerView() {
-        adapter = RequestApproveAdapter(mList, listStatusOrderSale)
+        adapter = context?.let { RequestApproveAdapter(mList, listStatusOrderSale, it) }!!
         adapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
