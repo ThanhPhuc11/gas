@@ -11,13 +11,10 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
-import vn.gas.thq.network.LoginRetrofitBuilder
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
-import vn.gas.thq.ui.login.LoginViewModel
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
-import vn.gas.thq.ui.qlyeucauduyetgia.QuanLyYeuCauDuyetGiaFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
@@ -104,7 +101,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         mList.add(MenuModel("Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
         mList.add(MenuModel("Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
         mList.add(MenuModel("Xem kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Chức năng 7", R.drawable.ic_menu_4))
+        mList.add(MenuModel("Kiểm kê kho", R.drawable.ic_menu_4))
         mList.add(MenuModel("Xem thêm", R.drawable.ic_more_arrow))
         menuAdapter = MenuAdapter(mList)
         menuAdapter.setClickListener(this)
