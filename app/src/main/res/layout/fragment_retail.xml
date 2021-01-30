@@ -568,8 +568,8 @@
                     android:layout_marginEnd="20dp"
                     android:layout_weight="2"
                     android:background="@drawable/bg_border_nomal_1"
-                    android:inputType="number"
-                    android:maxLength="3"
+                    android:enabled="false"
+                    android:focusable="false"
                     android:textAlignment="center"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="14sp" />

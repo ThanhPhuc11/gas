@@ -5,5 +5,6 @@ data class ProductModel(
     val code: String?,
     val description: String?,
     val type: String?,
-    var quantity: Int?
+    var quantity: Int?,
+    var unit: String?
 )

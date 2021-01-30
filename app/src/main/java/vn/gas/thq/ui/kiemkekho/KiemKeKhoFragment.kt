@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.xemkho
+package vn.gas.thq.ui.kiemkekho
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_xem_kho.*
+import kotlinx.android.synthetic.main.fragment_kiem_ke_kho.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -15,20 +15,22 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.util.AppDateUtils
+import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
 
-class XemKhoFragment : BaseFragment() {
-    private lateinit var viewModel: XemKhoViewModel
-    private lateinit var productAdapter: KhoItemAdapter
+class KiemKeKhoFragment : BaseFragment() {
+    private lateinit var viewModel: KiemKeKhoViewModel
+    private lateinit var productAdapter: KKKhoItemAdapter
     private var alertDialog: AlertDialog? = null
     var mList = mutableListOf<ProductModel>()
 
     companion object {
         @JvmStatic
-        fun newInstance(): XemKhoFragment {
+        fun newInstance(): KiemKeKhoFragment {
             val args = Bundle()
 
-            val fragment = XemKhoFragment()
+            val fragment = KiemKeKhoFragment()
             fragment.arguments = args
             return fragment
         }
@@ -47,18 +49,18 @@ class XemKhoFragment : BaseFragment() {
                             ViewModelFactory(apiService, context)
                         }
                 })
-                .get(XemKhoViewModel::class.java)
+                .get(KiemKeKhoViewModel::class.java)
     }
 
     override fun initView() {
-        tvTitle.text = "Xem kho"
+        tvTitle.text = "Kiểm kê kho"
         imgBack.setOnClickListener {
             viewController?.popFragment()
         }
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_xem_kho
+        return R.layout.fragment_kiem_ke_kho
     }
 
     override fun initObserver() {
@@ -88,12 +90,14 @@ class XemKhoFragment : BaseFragment() {
     }
 
     override fun initData() {
+        viewModel.getDataFromCode("admin", null)
+        tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
         initRecyclerView()
-        btnSearch.setOnClickListener(this::onSearch)
+        btnKiemKe.setOnClickListener(this::onSubmit)
     }
 
     private fun initRecyclerView() {
-        productAdapter = context?.let { KhoItemAdapter(mList, it) }!!
+        productAdapter = context?.let { KKKhoItemAdapter(mList, it) }!!
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvKho.layoutManager = linearLayoutManager
@@ -124,7 +128,7 @@ class XemKhoFragment : BaseFragment() {
 //        }
 //    }
 
-    private fun onSearch(view: View) {
-        viewModel.getDataFromShop()
+    private fun onSubmit(view: View) {
+//        viewModel.getDataFromShop()
     }
 }

@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.xemkho
+package vn.gas.thq.ui.kiemkekho
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.model.ProductModel
 import vn.hongha.ga.R
 
-class KhoItemAdapter(private val mList: MutableList<ProductModel>, private val context: Context) :
-    RecyclerView.Adapter<KhoItemAdapter.ProductViewHolder>() {
+class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val context: Context) :
+    RecyclerView.Adapter<KKKhoItemAdapter.ProductViewHolder>() {
     lateinit var mClickListener: ItemClickListener
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_kho, parent, false)
+            .inflate(R.layout.item_kiem_ke_kho, parent, false)
 
         return ProductViewHolder(view)
     }
@@ -31,7 +31,7 @@ class KhoItemAdapter(private val mList: MutableList<ProductModel>, private val c
         }
         holder.tvName.text = obj.name
         holder.tvQuantity.text = obj.quantity?.toString()
-        holder.tvUnit.text = obj.unit ?: "- -"
+        holder.tvUnit.text = "- -"
 //        holder.imgIcon.setImageResource(menu.resDrawable)
 //        holder.imgIcon.setImageResource(R.drawable.ic_menu_2)
     }

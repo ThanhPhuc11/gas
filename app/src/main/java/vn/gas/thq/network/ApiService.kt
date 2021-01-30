@@ -21,6 +21,7 @@ interface ApiService {
         @Field("password") password: String
     ): TokenModel
 
+    //Gia niem yet
     @GET("prices/today")
     suspend fun getGiaNiemYet(
         @Query("customer_id") customer_id: String,
@@ -28,7 +29,13 @@ interface ApiService {
         @Query("sale_trans_type") sale_type: String
     ): PriceModel
 
-    //Gia niem yet
+
+    @GET("stocks")
+    suspend fun getProductFromCode(
+        @Query("shop_code") shop_code: String?,
+        @Query("staff_code") staff_code: String?
+    ): List<ProductShopModel>
+
     @GET("stocks/shop")
     suspend fun getProductFromShop(): List<ProductShopModel>
 
@@ -84,6 +91,7 @@ interface ApiService {
     @GET(" orders/sale")
     suspend fun searchRequestRetail(
         @Query("status") status: String?,
+        @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String,
         @Query("offset") offset: Int,

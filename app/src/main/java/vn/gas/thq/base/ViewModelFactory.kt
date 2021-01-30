@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.ui.home.HomeRepository
 import vn.gas.thq.ui.home.HomeViewModel
+import vn.gas.thq.ui.kiemkekho.KiemKeKhoRepository
+import vn.gas.thq.ui.kiemkekho.KiemKeKhoViewModel
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoRepository
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoViewModel
 import vn.gas.thq.ui.login.LoginRepository
@@ -40,6 +42,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             PheDuyetGiaViewModel(PheDuyetGiaRepository(apiService))
         creators[XemKhoViewModel::class.java] =
             XemKhoViewModel(XemKhoRepository(apiService))
+        creators[KiemKeKhoViewModel::class.java] =
+            KiemKeKhoViewModel(KiemKeKhoRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

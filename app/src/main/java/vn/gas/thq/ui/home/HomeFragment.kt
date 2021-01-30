@@ -12,6 +12,8 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.homemenu.MenuFullFragment
+import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
@@ -95,43 +97,51 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     private fun initMenuData() {
         val mList = mutableListOf<MenuModel>()
-        mList.add(MenuModel("Bán lẻ", R.drawable.ic_menu_1))
-        mList.add(MenuModel("Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
-        mList.add(MenuModel("Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
-        mList.add(MenuModel("Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Xem kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Kiểm kê kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel("Xem thêm", R.drawable.ic_more_arrow))
+        mList.add(MenuModel(1, "Bán lẻ", R.drawable.ic_menu_1))
+        mList.add(MenuModel(2, "Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
+        mList.add(MenuModel(3, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
+        mList.add(MenuModel(4, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(5, "Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
+        mList.add(MenuModel(6, "Xem kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(7, "Kiểm kê kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(8, "Xem thêm", R.drawable.ic_more_arrow))
         menuAdapter = MenuAdapter(mList)
         menuAdapter.setClickListener(this)
     }
 
-    override fun onItemTopClick(view: View?, position: Int) {
-        when (position) {
-            0 -> viewController?.pushFragment(
+    override fun onItemTopClick(view: View?, id: Int) {
+        when (id) {
+            1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_RETAIL_CONTAINER,
                 RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
             )
-            1 -> viewController?.pushFragment(
+            2 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()
             )
-            2 -> viewController?.pushFragment(
+            3 -> viewController?.pushFragment(
                 ScreenId.SCREEN_LAP_YC_XUAT_KHO,
                 LapYCXuatKhoFragment.newInstance()
             )
-            3 -> viewController?.pushFragment(
+            4 -> viewController?.pushFragment(
                 ScreenId.SCREEN_THU_KHO,
                 ThuKhoXuatKhoFragment.newInstance()
             )
-            4 -> viewController?.pushFragment(
+            5 -> viewController?.pushFragment(
                 ScreenId.SCREEN_QLYC_CA_NHAN,
                 QLYCCaNhanFragment.newInstance(ScreenId.HOME_SCREEN)
             )
-            5 -> viewController?.pushFragment(
+            6 -> viewController?.pushFragment(
                 ScreenId.SCREEN_XEM_KHO,
                 XemKhoFragment.newInstance()
+            )
+            7 -> viewController?.pushFragment(
+                ScreenId.SCREEN_KIEM_KE_KHO,
+                KiemKeKhoFragment.newInstance()
+            )
+            8 -> viewController?.pushFragment(
+                ScreenId.MENU_FULL_SCREEN,
+                MenuFullFragment.newInstance()
             )
         }
     }

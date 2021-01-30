@@ -16,19 +16,34 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="10dp"
+            android:paddingStart="7dp"
             android:text="tên hàng"
             android:textAllCaps="true"
             android:textColor="@color/gray_333333"
             android:textSize="@dimen/text_13sp" />
+
 
         <TextView
             android:id="@+id/tvQuantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
             android:text="SL trong kho"
+            android:textAlignment="textEnd"
+            android:textAllCaps="true"
+            android:textColor="@color/gray_333333"
+            android:textSize="@dimen/text_13sp" />
+
+        <EditText
+            android:id="@+id/edtCheckQuantity"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_border_nomal_coner_4"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/gray_333333"
             android:textSize="@dimen/text_13sp" />

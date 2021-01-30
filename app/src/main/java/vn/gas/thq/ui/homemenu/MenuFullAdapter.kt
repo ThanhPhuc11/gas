@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.home
+package vn.gas.thq.ui.homemenu
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,21 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import vn.gas.thq.ui.home.MenuModel
 import vn.hongha.ga.R
 
-class MenuAdapter(private val mList: MutableList<MenuModel>) :
-    RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MenuFullAdapter(private val mList: MutableList<MenuModel>) :
+    RecyclerView.Adapter<MenuFullAdapter.MenuViewHolder>() {
     lateinit var mClickListener: ItemClickListener
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val view = if (viewType == 7) {
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_option_menu_more, parent, false)
-        } else {
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_option_menu, parent, false)
-        }
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_option_menu, parent, false)
 
         return MenuViewHolder(view)
     }
@@ -35,10 +31,6 @@ class MenuAdapter(private val mList: MutableList<MenuModel>) :
 
     override fun getItemCount(): Int {
         return mList.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
     }
 
     inner class MenuViewHolder constructor(itemView: View) :

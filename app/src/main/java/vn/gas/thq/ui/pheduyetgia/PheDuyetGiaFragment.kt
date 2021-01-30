@@ -245,7 +245,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onSearchRetail(status, fromDate, endDate)
+        viewModel.onSearchRetail(status, staffCode, fromDate, endDate)
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {

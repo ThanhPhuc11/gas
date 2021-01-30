@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
@@ -80,8 +81,9 @@ class QLYCCaNhanViewModel(
     }
 
     fun onSearchRetail(status: String?, fromDate: String, toDate: String) {
+        val staffCode = AppPreferencesHelper(context).userModel.staffCode
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSearchRetail(status, fromDate, toDate)
+            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate)
                 .onStart {
                     callbackStart.value = Unit
                 }

@@ -54,6 +54,7 @@ class RetailFragment : BaseFragment() {
     private var tienNo = 0
     private var tienThucTe = 0
     private var gasRemain = 0
+    private var gasPrice = 0
 //    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
 //    private var banKhi45 = productBanKhi45.getEditTextSL().text.toString()
 
@@ -186,6 +187,15 @@ class RetailFragment : BaseFragment() {
             tienThucTe = getRealNumberV2(it)
             totalDebit()
         })
+
+        edtGasRemain.addTextChangedListener(afterTextChanged = {
+            gasRemain = getRealNumberV2(it)
+            totalGasPrice(
+                getRealNumber(productBanKhi12.getEditTextGia()),
+                getRealNumber(productBanKhi45.getEditTextGia())
+            )
+        })
+
         fillData(transferRetailModel)
     }
 
@@ -510,12 +520,21 @@ class RetailFragment : BaseFragment() {
 
             if (voMua == productVoMua12) {
                 tienVoMua12 = tienMuaVoComponent
-                tvTienMuaVo.text =
-                    "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
+                if (tienVoMua45 + tienMuaVoComponent == 0) {
+                    tvTienMuaVo.text =
+                        "0 đ"
+                } else {
+                    tvTienMuaVo.text =
+                        "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
+                }
             } else {
                 tienVoMua45 = tienMuaVoComponent
-                tvTienMuaVo.text =
-                    "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
+                if (tienVoMua12 + tienMuaVoComponent == 0) {
+                    tvTienMuaVo.text = "0 đ"
+                } else {
+                    tvTienMuaVo.text =
+                        "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
+                }
             }
 
             totalMustPay()
@@ -525,7 +544,7 @@ class RetailFragment : BaseFragment() {
 
     private fun totalMustPay() {
         tongTien =
-            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45)
+            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45) - gasPrice
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
     }
 
@@ -534,6 +553,22 @@ class RetailFragment : BaseFragment() {
 //        btnTienThucTe.text = CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())
 //    }
 
+    private fun totalGasPrice(khiPrice12: Int, khiPrice45: Int) {
+        var giaKhi = khiPrice45 / 45
+        if (khiPrice45 == 0) {
+            giaKhi = khiPrice12 / 12
+        }
+        gasPrice = gasRemain * giaKhi
+        totalMustPay()
+        totalDebit()
+        if (gasPrice == 0) {
+            edtGasRemainPrice.setText("${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
+            return
+        }
+        edtGasRemainPrice.setText("-${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
+
+    }
+
     private fun totalDebit() {
         tienNo = tongTien - tienThucTe
         btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
@@ -541,13 +576,23 @@ class RetailFragment : BaseFragment() {
     }
 
     private fun getRealNumber(view: EditText): Int {
-        return if (TextUtils.isEmpty(view.text.toString().trim())) 0 else view.text.toString()
-            .trim().toInt()
+        return if (TextUtils.isEmpty(
+                view.text.toString().trim()
+            )
+        ) 0 else CommonUtils.getIntFromStringDecimal(
+            view.text.toString()
+                .trim()
+        )
     }
 
     private fun getRealNumberV2(view: Editable?): Int {
-        return if (TextUtils.isEmpty(view.toString().trim())) 0 else view.toString()
-            .trim().toInt()
+        return if (TextUtils.isEmpty(
+                view.toString().trim()
+            )
+        ) 0 else CommonUtils.getIntFromStringDecimal(
+            view.toString()
+                .trim()
+        )
     }
 
     private fun disableInput() {

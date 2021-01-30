@@ -68,7 +68,7 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             it.forEach {
-                mList.add(ProductModel(it.productName, it.productCode, "", "", 0))
+                mList.add(ProductModel(it.productName, it.productCode, "", "", 0, it.unit))
             }
             productAdapter.notifyDataSetChanged()
         })

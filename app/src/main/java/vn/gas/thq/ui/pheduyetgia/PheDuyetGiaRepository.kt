@@ -14,8 +14,13 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
         emit(apiService.saleOrderStatus())
     }
 
-    suspend fun onSearchRetail(status: String?, fromDate: String, toDate: String) = flow {
-        emit(apiService.searchRequestRetail(status, fromDate, toDate, 0, 100))
+    suspend fun onSearchRetail(
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String
+    ) = flow {
+        emit(apiService.searchRequestRetail(status, staffCode, fromDate, toDate, 0, 100))
     }
 
     suspend fun detailApproveLXBH(orderId: String?) = flow {

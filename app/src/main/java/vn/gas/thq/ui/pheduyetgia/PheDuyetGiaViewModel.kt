@@ -57,9 +57,9 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         }
     }
 
-    fun onSearchRetail(status: String?, fromDate: String, toDate: String) {
+    fun onSearchRetail(status: String?, staffCode: String?, fromDate: String, toDate: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onSearchRetail(status, fromDate, toDate)
+            pheDuyetGiaRepository.onSearchRetail(status, staffCode, fromDate, toDate)
                 .onStart {
                     callbackStart.value = Unit
                 }

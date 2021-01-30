@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.util.AppDateUtils
 import vn.hongha.ga.R
 
 class RequestItemAdapter(
@@ -54,17 +55,27 @@ class RequestItemAdapter(
             }
             holder.itemRequestType1.isVisibleKH(true)
             holder.itemRequestType1.setTenKH(obj.customer_name)
-            holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
-            enumStatus?.forEach {
-                if (it.value == "${obj.status};${obj.approve_status}") {
-                    holder.itemRequestType1.setTrangThaiBanLe(it.name)
-                    return@forEach
-                }
-            }
+//            holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
+//            enumStatus?.forEach {
+//                if (it.value == "${obj.status};${obj.approve_status}") {
+//                    holder.itemRequestType1.setTrangThaiBanLe(it.name)
+//                    return@forEach
+//                }
+//            }
+            holder.itemRequestType1.setTrangThaiBanLe(
+                enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
+                    ?: "${obj.status};${obj.approve_status}"
+            )
         }
 
 
-        holder.itemRequestType1.setThoiGian(obj.created_date)
+        holder.itemRequestType1.setThoiGian(
+            AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_1,
+                obj.created_date
+            )
+        )
         holder.itemRequestType1.setTen(obj.staff_name)
         holder.itemRequestType1.setLoaiYC(loaiYC)
     }

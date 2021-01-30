@@ -14,8 +14,13 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
     }
 
     // Ban le
-    suspend fun onSearchRetail(status: String?, fromDate: String, toDate: String) = flow {
-        emit(apiService.searchRequestRetail(status, fromDate, toDate, 0, 100))
+    suspend fun onSearchRetail(
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String
+    ) = flow {
+        emit(apiService.searchRequestRetail(status, staffCode, fromDate, toDate, 0, 100))
     }
 
     suspend fun onGetSaleOrderStatus() = flow {
