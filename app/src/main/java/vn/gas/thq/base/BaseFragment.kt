@@ -77,6 +77,6 @@ abstract class BaseFragment : Fragment() {
     }
 
     open fun showMess(str: String?) {
-        Toast.makeText(context, str ?: "", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, str ?: "", Toast.LENGTH_LONG).show()
     }
 }

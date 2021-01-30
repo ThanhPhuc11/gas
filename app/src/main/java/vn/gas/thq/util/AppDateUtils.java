@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class AppDateUtils {
     public static String FORMAT_1 = "dd/MM/yyyy hh:mm:ss";
@@ -17,6 +18,7 @@ public class AppDateUtils {
     public static String FORMAT_3 = "dd-MM-yyyy";
     public static String FORMAT_4 = "yyyy/MM/dd hh:mm:ss";
     public static String FORMAT_5 = "yyyy-MM-dd";
+    public static String FORMAT_6 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static String changeDateFormat(String currentFormat, String requiredFormat, String dateString) {
         String result = dateString;
@@ -24,6 +26,7 @@ public class AppDateUtils {
             return result;
         }
         SimpleDateFormat formatterOld = new SimpleDateFormat(currentFormat, Locale.getDefault());
+        formatterOld.setTimeZone(TimeZone.getTimeZone("GMT"));
         SimpleDateFormat formatterNew = new SimpleDateFormat(requiredFormat, Locale.getDefault());
         Date date = null;
         try {

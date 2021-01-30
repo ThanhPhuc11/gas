@@ -7,9 +7,15 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.util.AppDateUtils
 import vn.hongha.ga.R
 
-class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
+class RequestItemAdapter(
+    private val mList: MutableList<BussinesRequestModel>,
+    private val loaiYC: String?,
+    private val enumStatus: MutableList<StatusValueModel>?
+) :
     RecyclerView.Adapter<RequestItemAdapter.RequestViewHolder>() {
     var mClickListener: ItemClickListener? = null
 
@@ -24,20 +30,54 @@ class RequestItemAdapter(private val mList: MutableList<BussinesRequestModel>) :
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val obj: BussinesRequestModel = mList[position]
 
-        when (obj.status) {
-            1 -> {
-                holder.itemRequestType1.setTrangThai("1")
+        if (obj.approve_status == null) {
+            holder.itemRequestType1.isVisibleKH(false)
+            when (obj.status) {
+                0 -> {
+                    holder.itemRequestType1.setTrangThai("0")
+                }
+                1 -> {
+                    holder.itemRequestType1.setTrangThai("1")
+                }
+                2 -> {
+                    holder.itemRequestType1.setTrangThai("2")
+                }
+                3 -> {
+                    holder.itemRequestType1.setTrangThai("3")
+                }
             }
-            2 -> {
-                holder.itemRequestType1.setTrangThai("2")
+        } else {
+            holder.itemRequestType1.setColorTrangThaiBanLe(R.color.yellow_FFBF00)
+            if (obj.status == 8 || obj.status == 9) {
+                holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_14AFB4)
+            } else if (obj.approve_status.contains("4")) {
+                holder.itemRequestType1.setColorTrangThaiBanLe(R.color.red_DB4755)
             }
-            3 -> {
-                holder.itemRequestType1.setTrangThai("3")
-            }
+            holder.itemRequestType1.isVisibleKH(true)
+            holder.itemRequestType1.setTenKH(obj.customer_name)
+//            holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
+//            enumStatus?.forEach {
+//                if (it.value == "${obj.status};${obj.approve_status}") {
+//                    holder.itemRequestType1.setTrangThaiBanLe(it.name)
+//                    return@forEach
+//                }
+//            }
+            holder.itemRequestType1.setTrangThaiBanLe(
+                enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
+                    ?: "${obj.status};${obj.approve_status}"
+            )
         }
 
-        holder.itemRequestType1.setThoiGian(obj.created_date)
+
+        holder.itemRequestType1.setThoiGian(
+            AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_1,
+                obj.created_date
+            )
+        )
         holder.itemRequestType1.setTen(obj.staff_name)
+        holder.itemRequestType1.setLoaiYC(loaiYC)
     }
 
     override fun getItemCount(): Int {

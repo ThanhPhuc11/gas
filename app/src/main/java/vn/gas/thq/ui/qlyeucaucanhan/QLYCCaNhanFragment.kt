@@ -2,22 +2,38 @@ package vn.gas.thq.ui.qlyeucaucanhan
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_init_export_request.*
-import kotlinx.android.synthetic.main.fragment_init_export_request.rvRequestItem
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.tvName
+import kotlinx.android.synthetic.main.fragment_retail.*
 import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.btnHuyYC
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.imgClose
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.linearAccept
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvName
+import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvOrderId
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.customview.ItemProductType1
+import vn.gas.thq.customview.ItemProductType2
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.ProductRetailModel
+import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.retail.ApproveRequestModel
+import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.util.AppConstants
@@ -25,7 +41,9 @@ import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.AppDateUtils.FORMAT_2
 import vn.gas.thq.util.AppDateUtils.FORMAT_5
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
 import java.util.*
@@ -37,15 +55,32 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private lateinit var adapterDetailYCXK: DetailItemProduct4Adapter
     private var alertDialog: AlertDialog? = null
     private var orderId = ""
-    private var mDetalData: RequestDetailModel? = null
+    private var mDetailYCXKData: RequestDetailModel? = null
+    private var mDetailRetailData: ApproveRequestModel? = null
     var mList = mutableListOf<BussinesRequestModel>()
+    private var listStatusOrderSale = mutableListOf<StatusValueModel>()
+    private var loaiYC: String? = "Xuất kho"
     private var status: String? = null
+    private var type: String? = null
+    private var isRetail: Boolean = false
+
+    private var tienKhiBan12 = 0
+    private var tienKhiBan45 = 0
+    private var tienVoBan12 = 0
+    private var tienVoBan45 = 0
+    private var tienVoMua12 = 0
+    private var tienVoMua45 = 0
+    private var tongTien = 0
+    private var tienNo = 0
+    private var tienThucTe = 0
+
+    private var obj: TransferRetailModel? = null
 
     companion object {
         @JvmStatic
-        fun newInstance(): QLYCCaNhanFragment {
+        fun newInstance(mFromScreen: String): QLYCCaNhanFragment {
             val args = Bundle()
-
+            args.putString("SCREEN", mFromScreen)
             val fragment = QLYCCaNhanFragment()
             fragment.arguments = args
             return fragment
@@ -90,12 +125,41 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun initObserver() {
-        viewModel.mLiveData.observe(this, {
+        viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             mList.addAll(it)
             adapter.notifyDataSetChanged()
         })
 
+        viewModel.mCancelData.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+                view?.let { it1 -> onSearchData(it1) }
+            }
+        })
+
+        //TODO: Retail
+        viewModel.listStatus.observe(viewLifecycleOwner, {
+            listStatusOrderSale.clear()
+            listStatusOrderSale.addAll(it)
+            initRecyclerView()
+        })
+
+        viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
+            mDetailRetailData = it
+            mapListToRetailProduct()
+            if (mDetailRetailData?.status == 8) {
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_RETAIL_STEP_2, RetailContainerFragment.newInstance(
+                        "STEP_2", obj
+                    )
+                )
+            } else {
+                showDiglogDetailRetail()
+            }
+        })
+
+        //TODO: chung
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
@@ -114,8 +178,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
         //TODO: Thu Kho
         viewModelThuKho.mDetailData.observe(viewLifecycleOwner, {
-            mDetalData = it
-            showDiglogDetail()
+            mDetailYCXKData = it
+            showDiglogDetailYCXK()
         })
 
         viewModelThuKho.callbackStart.observe(viewLifecycleOwner, {
@@ -135,7 +199,110 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         })
     }
 
+    private fun mapListToRetailProduct() {
+//        var orderId: String? = null
+
+        var khiBan12: Int? = null
+        var khiBanPrice12: Int? = null
+        var khiBan45: Int? = null
+        var khiBanPrice45: Int? = null
+
+        var voThu12: Int? = null
+        var voThu45: Int? = null
+
+        var voBan12: Int? = null
+        var voBanPrice12: Int? = null
+        var voBan45: Int? = null
+        var voBanPrice45: Int? = null
+
+        var voMua12: Int? = null
+        var voMuaPrice12: Int? = null
+        var voMua45: Int? = null
+        var voMuaPrice45: Int? = null
+
+        var tienThucTe: Int?
+        for (it: ProductRetailModel in mDetailRetailData?.item!!) {
+            if (it.saleType == "1") {
+                when (it.code) {
+                    "GAS12" -> {
+                        khiBan12 = it.quantity
+                        khiBanPrice12 = it.price
+                    }
+                    "GAS45" -> {
+                        khiBan45 = it.quantity
+                        khiBanPrice45 = it.price
+                    }
+                    "TANK12" -> {
+                        voBan12 = it.quantity
+                        voBanPrice12 = it.price
+                    }
+                    "TANK45" -> {
+                        voBan45 = it.quantity
+                        voBanPrice45 = it.price
+                    }
+                }
+            } else if (it.saleType == "2") {
+                if (it.code == "TANK12") {
+                    voThu12 = it.quantity
+                } else {
+                    voThu45 = it.quantity
+                }
+            } else if (it.saleType == "3") {
+                if (it.code == "TANK12") {
+                    voMua12 = it.quantity
+                    voMuaPrice12 = it.price
+                } else {
+                    voMua45 = it.quantity
+                    voMuaPrice45 = it.price
+                }
+            }
+        }
+
+        tienKhiBan12 = khiBan12!! * khiBanPrice12!!
+        tienKhiBan45 = khiBan45!! * khiBanPrice45!!
+
+        tienVoMua12 = voMua12!! * voMuaPrice12!!
+        tienVoMua45 = voMua45!! * voMuaPrice45!!
+
+        tienVoBan12 = voBan12!! * voBanPrice12!!
+        tienVoBan45 = voBan45!! * voBanPrice45!!
+
+        totalMustPay()
+//        totalDebit()
+        obj = TransferRetailModel(
+            this.orderId,
+            khiBan12,
+            khiBanPrice12,
+            khiBan45,
+            khiBanPrice45,
+            voThu12,
+            voThu45,
+            voBan12,
+            voBanPrice12,
+            voBan45,
+            voBanPrice45,
+            voMua12,
+            voMuaPrice12,
+            voMua45,
+            voMuaPrice45,
+            tongTien - mDetailRetailData?.debtAmount!!
+        )
+    }
+
     override fun initData() {
+//        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
+        isRetail = true
+        loaiYC = "Bán hàng"
+        type = "2"
+        edtRequestType.setText("Bán lẻ")
+        viewModel.onGetSaleOrderStatus()
+//        } else {
+//            isRetail = false
+//            loaiYC = "Xuất kho"
+//            type = "1"
+//            edtRequestType.setText("Xuất kho")
+//        }
+        getInfo()
         initRecyclerView()
         edtStartDate.setText(AppDateUtils.getCurrentDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
@@ -152,12 +319,19 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                 edtEndDate.text.toString()
             ) { strDate -> edtEndDate.setText(strDate) }
         }
+        edtRequestType.setOnClickListener(this::onChooseType)
         edtStatus.setOnClickListener(this::onChooseStatus)
-        btnSearch.setOnClickListener(this::onSubmitData)
+        btnSearch.setOnClickListener(this::onSearchData)
+    }
+
+    private fun getInfo() {
+        val userModel = AppPreferencesHelper(context).userModel
+        tvName.text = userModel?.name
+        tvTuyen.text = userModel?.email
     }
 
     private fun initRecyclerView() {
-        adapter = RequestItemAdapter(mList)
+        adapter = RequestItemAdapter(mList, loaiYC, listStatusOrderSale)
         adapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
@@ -165,31 +339,78 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         rvRequestItem.adapter = adapter
     }
 
-    private fun onChooseStatus(view: View) {
+    private fun onChooseType(view: View) {
         var doc = DialogList()
-        var mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
+        var mArrayList = GetListDataDemo.getListRequestType(Objects.requireNonNull(context))
         doc.show(
             activity, mArrayList,
             getString(R.string.status),
             getString(R.string.enter_text_search)
         ) { item ->
-            if (AppConstants.NOT_SELECT == item.id) {
-                return@show
-            }
-            status = item.id
-            edtStatus.setText(item.name)
+//            if (AppConstants.NOT_SELECT == item.id) {
+//                return@show
+//            }
+            type = item.id
+            edtRequestType.setText(item.name)
+            handleStatus(type)
         }
     }
 
-    private fun onSubmitData(view: View) {
+    private fun handleStatus(type: String?) {
+        status = null
+        edtStatus.setText("Tất cả")
+        if (type == "2") {
+            isRetail = true
+            viewModel.onGetSaleOrderStatus()
+            loaiYC = "Bán hàng"
+        } else if (type == "1") {
+            isRetail = false
+            loaiYC = "Xuất kho"
+            initRecyclerView()
+        }
+    }
+
+    private fun onChooseStatus(view: View) {
+        var doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        if (!isRetail) {
+            mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
+        } else {
+            mArrayList.add(0, DialogListModel("-2", "Tất cả"))
+            listStatusOrderSale.forEach {
+                mArrayList.add(DialogListModel(it.value, it.name))
+            }
+        }
+
+        doc.show(
+            activity, mArrayList,
+            getString(R.string.status),
+            getString(R.string.enter_text_search)
+        ) { item ->
+//            if (AppConstants.NOT_SELECT == item.id) {
+//                return@show
+//            }
+            status = item.id
+            edtStatus.setText(item.name)
+            if (AppConstants.SELECT_ALL == item.id) {
+                status = null
+            }
+        }
+    }
+
+    private fun onSearchData(view: View) {
         var fromDate =
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
         var endDate =
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
+        if (isRetail) {
+            viewModel.onSearchRetail(status, fromDate, endDate)
+            return
+        }
         viewModel.onSubmitData(status, fromDate, endDate)
     }
 
-    private fun showDiglogDetail(
+    private fun showDiglogDetailYCXK(
 //        title: String,
 //        message: String,
 //        callback: ConfirmDialogCallback?
@@ -199,33 +420,39 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_ycxk, null)
         builder?.setView(dialogView)
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapterDetailYCXK = DetailItemProduct4Adapter(mDetalData!!.item)
+        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)
 
         dialogView.apply {
             imgClose.setOnClickListener {
                 alertDialog?.dismiss()
             }
-            when (mDetalData?.status) {
+            when (mDetailYCXKData?.status) {
+                0 -> {
+                    tvStatus.text = resources.getString(R.string.cancel_status)
+                    tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
+                    linearAccept.visibility = View.GONE
+                    adapterDetailYCXK.isReadOnly()
+                }
                 1 -> {
-                    tvStatus.text = "Chờ duyệt"
+                    tvStatus.text = resources.getString(R.string.new_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
                 2 -> {
-                    tvStatus.text = "Đã duyệt"
+                    tvStatus.text = resources.getString(R.string.approved_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                     adapterDetailYCXK.isReadOnly()
                 }
                 3 -> {
-                    tvStatus.text = "Đã huỷ"
+                    tvStatus.text = resources.getString(R.string.reject_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
                     adapterDetailYCXK.isReadOnly()
                 }
             }
-            tvName.text = mDetalData?.staffName
-            tvDate.text = mDetalData?.createdDate
+            tvName.text = mDetailYCXKData?.staffName
+            tvDate.text = mDetailYCXKData?.createdDate
             tvOrderId.text = "Mã yêu cầu $orderId"
 
             rvProductDialog.layoutManager = linearLayoutManager
@@ -233,7 +460,15 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
 
             btnHuyYC.setOnClickListener {
-//                viewModelThuKho.acceptOrNotRequest(orderId, false)
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        viewModel.onCancelRequest(orderId)
+                    }
+                }
             }
             btnCapNhat.setOnClickListener {
 //                viewModelThuKho.acceptOrNotRequest(orderId, true)
@@ -244,8 +479,124 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         alertDialog?.show()
     }
 
+    private fun showDiglogDetailRetail() {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_retail, null)
+        builder?.setView(dialogView)
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)
+
+        val imgClose = dialogView.findViewById<ImageView>(R.id.imgClose)
+        val btnHuy = dialogView.findViewById<Button>(R.id.btnHuy)
+        val tvOrderId = dialogView.findViewById<TextView>(R.id.tvOrderId)
+
+        val tvName: TextView = dialogView.findViewById(R.id.tvName)
+        val tvAddress: TextView = dialogView.findViewById(R.id.tvAddress)
+        val tvPhone: TextView = dialogView.findViewById(R.id.tvPhone)
+
+        val productBanKhi12: ItemProductType1 = dialogView.findViewById(R.id.productBanKhi12)
+        val productBanKhi45: ItemProductType1 = dialogView.findViewById(R.id.productBanKhi45)
+        val productVoThuHoi12: ItemProductType2 = dialogView.findViewById(R.id.productVoThuHoi12)
+        val productVoThuHoi45: ItemProductType2 = dialogView.findViewById(R.id.productVoThuHoi45)
+        val productVoBan12: ItemProductType1 = dialogView.findViewById(R.id.productVoBan12)
+        val productVoBan45: ItemProductType1 = dialogView.findViewById(R.id.productVoBan45)
+        val productVoMua12: ItemProductType1 = dialogView.findViewById(R.id.productVoMua12)
+        val productVoMua45: ItemProductType1 = dialogView.findViewById(R.id.productVoMua45)
+
+        val btnCongNo12: Button = dialogView.findViewById(R.id.btnCongNo12)
+        val btnCongNo45: Button = dialogView.findViewById(R.id.btnCongNo45)
+        val btnCongNoTien: Button = dialogView.findViewById(R.id.btnCongNoTien)
+
+        val tvTienKhi12: TextView = dialogView.findViewById(R.id.tvTienKhi12)
+        val tvTienKhi45: TextView = dialogView.findViewById(R.id.tvTienKhi45)
+        val tvTienBanVo: TextView = dialogView.findViewById(R.id.tvTienBanVo)
+        val tvTienMuaVo: TextView = dialogView.findViewById(R.id.tvTienMuaVo)
+        val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
+        val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
+
+        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+
+        dialogView.apply {
+            imgClose.setOnClickListener {
+                alertDialog?.dismiss()
+            }
+            tvOrderId.text = "Mã yêu cầu $orderId"
+            tvName.text = mDetailRetailData?.customerName ?: "- -"
+            tvAddress.text = mDetailRetailData?.customerAddress ?: "- -"
+            tvPhone.text = mDetailRetailData?.customerTelContact ?: "- -"
+
+            productBanKhi12.setSoLuong(obj?.khiBan12?.toString())
+            productBanKhi12.setGia(CommonUtils.priceWithoutDecimal(obj?.khiBanPrice12?.toDouble()))
+            productBanKhi45.setSoLuong(obj?.khiBan45?.toString())
+            productBanKhi45.setGia(CommonUtils.priceWithoutDecimal(obj?.khiBanPrice45?.toDouble()))
+
+            productVoThuHoi12.setSoLuong(obj?.voThu12?.toString())
+            productVoThuHoi45.setSoLuong(obj?.voThu45?.toString())
+
+            productVoBan12.setSoLuong(obj?.voBan12?.toString())
+            productVoBan12.setGia(CommonUtils.priceWithoutDecimal(obj?.voBanPrice12?.toDouble()))
+            productVoBan45.setSoLuong(obj?.voBan45?.toString())
+            productVoBan45.setGia(CommonUtils.priceWithoutDecimal(obj?.voBanPrice45?.toDouble()))
+
+            productVoMua12.setSoLuong(obj?.voMua12?.toString())
+            productVoMua12.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice12?.toDouble()))
+            productVoMua45.setSoLuong(obj?.voMua45?.toString())
+            productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice45?.toDouble()))
+
+            tvTienThucTe.text = "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
+
+            btnCongNo12.text = mDetailRetailData?.debtAmountTank12?.toString() ?: "0"
+            btnCongNo45.text = mDetailRetailData?.debtAmountTank45?.toString() ?: "0"
+            btnCongNoTien.text =
+                "${CommonUtils.priceWithoutDecimal(mDetailRetailData?.debtAmount?.toDouble())}"
+//            rvProductDialog.layoutManager = linearLayoutManager
+//            rvProductDialog.adapter = adapterDetailYCXK
+
+            tvTienKhi12.text = "$tienKhiBan12 đ"
+            tvTienKhi45.text = "$tienKhiBan45 đ"
+            tvTienBanVo.text = "${tienVoBan12 + tienVoBan45} đ"
+            tvTienMuaVo.text = "${tienVoMua12 + tienVoMua45} đ"
+            tvTienNo.text = "${mDetailRetailData?.debtAmount} đ"
+            tvTongTienCanTT.text = "$tongTien đ"
+
+
+            btnHuy.setOnClickListener {
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+//                        viewModel.onCancelRequest(orderId)
+                    }
+                }
+            }
+        }
+        alertDialog = builder?.create()
+        alertDialog?.window?.setLayout(500, 200)
+        alertDialog?.show()
+    }
+
+    private fun totalMustPay() {
+        tongTien =
+            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45)
+//        tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
+    }
+
+    private fun totalDebit() {
+        tienNo = tongTien - tienThucTe
+        btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
+        tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
+    }
+
     override fun onItemClick(view: View?, position: Int) {
-        viewModelThuKho.onDetailRequest(mList[position].stock_trans_id.toString())
-        orderId = mList[position].stock_trans_id.toString()
+        if (type == "1") {
+            orderId = mList[position].stock_trans_id.toString()
+            viewModelThuKho.onDetailRequest(orderId)
+        } else if (type == "2") {
+            orderId = mList[position].order_id.toString()
+            viewModel.detailApproveLXBH(orderId)
+        }
     }
 }

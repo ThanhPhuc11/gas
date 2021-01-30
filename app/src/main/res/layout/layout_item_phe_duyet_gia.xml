@@ -28,6 +28,7 @@
                 android:textColor="@color/gray_666E79" />
 
             <TextView
+                android:id="@+id/tvOrderId"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -74,6 +75,7 @@
                 android:textColor="@color/gray_666E79" />
 
             <TextView
+                android:id="@+id/tvLXBH"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,6 +99,7 @@
                 android:textColor="@color/gray_666E79" />
 
             <TextView
+                android:id="@+id/tvCustName"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -123,15 +126,17 @@
                 android:src="@drawable/ic_check_available" />
 
             <TextView
+                android:id="@+id/tvStatus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="Chờ duyệt"
+                android:text=""
                 android:textColor="@color/blue_2C5181"
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tvDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

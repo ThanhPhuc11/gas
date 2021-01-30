@@ -30,4 +30,8 @@
     <color name="gray_EBEBEB">#EBEBEB</color>
     <color name="gray_707070">#707070</color>
     <color name="gray_D8D8D8">#D8D8D8</color>
+    <color name="gray_DCE0EA">#DCE0EA</color>
+    <color name="gray_F6F6F6">#F6F6F6</color>
+    <color name="yellow_FFBF00">#FFBF00</color>
+    <color name="gray_333333">#333333</color>
 </resources>

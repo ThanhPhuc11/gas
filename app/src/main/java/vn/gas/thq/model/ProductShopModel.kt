@@ -20,4 +20,6 @@ class ProductShopModel {
     @SerializedName("available_quantity")
     @Expose
     var availableQuantity: Int? = null
+
+    var unit: String? = null
 }

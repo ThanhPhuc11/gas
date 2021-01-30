@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'deploygate'
 
 android {
     compileSdkVersion 30
@@ -8,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId "vn.gas.thq"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 19
+        versionName "1.0.19"
         flavorDimensions "default"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,7 +22,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "gas-hq-v${variant.versionName}.apk"
+                }
+            }
+        }
     }
+
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -36,7 +46,7 @@ android {
             buildConfigField 'String', 'BASE_URL', '"https://api.github.com/"'
         }
         product {
-            manifestPlaceholders = [app_name          : "@string/app_name"]
+            manifestPlaceholders = [app_name: "@string/app_name"]
             buildConfigField 'String', 'BASE_URL', '"https://api.github.com/"'
         }
     }

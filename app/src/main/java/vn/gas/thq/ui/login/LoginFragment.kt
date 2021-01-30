@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.login
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
@@ -71,9 +72,25 @@ class LoginFragment : BaseFragment() {
             viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
             hideLoading()
         })
+//
+//        viewModel.getFailToken().observe(viewLifecycleOwner, {
+//            hideLoading()
+//        })
 
-        viewModel.getFailToken().observe(viewLifecycleOwner, {
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
             hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
 }

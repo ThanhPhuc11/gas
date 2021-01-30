@@ -40,6 +40,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvLabel1" />
 
         <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
@@ -50,6 +51,7 @@
             app:layout_constraintTop_toTopOf="@id/tvLabel1" />
 
         <TextView
+            android:id="@+id/tvTuyen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
@@ -80,6 +82,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtRequestType"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -214,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Danh sách yêu cầu"
+                android:text="Danh sách đơn hàng"
                 android:textColor="@color/blue_2C5181"
                 android:textSize="14sp"
                 android:textStyle="bold" />

@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
-    android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-    <DatePicker
-        android:theme="@style/calendar_dialog_theme"
-        android:id="@+id/date_picker"
-        android:headerBackground="@color/blue_2C5181"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:headerBackground="@color/blue_2C5181"
+            android:theme="@style/calendar_dialog_theme" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/_12sdp"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_12sdp">
+
             <TextView
                 android:id="@+id/tvOk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:gravity="right"
                 android:layout_marginLeft="@dimen/_18sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:textSize="@dimen/text_16sp"
+                android:gravity="right"
                 android:text="Xác nhận"
                 android:textColor="@color/blue_2C5181"
-                />
+                android:textSize="@dimen/text_16sp" />
+
             <TextView
-                android:layout_marginLeft="20dp"
-                android:layout_toLeftOf="@+id/tvOk"
                 android:id="@+id/tvCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toLeftOf="@+id/tvOk"
                 android:text="Đóng"
-                android:textSize="@dimen/text_16sp"
                 android:textColor="@android:color/black"
-                />
+                android:textSize="@dimen/text_16sp" />
+
             <TextView
-                android:layout_marginLeft="@dimen/_18sdp"
                 android:id="@+id/tvClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Xóa chọn"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="@dimen/text_16sp"
+                android:layout_marginLeft="@dimen/_18sdp"
+                android:text="Xóa chọn"
                 android:textColor="@android:color/black"
-                />
-
+                android:textSize="@dimen/text_16sp"
+                android:visibility="gone" />
 
 
         </RelativeLayout>

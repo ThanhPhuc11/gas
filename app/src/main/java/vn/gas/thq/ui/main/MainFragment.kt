@@ -71,7 +71,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
             }
             R.id.navigation_buy -> {
 //                pushToTab(retailFragment)
-                viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance())
+                viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null))
             }
             R.id.navigation_setting -> {
 //                pushToTab(quanLyYeuCauDuyetGiaFragment)

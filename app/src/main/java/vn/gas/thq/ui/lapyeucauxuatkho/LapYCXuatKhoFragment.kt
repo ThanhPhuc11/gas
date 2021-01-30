@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -67,7 +68,7 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             it.forEach {
-                mList.add(ProductModel(it.productName, it.productCode, "", "", 0))
+                mList.add(ProductModel(it.productName, it.productCode, "", "", 0, it.unit))
             }
             productAdapter.notifyDataSetChanged()
         })
@@ -96,6 +97,7 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
     }
 
     override fun initData() {
+        getInfo()
         viewModel.getDataFromShop()
         productAdapter = ProductItemAdapter(mList)
         productAdapter.setClickListener(this)
@@ -107,6 +109,12 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
         btnSubmit.setOnClickListener(this::onSubmitData)
     }
 
+    private fun getInfo() {
+        val userModel = AppPreferencesHelper(context).userModel
+        tvName.text = userModel?.name
+        tvTuyen.text = userModel?.email
+    }
+
     private fun onSubmitData(view: View) {
         var initExportRequest = InitExportRequest()
         initExportRequest.item = mutableListOf()
@@ -114,7 +122,7 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
         if (requestList.isNotEmpty()) {
             initExportRequest.item?.addAll(requestList)
             CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chặn muốn tạo yêu cầu xuất kho?", getString(
+                activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu xuất kho?", getString(
                     R.string.biometric_negative_button_text
                 ), getString(R.string.text_ok)
             ) {

@@ -52,7 +52,7 @@ class MenuAdapter(private val mList: MutableList<MenuModel>) :
         }
 
         override fun onClick(p0: View?) {
-            mClickListener.onItemTopClick(p0, adapterPosition)
+            mClickListener.onItemTopClick(p0, mList[adapterPosition].id)
         }
     }
 
@@ -61,6 +61,6 @@ class MenuAdapter(private val mList: MutableList<MenuModel>) :
     }
 
     interface ItemClickListener {
-        fun onItemTopClick(view: View?, position: Int)
+        fun onItemTopClick(view: View?, id: Int)
     }
 }

@@ -92,11 +92,11 @@ public final class CommonUtils {
         TextView tvCancel = dialogCalendar.findViewById(R.id.tvCancel);
         DatePicker datepicker = dialogCalendar.findViewById(R.id.date_picker);
 
-        if (TextUtils.isEmpty(currentDate) || currentDate.trim().length() == 0) {
-            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.GONE);
-        } else {
-            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.VISIBLE);
-        }
+//        if (TextUtils.isEmpty(currentDate) || currentDate.trim().length() == 0) {
+//            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.GONE);
+//        } else {
+//            dialogCalendar.findViewById(R.id.tvClear).setVisibility(View.VISIBLE);
+//        }
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             datepicker.setSpinnersShown(true);
@@ -413,6 +413,11 @@ public final class CommonUtils {
         return num;
     }
 
+    public static int getIntFromStringDecimal(String decimal) {
+        String num = decimal.replace(",", "");
+        return Integer.parseInt(num);
+    }
+
     public static void saveString(String content, String fileName) {
         try {
             File myFile = new File("/sdcard/" + fileName);
@@ -586,13 +591,12 @@ public final class CommonUtils {
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? LinearLayout.LayoutParams.WRAP_CONTENT
-                        : (int)(targetHeight * interpolatedTime);
+                        : (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -603,21 +607,20 @@ public final class CommonUtils {
         };
 
         // Expansion speed of 1dp/ms
-        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
     public static void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
+                if (interpolatedTime == 1) {
                     v.setVisibility(View.GONE);
-                }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
                     v.requestLayout();
                 }
             }
@@ -629,7 +632,7 @@ public final class CommonUtils {
         };
 
         // Collapse speed of 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 }

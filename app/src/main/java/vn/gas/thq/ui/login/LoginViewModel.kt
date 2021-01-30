@@ -17,12 +17,7 @@ import vn.gas.thq.model.TokenModel
 
 class LoginViewModel(private val loginRepository: LoginRepository, private val context: Context?) :
     BaseViewModel() {
-    //    private val liveDataA = MutableLiveData<List<User>>()
-    private val loginLiveData = MutableLiveData<TokenModel>()
-    private val checkAccesToken = MutableLiveData<Boolean>()
     private val loginSuccess = MutableLiveData<Unit>()
-    private val loginFail = MutableLiveData<Unit>()
-    private var tokenModel: TokenModel? = null
 
     fun doLogin(username: String, password: String) {
         if (TextUtils.isEmpty(username)) {
@@ -42,44 +37,22 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val c
                 password
             )
                 .onStart {
-                    Log.e("Phuc", "onStart")
+                    callbackStart.value = Unit
                 }
                 .onCompletion {
-                    Log.e("Phuc complete", it.toString() + "onCom")
-                    AppPreferencesHelper(context).tokenModel = tokenModel
-                    if (!TextUtils.isEmpty(tokenModel?.accessToken)) {
-                        loginSuccess.value = Unit
-                    }
                 }
                 .catch {
-//                    checkAccesToken.value = false
-                    loginFail.value = Unit
+                    handleError(it)
                 }
                 .collect {
-                    Log.e("Phuc", it.toString() + "onColect")
-                    tokenModel = it
+                    AppPreferencesHelper(context).tokenModel = it
+                    if (!TextUtils.isEmpty(it.accessToken)) {
+                        loginSuccess.value = Unit
+                        callbackSuccess.value = Unit
+                    }
                 }
-
-//            loginRepository.getUsers()
-//                .onCompletion {
-////                    liveDataA.value = listData
-//                    Log.e(
-//                        "complete",
-//                        "liveDataA size: "
-//                    )
-//                }
-//                .collect {
-////                    listData.add(it)
-//                    Log.e(
-//                        "element",
-//                        it.userId/* + " listData size " + listData.size + " : liveDataA size : " + liveDataA.value?.size*/
-//                    )
-//                }
-
         }
     }
 
-    fun getStatusAccessToken() = checkAccesToken
     fun getSuccessToken() = loginSuccess
-    fun getFailToken() = loginFail
 }

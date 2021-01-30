@@ -53,6 +53,7 @@
                 android:textColor="@color/gray_666E79" />
 
             <TextView
+                android:id="@+id/tvLoaiYC"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -81,10 +82,34 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Đã huỷ"
+                android:text=""
                 android:textColor="@color/red_DB4755" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Khách hàng"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvCustName"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

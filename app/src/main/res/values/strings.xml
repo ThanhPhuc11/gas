@@ -15,14 +15,18 @@
     <string name="title_setting">Điều hành</string>
     <string name="title_other">Khác</string>
     <string name="status">Trạng thái</string>
+    <string name="lxbh">LXBH</string>
     <string name="customer">Khách hàng</string>
     <string name="enter_text_search">Nhập từ khoá tìm kiếm</string>
     <string name="new_status">Chờ duyệt</string>
     <string name="approved_status">Đã duyệt</string>
     <string name="reject_status">Từ chối</string>
+    <string name="cancel_status">Đã huỷ</string>
     <string name="confirm">Xác nhận</string>
     <string name="close">Đóng</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="text_ok">Đồng ý</string>
+    <string name="type_xk">Xuất kho</string>
+    <string name="type_ban_le">Bán lẻ</string>
     <string name="biometric_negative_button_text">Hủy bỏ</string>
 </resources>

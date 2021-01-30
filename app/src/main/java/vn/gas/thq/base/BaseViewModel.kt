@@ -16,26 +16,31 @@ abstract class BaseViewModel : ViewModel() {
     val callbackFail = MutableLiveData<Unit>()
 
     fun handleError(it: Throwable) {
-        callbackFail.value = Unit
-        val response = (it as HttpException).response()
-        val gson = GsonBuilder().create()
-        val mError: ErrorModel
         try {
-            mError = gson.fromJson(
-                response?.errorBody()?.string(),
-                ErrorModel::class.java
-            )
-            showMessCallback.value = mError.detail
-            when (response?.code()) {
-                400 -> {
+            callbackFail.value = Unit
+            val response = (it as HttpException).response()
+            val gson = GsonBuilder().create()
+            val mError: ErrorModel
+            try {
+                mError = gson.fromJson(
+                    response?.errorBody()?.string(),
+                    ErrorModel::class.java
+                )
+                showMessCallback.value = mError.detail
+                when (response?.code()) {
+                    400 -> {
 //                showMessCallback.value = response.code().toString()
-                }
-                401 -> {
+                    }
+                    401 -> {
 
+                    }
                 }
+            } catch (e: IOException) {
+                // handle failure to read error
             }
-        } catch (e: IOException) {
-            // handle failure to read error
+        } catch (e: Exception) {
+            showMessCallback.value = "Vui lòng kiểm tra lại đường truyền"
         }
+
     }
 }

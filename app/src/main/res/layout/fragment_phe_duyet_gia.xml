@@ -29,6 +29,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtLXBH"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -50,6 +51,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtStatus"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -133,6 +135,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="42dp"
@@ -166,23 +169,30 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRequestApprove"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="9dp" />
 
-            <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp" />
+<!--            <include-->
+<!--                layout="@layout/layout_item_phe_duyet_gia"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp" />-->
 
-            <include
-                layout="@layout/layout_item_phe_duyet_gia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp" />
+<!--            <include-->
+<!--                layout="@layout/layout_item_phe_duyet_gia"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="13dp" />-->
+
+<!--            <include-->
+<!--                layout="@layout/layout_item_phe_duyet_gia"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="13dp" />-->
 
 
         </LinearLayout>

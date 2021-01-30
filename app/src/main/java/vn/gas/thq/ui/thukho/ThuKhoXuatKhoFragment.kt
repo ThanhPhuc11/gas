@@ -21,6 +21,7 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.BussinesRequestModel
+import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucaucanhan.RequestItemAdapter
@@ -28,6 +29,7 @@ import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
 import java.util.*
@@ -39,8 +41,11 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     private lateinit var adapterDetail: DetailItemProduct2Adapter
     private var alertDialog: AlertDialog? = null
     private var mDetalData: RequestDetailModel? = null
+    private var staffCode: String? = null
     private var status: String? = null
+    private var staffId: String? = null
     private var mList = mutableListOf<BussinesRequestModel>()
+    private var mListStaff = mutableListOf<UserModel>()
     private var orderId = ""
 
     companion object {
@@ -82,6 +87,11 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     override fun initObserver() {
+        viewModel.mListStaffData.observe(viewLifecycleOwner, {
+            mListStaff.clear()
+            mListStaff.addAll(it)
+        })
+
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             mList.addAll(it)
@@ -118,6 +128,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     override fun initData() {
+        viewModel.getListStaff()
         initRecyclerView()
         edtStartDate.setText(AppDateUtils.getCurrentDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
@@ -134,6 +145,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 edtEndDate.text.toString()
             ) { strDate -> edtEndDate.setText(strDate) }
         }
+        edtLXBH.setOnClickListener(this::onChooseLXBH)
         edtStatus.setOnClickListener(this::onChooseStatus)
         btnSearch.setOnClickListener(this::onSubmitData)
 
@@ -143,12 +155,36 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     private fun initRecyclerView() {
-        adapter = RequestItemAdapter(mList)
+        adapter = RequestItemAdapter(mList, "Xuất kho", null)
         adapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = adapter
+    }
+
+    private fun onChooseLXBH(view: View) {
+        val doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        mArrayList.add(0, DialogListModel(AppConstants.SELECT_ALL, getString(R.string.all)))
+        mListStaff.forEach {
+            mArrayList.add(DialogListModel(it.staffCode, it.name))
+        }
+        doc.show(
+            activity, mArrayList,
+            getString(R.string.lxbh),
+            getString(R.string.enter_text_search)
+        ) { item ->
+//            if (AppConstants.NOT_SELECT == item.id) {
+//                return@show
+//            }
+            staffCode = item.id
+            edtLXBH.setText(item.name)
+
+            if (AppConstants.SELECT_ALL == item.id) {
+                staffCode = null
+            }
+        }
     }
 
     private fun onChooseStatus(view: View) {
@@ -159,11 +195,14 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
             getString(R.string.status),
             getString(R.string.enter_text_search)
         ) { item ->
-            if (AppConstants.NOT_SELECT == item.id) {
-                return@show
-            }
+//            if (AppConstants.NOT_SELECT == item.id) {
+//                return@show
+//            }
             status = item.id
             edtStatus.setText(item.name)
+            if (AppConstants.SELECT_ALL == item.id) {
+                status = null
+            }
         }
     }
 
@@ -180,7 +219,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onSearchRequest(status, fromDate, endDate)
+        viewModel.onSearchRequest(staffCode, status, fromDate, endDate)
     }
 
     private fun showDiglogDetail(
@@ -200,18 +239,23 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 alertDialog?.dismiss()
             }
             when (mDetalData?.status) {
+                0 -> {
+                    tvStatus.text = resources.getString(R.string.cancel_status)
+                    tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
+                    linearAccept.visibility = View.GONE
+                }
                 1 -> {
-                    tvStatus.text = "Chờ duyệt"
+                    tvStatus.text = resources.getString(R.string.new_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
                 2 -> {
-                    tvStatus.text = "Đã duyệt"
+                    tvStatus.text = resources.getString(R.string.approved_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                 }
                 3 -> {
-                    tvStatus.text = "Đã huỷ"
+                    tvStatus.text = resources.getString(R.string.reject_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
                 }
