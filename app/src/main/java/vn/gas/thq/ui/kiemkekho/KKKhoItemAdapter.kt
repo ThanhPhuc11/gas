@@ -31,7 +31,7 @@ class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val
         }
         holder.tvName.text = obj.name
         holder.tvQuantity.text = obj.quantity?.toString()
-        holder.tvUnit.text = "- -"
+        holder.tvUnit.text = obj.unit ?: "- -"
 //        holder.imgIcon.setImageResource(menu.resDrawable)
 //        holder.imgIcon.setImageResource(R.drawable.ic_menu_2)
     }

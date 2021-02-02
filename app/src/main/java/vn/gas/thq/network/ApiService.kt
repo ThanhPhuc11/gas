@@ -3,6 +3,7 @@ package vn.gas.thq.network
 import retrofit2.http.*
 import vn.gas.thq.model.*
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
@@ -38,6 +39,9 @@ interface ApiService {
 
     @GET("stocks/shop")
     suspend fun getProductFromShop(): List<ProductShopModel>
+
+    @GET("stocks/staff")
+    suspend fun getProductFromStaff(): List<ProductShopModel>
 
     @POST("orders/shop")
     suspend fun initExport(@Body obj: InitExportRequest): IdentityModel
@@ -121,5 +125,11 @@ interface ApiService {
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
     )
+
+    @POST("stocks/return")
+    suspend fun nhapKho(@Body obj: RequestNhapKho)
+
+    @GET("prices/gas-remain")
+    suspend fun gasRemainPrice(): PriceModel
 
 }

@@ -26,6 +26,30 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="Mã yêu cầu"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="LXBH"
                 android:textColor="@color/gray_666E79" />
 

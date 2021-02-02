@@ -22,7 +22,6 @@ import vn.hongha.ga.R
 class KiemKeKhoFragment : BaseFragment() {
     private lateinit var viewModel: KiemKeKhoViewModel
     private lateinit var productAdapter: KKKhoItemAdapter
-    private var alertDialog: AlertDialog? = null
     var mList = mutableListOf<ProductModel>()
 
     companion object {
@@ -90,7 +89,7 @@ class KiemKeKhoFragment : BaseFragment() {
     }
 
     override fun initData() {
-        viewModel.getDataFromCode("admin", null)
+        viewModel.getDataFromCode("admin", "admin")
         tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
         initRecyclerView()
         btnKiemKe.setOnClickListener(this::onSubmit)

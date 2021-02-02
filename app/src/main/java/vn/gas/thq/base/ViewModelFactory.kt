@@ -12,6 +12,8 @@ import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoRepository
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoViewModel
 import vn.gas.thq.ui.login.LoginRepository
 import vn.gas.thq.ui.login.LoginViewModel
+import vn.gas.thq.ui.nhapkho.NhapKhoRepository
+import vn.gas.thq.ui.nhapkho.NhapKhoViewModel
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaRepository
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaViewModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
@@ -44,6 +46,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             XemKhoViewModel(XemKhoRepository(apiService))
         creators[KiemKeKhoViewModel::class.java] =
             KiemKeKhoViewModel(KiemKeKhoRepository(apiService))
+        creators[NhapKhoViewModel::class.java] =
+            NhapKhoViewModel(NhapKhoRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

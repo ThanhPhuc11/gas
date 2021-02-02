@@ -202,23 +202,23 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun mapListToRetailProduct() {
 //        var orderId: String? = null
 
-        var khiBan12: Int? = null
-        var khiBanPrice12: Int? = null
-        var khiBan45: Int? = null
-        var khiBanPrice45: Int? = null
+        var khiBan12: Int? = 0
+        var khiBanPrice12: Int? = 0
+        var khiBan45: Int? = 0
+        var khiBanPrice45: Int? = 0
 
-        var voThu12: Int? = null
-        var voThu45: Int? = null
+        var voThu12: Int? = 0
+        var voThu45: Int? = 0
 
-        var voBan12: Int? = null
-        var voBanPrice12: Int? = null
-        var voBan45: Int? = null
-        var voBanPrice45: Int? = null
+        var voBan12: Int? = 0
+        var voBanPrice12: Int? = 0
+        var voBan45: Int? = 0
+        var voBanPrice45: Int? = 0
 
-        var voMua12: Int? = null
-        var voMuaPrice12: Int? = null
-        var voMua45: Int? = null
-        var voMuaPrice45: Int? = null
+        var voMua12: Int? = 0
+        var voMuaPrice12: Int? = 0
+        var voMua45: Int? = 0
+        var voMuaPrice45: Int? = 0
 
         var tienThucTe: Int?
         for (it: ProductRetailModel in mDetailRetailData?.item!!) {
