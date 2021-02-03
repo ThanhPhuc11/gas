@@ -17,6 +17,7 @@ class KiemKeKhoViewModel(
     BaseViewModel() {
 
     val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
+    val callbackKiemKeKho = MutableLiveData<Unit>()
 
     fun getDataFromCode(shop_code: String?, staff_code: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -32,6 +33,24 @@ class KiemKeKhoViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveData.value = it as MutableList<ProductShopModel>
+                }
+        }
+    }
+
+    fun kiemKeKho(obj: KiemKeRequestModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            kiemKeRepository.kiemKeKho(obj)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackKiemKeKho.value = Unit
                 }
         }
     }

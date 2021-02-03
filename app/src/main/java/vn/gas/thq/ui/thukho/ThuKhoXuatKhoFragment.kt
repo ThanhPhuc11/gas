@@ -8,14 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
 import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.*
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.imgClose
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.linearAccept
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.rvProductDialog
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvDate
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvName
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvOrderId
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.tvStatus
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -261,7 +253,12 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 }
             }
             tvName.text = mDetalData?.staffName
-            tvDate.text = mDetalData?.createdDate
+//            tvDate.text = mDetalData?.createdDate
+            tvDate.text = AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_1,
+                mDetalData?.createdDate
+            )
             tvOrderId.text = "Mã yêu cầu $orderId"
 
             rvProductDialog.layoutManager = linearLayoutManager

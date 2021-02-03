@@ -2,6 +2,7 @@ package vn.gas.thq.network
 
 import retrofit2.http.*
 import vn.gas.thq.model.*
+import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
@@ -128,6 +129,9 @@ interface ApiService {
 
     @POST("stocks/return")
     suspend fun nhapKho(@Body obj: RequestNhapKho)
+
+    @POST("stocks/sync")
+    suspend fun kiemKeKho(@Body obj: KiemKeRequestModel)
 
     @GET("prices/gas-remain")
     suspend fun gasRemainPrice(): PriceModel

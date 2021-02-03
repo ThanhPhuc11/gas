@@ -16,4 +16,8 @@ class ErrorModel {
     @SerializedName("detail")
     @Expose
     var detail: String? = null
+
+    @SerializedName("instance")
+    @Expose
+    var instance: String? = null
 }

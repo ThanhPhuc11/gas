@@ -452,7 +452,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                 }
             }
             tvName.text = mDetailYCXKData?.staffName
-            tvDate.text = mDetailYCXKData?.createdDate
+            tvDate.text = AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_1,
+                mDetailYCXKData?.createdDate
+            )
+//            tvDate.text = mDetailYCXKData?.createdDate
             tvOrderId.text = "Mã yêu cầu $orderId"
 
             rvProductDialog.layoutManager = linearLayoutManager
