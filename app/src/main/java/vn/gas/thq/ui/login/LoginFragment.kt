@@ -1,7 +1,11 @@
 package vn.gas.thq.ui.login
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
@@ -13,6 +17,7 @@ import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
+
 
 class LoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
@@ -45,12 +50,12 @@ class LoginFragment : BaseFragment() {
                 .get(LoginViewModel::class.java)
     }
 
-    override fun initView() {
-        tvVersion.text = "version: ${BuildConfig.VERSION_NAME}"
-    }
-
     override fun getLayoutId(): Int {
         return R.layout.fragment_login
+    }
+
+    override fun initView() {
+        tvVersion.text = "version: ${BuildConfig.VERSION_NAME}"
     }
 
     override fun initData() {

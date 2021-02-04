@@ -1,17 +1,28 @@
 package vn.gas.thq
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import vn.gas.thq.base.BaseActivity
+import vn.gas.thq.ui.downloadApk.ApkDialog
+import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import vn.gas.thq.ui.login.LoginFragment
 import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
+import java.lang.Exception
+
 
 open class MainActivity : BaseActivity() {
     override lateinit var viewController: ViewController
@@ -42,6 +53,80 @@ open class MainActivity : BaseActivity() {
 //            "Login", LoginFragment.newInstance(), R.id.flContainer, supportFragmentManager
 //        )
         viewController.pushFragment(ScreenId.SCREEN_LOGIN, LoginFragment.newInstance())
+
+        checkPermissions()
+    }
+
+    var permissions = arrayOf<String>(
+        Manifest.permission.INTERNET,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    private fun checkPermissions(): Boolean {
+        var result: Int
+        val listPermissionsNeeded: MutableList<String> = ArrayList()
+        for (p in permissions) {
+            result = ContextCompat.checkSelfPermission(this, p)
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p)
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toTypedArray(), 100)
+            return false
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 100) {
+            if (grantResults.size > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+
+            } else {
+                //PERMISSION_DENIED
+                // do something
+                Toast.makeText(this, "Vui lòng cấp quyền để sử dụng ứng dụng!", Toast.LENGTH_LONG)
+                    .show()
+                finish()
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    var apkD: ApkDialog? = null;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onNeedUpgradeApEvent(event: NeedUpgradeApkEvent?) {
+        if (event!!.mType == NeedUpgradeApkEvent.MOVE_LOGIN_SCREEN) {
+            viewController.onNeedUpgradeApk()
+        } else {
+            if (apkD != null) {
+                try {
+                    apkD!!.dismiss()
+                } catch (e: Exception) {
+                }
+            }
+            apkD = ApkDialog(this, "", event.url)
+            apkD!!.show()
+        }
     }
 
     override fun onBackPressed() {

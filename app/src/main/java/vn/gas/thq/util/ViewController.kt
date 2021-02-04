@@ -2,6 +2,7 @@ package vn.gas.thq.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import vn.gas.thq.ui.login.LoginFragment
 import vn.hongha.ga.R
 
 class ViewController(var flContainer: Int, var fragmentManager: FragmentManager?) {
@@ -37,6 +38,17 @@ class ViewController(var flContainer: Int, var fragmentManager: FragmentManager?
             val fragmentTag =
                 fragmentManager?.getBackStackEntryAt(fragmentManager?.backStackEntryCount!! - 1)?.name
             currentFragment = fragmentManager?.findFragmentByTag(fragmentTag)
+        }
+    }
+
+    // cho ve man hinh login de thuc hien nang cap phien ban
+    fun onNeedUpgradeApk() {
+        if (fragmentManager?.backStackEntryCount!! > 0) {
+            val fragmentTag = fragmentManager?.getBackStackEntryAt(fragmentManager?.backStackEntryCount!! - 1)?.name
+            currentFragment = fragmentManager?.findFragmentByTag(fragmentTag)
+            if(currentFragment !is LoginFragment){
+                pushFragment(ScreenId.SCREEN_LOGIN, LoginFragment.newInstance())
+            }
         }
     }
 
