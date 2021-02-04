@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="LXBH"
+            android:textColor="@color/gray_404A57"
+            android:textSize="@dimen/text_14sp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtLXBH"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/bg_border_nomal"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:text="Chọn LXBH"
+            android:textColor="@color/gray_666E79"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_F1F5F8"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/tvLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:text="LXBH"
+                android:textColor="@color/black_2E353F"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLabel2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:text="Tuyến xe"
+                android:textColor="@color/black_2E353F"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabel1" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:text="Không có thông tin"
+                android:textColor="@color/black_2E353F"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/tvLabel2"
+                app:layout_constraintTop_toTopOf="@id/tvLabel1" />
+
+            <TextView
+                android:id="@+id/tvTuyen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:textColor="@color/black_2E353F"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/tvLabel2"
+                app:layout_constraintTop_toTopOf="@id/tvLabel2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/textStyleHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="5dp"
+            android:text="Chọn sản phẩm"
+            android:textColor="@color/blue_2C5181" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRequestItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="9dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:text="Xem phiếu nhập kho"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_13sp"
+                    app:drawableStartCompat="@drawable/ic_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:text="Download PDF"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_13sp"
+                    app:drawableStartCompat="@drawable/ic_down_pdf"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:background="@drawable/bg_border_login"
+                android:text="Nhập kho"
+                android:textAllCaps="true"
+                android:textColor="@color/white_ffffff" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

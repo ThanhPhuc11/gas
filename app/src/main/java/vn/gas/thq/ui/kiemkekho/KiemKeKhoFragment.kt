@@ -15,15 +15,19 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
 
-class KiemKeKhoFragment : BaseFragment() {
+class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
     private lateinit var viewModel: KiemKeKhoViewModel
     private lateinit var productAdapter: KKKhoItemAdapter
     private var alertDialog: AlertDialog? = null
-    var mList = mutableListOf<ProductModel>()
+    private var mOldList = mutableListOf<ProductModel>()
+    private var mNewList = mutableListOf<ProductModel>()
+    private lateinit var kiemKeRequestModel: KiemKeRequestModel
 
     companion object {
         @JvmStatic
@@ -65,11 +69,38 @@ class KiemKeKhoFragment : BaseFragment() {
 
     override fun initObserver() {
         viewModel.mLiveData.observe(viewLifecycleOwner, {
-            mList.clear()
+            mOldList.clear()
+            mNewList.clear()
             it.forEach {
-                mList.add(ProductModel(it.productName, it.productCode, "", "", it.currentQuantity, it.unit))
+                mOldList.add(
+                    ProductModel(
+                        it.productName,
+                        it.productCode,
+                        "",
+                        "",
+                        it.currentQuantity,
+                        it.unit
+                    )
+                )
+                mNewList.add(
+                    ProductModel(
+                        it.productName,
+                        it.productCode,
+                        "",
+                        "",
+                        0,
+                        it.unit
+                    )
+                )
             }
             productAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.callbackKiemKeKho.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+                viewModel.getDataFromCode("admin", "admin")
+            }
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -90,14 +121,15 @@ class KiemKeKhoFragment : BaseFragment() {
     }
 
     override fun initData() {
-        viewModel.getDataFromCode("admin", null)
+        viewModel.getDataFromCode("admin", "admin")
         tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
         initRecyclerView()
         btnKiemKe.setOnClickListener(this::onSubmit)
     }
 
     private fun initRecyclerView() {
-        productAdapter = context?.let { KKKhoItemAdapter(mList, it) }!!
+        productAdapter = context?.let { KKKhoItemAdapter(mOldList, it) }!!
+        productAdapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvKho.layoutManager = linearLayoutManager
@@ -130,5 +162,33 @@ class KiemKeKhoFragment : BaseFragment() {
 
     private fun onSubmit(view: View) {
 //        viewModel.getDataFromShop()
+        CommonUtils.showConfirmDiglog2Button(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn kiểm kê?", getString(
+                R.string.biometric_negative_button_text
+            ), getString(R.string.text_ok)
+        ) {
+            if (it == AppConstants.YES) {
+                kiemKeRequestModel = KiemKeRequestModel()
+                kiemKeRequestModel.shopCode = "admin"
+                mOldList.forEach {
+                    kiemKeRequestModel.originalStock.add(ProductNhapKhoModel().apply {
+                        productCode = it.code
+                        amount = it.quantity
+                    })
+                }
+
+                mNewList.forEach {
+                    kiemKeRequestModel.newStock.add(ProductNhapKhoModel().apply {
+                        productCode = it.code
+                        amount = it.quantity
+                    })
+                }
+                viewModel.kiemKeKho(kiemKeRequestModel)
+            }
+        }
+    }
+
+    override fun onItemSLChanged(position: Int, count: Int) {
+        mNewList[position].quantity = count
     }
 }

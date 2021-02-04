@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="vn.gas.thq.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

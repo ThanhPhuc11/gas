@@ -52,12 +52,12 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
+    abstract fun getLayoutId(): Int
     abstract fun setViewController()
     abstract fun setupViewModel()
     abstract fun initView()
-    abstract fun getLayoutId(): Int
-    abstract fun initObserver()
     abstract fun initData()
+    abstract fun initObserver()
 
     open fun hideKeyboard() {
         if (mActivity != null) {

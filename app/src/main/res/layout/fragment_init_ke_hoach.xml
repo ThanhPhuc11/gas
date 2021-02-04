@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_border_body"
+        android:orientation="vertical"
+        android:paddingHorizontal="7dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trạm"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+
+            <TextView
+                android:id="@+id/tvTram"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tuyến bán hàng"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+
+            <TextView
+                android:id="@+id/tvTuyenBH"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nhân viên lái xe"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+
+            <TextView
+                android:id="@+id/tvStaff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ngày bán"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+
+            <TextView
+                android:id="@+id/tvPlanTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Danh sách Khách hàng"
+        android:textColor="@color/blue_2C5181"
+        android:textSize="@dimen/text_14sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvKeHoach"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvAddKeHoach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:text="Thêm mới Khách hàng"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_13sp"
+                app:drawableStartCompat="@drawable/ic_add"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:drawablePadding="5dp"-->
+            <!--                android:text="Download PDF"-->
+            <!--                android:textColor="@color/blue_2C5181"-->
+            <!--                android:textSize="@dimen/text_13sp"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:drawableStartCompat="@drawable/ic_down_pdf"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:background="@drawable/bg_border_login"
+            android:text="Tạo KH bán hàng"
+            android:textAllCaps="true"
+            android:textColor="@color/white_ffffff" />
+    </LinearLayout>
+
+</LinearLayout>

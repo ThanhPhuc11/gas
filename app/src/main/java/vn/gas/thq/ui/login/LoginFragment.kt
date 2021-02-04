@@ -11,6 +11,7 @@ import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.LoginRetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
+import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
@@ -45,7 +46,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        tvVersion.text = "version: ${BuildConfig.VERSION_NAME}"
     }
 
     override fun getLayoutId(): Int {

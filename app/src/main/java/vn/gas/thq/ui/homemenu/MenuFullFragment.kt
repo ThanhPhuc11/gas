@@ -8,8 +8,10 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.home.MenuModel
+import vn.gas.thq.ui.kehoachbh.LapKeHoachBHFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
+import vn.gas.thq.ui.nhapkho.NhapKhoFragment
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
@@ -91,47 +93,56 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
 
     private fun initMenuData() {
         val mList = mutableListOf<MenuModel>()
-        mList.add(MenuModel(0, "Bán lẻ", R.drawable.ic_menu_1))
-        mList.add(MenuModel(1, "Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
-        mList.add(MenuModel(2, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
-        mList.add(MenuModel(3, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel(4, "Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
-        mList.add(MenuModel(5, "Xem kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel(6, "Kiểm kê kho", R.drawable.ic_menu_4))
-        mList.add(MenuModel(7, "Nhập kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(1, "Bán lẻ", R.drawable.ic_menu_1))
+        mList.add(MenuModel(2, "Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
+        mList.add(MenuModel(3, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
+        mList.add(MenuModel(4, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(5, "Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
+        mList.add(MenuModel(6, "Xem kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(7, "Kiểm kê kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(8, "Nhập kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(9, "Lập kế hoạch\nbán hàng", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
     }
 
     override fun onItemTopClick(view: View?, id: Int) {
         when (id) {
-            0 -> viewController?.pushFragment(
+            1 -> viewController?.pushFragment(
                 ScreenId.SCREEN_RETAIL_CONTAINER,
                 RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
             )
-            1 -> viewController?.pushFragment(
+            2 -> viewController?.pushFragment(
                 ScreenId.SCREEN_PHE_DUYET_GIA,
                 PheDuyetGiaFragment.newInstance()
             )
-            2 -> viewController?.pushFragment(
+            3 -> viewController?.pushFragment(
                 ScreenId.SCREEN_LAP_YC_XUAT_KHO,
                 LapYCXuatKhoFragment.newInstance()
             )
-            3 -> viewController?.pushFragment(
+            4 -> viewController?.pushFragment(
                 ScreenId.SCREEN_THU_KHO,
                 ThuKhoXuatKhoFragment.newInstance()
             )
-            4 -> viewController?.pushFragment(
+            5 -> viewController?.pushFragment(
                 ScreenId.SCREEN_QLYC_CA_NHAN,
                 QLYCCaNhanFragment.newInstance(ScreenId.HOME_SCREEN)
             )
-            5 -> viewController?.pushFragment(
+            6 -> viewController?.pushFragment(
                 ScreenId.SCREEN_XEM_KHO,
                 XemKhoFragment.newInstance()
             )
-            6 -> viewController?.pushFragment(
+            7 -> viewController?.pushFragment(
                 ScreenId.SCREEN_KIEM_KE_KHO,
                 KiemKeKhoFragment.newInstance()
+            )
+            8 -> viewController?.pushFragment(
+                ScreenId.SCREEN_NHAP_KHO,
+                NhapKhoFragment.newInstance()
+            )
+            9 -> viewController?.pushFragment(
+                ScreenId.SCREEN_LAP_KE_HOACH,
+                LapKeHoachBHFragment.newInstance()
             )
         }
     }

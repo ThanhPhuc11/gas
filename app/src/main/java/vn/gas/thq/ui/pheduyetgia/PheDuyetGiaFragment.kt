@@ -353,7 +353,12 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
         tvNameLXBH.text = staffName
         tvNameCust.text = mDetailRetailData?.customerName
-        tvDate.text = createDate
+//        tvDate.text = createDate
+        tvDate.text = AppDateUtils.changeDateFormat(
+            AppDateUtils.FORMAT_6,
+            AppDateUtils.FORMAT_1,
+            createDate
+        )
         tvStatus.text = "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}"
         listStatusOrderSale.forEach {
             if (it.value == "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}") {

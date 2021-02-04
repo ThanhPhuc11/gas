@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.kiemkekho
+package vn.gas.thq.ui.kehoachbh
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,50 +9,48 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
-import vn.gas.thq.model.ProductShopModel
+import vn.gas.thq.ui.retail.Customer
 
-class KiemKeKhoViewModel(
-    private val kiemKeRepository: KiemKeKhoRepository
-) :
+class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepository) :
     BaseViewModel() {
+    val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
+    val callbackKHBH = MutableLiveData<Unit>()
 
-    val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
-    val callbackKiemKeKho = MutableLiveData<Unit>()
-
-    fun getDataFromCode(shop_code: String?, staff_code: String?) {
+    fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            kiemKeRepository.getDataFromCode(shop_code, staff_code)
+            lapKeHoachBHRepository.onGetListCustomer(lat, lng)
                 .onStart {
                     callbackStart.value = Unit
                 }
                 .onCompletion {
+
                 }
                 .catch {
                     handleError(it)
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<ProductShopModel>
+                    mLiveDataCustomer.value = it as MutableList<Customer>
                 }
         }
     }
 
-    fun kiemKeKho(obj: KiemKeRequestModel) {
+    fun lapKeHoachBH(obj: RequestKeHoachModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            kiemKeRepository.kiemKeKho(obj)
+            lapKeHoachBHRepository.lapKeHoachBH(obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
                 .onCompletion {
+
                 }
                 .catch {
                     handleError(it)
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackKiemKeKho.value = Unit
+                    callbackKHBH.value = Unit
                 }
         }
     }
-
 }

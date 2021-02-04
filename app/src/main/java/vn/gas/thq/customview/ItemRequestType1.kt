@@ -83,4 +83,8 @@ class ItemRequestType1 : CardView {
     fun setTenKH(custName: String?) {
         tvCustName.text = custName ?: "- -"
     }
+
+    fun setOrderId(orderId: String?) {
+        tvOrderId.text = orderId ?: "- -"
+    }
 }
