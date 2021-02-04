@@ -2,6 +2,7 @@ package vn.gas.thq.network
 
 import retrofit2.http.*
 import vn.gas.thq.model.*
+import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
@@ -135,5 +136,9 @@ interface ApiService {
 
     @GET("prices/gas-remain")
     suspend fun gasRemainPrice(): PriceModel
+
+    //Lap KH ban hang
+    @POST("sale-plans")
+    suspend fun lapKeHoachBH(@Body obj: RequestKeHoachModel)
 
 }

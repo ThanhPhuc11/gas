@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.ui.home.MenuModel
+import vn.gas.thq.ui.kehoachbh.LapKeHoachBHFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.nhapkho.NhapKhoFragment
@@ -100,6 +101,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(6, "Xem kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(7, "Kiểm kê kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(8, "Nhập kho", R.drawable.ic_menu_4))
+        mList.add(MenuModel(9, "Lập kế hoạch\nbán hàng", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
     }
@@ -137,6 +139,10 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
             8 -> viewController?.pushFragment(
                 ScreenId.SCREEN_NHAP_KHO,
                 NhapKhoFragment.newInstance()
+            )
+            9 -> viewController?.pushFragment(
+                ScreenId.SCREEN_LAP_KE_HOACH,
+                LapKeHoachBHFragment.newInstance()
             )
         }
     }

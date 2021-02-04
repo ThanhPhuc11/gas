@@ -51,6 +51,7 @@ object RetrofitBuilder {
                         "client_secret",
                         "NFPZ8S7U9UJCOEM3TPHTWAC37I1DAL8DHLSDGCL94J0OR3D18FKHKX11CGX5WS8V"
                     )
+                    .addHeader("client_version", BuildConfig.VERSION_NAME)
                     .build()
                 chain.proceed(request)
             })
