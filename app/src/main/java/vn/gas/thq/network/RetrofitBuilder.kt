@@ -1,13 +1,18 @@
 package vn.gas.thq.network
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.TokenModel
+import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
 import java.io.IOException
@@ -41,8 +46,11 @@ object RetrofitBuilder {
             token = tokenModel.accessToken
         }
         if (retrofit == null) {
-            httpClientBuilder = OkHttpClient.Builder().readTimeout(5, TimeUnit.SECONDS)
-            httpClientBuilder?.addInterceptor(Interceptor { chain: Interceptor.Chain ->
+            httpClientBuilder = OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+            httpClientBuilder?.addNetworkInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .addHeader("Accept", "application/json")
@@ -52,9 +60,11 @@ object RetrofitBuilder {
                         "NFPZ8S7U9UJCOEM3TPHTWAC37I1DAL8DHLSDGCL94J0OR3D18FKHKX11CGX5WS8V"
                     )
                     .addHeader("client_version", BuildConfig.VERSION_NAME)
+                    .addHeader("app_version", "" + BuildConfig.VERSION_CODE)
                     .build()
                 chain.proceed(request)
             })
+            httpClientBuilder?.addInterceptor(OAuthInterceptor())
             initHttpLogging()
             initSSL(context)
             val builder = Retrofit.Builder()
@@ -64,6 +74,20 @@ object RetrofitBuilder {
             retrofit = builder.build()
         }
         return retrofit
+    }
+
+    class OAuthInterceptor : Interceptor {
+        @kotlin.jvm.Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val response = chain.proceed(chain.request())
+            if (response.code == 426) { // client_need_upgrade -> co phien ban moi can phai nang cap
+                Handler(Looper.getMainLooper()).post(Runnable {
+                    EventBus.getDefault()
+                        .post(NeedUpgradeApkEvent(NeedUpgradeApkEvent.MOVE_LOGIN_SCREEN, ""))
+                })
+            }
+            return response
+        }
     }
 
     private fun initHttpLogging() {

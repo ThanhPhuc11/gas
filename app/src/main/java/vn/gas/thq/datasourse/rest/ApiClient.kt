@@ -27,7 +27,7 @@ object ApiClient {
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .addHeader("Content-Type", "application/json; charset=utf-8")
-//                .addHeader("CommonParams", getCommonParam())
+             //   .addHeader("CommonParams", getCommonParam())
                 .build()
             chain.proceed(request)
         }
