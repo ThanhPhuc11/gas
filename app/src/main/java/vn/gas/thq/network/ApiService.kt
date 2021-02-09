@@ -7,6 +7,7 @@ import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
 
@@ -140,5 +141,17 @@ interface ApiService {
     //Lap KH ban hang
     @POST("sale-plans")
     suspend fun lapKeHoachBH(@Body obj: RequestKeHoachModel)
+
+    @GET("sale-plans")
+    suspend fun getKeHoachBH(
+        @Query("status") status: Int?,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("staff_code") staff_code: String?,
+        @Query("shop_code") shop_code: String?,
+        @Query("sale_line_code") sale_line_code: String?,
+        @Query("offset") offset: Int,
+        @Query("size") size: Int
+    ) : List<KHBHOrderModel>
 
 }

@@ -12,4 +12,8 @@ class ProductNhapKhoModel {
     @SerializedName("amount")
     @Expose
     var amount: Int? = 0
+
+    @SerializedName("price")
+    @Expose
+    var price: Int? = 0
 }

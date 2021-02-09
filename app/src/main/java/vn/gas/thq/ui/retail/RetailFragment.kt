@@ -26,9 +26,7 @@ import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
-import vn.gas.thq.util.AppConstants
-import vn.gas.thq.util.CommonUtils
-import vn.gas.thq.util.ScreenId
+import vn.gas.thq.util.*
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
@@ -183,18 +181,30 @@ class RetailFragment : BaseFragment() {
             btnCongNo45,
             tvTienKhi45
         )
-        edtTienThucTe.addTextChangedListener(afterTextChanged = {
-            tienThucTe = getRealNumberV2(it)
-            totalDebit()
-        })
+        edtTienThucTe.addTextChangedListener(
+            NumberTextWatcher(
+                edtTienThucTe,
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        tienThucTe = getRealNumberV2(it)
+                        totalDebit()
+                    }
+                })
+        )
 
-        edtGasRemain.addTextChangedListener(afterTextChanged = {
-            gasRemain = getRealNumberV2(it)
-            totalGasPrice(
-                getRealNumber(productBanKhi12.getEditTextGia()),
-                getRealNumber(productBanKhi45.getEditTextGia())
-            )
-        })
+        edtGasRemain.addTextChangedListener(
+            NumberTextWatcher(
+                edtGasRemain,
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        gasRemain = getRealNumberV2(it)
+                        totalGasPrice(
+                            getRealNumber(productBanKhi12.getEditTextGia()),
+                            getRealNumber(productBanKhi45.getEditTextGia())
+                        )
+                    }
+                })
+        )
 
         fillData(transferRetailModel)
     }
@@ -421,20 +431,40 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
-        bankhi.getEditTextGia().addTextChangedListener(afterTextChanged = {
-            val slBanKhi = getRealNumber(bankhi.getEditTextSL())
-            val giaBanKhi = getRealNumberV2(it)
-            tienKhiBan.text =
-                "${CommonUtils.priceWithoutDecimal((slBanKhi * giaBanKhi).toDouble())} đ"
+//        bankhi.getEditTextGia().addTextChangedListener(afterTextChanged = {
+//            val slBanKhi = getRealNumber(bankhi.getEditTextSL())
+//            val giaBanKhi = getRealNumberV2(it)
+//            tienKhiBan.text =
+//                "${CommonUtils.priceWithoutDecimal((slBanKhi * giaBanKhi).toDouble())} đ"
+//
+//            if (tienKhiBan == tvTienKhi12) {
+//                tienKhiBan12 = slBanKhi * giaBanKhi
+//            } else {
+//                tienKhiBan45 = slBanKhi * giaBanKhi
+//            }
+//            totalMustPay()
+//            totalDebit()
+//        })
 
-            if (tienKhiBan == tvTienKhi12) {
-                tienKhiBan12 = slBanKhi * giaBanKhi
-            } else {
-                tienKhiBan45 = slBanKhi * giaBanKhi
-            }
-            totalMustPay()
-            totalDebit()
-        })
+        bankhi.getEditTextGia().addTextChangedListener(
+            NumberTextWatcher(bankhi.getEditTextGia(), object : CallBackChange {
+                override fun afterEditTextChange(it: Editable?) {
+                    val slBanKhi = getRealNumber(bankhi.getEditTextSL())
+                    val giaBanKhi = getRealNumberV2(it)
+                    tienKhiBan.text =
+                        "${CommonUtils.priceWithoutDecimal((slBanKhi * giaBanKhi).toDouble())} đ"
+
+                    if (tienKhiBan == tvTienKhi12) {
+                        tienKhiBan12 = slBanKhi * giaBanKhi
+                    } else {
+                        tienKhiBan45 = slBanKhi * giaBanKhi
+                    }
+                    totalMustPay()
+                    totalDebit()
+                }
+
+            })
+        )
 
         thuHoiVo.getViewSL().addTextChangedListener(afterTextChanged = {
             val banKhi = getRealNumber(bankhi.getEditTextSL())
@@ -466,24 +496,30 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
-        voBan.getEditTextGia().addTextChangedListener(afterTextChanged = {
-            val giaVoBan = getRealNumberV2(it)
-            val slVoBan = getRealNumber(voBan.getEditTextSL())
+        voBan.getEditTextGia().addTextChangedListener(
+            NumberTextWatcher(
+                voBan.getEditTextGia(),
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        val giaVoBan = getRealNumberV2(it)
+                        val slVoBan = getRealNumber(voBan.getEditTextSL())
 
-            val tienBanVoComponent = slVoBan * giaVoBan
-            if (voBan == productVoBan12) {
-                tienVoBan12 = tienBanVoComponent
-                tvTienBanVo.text =
-                    "${CommonUtils.priceWithoutDecimal((tienVoBan45 + tienBanVoComponent).toDouble())} đ"
-            } else {
-                tienVoBan45 = tienBanVoComponent
-                tvTienBanVo.text =
-                    "${CommonUtils.priceWithoutDecimal((tienVoBan12 + tienBanVoComponent).toDouble())} đ"
-            }
+                        val tienBanVoComponent = slVoBan * giaVoBan
+                        if (voBan == productVoBan12) {
+                            tienVoBan12 = tienBanVoComponent
+                            tvTienBanVo.text =
+                                "${CommonUtils.priceWithoutDecimal((tienVoBan45 + tienBanVoComponent).toDouble())} đ"
+                        } else {
+                            tienVoBan45 = tienBanVoComponent
+                            tvTienBanVo.text =
+                                "${CommonUtils.priceWithoutDecimal((tienVoBan12 + tienBanVoComponent).toDouble())} đ"
+                        }
 
-            totalMustPay()
-            totalDebit()
-        })
+                        totalMustPay()
+                        totalDebit()
+                    }
+                })
+        )
 
         voMua.getEditTextSL().addTextChangedListener(afterTextChanged = {
             val slVoMua = getRealNumberV2(it)
@@ -513,33 +549,39 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
-        voMua.getEditTextGia().addTextChangedListener(afterTextChanged = {
-            val slVoMua = getRealNumber(voMua.getEditTextSL())
-            val giaVoMua = getRealNumberV2(it)
-            val tienMuaVoComponent = slVoMua * giaVoMua
+        voMua.getEditTextGia().addTextChangedListener(
+            NumberTextWatcher(
+                voMua.getEditTextGia(),
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        val slVoMua = getRealNumber(voMua.getEditTextSL())
+                        val giaVoMua = getRealNumberV2(it)
+                        val tienMuaVoComponent = slVoMua * giaVoMua
 
-            if (voMua == productVoMua12) {
-                tienVoMua12 = tienMuaVoComponent
-                if (tienVoMua45 + tienMuaVoComponent == 0) {
-                    tvTienMuaVo.text =
-                        "0 đ"
-                } else {
-                    tvTienMuaVo.text =
-                        "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
-                }
-            } else {
-                tienVoMua45 = tienMuaVoComponent
-                if (tienVoMua12 + tienMuaVoComponent == 0) {
-                    tvTienMuaVo.text = "0 đ"
-                } else {
-                    tvTienMuaVo.text =
-                        "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
-                }
-            }
+                        if (voMua == productVoMua12) {
+                            tienVoMua12 = tienMuaVoComponent
+                            if (tienVoMua45 + tienMuaVoComponent == 0) {
+                                tvTienMuaVo.text =
+                                    "0 đ"
+                            } else {
+                                tvTienMuaVo.text =
+                                    "-${CommonUtils.priceWithoutDecimal((tienVoMua45 + tienMuaVoComponent).toDouble())} đ"
+                            }
+                        } else {
+                            tienVoMua45 = tienMuaVoComponent
+                            if (tienVoMua12 + tienMuaVoComponent == 0) {
+                                tvTienMuaVo.text = "0 đ"
+                            } else {
+                                tvTienMuaVo.text =
+                                    "-${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienMuaVoComponent).toDouble())} đ"
+                            }
+                        }
 
-            totalMustPay()
-            totalDebit()
-        })
+                        totalMustPay()
+                        totalDebit()
+                    }
+                })
+        )
     }
 
     private fun totalMustPay() {

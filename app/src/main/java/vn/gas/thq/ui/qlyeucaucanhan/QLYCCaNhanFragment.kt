@@ -114,7 +114,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun initView() {
-        tvTitle.text = "Quản lý yêu cầu"
+        tvTitle.text = "Quản lý đơn hàng"
         imgBack.setOnClickListener {
             viewController?.popFragment()
         }

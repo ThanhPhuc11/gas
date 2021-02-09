@@ -54,6 +54,11 @@ class DSKeHoachAdapter(
         var edtQuantityTank12: EditText = itemView.findViewById(R.id.edtQuantityTank12)
         var edtQuantityTank45: EditText = itemView.findViewById(R.id.edtQuantityTank45)
 
+        var edtPriceGas12: EditText = itemView.findViewById(R.id.edtPriceGas12)
+        var edtPriceGas45: EditText = itemView.findViewById(R.id.edtPriceGas45)
+        var edtPriceTank12: EditText = itemView.findViewById(R.id.edtPriceTank12)
+        var edtPriceTank45: EditText = itemView.findViewById(R.id.edtPriceTank45)
+
         init {
             edtLXBH.setOnClickListener(this)
             edtTanSuat.addTextChangedListener(afterTextChanged = {
@@ -90,6 +95,35 @@ class DSKeHoachAdapter(
                     if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
                 )
             })
+
+            edtPriceGas12.addTextChangedListener(afterTextChanged = {
+                mClickListener?.onItemCodePrice(
+                    adapterPosition,
+                    "GAS12",
+                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                )
+            })
+            edtPriceGas45.addTextChangedListener(afterTextChanged = {
+                mClickListener?.onItemCodePrice(
+                    adapterPosition,
+                    "GAS45",
+                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                )
+            })
+            edtPriceTank12.addTextChangedListener(afterTextChanged = {
+                mClickListener?.onItemCodePrice(
+                    adapterPosition,
+                    "TANK12",
+                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                )
+            })
+            edtPriceTank45.addTextChangedListener(afterTextChanged = {
+                mClickListener?.onItemCodePrice(
+                    adapterPosition,
+                    "TANK45",
+                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                )
+            })
         }
 
         override fun onClick(p0: View?) {
@@ -105,5 +139,6 @@ class DSKeHoachAdapter(
         fun onItemClick(position: Int)
         fun onItemChange(position: Int, count: Int)
         fun onItemCodeQuantity(position: Int, code: String, quantity: Int)
+        fun onItemCodePrice(position: Int, code: String, price: Int)
     }
 }

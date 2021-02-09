@@ -414,7 +414,7 @@ public final class CommonUtils {
     }
 
     public static int getIntFromStringDecimal(String decimal) {
-        String num = decimal.replace(",", "");
+        String num = decimal.replace(",", "").replace(".", "");
         return Integer.parseInt(num);
     }
 
