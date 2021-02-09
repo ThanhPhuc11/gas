@@ -90,18 +90,22 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         keHoachModel.item.add(ProductNhapKhoModel().apply {
             productCode = "GAS12"
             amount = 0
+            price = 0
         })
         keHoachModel.item.add(ProductNhapKhoModel().apply {
             productCode = "GAS45"
             amount = 0
+            price = 0
         })
         keHoachModel.item.add(ProductNhapKhoModel().apply {
             productCode = "TANK12"
             amount = 0
+            price = 0
         })
         keHoachModel.item.add(ProductNhapKhoModel().apply {
             productCode = "TANK45"
             amount = 0
+            price = 0
         })
         listKHBH.add(keHoachModel)
         adapter.notifyDataSetChanged()
@@ -208,6 +212,10 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
 
     override fun onItemCodeQuantity(position: Int, code: String, quantity: Int) {
         listKHBH[position].item.first { it.productCode == code }.amount = quantity
+    }
+
+    override fun onItemCodePrice(position: Int, code: String, price: Int) {
+        listKHBH[position].item.first { it.productCode == code }.price = price
     }
 
     private fun chooseCustomer(position: Int) {

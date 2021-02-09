@@ -24,7 +24,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="Loại yêu cầu"
+                android:text="Trạm"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="Chọn trạm"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Tuyến bán hàng"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="Chọn tuyến bán hàng"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Nhân viên lái xe"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
 
@@ -37,7 +79,7 @@
                 android:focusable="false"
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
-                android:text="@string/all"
+                android:text="Chọn nhân viên lái xe"
                 android:textColor="@color/gray_666E79"
                 android:textSize="14sp" />
 
@@ -164,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Danh sách đơn hàng"
+                android:text="Danh sách yêu cầu"
                 android:textColor="@color/blue_2C5181"
                 android:textSize="14sp"
                 android:textStyle="bold" />

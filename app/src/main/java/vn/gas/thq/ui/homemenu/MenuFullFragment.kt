@@ -14,6 +14,7 @@ import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.nhapkho.NhapKhoFragment
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
+import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
@@ -102,6 +103,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(7, "Kiểm kê kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(8, "Nhập kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(9, "Lập kế hoạch\nbán hàng", R.drawable.ic_menu_4))
+        mList.add(MenuModel(10, "Quản lý yêu cầu\nkế hoạch bán hàng", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
     }
@@ -143,6 +145,10 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
             9 -> viewController?.pushFragment(
                 ScreenId.SCREEN_LAP_KE_HOACH,
                 LapKeHoachBHFragment.newInstance()
+            )
+            10 -> viewController?.pushFragment(
+                ScreenId.SCREEN_QLYC_KE_HOACH,
+                QLYCKeHoachFragment.newInstance()
             )
         }
     }
