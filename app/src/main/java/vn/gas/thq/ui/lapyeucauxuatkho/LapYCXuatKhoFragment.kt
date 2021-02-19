@@ -112,7 +112,7 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
     private fun getInfo() {
         val userModel = AppPreferencesHelper(context).userModel
         tvName.text = userModel?.name
-        tvTuyen.text = userModel?.email
+        tvTuyen.text = userModel?.saleLineName
     }
 
     private fun onSubmitData(view: View) {

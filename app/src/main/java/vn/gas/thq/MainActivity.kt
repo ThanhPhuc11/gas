@@ -164,6 +164,7 @@ open class MainActivity : BaseActivity() {
                 val y: Float = event.rawY + v.top - sourceCoordinates[1]
                 if (x < v.left || x > v.right || y < v.top || y > v.bottom) {
                     hideKeyboard()
+                    v.clearFocus()
                 }
             }
         }

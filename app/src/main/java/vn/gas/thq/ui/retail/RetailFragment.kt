@@ -18,9 +18,9 @@ import kotlinx.android.synthetic.main.fragment_retail.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
-import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
@@ -53,8 +53,10 @@ class RetailFragment : BaseFragment() {
     private var tienThucTe = 0
     private var gasRemain = 0
     private var gasPrice = 0
-//    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
+
+    //    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
 //    private var banKhi45 = productBanKhi45.getEditTextSL().text.toString()
+    private lateinit var suggestAdapter: CustomArrayAdapter
 
     companion object {
         @JvmStatic
@@ -165,6 +167,14 @@ class RetailFragment : BaseFragment() {
         tvLabelBanKhi.setOnClickListener { this.expand(tvLabelBanKhi, linearBanKhi) }
         tvLabelCongNoKH.setOnClickListener { this.expand(tvLabelCongNoKH, linearCongNoKH) }
 
+        //        mList.add("34");
+//        mList.add("340");
+//        mList.add("3400");
+
+//        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
+
+
         handleBanKhiChange(
             productBanKhi12,
             productVoThuHoi12,
@@ -184,6 +194,7 @@ class RetailFragment : BaseFragment() {
         edtTienThucTe.addTextChangedListener(
             NumberTextWatcher(
                 edtTienThucTe,
+                suggestAdapter,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
                         tienThucTe = getRealNumberV2(it)
@@ -192,9 +203,18 @@ class RetailFragment : BaseFragment() {
                 })
         )
 
+//        edtTienThucTe.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus) {
+//                edtTienThucTe.setText("${edtTienThucTe.text}000")
+//            }
+//        }
+
+        edtTienThucTe.setAdapter(suggestAdapter)
+
         edtGasRemain.addTextChangedListener(
             NumberTextWatcher(
                 edtGasRemain,
+                suggestAdapter,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
                         gasRemain = getRealNumberV2(it)
@@ -446,8 +466,9 @@ class RetailFragment : BaseFragment() {
 //            totalDebit()
 //        })
 
+        bankhi.getEditTextGia().setAdapter(suggestAdapter)
         bankhi.getEditTextGia().addTextChangedListener(
-            NumberTextWatcher(bankhi.getEditTextGia(), object : CallBackChange {
+            NumberTextWatcher(bankhi.getEditTextGia(), suggestAdapter, object : CallBackChange {
                 override fun afterEditTextChange(it: Editable?) {
                     val slBanKhi = getRealNumber(bankhi.getEditTextSL())
                     val giaBanKhi = getRealNumberV2(it)
@@ -496,9 +517,11 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
+        voBan.getEditTextGia().setAdapter(suggestAdapter)
         voBan.getEditTextGia().addTextChangedListener(
             NumberTextWatcher(
                 voBan.getEditTextGia(),
+                suggestAdapter,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
                         val giaVoBan = getRealNumberV2(it)
@@ -549,9 +572,11 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
+        voMua.getEditTextGia().setAdapter(suggestAdapter)
         voMua.getEditTextGia().addTextChangedListener(
             NumberTextWatcher(
                 voMua.getEditTextGia(),
+                suggestAdapter,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
                         val slVoMua = getRealNumber(voMua.getEditTextSL())
