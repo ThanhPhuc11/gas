@@ -797,12 +797,13 @@
                             android:textColor="@color/blue_3D4E63"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/edtTienThucTe"
                             android:layout_width="160dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="20dp"
                             android:background="@drawable/bg_border_nomal_1"
+                            android:completionThreshold="1"
                             android:inputType="number"
                             android:maxLength="9"
                             android:text="0"

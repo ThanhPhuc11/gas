@@ -103,7 +103,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(7, "Kiểm kê kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(8, "Nhập kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(9, "Lập kế hoạch\nbán hàng", R.drawable.ic_menu_4))
-        mList.add(MenuModel(10, "Quản lý yêu cầu\nkế hoạch bán hàng", R.drawable.ic_menu_4))
+        mList.add(MenuModel(10, "Quản lý\n kế hoạch\n bán hàng", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
     }

@@ -5,7 +5,9 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.cardview.widget.CardView
 import vn.hongha.ga.R
 import kotlinx.android.synthetic.main.item_product_type_1.view.*
@@ -62,7 +64,7 @@ class ItemProductType1 : CardView {
         return edtAmount
     }
 
-    fun getEditTextGia(): EditText {
+    fun getEditTextGia(): AppCompatAutoCompleteTextView {
         return edtPrice
     }
 }

@@ -9,6 +9,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Locale;
 
+import vn.gas.thq.customview.CustomArrayAdapter;
+
 public class NumberTextWatcher implements TextWatcher {
 
     private DecimalFormat df;
@@ -17,14 +19,16 @@ public class NumberTextWatcher implements TextWatcher {
     private CallBackChange callBackChange;
 
     private EditText et;
+    private CustomArrayAdapter suggestAdapter;
 
-    public NumberTextWatcher(EditText et, CallBackChange callBackChange) {
-        df = new DecimalFormat("#,###.##", new DecimalFormatSymbols(Locale.CHINA));
+    public NumberTextWatcher(EditText et, CustomArrayAdapter adapter, CallBackChange callBackChange) {
+        df = new DecimalFormat("#,###.##", new DecimalFormatSymbols(Locale.GERMAN));
         df.setDecimalSeparatorAlwaysShown(true);
-        dfnd = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.CHINA));
+        dfnd = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.GERMAN));
         this.et = et;
         hasFractionalPart = false;
         this.callBackChange = callBackChange;
+        this.suggestAdapter = adapter;
     }
 
     @SuppressWarnings("unused")
@@ -38,12 +42,16 @@ public class NumberTextWatcher implements TextWatcher {
             inilen = et.getText().length();
 
             String v = s.toString().replace(String.valueOf(df.getDecimalFormatSymbols().getGroupingSeparator()), "");
+            String vSuggest = v + "000";
             Number n = df.parse(v);
+            Number nSuggest = df.parse(vSuggest);
             int cp = et.getSelectionStart();
             if (hasFractionalPart) {
                 et.setText(df.format(n));
+                suggestAdapter.add(df.format(nSuggest));
             } else {
                 et.setText(dfnd.format(n));
+                suggestAdapter.add(dfnd.format(nSuggest));
             }
             endlen = et.getText().length();
             int sel = (cp + (endlen - inilen));
@@ -64,6 +72,7 @@ public class NumberTextWatcher implements TextWatcher {
     }
 
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        suggestAdapter.clear();
     }
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {

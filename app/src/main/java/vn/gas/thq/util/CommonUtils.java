@@ -37,7 +37,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -407,9 +409,9 @@ public final class CommonUtils {
 //    }
 
     public static String priceWithoutDecimal(Double price) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##", new DecimalFormatSymbols(Locale.GERMAN));
         String num = formatter.format(price);
-        num = num.replace(".", ",");
+//        num = num.replace(".", ",");
         return num;
     }
 

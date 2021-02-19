@@ -73,6 +73,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
     override fun initData() {
         val user = AppPreferencesHelper(context).userModel
         tvStaff.text = user.name
+        tvTuyenBH.text = user.saleLineName
         tvPlanTime.text = AppDateUtils.getCurrentDate()
         viewModel.onGetListCustomer("21", "105")
         initRecyclerView()

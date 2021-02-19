@@ -323,6 +323,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val imgClose: ImageView = dialogView.findViewById(R.id.imgClose)
 
         val tvNameLXBH: TextView = dialogView.findViewById(R.id.tvNameLXBH)
+        val tvTuyenXe: TextView = dialogView.findViewById(R.id.tvTuyenXe)
         val tvNameCust: TextView = dialogView.findViewById(R.id.tvNameCust)
         val tvStatus: TextView = dialogView.findViewById(R.id.tvStatus)
         val tvDate: TextView = dialogView.findViewById(R.id.tvDate)
@@ -352,6 +353,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val btnTuChoi: Button = dialogView.findViewById(R.id.btnTuChoi)
 
         tvNameLXBH.text = staffName
+//        tvTuyenXe.text =
         tvNameCust.text = mDetailRetailData?.customerName
 //        tvDate.text = createDate
         tvDate.text = AppDateUtils.changeDateFormat(

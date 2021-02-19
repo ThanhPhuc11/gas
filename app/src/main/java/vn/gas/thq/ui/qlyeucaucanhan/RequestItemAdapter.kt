@@ -30,7 +30,9 @@ class RequestItemAdapter(
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val obj: BussinesRequestModel = mList[position]
 
-        holder.itemRequestType1.setOrderId(obj.order_id?.toString())
+        if (obj.order_id != null)
+            holder.itemRequestType1.setOrderId(obj.order_id.toString())
+        else holder.itemRequestType1.setOrderId(obj.stock_trans_id?.toString())
 
         if (obj.approve_status == null) {
             holder.itemRequestType1.isVisibleKH(false)
