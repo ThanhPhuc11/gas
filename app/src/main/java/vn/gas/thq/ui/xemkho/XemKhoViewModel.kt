@@ -20,10 +20,11 @@ class XemKhoViewModel(
     BaseViewModel() {
 
     val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
+    val listKho = MutableLiveData<MutableList<KhoModel>>()
 
-    fun getDataFromShop() {
+    fun getDataFromShop(shop_code: String?, staff_code: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            xemKhoRepository.getDataFromShop()
+            xemKhoRepository.getDataFromShop(shop_code, staff_code)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -35,6 +36,24 @@ class XemKhoViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveData.value = it as MutableList<ProductShopModel>
+                }
+        }
+    }
+
+    fun getListKho() {
+        viewModelScope.launch(Dispatchers.Main) {
+            xemKhoRepository.getDSKho()
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    listKho.value = it as MutableList
                 }
         }
     }

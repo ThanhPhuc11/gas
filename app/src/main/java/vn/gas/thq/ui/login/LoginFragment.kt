@@ -60,7 +60,6 @@ class LoginFragment : BaseFragment() {
 
     override fun initData() {
         btnLogin.setOnClickListener {
-            showLoading()
             viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
         }
     }

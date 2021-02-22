@@ -1,20 +1,30 @@
 package vn.gas.thq.ui.retail
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_retail.*
+import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
@@ -54,9 +64,20 @@ class RetailFragment : BaseFragment() {
     private var gasRemain = 0
     private var gasPrice = 0
 
+    private var hinhThucChuyenKhoan = 1
+
     //    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
 //    private var banKhi45 = productBanKhi45.getEditTextSL().text.toString()
     private lateinit var suggestAdapter: CustomArrayAdapter
+
+    private var longitude: Double = 0.0
+    private var latitude: Double = 0.0
+
+    private var PERMISSION_ALL = 1
+    private var PERMISSIONS = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     companion object {
         @JvmStatic
@@ -80,6 +101,8 @@ class RetailFragment : BaseFragment() {
             (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
             linearGasRemain.visibility = View.VISIBLE
             linearGasRemainPrice.visibility = View.VISIBLE
+            productVoThuHoi12.visibility = View.GONE
+            productVoThuHoi45.visibility = View.GONE
             btnSubmit.text = "BÁN HÀNG"
             transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
 
@@ -88,7 +111,18 @@ class RetailFragment : BaseFragment() {
         }
         linearGasRemain.visibility = View.GONE
         linearGasRemainPrice.visibility = View.GONE
-        viewModel.onGetListCustomer("21", "105")
+        layoutThuHoiStep2.visibility = View.GONE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!hasPermissions(context, *PERMISSIONS)) {
+                requestPermissions(
+                    PERMISSIONS,
+                    PERMISSION_ALL
+                ) // cai nay use cho Fragment, ActivityCompat use cho Activity
+                return
+            }
+            getLocation()
+        }
+//        viewModel.onGetListCustomer("21", "105")
     }
 
     override fun getLayoutId(): Int {
@@ -178,6 +212,9 @@ class RetailFragment : BaseFragment() {
         handleBanKhiChange(
             productBanKhi12,
             productVoThuHoi12,
+            edtSLHongHa12,
+            edtSLKhac12,
+            edtTongSL12,
             productVoBan12,
             productVoMua12,
             btnCongNo12,
@@ -186,11 +223,20 @@ class RetailFragment : BaseFragment() {
         handleBanKhiChange(
             productBanKhi45,
             productVoThuHoi45,
+            edtSLHongHa45,
+            edtSLKhac45,
+            edtTongSL45,
             productVoBan45,
             productVoMua45,
             btnCongNo45,
             tvTienKhi45
         )
+
+        radioTienMat.setOnCheckedChangeListener { _, _ ->
+            run {
+                hinhThucChuyenKhoan = if (radioTienMat.isChecked) 1 else 2
+            }
+        }
         edtTienThucTe.addTextChangedListener(
             NumberTextWatcher(
                 edtTienThucTe,
@@ -294,8 +340,8 @@ class RetailFragment : BaseFragment() {
         val requestInitRetail = RequestInitRetail()
         requestInitRetail.customerId = custId?.toInt()
         requestInitRetail.debit = tienNo
-        requestInitRetail.lat = 100
-        requestInitRetail.lng = 100
+        requestInitRetail.lat = latitude.toInt()
+        requestInitRetail.lng = longitude.toInt()
         val listProductRetailModel = mutableListOf<ProductRetailModel>()
         listProductRetailModel.add(
             ProductRetailModel(
@@ -362,6 +408,7 @@ class RetailFragment : BaseFragment() {
             )
         )
         requestInitRetail.item = listProductRetailModel
+        requestInitRetail.payMethod = hinhThucChuyenKhoan
         CommonUtils.showConfirmDiglog2Button(
             activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu bán lẻ?", getString(
                 R.string.biometric_negative_button_text
@@ -431,6 +478,9 @@ class RetailFragment : BaseFragment() {
     private fun handleBanKhiChange(
         bankhi: ItemProductType1,
         thuHoiVo: ItemProductType2,
+        thuHoiVoHongHa: EditText,
+        thuHoiVoKhac: EditText,
+        thuHoiVoTong: EditText,
         voBan: ItemProductType1,
         voMua: ItemProductType1,
         congno: Button,
@@ -487,6 +537,29 @@ class RetailFragment : BaseFragment() {
             })
         )
 
+        thuHoiVoHongHa.addTextChangedListener(afterTextChanged = {
+            val thuHoiVoHongHa = getRealNumberV2(it)
+            val thuHoiVoKhac = getRealNumber(thuHoiVoKhac)
+            val thuHoiVoTongNumber = thuHoiVoHongHa + thuHoiVoKhac
+            thuHoiVoTong.setText(thuHoiVoTongNumber.toString())
+        })
+
+        thuHoiVoKhac.addTextChangedListener(afterTextChanged = {
+            val thuHoiVoKhac = getRealNumberV2(it)
+            val thuHoiVoHongHa = getRealNumber(thuHoiVoHongHa)
+            val thuHoiVoTongNumber = thuHoiVoHongHa + thuHoiVoKhac
+            thuHoiVoTong.setText(thuHoiVoTongNumber.toString())
+        })
+
+        thuHoiVoTong.addTextChangedListener(afterTextChanged = {
+            val banKhi = getRealNumber(bankhi.getEditTextSL())
+            val thuHoiVo = getRealNumberV2(it)
+            val voBan = getRealNumber(voBan.getEditTextSL())
+
+            congno.text = (banKhi - thuHoiVo - voBan).toString()
+        })
+
+        // se la tong so
         thuHoiVo.getViewSL().addTextChangedListener(afterTextChanged = {
             val banKhi = getRealNumber(bankhi.getEditTextSL())
             val thuHoiVo = getRealNumberV2(it)
@@ -709,8 +782,8 @@ class RetailFragment : BaseFragment() {
         productBanKhi45.setSoLuong(obj.khiBan45?.toString())
         productBanKhi45.setGia("${obj.khiBanPrice45}")
 
-        productVoThuHoi12.setSoLuong(obj.voThu12?.toString())
-        productVoThuHoi45.setSoLuong(obj.voThu45?.toString())
+        edtSLHongHa12.setText(obj.voThu12?.toString())
+        edtSLHongHa45.setText(obj.voThu45?.toString())
 
         productVoBan12.setSoLuong(obj.voBan12?.toString())
         productVoBan12.setGia("${obj.voBanPrice12}")
@@ -723,5 +796,77 @@ class RetailFragment : BaseFragment() {
         productVoMua45.setGia("${obj.voMuaPrice45}")
 
         edtTienThucTe.setText(obj.tienThucTe?.toString())
+    }
+
+    private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {
+        if (context != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        permission!!
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_ALL -> {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    getLocation()
+                } else {
+//                    showMess("NON-ACCEPT")
+                }
+                return
+            }
+        }
+    }
+
+    private fun getLocation() {
+        val location = getLastKnownLocation()
+        longitude = location?.longitude ?: 0.0
+        latitude = location?.latitude ?: 0.0
+        viewModel.onGetListCustomer(
+            String.format("%.0f", latitude),
+            String.format("%.0f", longitude)
+        )
+        Log.e("PHUC", "$longitude : $latitude")
+    }
+
+    private fun getLastKnownLocation(): Location? {
+        val mLocationManager: LocationManager = context?.getSystemService(
+            AppCompatActivity.LOCATION_SERVICE
+        ) as LocationManager
+        val providers: List<String> = mLocationManager.getProviders(true)
+        var bestLocation: Location? = null
+        for (provider in providers) {
+            if (ActivityCompat.checkSelfPermission(
+                    context!!,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context!!,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                break
+            }
+            val l: Location = mLocationManager.getLastKnownLocation(provider)
+                ?: continue
+            if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
+                // Found best last known location: %s", l);
+                bestLocation = l
+            }
+        }
+        return bestLocation
     }
 }

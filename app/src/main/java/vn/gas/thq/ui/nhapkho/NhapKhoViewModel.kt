@@ -18,6 +18,7 @@ class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseV
     val mListStaffData = MutableLiveData<MutableList<UserModel>>()
     val mListDataProduct = MutableLiveData<MutableList<ProductShopModel>>()
     val gasPriceData = MutableLiveData<Int>()
+    val callbackNhapKhoSuccess = MutableLiveData<Unit>()
 
     fun getListStaff() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -38,7 +39,7 @@ class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseV
 
     fun getDataFromStaff(staff_code: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            nhapKhoRepository.getProductFromCode("admin", staff_code)
+            nhapKhoRepository.getProductFromCode(null, staff_code)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -67,6 +68,7 @@ class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseV
                 }
                 .collect {
                     callbackSuccess.value = Unit
+                    callbackNhapKhoSuccess.value = Unit
 //                    mListDataProduct.value = it as MutableList<ProductShopModel>
                 }
         }

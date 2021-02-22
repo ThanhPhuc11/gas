@@ -21,6 +21,10 @@ class RequestInitRetail {
     @Expose
     var lng: Int? = null
 
+    @SerializedName("pay_method")
+    @Expose
+    var payMethod: Int? = 1
+
     @SerializedName("item")
     @Expose
     var item: List<ProductRetailModel>? = null

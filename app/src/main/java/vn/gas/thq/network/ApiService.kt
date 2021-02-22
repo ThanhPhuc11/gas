@@ -10,6 +10,7 @@ import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
+import vn.gas.thq.ui.xemkho.KhoModel
 
 interface ApiService {
     @GET("staffs")
@@ -45,6 +46,9 @@ interface ApiService {
 
     @GET("stocks/staff")
     suspend fun getProductFromStaff(): List<ProductShopModel>
+
+    @GET("stocks/owner")
+    suspend fun getKho(): List<KhoModel>
 
     @POST("orders/shop")
     suspend fun initExport(@Body obj: InitExportRequest): IdentityModel

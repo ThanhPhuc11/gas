@@ -52,8 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
-                android:drawableEnd="@drawable/ic_arrow_down"
-                android:focusable="false"
                 android:hint="Nhập mã khách hàng"
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
@@ -65,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="Tên Hhách hàng"
+                android:text="Tên Khách hàng"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
 
@@ -74,8 +72,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
-                android:drawableEnd="@drawable/ic_arrow_down"
-                android:focusable="false"
                 android:hint="Nhập tên Khách hàng"
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
@@ -118,7 +114,7 @@
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRequestItem"
+                android:id="@+id/rvCust"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
