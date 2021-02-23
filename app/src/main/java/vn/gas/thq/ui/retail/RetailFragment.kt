@@ -93,6 +93,10 @@ class RetailFragment : BaseFragment() {
         }
     }
 
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_retail
+    }
+
     override fun initView() {
 //        imgBack.setOnClickListener {
 //            viewController?.popFragment()
@@ -123,10 +127,6 @@ class RetailFragment : BaseFragment() {
             getLocation()
         }
 //        viewModel.onGetListCustomer("21", "105")
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_retail
     }
 
     override fun initObserver() {

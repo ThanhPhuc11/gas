@@ -125,7 +125,7 @@
                         android:background="@drawable/bg_border_nomal_1"
                         android:completionThreshold="1"
                         android:inputType="number"
-                        android:maxLength="9"
+                        android:maxLength="11"
                         android:text="30000"
                         android:textAlignment="center"
                         android:textColor="@color/blue_2C5181"

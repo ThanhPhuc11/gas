@@ -38,6 +38,10 @@ class ApproveRequestModel {
     @Expose
     var approveStatus: String? = null
 
+    @SerializedName("can_approve_status")
+    @Expose
+    var canApproveStatus: String? = null
+
     @SerializedName("item")
     @Expose
     var item: List<ProductRetailModel>? = null
