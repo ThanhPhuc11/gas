@@ -22,10 +22,12 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val c
     fun doLogin(username: String, password: String) {
         if (TextUtils.isEmpty(username)) {
             //error
+            showMessCallback.value = "Vui lòng nhập Tên đăng nhập"
             return
         }
         if (TextUtils.isEmpty(password)) {
             //error
+            showMessCallback.value = "Vui lòng nhập Mật khẩu"
             return
         }
         viewModelScope.launch(Dispatchers.Main) {

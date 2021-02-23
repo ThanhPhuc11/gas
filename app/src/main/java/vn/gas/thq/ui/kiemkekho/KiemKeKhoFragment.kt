@@ -40,6 +40,10 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         }
     }
 
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_kiem_ke_kho
+    }
+
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
     }
@@ -63,8 +67,11 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_kiem_ke_kho
+    override fun initData() {
+        viewModel.getDataFromCode("NTL", null)
+        tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
+        initRecyclerView()
+        btnKiemKe.setOnClickListener(this::onSubmit)
     }
 
     override fun initObserver() {
@@ -99,7 +106,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         viewModel.callbackKiemKeKho.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
                 alertDialog?.dismiss()
-                viewModel.getDataFromCode("admin", "admin")
+                viewModel.getDataFromCode("NTL", "admin")
             }
         })
 
@@ -118,13 +125,6 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         viewModel.showMessCallback.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
-    }
-
-    override fun initData() {
-        viewModel.getDataFromCode("admin", "admin")
-        tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
-        initRecyclerView()
-        btnKiemKe.setOnClickListener(this::onSubmit)
     }
 
     private fun initRecyclerView() {
@@ -169,7 +169,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         ) {
             if (it == AppConstants.YES) {
                 kiemKeRequestModel = KiemKeRequestModel()
-                kiemKeRequestModel.shopCode = "admin"
+                kiemKeRequestModel.shopCode = "NTL"
                 mOldList.forEach {
                     kiemKeRequestModel.originalStock.add(ProductNhapKhoModel().apply {
                         productCode = it.code

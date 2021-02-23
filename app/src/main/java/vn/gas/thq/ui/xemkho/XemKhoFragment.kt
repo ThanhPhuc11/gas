@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_xem_kho.*
+import kotlinx.android.synthetic.main.fragment_xem_kho.btnSearch
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -15,13 +16,20 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.util.AppConstants
+import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
+import java.util.ArrayList
 
 class XemKhoFragment : BaseFragment() {
     private lateinit var viewModel: XemKhoViewModel
     private lateinit var productAdapter: KhoItemAdapter
     private var alertDialog: AlertDialog? = null
     var mList = mutableListOf<ProductModel>()
+    private var listKho = mutableListOf<KhoModel>()
+    private var shopCode: String? = null
+    private var staffCode: String? = null
 
     companion object {
         @JvmStatic
@@ -62,10 +70,23 @@ class XemKhoFragment : BaseFragment() {
     }
 
     override fun initObserver() {
+        viewModel.listKho.observe(viewLifecycleOwner, {
+            listKho.clear()
+            listKho.addAll(it)
+        })
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
             it.forEach {
-                mList.add(ProductModel(it.productName, it.productCode, "", "", it.currentQuantity, it.unit))
+                mList.add(
+                    ProductModel(
+                        it.productName,
+                        it.productCode,
+                        "",
+                        "",
+                        it.currentQuantity,
+                        it.unit
+                    )
+                )
             }
             productAdapter.notifyDataSetChanged()
         })
@@ -88,7 +109,9 @@ class XemKhoFragment : BaseFragment() {
     }
 
     override fun initData() {
+        viewModel.getListKho()
         initRecyclerView()
+        edtShop.setOnClickListener(this::onChooseShop)
         btnSearch.setOnClickListener(this::onSearch)
     }
 
@@ -124,7 +147,34 @@ class XemKhoFragment : BaseFragment() {
 //        }
 //    }
 
+    private fun onChooseShop(view: View) {
+        var doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        listKho.forEach {
+            mArrayList.add(DialogListModel(it.code, it.name, it.type.toString()))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Kho",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            shopCode = null
+            staffCode = null
+            if (item.other == "1") {
+                shopCode = item.id
+            } else {
+                staffCode = item.id
+            }
+            edtShop.setText(item.name)
+        }
+    }
+
     private fun onSearch(view: View) {
-        viewModel.getDataFromShop()
+        if (shopCode == null && staffCode == null) {
+            showMess("Vui lòng chọn kho")
+            return
+        }
+        viewModel.getDataFromShop(shopCode, staffCode)
     }
 }

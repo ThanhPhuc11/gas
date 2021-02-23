@@ -140,20 +140,20 @@
                     android:layout_height="30dp"
                     android:background="@drawable/bg_border_nomal_coner_4"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="3"
                     android:textAlignment="center"
                     android:textColor="@color/gray_333333"
                     android:textSize="@dimen/text_13sp" />
             </LinearLayout>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/edtPriceGas12"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_border_nomal_coner_4"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="9"
                 android:textAlignment="center"
                 android:textColor="@color/gray_333333"
                 android:textSize="@dimen/text_13sp" />
@@ -192,20 +192,20 @@
                     android:layout_height="30dp"
                     android:background="@drawable/bg_border_nomal_coner_4"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="3"
                     android:textAlignment="center"
                     android:textColor="@color/gray_333333"
                     android:textSize="@dimen/text_13sp" />
             </LinearLayout>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/edtPriceGas45"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_border_nomal_coner_4"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="9"
                 android:textAlignment="center"
                 android:textColor="@color/gray_333333"
                 android:textSize="@dimen/text_13sp" />
@@ -245,20 +245,20 @@
                     android:layout_height="30dp"
                     android:background="@drawable/bg_border_nomal_coner_4"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="3"
                     android:textAlignment="center"
                     android:textColor="@color/gray_333333"
                     android:textSize="@dimen/text_13sp" />
             </LinearLayout>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/edtPriceTank12"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_border_nomal_coner_4"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="9"
                 android:textAlignment="center"
                 android:textColor="@color/gray_333333"
                 android:textSize="@dimen/text_13sp" />
@@ -297,20 +297,20 @@
                     android:layout_height="30dp"
                     android:background="@drawable/bg_border_nomal_coner_4"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="3"
                     android:textAlignment="center"
                     android:textColor="@color/gray_333333"
                     android:textSize="@dimen/text_13sp" />
             </LinearLayout>
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/edtPriceTank45"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_border_nomal_coner_4"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="9"
                 android:textAlignment="center"
                 android:textColor="@color/gray_333333"
                 android:textSize="@dimen/text_13sp" />

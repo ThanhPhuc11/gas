@@ -3,6 +3,7 @@ package vn.gas.thq.ui.nhapkho
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     private var staffCode: String? = null
     private var gasPrice: Int = 0
     private lateinit var productAdapter: ProductImportAdapter
+    private var alertDialog: AlertDialog? = null
 
     companion object {
         @JvmStatic
@@ -96,6 +98,14 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
             productAdapter.notifyDataSetChanged()
         })
 
+        viewModel.callbackNhapKhoSuccess.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Nhập kho thành công") {
+                alertDialog?.dismiss()
+//                view?.let { it1 -> onSearchData(it1) }
+                viewModel.getDataFromStaff(staffCode)
+            }
+        })
+
         //TODO: chung
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
@@ -133,7 +143,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
         val doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         mListStaff.forEach {
-            mArrayList.add(DialogListModel(it.staffCode, it.name))
+            mArrayList.add(DialogListModel(it.staffCode, it.name, it.saleLineName))
         }
         doc.show(
             activity, mArrayList,
@@ -152,6 +162,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     private fun showInfo(item: DialogListModel) {
         llInfo.visibility = View.VISIBLE
         tvName.text = item.name ?: "Không có thông tin"
+        tvTuyen.text = item.other ?: "Không có thông tin"
         viewModel.getDataFromStaff(item.id)
     }
 

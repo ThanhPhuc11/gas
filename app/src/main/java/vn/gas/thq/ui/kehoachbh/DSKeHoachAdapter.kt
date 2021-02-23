@@ -1,21 +1,28 @@
 package vn.gas.thq.ui.kehoachbh
 
+import android.text.Editable
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.NonNull
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
+import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.util.AppDateUtils
+import vn.gas.thq.util.CallBackChange
+import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.NumberTextWatcher
 import vn.hongha.ga.R
 
 class DSKeHoachAdapter(
     private val mList: MutableList<KeHoachModel>,
+    private val suggestAdapter: CustomArrayAdapter
 ) :
     RecyclerView.Adapter<DSKeHoachAdapter.RequestViewHolder>() {
     var mClickListener: ItemClickListener? = null
@@ -54,10 +61,12 @@ class DSKeHoachAdapter(
         var edtQuantityTank12: EditText = itemView.findViewById(R.id.edtQuantityTank12)
         var edtQuantityTank45: EditText = itemView.findViewById(R.id.edtQuantityTank45)
 
-        var edtPriceGas12: EditText = itemView.findViewById(R.id.edtPriceGas12)
-        var edtPriceGas45: EditText = itemView.findViewById(R.id.edtPriceGas45)
-        var edtPriceTank12: EditText = itemView.findViewById(R.id.edtPriceTank12)
-        var edtPriceTank45: EditText = itemView.findViewById(R.id.edtPriceTank45)
+        var edtPriceGas12: AppCompatAutoCompleteTextView = itemView.findViewById(R.id.edtPriceGas12)
+        var edtPriceGas45: AppCompatAutoCompleteTextView = itemView.findViewById(R.id.edtPriceGas45)
+        var edtPriceTank12: AppCompatAutoCompleteTextView =
+            itemView.findViewById(R.id.edtPriceTank12)
+        var edtPriceTank45: AppCompatAutoCompleteTextView =
+            itemView.findViewById(R.id.edtPriceTank45)
 
         init {
             edtLXBH.setOnClickListener(this)
@@ -96,13 +105,20 @@ class DSKeHoachAdapter(
                 )
             })
 
-            edtPriceGas12.addTextChangedListener(afterTextChanged = {
-                mClickListener?.onItemCodePrice(
-                    adapterPosition,
-                    "GAS12",
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                )
-            })
+            edtPriceGas12.setAdapter(suggestAdapter)
+            edtPriceGas12.addTextChangedListener(
+                NumberTextWatcher(edtPriceGas12, suggestAdapter,
+                    object : CallBackChange {
+                        override fun afterEditTextChange(it: Editable?) {
+                            mClickListener?.onItemCodePrice(
+                                adapterPosition,
+                                "GAS12",
+                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(it.toString())
+                            )
+                        }
+
+                    })
+            )
             edtPriceGas45.addTextChangedListener(afterTextChanged = {
                 mClickListener?.onItemCodePrice(
                     adapterPosition,

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -35,6 +36,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
     private var alertDialog: AlertDialog? = null
     private lateinit var viewModel: LapKeHoachBHViewModel
     private var mListCustomer = mutableListOf<Customer>()
+    private lateinit var suggestAdapter: CustomArrayAdapter
 
     companion object {
         @JvmStatic
@@ -114,7 +116,8 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
     }
 
     private fun initRecyclerView() {
-        adapter = DSKeHoachAdapter(listKHBH)
+        suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
+        adapter = DSKeHoachAdapter(listKHBH, suggestAdapter)
         adapter.setClickListener(this)
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvKeHoach.layoutManager = linearLayoutManager

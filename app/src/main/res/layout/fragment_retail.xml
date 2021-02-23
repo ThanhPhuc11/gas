@@ -257,6 +257,10 @@
                         app:hinhAnh="vo"
                         app:soLuong=""
                         app:tenSanPham="Vỏ 45Kg" />
+
+                    <include
+                        android:id="@+id/layoutThuHoiStep2"
+                        layout="@layout/item_product_type_6" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -805,13 +809,54 @@
                             android:background="@drawable/bg_border_nomal_1"
                             android:completionThreshold="1"
                             android:inputType="number"
-                            android:maxLength="9"
+                            android:maxLength="11"
                             android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/blue_2C5181"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_E7E7E7" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_15sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hình thức thanh toán"
+                    android:textColor="@color/blue_2C5181"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/radioTienMat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Tiền mặt" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/radioChuyenKhoan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chuyển khoản" />
+                </RadioGroup>
             </LinearLayout>
 
         </LinearLayout>

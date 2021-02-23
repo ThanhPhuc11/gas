@@ -45,6 +45,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var orderId: Int? = null
     private var staffName: String? = null
     private var createDate: String? = null
+    private var canApproveStatus: String? = null
 
     private var soLuong12: Int? = 0
     private var priceKHBH12: Int? = 0
@@ -249,7 +250,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {
-        val array = it.approveStatus?.toCharArray()
+        val array = this.canApproveStatus?.toCharArray()
         val a = array?.get(0).toString()
         val b = array?.get(1).toString()
         val c = array?.get(2).toString()
@@ -361,13 +362,15 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             AppDateUtils.FORMAT_1,
             createDate
         )
-        tvStatus.text = "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}"
-        listStatusOrderSale.forEach {
-            if (it.value == "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}") {
-                tvStatus.text = it.name
-                return@forEach
-            }
-        }
+//        tvStatus.text = "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}"
+//        listStatusOrderSale.forEach {
+//            if (it.value == "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}") {
+//                tvStatus.text = it.name
+//                return@forEach
+//            }
+//        }
+        val strStatus = "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}"
+        tvStatus.text = listStatusOrderSale.find { it.value!!.contains(strStatus) }?.name ?: strStatus
 
         when (statusShowDialog) {
             1 -> {
@@ -458,7 +461,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         orderId = mList[position].order_id
         staffName = mList[position].staff_name
         createDate = mList[position].created_date
-        showMess(mList[position].approve_status)
+        canApproveStatus = mList[position].can_approve_status
+//        showMess(mList[position].approve_status)
         viewModel.detailApproveLXBH(orderId.toString())
     }
 }
