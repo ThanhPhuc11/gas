@@ -18,6 +18,10 @@ class ApproveRequestModel {
     @Expose
     var customerTelContact: String? = null
 
+    @SerializedName("sale_line_name")
+    @Expose
+    var saleLineName: String? = null
+
     @SerializedName("debt_amount_tank12")
     @Expose
     var debtAmountTank12: Int? = null

@@ -11,5 +11,6 @@ data class BussinesRequestModel(
     val order_id: Int?,
     val customer_name:  String?,
     val approve_status: String?,
-    val can_approve_status: String?
+    val can_approve_status: String?,
+    val sale_order_type: String?
 )

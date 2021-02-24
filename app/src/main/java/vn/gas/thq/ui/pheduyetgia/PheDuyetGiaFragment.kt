@@ -279,6 +279,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             showDiglogDetailRetail()
             return
         }
+
+        showMess("Bạn không có quyền thực hiện với yêu cầu này")
     }
 
     private fun setValueApproveDetail(type: Int) {
@@ -354,7 +356,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val btnTuChoi: Button = dialogView.findViewById(R.id.btnTuChoi)
 
         tvNameLXBH.text = staffName
-//        tvTuyenXe.text =
+        tvTuyenXe.text = mDetailRetailData?.saleLineName
         tvNameCust.text = mDetailRetailData?.customerName
 //        tvDate.text = createDate
         tvDate.text = AppDateUtils.changeDateFormat(
@@ -370,7 +372,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 //            }
 //        }
         val strStatus = "${mDetailRetailData?.status};${mDetailRetailData?.approveStatus}"
-        tvStatus.text = listStatusOrderSale.find { it.value!!.contains(strStatus) }?.name ?: strStatus
+        tvStatus.text =
+            listStatusOrderSale.find { it.value!!.contains(strStatus) }?.name ?: strStatus
 
         when (statusShowDialog) {
             1 -> {

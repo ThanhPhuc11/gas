@@ -52,6 +52,7 @@
                 android:textColor="@color/gray_666E79" />
 
             <TextView
+                android:id="@+id/tvSaleOrderType"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

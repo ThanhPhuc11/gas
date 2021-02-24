@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.retail
+ package vn.gas.thq.ui.retail
 
 import android.Manifest
 import android.content.Context
@@ -105,6 +105,7 @@ class RetailFragment : BaseFragment() {
             (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
             linearGasRemain.visibility = View.VISIBLE
             linearGasRemainPrice.visibility = View.VISIBLE
+            linearTienGasDu.visibility = View.VISIBLE
             productVoThuHoi12.visibility = View.GONE
             productVoThuHoi45.visibility = View.GONE
             btnSubmit.text = "BÁN HÀNG"
@@ -701,16 +702,17 @@ class RetailFragment : BaseFragment() {
         gasPrice = gasRemain * giaKhi
         totalMustPay()
         totalDebit()
+        edtGasRemainPrice.setText("${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
         if (gasPrice == 0) {
-            edtGasRemainPrice.setText("${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
+            tvTienGasDu.text = "${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())} đ"
             return
         }
-        edtGasRemainPrice.setText("-${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
+        tvTienGasDu.text = "-${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())} đ"
 
     }
 
     private fun totalDebit() {
-        tienNo = tongTien - tienThucTe
+        tienNo = if (tongTien - tienThucTe > 0) (tongTien - tienThucTe) else 0
         btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
         tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
     }
