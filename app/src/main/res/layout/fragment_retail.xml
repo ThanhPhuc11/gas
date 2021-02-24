@@ -755,6 +755,36 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linearTienGasDu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical|right"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="18dp"
+                            android:text="Tiền gas dư"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/blue_3D4E63"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvTienGasDu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:text="0 đ"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/blue_0082B7"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

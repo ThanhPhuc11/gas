@@ -49,8 +49,9 @@ class RequestApproveAdapter(
 //        }
 
         holder.tvOrderId.text = obj.order_id?.toString()
-        holder.tvLXBH.text = obj.staff_name
-        holder.tvCustName.text = obj.customer_name
+        holder.tvLXBH.text = obj.staff_name ?: "- -"
+        holder.tvCustName.text = obj.customer_name ?: "- -"
+        holder.tvSaleOrderType.text = obj.sale_order_type ?: "- -"
         holder.tvDate.text = AppDateUtils.changeDateFormat(
             AppDateUtils.FORMAT_6,
             AppDateUtils.FORMAT_1,
@@ -93,6 +94,7 @@ class RequestApproveAdapter(
         var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         var tvDate: TextView = itemView.findViewById(R.id.tvDate)
+        var tvSaleOrderType: TextView = itemView.findViewById(R.id.tvSaleOrderType)
 
         init {
             itemView.setOnClickListener(this)
