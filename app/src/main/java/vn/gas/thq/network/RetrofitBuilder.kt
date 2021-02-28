@@ -33,8 +33,9 @@ object RetrofitBuilder {
     private var retrofit: Retrofit? = null
     private var token: String? = null
 
-    //    private const val BASE_URL = BuildConfig.BASE_URL
-    private const val BASE_URL = "https://thq-gas.duckdns.org:8090/thq-gas/"
+    private const val BASE_URL = BuildConfig.BASE_URL
+
+    //    private const val BASE_URL = "https://thq-gas.duckdns.org:8090/thq-gas/"
     private var httpClientBuilder: OkHttpClient.Builder? = null
     fun getInstance(context: Context): Retrofit? {
 

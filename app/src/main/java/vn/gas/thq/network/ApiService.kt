@@ -2,6 +2,7 @@ package vn.gas.thq.network
 
 import retrofit2.http.*
 import vn.gas.thq.model.*
+import vn.gas.thq.service.RegisterDeviceResponse
 import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
@@ -25,6 +26,9 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String
     ): TokenModel
+
+    @POST("device")
+    suspend fun registerFcmDevice(@Body requestFcmDeviceModel: RequestDeviceModel): RegisterDeviceResponse
 
     //Gia niem yet
     @GET("prices/today")
@@ -87,7 +91,7 @@ interface ApiService {
     @GET("staffs/driver")
     suspend fun getListStaff(): List<UserModel>
 
-    @GET("customers/nearby")
+    @GET("staffs/customer")
     suspend fun getListCustomer(
         @Query("lat") lat: String?,
         @Query("lng") lng: String?
@@ -156,6 +160,6 @@ interface ApiService {
         @Query("sale_line_code") sale_line_code: String?,
         @Query("offset") offset: Int,
         @Query("size") size: Int
-    ) : List<KHBHOrderModel>
+    ): List<KHBHOrderModel>
 
 }

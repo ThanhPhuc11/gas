@@ -10,7 +10,7 @@ class KeHoachModel {
     @Expose
     var customerId: Int? = null
 
-    var custName: String = "Chọn khách hàng"
+    var custName: String = "- -"
 
     @SerializedName("days_per_visit")
     @Expose

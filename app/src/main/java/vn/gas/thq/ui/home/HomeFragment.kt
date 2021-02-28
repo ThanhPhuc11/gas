@@ -1,16 +1,22 @@
 package vn.gas.thq.ui.home
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.model.RequestDeviceModel
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
+import vn.gas.thq.network.FcmRetrofitBuilder
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.homemenu.MenuFullFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
@@ -23,9 +29,12 @@ import vn.gas.thq.ui.xemkho.XemKhoFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
+
 class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     private lateinit var viewModel: HomeViewModel
+    private lateinit var fcmViewModel: FcmHomeViewModel
     private lateinit var menuAdapter: MenuAdapter
+    private var user: UserModel? = null
 
     companion object {
         @JvmStatic
@@ -42,9 +51,48 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         return R.layout.fragment_home
     }
 
+    override fun setViewController() {
+        viewController = (activity as MainActivity).viewController
+    }
+
+    override fun setupViewModel() {
+        viewModel =
+            ViewModelProviders.of(this,
+                context?.let {
+                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
+                        ?.let { apiService ->
+                            ViewModelFactory(apiService, context)
+                        }
+                })
+                .get(HomeViewModel::class.java)
+
+        fcmViewModel =
+            ViewModelProviders.of(this,
+                context?.let {
+                    FcmRetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
+                        ?.let { apiService ->
+                            ViewModelFactory(apiService, context)
+                        }
+                })
+                .get(FcmHomeViewModel::class.java)
+    }
+
+    override fun initView() {
+        initMenuData()
+        val gridLayoutManager = GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
+        rvMenu.layoutManager = gridLayoutManager
+        rvMenu.adapter = menuAdapter
+    }
+
+    override fun initData() {
+        viewModel.getUserInfo()
+
+    }
+
     override fun initObserver() {
         viewModel.userModelCallback.observe(viewLifecycleOwner, {
             showInfo(it)
+            registerFCM()
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -64,35 +112,33 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         })
     }
 
-    override fun initData() {
-        viewModel.getUserInfo()
-    }
-
-    override fun setViewController() {
-        viewController = (activity as MainActivity).viewController
-    }
-
-    override fun setupViewModel() {
-        viewModel =
-            ViewModelProviders.of(this,
-                context?.let {
-                    RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
-                        ?.let { apiService ->
-                            ViewModelFactory(apiService, context)
-                        }
-                })
-                .get(HomeViewModel::class.java)
-    }
-
-    override fun initView() {
-        initMenuData()
-        val gridLayoutManager = GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false)
-        rvMenu.layoutManager = gridLayoutManager
-        rvMenu.adapter = menuAdapter
-    }
-
     private fun showInfo(user: UserModel) {
+        this.user = user
         tvUserName.text = user.name
+    }
+
+    private fun registerFCM() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("TOKEN", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+
+            Log.d("TOKEN", token ?: "null")
+//            showMess(token)
+
+            val requestDeviceModel = RequestDeviceModel().apply {
+                username = user?.staffCode ?: ""
+                deviceToken = token
+                oldDeviceToken = ""
+                deviceModel = Build.BRAND + " " + Build.MODEL
+                platform = "ANDROID"
+                osVersion = Build.VERSION.SDK_INT.toString()
+            }
+            fcmViewModel.registerFcm(requestDeviceModel)
+        })
     }
 
     private fun initMenuData() {
