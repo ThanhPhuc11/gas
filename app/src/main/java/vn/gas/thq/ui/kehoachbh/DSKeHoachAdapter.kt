@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.CustomArrayAdapter
-import vn.gas.thq.customview.ItemRequestType1
-import vn.gas.thq.model.BussinesRequestModel
-import vn.gas.thq.model.StatusValueModel
-import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CallBackChange
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.NumberTextWatcher
@@ -30,14 +30,23 @@ class DSKeHoachAdapter(
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_init_ke_hoach_ban_hang, parent, false)
+            .inflate(R.layout.item_init_ke_hoach_ban_hang_v2, parent, false)
 
         return RequestViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         val obj: KeHoachModel = mList[position]
-        holder.edtLXBH.setText(obj.custName)
+//        holder.edtLXBH.setText(obj.custName)
+        holder.tvCustName.text = obj.custName
+//        holder.edtQuantityGas12.clearComposingText()
+//        holder.edtPriceGas12.clearComposingText()
+//        holder.edtQuantityGas45.clearComposingText()
+//        holder.edtPriceGas45.clearComposingText()
+//        holder.edtQuantityTank12.clearComposingText()
+//        holder.edtPriceTank12.clearComposingText()
+//        holder.edtQuantityTank45.clearComposingText()
+//        holder.edtPriceTank45.clearComposingText()
     }
 
     override fun getItemCount(): Int {
@@ -52,10 +61,47 @@ class DSKeHoachAdapter(
         return position
     }
 
+    fun clearText() {
+
+    }
+
+    private fun expandTitle(titleGroup: TextView, container: View) {
+        if (container.isVisible) {
+            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_arrow_right_circle,
+                0
+            )
+            CommonUtils.collapse(container)
+        } else {
+            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_arrow_down_circle,
+                0
+            )
+            CommonUtils.expand(container)
+        }
+    }
+
+    private fun expandContent(icon: ImageView, container: View) {
+        if (container.isVisible) {
+            icon.setImageResource(R.drawable.ic_max)
+            CommonUtils.collapse(container)
+        } else {
+            icon.setImageResource(R.drawable.ic_min)
+            CommonUtils.expand(container)
+        }
+    }
+
     inner class RequestViewHolder constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        var edtLXBH: EditText = itemView.findViewById(R.id.edtLXBH)
-        var edtTanSuat: EditText = itemView.findViewById(R.id.edtTanSuat)
+        var linearWrapContent: LinearLayout = itemView.findViewById(R.id.llWrapContent)
+        var llWarpFullContent: LinearLayout = itemView.findViewById(R.id.llWarpFullContent)
+        var imgCollapse: ImageView = itemView.findViewById(R.id.imgCollapse)
+
+        var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var edtQuantityGas12: EditText = itemView.findViewById(R.id.edtQuantityGas12)
         var edtQuantityGas45: EditText = itemView.findViewById(R.id.edtQuantityGas45)
         var edtQuantityTank12: EditText = itemView.findViewById(R.id.edtQuantityTank12)
@@ -69,13 +115,10 @@ class DSKeHoachAdapter(
             itemView.findViewById(R.id.edtPriceTank45)
 
         init {
-            edtLXBH.setOnClickListener(this)
-            edtTanSuat.addTextChangedListener(afterTextChanged = {
-                mClickListener?.onItemChange(
-                    adapterPosition,
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                )
-            })
+            tvCustName.setOnClickListener { expandTitle(tvCustName, linearWrapContent) }
+
+            imgCollapse.setOnClickListener { expandContent(imgCollapse, llWarpFullContent) }
+
             edtQuantityGas12.addTextChangedListener(afterTextChanged = {
                 mClickListener?.onItemCodeQuantity(
                     adapterPosition,
@@ -113,33 +156,59 @@ class DSKeHoachAdapter(
                             mClickListener?.onItemCodePrice(
                                 adapterPosition,
                                 "GAS12",
-                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(it.toString())
+                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(
+                                    it.toString()
+                                )
                             )
                         }
 
                     })
             )
-            edtPriceGas45.addTextChangedListener(afterTextChanged = {
-                mClickListener?.onItemCodePrice(
-                    adapterPosition,
-                    "GAS45",
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                )
-            })
-            edtPriceTank12.addTextChangedListener(afterTextChanged = {
-                mClickListener?.onItemCodePrice(
-                    adapterPosition,
-                    "TANK12",
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                )
-            })
-            edtPriceTank45.addTextChangedListener(afterTextChanged = {
-                mClickListener?.onItemCodePrice(
-                    adapterPosition,
-                    "TANK45",
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                )
-            })
+            edtPriceGas45.setAdapter(suggestAdapter)
+            edtPriceGas45.addTextChangedListener(
+                NumberTextWatcher(edtPriceGas45, suggestAdapter,
+                    object : CallBackChange {
+                        override fun afterEditTextChange(it: Editable?) {
+                            mClickListener?.onItemCodePrice(
+                                adapterPosition,
+                                "GAS45",
+                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(
+                                    it.toString()
+                                )
+                            )
+                        }
+                    })
+            )
+            edtPriceTank12.setAdapter(suggestAdapter)
+            edtPriceTank12.addTextChangedListener(
+                NumberTextWatcher(edtPriceTank12, suggestAdapter,
+                    object : CallBackChange {
+                        override fun afterEditTextChange(it: Editable?) {
+                            mClickListener?.onItemCodePrice(
+                                adapterPosition,
+                                "TANK12",
+                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(
+                                    it.toString()
+                                )
+                            )
+                        }
+                    })
+            )
+            edtPriceTank45.setAdapter(suggestAdapter)
+            edtPriceTank45.addTextChangedListener(
+                NumberTextWatcher(edtPriceTank45, suggestAdapter,
+                    object : CallBackChange {
+                        override fun afterEditTextChange(it: Editable?) {
+                            mClickListener?.onItemCodePrice(
+                                adapterPosition,
+                                "TANK45",
+                                if (TextUtils.isEmpty(it.toString())) 0 else CommonUtils.getIntFromStringDecimal(
+                                    it.toString()
+                                )
+                            )
+                        }
+                    })
+            )
         }
 
         override fun onClick(p0: View?) {

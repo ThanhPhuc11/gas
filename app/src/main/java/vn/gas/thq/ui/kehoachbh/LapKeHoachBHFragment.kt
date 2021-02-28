@@ -1,10 +1,12 @@
 package vn.gas.thq.ui.kehoachbh
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -79,13 +81,72 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         tvPlanTime.text = AppDateUtils.getCurrentDate()
         viewModel.onGetListCustomer("21", "105")
         initRecyclerView()
-        addKeHoach(view)
-        tvAddKeHoach.setOnClickListener(this::addKeHoach)
+//        addKeHoach(view)
+//        tvAddKeHoach.setOnClickListener(this::addKeHoach)
         btnSubmit.setOnClickListener(this::submitData)
+    }
+
+    override fun initObserver() {
+        viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
+//            mListCustomer.addAll(it)
+            listKHBH.clear()
+            it.forEach {
+//                listKHBH.add(KeHoachModel().apply { custName = it.name.toString() })
+                listKHBH.add(addKeHoachV2(it.customerId?.toInt(), it.name.toString()))
+            }
+            adapter.notifyDataSetChanged()
+        })
+
+        viewModel.callbackKHBH.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
+                alertDialog?.dismiss()
+//                listKHBH.clear()
+//                adapter.notifyDataSetChanged()
+//                Handler().postDelayed({
+//                    viewModel.onGetListCustomer("21", "105")
+//                }, 500)
+            }
+        })
+
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun submitData(view: View) {
         showDiglogConfirmPlan()
+    }
+
+    private fun expand(titleGroup: TextView, container: View) {
+        if (container.isVisible) {
+            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_arrow_right_circle,
+                0
+            )
+            CommonUtils.collapse(container)
+        } else {
+            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_arrow_down_circle,
+                0
+            )
+            CommonUtils.expand(container)
+        }
     }
 
     private fun addKeHoach(view: View?) {
@@ -115,6 +176,33 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         rvKeHoach.scrollToPosition(listKHBH.size - 1)
     }
 
+    private fun addKeHoachV2(id: Int?, name: String): KeHoachModel {
+        val keHoachModel = KeHoachModel()
+        keHoachModel.customerId = id
+        keHoachModel.custName = name
+        keHoachModel.item.add(ProductNhapKhoModel().apply {
+            productCode = "GAS12"
+//            amount = 0
+//            price = 0
+        })
+        keHoachModel.item.add(ProductNhapKhoModel().apply {
+            productCode = "GAS45"
+//            amount = 0
+//            price = 0
+        })
+        keHoachModel.item.add(ProductNhapKhoModel().apply {
+            productCode = "TANK12"
+//            amount = 0
+//            price = 0
+        })
+        keHoachModel.item.add(ProductNhapKhoModel().apply {
+            productCode = "TANK45"
+//            amount = 0
+//            price = 0
+        })
+        return keHoachModel
+    }
+
     private fun initRecyclerView() {
         suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
         adapter = DSKeHoachAdapter(listKHBH, suggestAdapter)
@@ -122,36 +210,6 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvKeHoach.layoutManager = linearLayoutManager
         rvKeHoach.adapter = adapter
-    }
-
-    override fun initObserver() {
-        viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
-            mListCustomer.addAll(it)
-        })
-
-        viewModel.callbackKHBH.observe(viewLifecycleOwner, {
-            CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
-                alertDialog?.dismiss()
-                listKHBH.clear()
-                adapter.notifyDataSetChanged()
-            }
-        })
-
-        viewModel.callbackStart.observe(viewLifecycleOwner, {
-            showLoading()
-        })
-
-        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
-            hideLoading()
-        })
-
-        viewModel.callbackFail.observe(viewLifecycleOwner, {
-            hideLoading()
-        })
-
-        viewModel.showMessCallback.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
     }
 
     private fun showDiglogConfirmPlan() {
@@ -174,27 +232,25 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
             }
 
 
-//            btnHuyYC.setOnClickListener {
-//                CommonUtils.showConfirmDiglog2Button(
-//                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
-//                        R.string.biometric_negative_button_text
-//                    ), getString(R.string.text_ok)
-//                ) {
-//                    if (it == AppConstants.YES) {
-//                        viewModel.onCancelRequest(orderId)
-//                    }
-//                }
-//            }
+            btnHuy.setOnClickListener {
+                alertDialog?.dismiss()
+            }
             btnDongY.setOnClickListener {
-//                viewModelThuKho.acceptOrNotRequest(orderId, true)
-                viewModel.lapKeHoachBH(RequestKeHoachModel().apply { detail = listKHBH })
+                viewModel.lapKeHoachBH(RequestKeHoachModel().apply {
+                    detail = listKHBH.filter {
+                        it.item[0].amount != 0
+                                || it.item[1].amount != 0
+                                || it.item[2].amount != 0
+                                || it.item[3].amount != 0
+                    }
+                })
             }
         }
         for (item: KeHoachModel in listKHBH) {
-            gas12 += item.item[0].amount!!
-            gas45 += item.item[1].amount!!
-            tank12 += item.item[2].amount!!
-            tank45 += item.item[3].amount!!
+            gas12 += item.item[0].amount ?: 0
+            gas45 += item.item[1].amount ?: 0
+            tank12 += item.item[2].amount ?: 0
+            tank45 += item.item[3].amount ?: 0
         }
         tvGas12.text = gas12.toString()
         tvGas45.text = gas45.toString()

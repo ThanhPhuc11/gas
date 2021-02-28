@@ -37,6 +37,15 @@ class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepo
 
     fun lapKeHoachBH(obj: RequestKeHoachModel) {
         viewModelScope.launch(Dispatchers.Main) {
+            obj.detail?.forEach{
+                if (it.item[3].amount == 0) it.item.removeAt(3)
+                if (it.item[2].amount == 0) it.item.removeAt(2)
+                if (it.item[1].amount == 0) it.item.removeAt(1)
+                if (it.item[0].amount == 0) it.item.removeAt(0)
+            }
+            if (obj.detail?.size == 0) {
+                showMessCallback.value = "Vui lòng nhập số lượng"
+            }
             lapKeHoachBHRepository.lapKeHoachBH(obj)
                 .onStart {
                     callbackStart.value = Unit

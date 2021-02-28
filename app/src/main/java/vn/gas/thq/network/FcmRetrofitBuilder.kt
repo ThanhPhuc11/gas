@@ -3,6 +3,7 @@ package vn.gas.thq.network
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -10,6 +11,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.model.TokenModel
 import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
@@ -27,14 +30,14 @@ import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 
-object LoginRetrofitBuilder {
+object FcmRetrofitBuilder {
     private var retrofit: Retrofit? = null
 
-    private const val BASE_URL = BuildConfig.BASE_URL
-
-    //    private const val BASE_URL = "https://thq-gas.duckdns.org:8090/thq-gas/"
+    //    private const val BASE_URL = BuildConfig.BASE_URL
+    private const val BASE_URL = "http://thq-gas.duckdns.org:8080/"
     private var httpClientBuilder: OkHttpClient.Builder? = null
     fun getInstance(context: Context): Retrofit? {
+        val auth = Credentials.basic("user1", "user1Pass")
         if (retrofit == null) {
             httpClientBuilder = OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
@@ -42,21 +45,14 @@ object LoginRetrofitBuilder {
                 .writeTimeout(60, TimeUnit.SECONDS)
             httpClientBuilder?.addNetworkInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val request = chain.request().newBuilder()
+                    .addHeader("Authorization", auth)
                     .addHeader("Accept", "application/json")
-                    .addHeader("client_id", "DIF4R04G1MCPGATCJ3O4ZYTX2KC19TAD")
-                    .addHeader(
-                        "client_secret",
-                        "NFPZ8S7U9UJCOEM3TPHTWAC37I1DAL8DHLSDGCL94J0OR3D18FKHKX11CGX5WS8V"
-                    )
-                    .addHeader("client_version", BuildConfig.VERSION_NAME)
-                    .addHeader("app_version", "" + BuildConfig.VERSION_CODE)
                     .build()
-
                 chain.proceed(request)
             })
             httpClientBuilder?.addInterceptor(OAuthInterceptor())
             initHttpLogging()
-            initSSL(context)
+//            initSSL(context)
             val builder = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -5,6 +5,14 @@ apply plugin: 'deploygate'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        signkeyGas {
+            storeFile file('/Users/administrator/Desktop/DATA PROJECT/GasTHQ/app/keyGasThq')
+            storePassword '123456'
+            keyAlias 'key0'
+            keyPassword '123456'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
@@ -24,14 +32,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            android.applicationVariants.all { variant ->
-                variant.outputs.all {
-                    outputFileName = "gas-hq-v${variant.versionName}.apk"
+            signingConfig signingConfigs.signkeyGas
+//            android.applicationVariants.all { variant ->
+//                variant.outputs.all {
+//                    outputFileName = "gas-hq-v${variant.versionName}.apk"
+//                }
+//            }
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                switch (variant.productFlavors[0].name) {
+                    case "dev":
+                        def name = "gas-hq-dev-v${variant.versionName}.apk"
+                        output.outputFileName = name
+                        break
+                    case "product":
+                        def name = "gas-hq-product-v${variant.versionName}.apk"
+                        output.outputFileName = name
+                        break
+                    default:
+                        def name = "gas-hq-v${variant.versionName}.apk"
+                        output.outputFileName = name
+                        break
                 }
             }
         }
     }
-
 
 
     compileOptions {
@@ -42,13 +69,13 @@ android {
     // build type
     productFlavors {
         dev {
-            //applicationIdSuffix ".dev"
+//            applicationIdSuffix ".dev"
             manifestPlaceholders = [app_name: "@string/app_name_dev_version"]
-            buildConfigField 'String', 'BASE_URL', '"https://api.github.com/"'
+            buildConfigField 'String', 'BASE_URL', '"https://thq-gas.duckdns.org:8091/thq-gas/"'
         }
         product {
             manifestPlaceholders = [app_name: "@string/app_name"]
-            buildConfigField 'String', 'BASE_URL', '"https://api.github.com/"'
+            buildConfigField 'String', 'BASE_URL', '"https://thq-gas.duckdns.org:8090/thq-gas/"'
         }
     }
     kotlinOptions {
@@ -74,8 +101,8 @@ dependencies {
 
 
     // Coroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
     //LifeCycle
     implementation 'androidx.lifecycle:lifecycle-common:2.3.0'
@@ -95,5 +122,6 @@ dependencies {
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 }

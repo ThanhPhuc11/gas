@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import vn.gas.thq.network.ApiService
+import vn.gas.thq.ui.home.FcmHomeRepository
+import vn.gas.thq.ui.home.FcmHomeViewModel
 import vn.gas.thq.ui.home.HomeRepository
 import vn.gas.thq.ui.home.HomeViewModel
 import vn.gas.thq.ui.kehoachbh.LapKeHoachBHRepository
@@ -38,6 +40,7 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
     init {
         creators[LoginViewModel::class.java] = LoginViewModel(LoginRepository(apiService), context)
         creators[HomeViewModel::class.java] = HomeViewModel(HomeRepository(apiService), context)
+        creators[FcmHomeViewModel::class.java] = FcmHomeViewModel(FcmHomeRepository(apiService))
         creators[LapYCXuatKhoViewModel::class.java] =
             LapYCXuatKhoViewModel(LapYCXuatKhoRepository(apiService), context)
         creators[QLYCCaNhanViewModel::class.java] =

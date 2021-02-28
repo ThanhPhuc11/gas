@@ -34,6 +34,10 @@ class LoginFragment : BaseFragment() {
             }
     }
 
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_login
+    }
+
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
     }
@@ -48,10 +52,6 @@ class LoginFragment : BaseFragment() {
                         }
                 })
                 .get(LoginViewModel::class.java)
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_login
     }
 
     override fun initView() {
