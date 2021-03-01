@@ -1,4 +1,4 @@
- package vn.gas.thq.ui.retail
+package vn.gas.thq.ui.retail
 
 import android.Manifest
 import android.content.Context
@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -61,7 +62,7 @@ class RetailFragment : BaseFragment() {
     private var tongTien = 0
     private var tienNo = 0
     private var tienThucTe = 0
-    private var gasRemain = 0
+    private var gasRemain = 0f
     private var gasPrice = 0
 
     private var hinhThucChuyenKhoan = 1
@@ -258,20 +259,28 @@ class RetailFragment : BaseFragment() {
 
         edtTienThucTe.setAdapter(suggestAdapter)
 
-        edtGasRemain.addTextChangedListener(
-            NumberTextWatcher(
-                edtGasRemain,
-                suggestAdapter,
-                object : CallBackChange {
-                    override fun afterEditTextChange(it: Editable?) {
-                        gasRemain = getRealNumberV2(it)
-                        totalGasPrice(
-                            getRealNumber(productBanKhi12.getEditTextGia()),
-                            getRealNumber(productBanKhi45.getEditTextGia())
-                        )
-                    }
-                })
-        )
+//        edtGasRemain.addTextChangedListener(
+//            NumberTextWatcher(
+//                edtGasRemain,
+//                suggestAdapter,
+//                object : CallBackChange {
+//                    override fun afterEditTextChange(it: Editable?) {
+//                        gasRemain = getRealNumberV2(it)
+//                        totalGasPrice(
+//                            getRealNumber(productBanKhi12.getEditTextGia()),
+//                            getRealNumber(productBanKhi45.getEditTextGia())
+//                        )
+//                    }
+//                })
+//        )
+        edtGasRemain.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
+        edtGasRemain.addTextChangedListener(afterTextChanged = {
+            gasRemain = getRealNumberFloat(it)
+            totalGasPrice(
+                getRealNumber(productBanKhi12.getEditTextGia()),
+                getRealNumber(productBanKhi45.getEditTextGia())
+            )
+        })
 
         fillData(transferRetailModel)
     }
@@ -699,7 +708,7 @@ class RetailFragment : BaseFragment() {
         if (khiPrice45 == 0) {
             giaKhi = khiPrice12 / 12
         }
-        gasPrice = gasRemain * giaKhi
+        gasPrice = lamTronGasPrice((gasRemain * giaKhi).toInt().toString())
         totalMustPay()
         totalDebit()
         edtGasRemainPrice.setText("${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
@@ -709,6 +718,34 @@ class RetailFragment : BaseFragment() {
         }
         tvTienGasDu.text = "-${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())} đ"
 
+    }
+
+    fun lamTronGasPrice(oldTongTien: String): Int {
+//        if (oldTongTien.length < 3) return 0
+//        if (oldTongTien.length >= 3) {
+//            val postion3 = oldTongTien[oldTongTien.length - 3].toString() + ""
+//            val postion2 = oldTongTien[oldTongTien.length - 2].toString() + ""
+//            val postion1 = oldTongTien[oldTongTien.length - 1].toString() + ""
+//            val loaiBoPhanTram =
+//                oldTongTien.replace(postion3, "0").replace(postion2, "0").replace(postion1, "0")
+//                    .toInt()
+//            return if (postion3.toInt() >= 5) {
+//                loaiBoPhanTram + 1000
+//            } else {
+//                if (loaiBoPhanTram > 500) loaiBoPhanTram else 0
+//            }
+//        }
+//        return 0
+        if (oldTongTien.toInt() < 500) return 0
+        else {
+            val hangNghin = oldTongTien.toInt() / 1000
+            val soLe = oldTongTien.toInt() % 1000
+            if (soLe >= 500) {
+                return hangNghin * 1000 + 1000
+            } else {
+                return hangNghin * 1000
+            }
+        }
     }
 
     private fun totalDebit() {
@@ -732,6 +769,16 @@ class RetailFragment : BaseFragment() {
                 view.toString().trim()
             )
         ) 0 else CommonUtils.getIntFromStringDecimal(
+            view.toString()
+                .trim()
+        )
+    }
+
+    private fun getRealNumberFloat(view: Editable?): Float {
+        return if (TextUtils.isEmpty(
+                view.toString().trim()
+            )
+        ) 0f else CommonUtils.getFloatFromStringDecimal(
             view.toString()
                 .trim()
         )
