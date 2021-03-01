@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 class GasRemainModel {
     @SerializedName("gas_remain")
     @Expose
-    var gasRemain: Int? = null
+    var gasRemain: Float? = null
 }
