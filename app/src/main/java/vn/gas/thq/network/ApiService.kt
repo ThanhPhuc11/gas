@@ -11,6 +11,7 @@ import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
+import vn.gas.thq.ui.vitri.ToaDoModel
 import vn.gas.thq.ui.xemkho.KhoModel
 
 interface ApiService {
@@ -96,6 +97,9 @@ interface ApiService {
         @Query("lat") lat: String?,
         @Query("lng") lng: String?
     ): List<Customer>
+
+    @POST("customers/{customerId}/coordinate")
+    suspend fun updateToaDoKH(@Path("customerId") customerId: String?, @Body toaDo: ToaDoModel)
 
     @POST("orders/sale")
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail

@@ -13,6 +13,7 @@ import vn.gas.thq.ui.retail.Customer
 
 class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
+    val callbackUpdateSuccess = MutableLiveData<Unit>()
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
             viTriKHRepositoty.onGetListCustomer(lat, lng)
@@ -28,6 +29,25 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
                 .collect {
                     callbackSuccess.value = Unit
                     mLiveDataCustomer.value = it as MutableList<Customer>
+                }
+        }
+    }
+
+    fun capNhatToaDoKH(custId: String?, toaDoModel: ToaDoModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            viTriKHRepositoty.updateToaDoKH(custId, toaDoModel)
+                .onStart {
+                    callbackStart.value
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackUpdateSuccess.value = Unit
                 }
         }
     }

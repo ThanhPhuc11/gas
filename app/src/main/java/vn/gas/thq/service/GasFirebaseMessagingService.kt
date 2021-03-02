@@ -35,12 +35,15 @@ class GasFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         // notify notification
-        val title = remoteMessage.notification?.title
-        val body = remoteMessage.notification?.body
+//        val title = remoteMessage.notification?.title
+//        val body = remoteMessage.notification?.body
 
         // notify data
         val data = remoteMessage.data
-        val type = data["notificationType"]
+        val type = data[0]
+
+        val title = "Thông báo phê duyệt"
+        val body = "Body"
 
         // intent, prepare data
         val intent = Intent(context, MainActivity::class.java)
