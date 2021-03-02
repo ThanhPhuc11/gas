@@ -420,6 +420,11 @@ public final class CommonUtils {
         return Integer.parseInt(num);
     }
 
+    public static float getFloatFromStringDecimal(String decimal) {
+        String num = decimal.replace(",", ".");
+        return Float.parseFloat(num);
+    }
+
     public static void saveString(String content, String fileName) {
         try {
             File myFile = new File("/sdcard/" + fileName);
