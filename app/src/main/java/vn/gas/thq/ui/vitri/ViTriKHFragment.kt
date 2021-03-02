@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -88,6 +89,12 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             adapter.notifyDataSetChanged()
         })
 
+        viewModel.callbackUpdateSuccess.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Cập nhật toạ độ KH thành công") {
+                alertDialog?.dismiss()
+            }
+        })
+
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
@@ -118,7 +125,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         viewModel.onGetListCustomer("0", "0")
     }
 
-    private fun showDialogDetail() {
+    private fun showDialogDetail(custId: String) {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_vi_tri, null)
@@ -146,6 +153,10 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
+                    viewModel.capNhatToaDoKH(custId, ToaDoModel().apply {
+                        lat = latitude.toInt()
+                        lng = longitude.toInt()
+                    })
 //                        viewModel.onCancelRequest(orderId)
                 }
             }
@@ -214,6 +225,6 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             check()
         }
         showMess("${mListCustomer[position].customerId}")
-        showDialogDetail()
+        showDialogDetail("${mListCustomer[position].customerId}")
     }
 }
