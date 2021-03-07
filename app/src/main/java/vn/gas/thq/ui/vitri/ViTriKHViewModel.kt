@@ -14,6 +14,39 @@ import vn.gas.thq.ui.retail.Customer
 class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
     val callbackUpdateSuccess = MutableLiveData<Unit>()
+    val callbackListShop = MutableLiveData<MutableList<ShopModel>>()
+    val callbackListSaleLine = MutableLiveData<MutableList<SaleLineModel>>()
+
+    fun getAllShop() {
+        viewModelScope.launch(Dispatchers.Main) {
+            viTriKHRepositoty.getAllShop("")
+                .onStart { callbackStart.value = Unit }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackListShop.value = it as MutableList
+                }
+        }
+    }
+
+    fun getSaleLine() {
+        viewModelScope.launch(Dispatchers.Main) {
+            viTriKHRepositoty.getSaleLine("")
+                .onStart { callbackStart.value = Unit }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackListSaleLine.value = it as MutableList
+                }
+        }
+    }
+
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
             viTriKHRepositoty.onGetListCustomer(lat, lng)

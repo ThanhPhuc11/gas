@@ -11,6 +11,8 @@ import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
+import vn.gas.thq.ui.vitri.SaleLineModel
+import vn.gas.thq.ui.vitri.ShopModel
 import vn.gas.thq.ui.vitri.ToaDoModel
 import vn.gas.thq.ui.xemkho.KhoModel
 
@@ -46,7 +48,7 @@ interface ApiService {
         @Query("staff_code") staff_code: String?
     ): List<ProductShopModel>
 
-    @GET("stocks/shop")
+    @GET("shop-orders/stocks/shop")
     suspend fun getProductFromShop(): List<ProductShopModel>
 
     @GET("stocks/staff")
@@ -55,7 +57,7 @@ interface ApiService {
     @GET("stocks/owner")
     suspend fun getKho(): List<KhoModel>
 
-    @POST("orders/shop")
+    @POST("shop-orders")
     suspend fun initExport(@Body obj: InitExportRequest): IdentityModel
 
     //Tim kiem ycxk
@@ -166,4 +168,13 @@ interface ApiService {
         @Query("size") size: Int
     ): List<KHBHOrderModel>
 
+    @GET("shops")
+    suspend fun getListShop(
+        @Query("query") query: String?
+    ): List<ShopModel>
+
+    @GET("sale-lines")
+    suspend fun getListSaleLine(
+        @Query("query") query: String?
+    ): List<SaleLineModel>
 }

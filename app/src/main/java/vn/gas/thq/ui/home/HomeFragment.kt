@@ -21,11 +21,15 @@ import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.homemenu.MenuFullFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
+import vn.gas.thq.ui.login.LoginFragment
+import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
+import vn.gas.thq.util.AppConstants
+import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -86,6 +90,18 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     override fun initData() {
         viewModel.getUserInfo()
+        imgLogout.setOnClickListener {
+            CommonUtils.showConfirmDiglog2Button(
+                activity, "Đăng xuất", "Bạn có chắc chắn muốn đăng xuất?", getString(
+                    R.string.biometric_negative_button_text
+                ), getString(R.string.text_ok)
+            ) {
+                if (it == AppConstants.YES) {
+                    viewController?.popAllFragment()
+                    viewController?.pushFragment(ScreenId.SCREEN_LOGIN, LoginFragment.newInstance())
+                }
+            }
+        }
 
     }
 

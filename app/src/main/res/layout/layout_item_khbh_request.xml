@@ -8,6 +8,7 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/llWrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -50,22 +51,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="LXBH"
+                android:text="Trạm"
                 android:textColor="@color/gray_666E79" />
 
             <TextView
-                android:id="@+id/tvName"
+                android:id="@+id/tvTram"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ngô Bảo Ngọc"
+                android:text="- -"
                 android:textColor="@color/gray_404A57" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llCustomer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -73,23 +76,71 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Loại yêu cầu"
+                android:text="Tuyến bán hàng"
                 android:textColor="@color/gray_666E79" />
 
             <TextView
-                android:id="@+id/tvLoaiYC"
+                android:id="@+id/tvTuyenBH"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Xuất kho"
+                android:text="- -"
                 android:textColor="@color/gray_404A57" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nhân viên lái xe"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvLXBH"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ngày bán"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvSaleTime"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -106,57 +157,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
-                android:textColor="@color/red_DB4755" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llCustomer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/textStyleBody"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Khách hàng"
-                android:textColor="@color/gray_666E79" />
-
-            <TextView
-                android:id="@+id/tvCustName"
-                style="@style/textStyleBody"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="- -"
-                android:textColor="@color/gray_404A57" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/textStyleBody"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ngày đặt"
-                android:textColor="@color/gray_666E79" />
-
-            <TextView
-                android:id="@+id/tvSaleTime"
-                style="@style/textStyleBody"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="28/10/2020 08:47:38"
-                android:textColor="@color/gray_404A57" />
+                android:textColor="@color/red_DB4755" />
         </LinearLayout>
     </LinearLayout>
 

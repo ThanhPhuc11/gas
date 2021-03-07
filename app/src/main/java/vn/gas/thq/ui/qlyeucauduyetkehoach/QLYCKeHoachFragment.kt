@@ -4,18 +4,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.*
-import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.btnSearch
-import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.edtEndDate
-import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.edtStartDate
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
-import vn.gas.thq.ui.kehoachbh.LapKeHoachBHViewModel
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
@@ -25,6 +21,8 @@ class QLYCKeHoachFragment : BaseFragment() {
     private var status: Int? = null
     private var staffCode: String? = null
     private var shopCode: String? = null
+    private var listKHBH = mutableListOf<KHBHOrderModel>()
+    private lateinit var adapterKHBH: RequestItemKHBHAdapter
 
     companion object {
         @JvmStatic
@@ -75,11 +73,14 @@ class QLYCKeHoachFragment : BaseFragment() {
             ) { strDate -> edtEndDate.setText(strDate) }
         }
         btnSearch.setOnClickListener(this::onSearch)
+        initRecyclerView()
     }
 
     override fun initObserver() {
         viewModel.callbackListKHBH.observe(viewLifecycleOwner, {
-            Log.e("Phuc", it.toString())
+            listKHBH.clear()
+            listKHBH.addAll(it)
+            adapterKHBH.notifyDataSetChanged()
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -97,6 +98,15 @@ class QLYCKeHoachFragment : BaseFragment() {
         viewModel.showMessCallback.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun initRecyclerView() {
+        adapterKHBH = RequestItemKHBHAdapter(listKHBH)
+//        adapterKHBH
+
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvKHBH.layoutManager = linearLayoutManager
+        rvKHBH.adapter = adapterKHBH
     }
 
     private fun onSearch(view: View) {
