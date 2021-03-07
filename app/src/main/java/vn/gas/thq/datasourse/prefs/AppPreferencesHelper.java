@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import vn.gas.thq.model.NickPassModel;
 import vn.gas.thq.model.TokenModel;
 import vn.gas.thq.model.UserModel;
 import vn.gas.thq.util.AppConstants;
@@ -24,6 +25,8 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public static final String CONTRACT_MODEL_SELECT = "CONTRACT_MODEL_SELECT";
     public static final String STATION_STAGE = "STATION_STAGE";
     private static final String PREF_KEY_USER = "PREF_KEY_USER";
+    private static final String REMEMBER_USER = "REMEMBER_USER";
+    private static final String NICK_PASS_USER = "NICK_PASS_USER";
 
     // SharedPreferences
     private final SharedPreferences mPrefs;
@@ -70,6 +73,35 @@ public class AppPreferencesHelper implements PreferencesHelper {
         } else {
             mPrefs.edit().putString(PREF_KEY_USER, "").apply();
         }
+    }
+
+    @Override
+    public NickPassModel getNickPass() {
+        Gson gson = new Gson();
+        String json = mPrefs.getString(NICK_PASS_USER, "");
+        NickPassModel nickPassModel = gson.fromJson(json, NickPassModel.class);
+        return nickPassModel;
+    }
+
+    @Override
+    public void setNickPass(NickPassModel user) {
+        if (user != null) {
+            Gson gson = new Gson();
+            String json = gson.toJson(user);
+            mPrefs.edit().putString(NICK_PASS_USER, json).apply();
+        } else {
+            mPrefs.edit().putString(NICK_PASS_USER, "").apply();
+        }
+    }
+
+    @Override
+    public boolean getRemember() {
+        return mPrefs.getBoolean(REMEMBER_USER, false);
+    }
+
+    @Override
+    public void setRemember(boolean check) {
+        mPrefs.edit().putBoolean(REMEMBER_USER, check).apply();
     }
 
     @Override

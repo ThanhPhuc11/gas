@@ -2,7 +2,6 @@ package vn.gas.thq.customview
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +63,7 @@ class ItemRequestType1 : CardView {
 
     fun setThoiGian(thoigian: String?) {
         if (thoigian != null) {
-            tvOrderTime.text = thoigian
+            tvSaleTime.text = thoigian
         }
     }
 

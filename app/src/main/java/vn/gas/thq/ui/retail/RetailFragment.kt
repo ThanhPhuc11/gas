@@ -721,21 +721,6 @@ class RetailFragment : BaseFragment() {
     }
 
     fun lamTronGasPrice(oldTongTien: String): Int {
-//        if (oldTongTien.length < 3) return 0
-//        if (oldTongTien.length >= 3) {
-//            val postion3 = oldTongTien[oldTongTien.length - 3].toString() + ""
-//            val postion2 = oldTongTien[oldTongTien.length - 2].toString() + ""
-//            val postion1 = oldTongTien[oldTongTien.length - 1].toString() + ""
-//            val loaiBoPhanTram =
-//                oldTongTien.replace(postion3, "0").replace(postion2, "0").replace(postion1, "0")
-//                    .toInt()
-//            return if (postion3.toInt() >= 5) {
-//                loaiBoPhanTram + 1000
-//            } else {
-//                if (loaiBoPhanTram > 500) loaiBoPhanTram else 0
-//            }
-//        }
-//        return 0
         if (oldTongTien.toInt() < 500) return 0
         else {
             val hangNghin = oldTongTien.toInt() / 1000
