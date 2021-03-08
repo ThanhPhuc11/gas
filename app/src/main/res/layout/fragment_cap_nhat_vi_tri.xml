@@ -28,6 +28,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTram"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -36,6 +37,28 @@
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
                 android:text="Chọn trạm"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Tuyến xe"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTuyenXe"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="Chọn tuyến xe"
                 android:textColor="@color/gray_666E79"
                 android:textSize="14sp" />
 

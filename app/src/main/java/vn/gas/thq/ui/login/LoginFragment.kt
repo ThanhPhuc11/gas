@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.model.NickPassModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.LoginRetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
@@ -59,6 +61,12 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initData() {
+        cbRemember.isChecked = AppPreferencesHelper(context).remember
+        if (cbRemember.isChecked) {
+            val nickPassModel = AppPreferencesHelper(context).nickPass
+            edtuserName.setText(nickPassModel?.userName)
+            edtPassword.setText(nickPassModel?.passWord)
+        }
         btnLogin.setOnClickListener {
             viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
         }
@@ -74,6 +82,16 @@ class LoginFragment : BaseFragment() {
 //            }
 //        })
         viewModel.getSuccessToken().observe(viewLifecycleOwner, {
+            if (cbRemember.isChecked) {
+                AppPreferencesHelper(context).nickPass =
+                    NickPassModel().apply {
+                        userName = edtuserName.text.toString().trim()
+                        passWord = edtPassword.text.toString().trim()
+                    }
+            } else {
+                AppPreferencesHelper(context).nickPass = null
+            }
+            AppPreferencesHelper(context).remember = cbRemember.isChecked
             viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
             hideLoading()
         })

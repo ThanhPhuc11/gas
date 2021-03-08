@@ -4,7 +4,13 @@ import kotlinx.coroutines.flow.flow
 import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
-class LapYCXuatKhoRepository(private val apiService: ApiService) : BaseRepository() {
+class
+
+
+
+
+
+LapYCXuatKhoRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun getDataFromShop() = flow {
         emit(apiService.getProductFromShop())
     }

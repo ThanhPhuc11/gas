@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -35,15 +37,19 @@ class GasFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         // notify notification
-        val title = remoteMessage.notification?.title
-        val body = remoteMessage.notification?.body
+//        val title = remoteMessage.notification?.title
+//        val body = remoteMessage.notification?.body
 
         // notify data
         val data = remoteMessage.data
-        val type = data["notificationType"]
+        val type = data.get(0)
+        Log.e("PHUC", "Message data payload: ${remoteMessage.data["body"]}")
+
+        val title = "Thông báo"
+        val body = data["body"]
 
         // intent, prepare data
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent()
         intent.action = System.currentTimeMillis().toString()
         val bundle = Bundle()
         bundle.putString("notificationType", type)
@@ -53,6 +59,10 @@ class GasFirebaseMessagingService : FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle(title)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(body)
+            )
             .setContentText(body)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)

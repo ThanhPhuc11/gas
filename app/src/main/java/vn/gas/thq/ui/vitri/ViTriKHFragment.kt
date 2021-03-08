@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,15 +28,23 @@ import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
+import java.util.*
 
 class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     private lateinit var viewModel: ViTriKHViewModel
     private lateinit var adapter: CustomerAdapter
+    private var listTram = mutableListOf<ShopModel>()
+    private var listSaleLine = mutableListOf<SaleLineModel>()
     private var mListCustomer = mutableListOf<Customer>()
     private var alertDialog: AlertDialog? = null
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
+
+    private var shopId: String? = null
+    private var saleLineId: String? = null
 
     private var PERMISSION_ALL = 1
     private var PERMISSIONS = arrayOf(
@@ -78,14 +85,34 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     }
 
     override fun initData() {
+        viewModel.getAllShop()
+        viewModel.getSaleLine()
         initRecyclerView()
+        edtTram.setOnClickListener(this::onChooseShop)
+        edtTuyenXe.setOnClickListener(this::onChooseTuyen)
         btnSearch.setOnClickListener(this::onSearch)
     }
 
     override fun initObserver() {
+        viewModel.callbackListShop.observe(viewLifecycleOwner, {
+            listTram.clear()
+            listTram.addAll(it)
+        })
+
+        viewModel.callbackListSaleLine.observe(viewLifecycleOwner, {
+            listSaleLine.clear()
+            listSaleLine.addAll(it)
+        })
+
         viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
             mListCustomer.addAll(it)
             adapter.notifyDataSetChanged()
+        })
+
+        viewModel.callbackUpdateSuccess.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Cập nhật toạ độ KH thành công") {
+                alertDialog?.dismiss()
+            }
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -118,7 +145,41 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         viewModel.onGetListCustomer("0", "0")
     }
 
-    private fun showDialogDetail() {
+    private fun onChooseShop(view: View) {
+        var doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        listTram.forEach {
+            mArrayList.add(DialogListModel(it.shopId.toString(), it.name))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Trạm",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            shopId = item.id
+            edtTram.setText(item.name)
+        }
+    }
+
+    private fun onChooseTuyen(view: View) {
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
+        listSaleLine.forEach {
+            mArrayList.add(DialogListModel(it.saleLineId.toString(), it.name))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Tuyến xe",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            saleLineId = item.id
+            edtTuyenXe.setText(item.name)
+        }
+    }
+
+    private fun showDialogDetail(custId: String) {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_vi_tri, null)
@@ -146,6 +207,10 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
+                    viewModel.capNhatToaDoKH(custId, ToaDoModel().apply {
+                        lat = latitude.toInt()
+                        lng = longitude.toInt()
+                    })
 //                        viewModel.onCancelRequest(orderId)
                 }
             }
@@ -214,6 +279,6 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             check()
         }
         showMess("${mListCustomer[position].customerId}")
-        showDialogDetail()
+        showDialogDetail("${mListCustomer[position].customerId}")
     }
 }

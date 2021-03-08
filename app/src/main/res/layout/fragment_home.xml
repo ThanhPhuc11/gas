@@ -47,11 +47,13 @@
                     android:textSize="@dimen/text_20sp" />
 
                 <ImageView
+                    android:id="@+id/imgLogout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_marginEnd="@dimen/_25sdp"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_logout_v2"
+                    app:tint="@color/white_ffffff" />
 
             </LinearLayout>
 
