@@ -30,7 +30,7 @@ import javax.net.ssl.X509TrustManager
 
 
 object RetrofitBuilder {
-    private var retrofit: Retrofit? = null
+    var retrofit: Retrofit? = null
     private var token: String? = null
 
     private const val BASE_URL = BuildConfig.BASE_URL

@@ -47,9 +47,9 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
         }
     }
 
-    fun onGetListCustomer(lat: String?, lng: String?) {
+    fun onGetListCustomer(query: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            viTriKHRepositoty.onGetListCustomer(lat, lng)
+            viTriKHRepositoty.onGetListCustomer(query)
                 .onStart {
                     callbackStart.value = Unit
                 }

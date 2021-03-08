@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import org.greenrobot.eventbus.EventBus
 import retrofit2.HttpException
 import vn.gas.thq.model.ErrorModel
+import vn.gas.thq.model.ExpriteEventModel
 import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import java.io.IOException
 
@@ -34,11 +35,17 @@ abstract class BaseViewModel : ViewModel() {
 //                showMessCallback.value = response.code().toString()
                     }
                     401 -> {
-
+                        EventBus.getDefault().post(ExpriteEventModel())
                     }
                     426 -> { // nang cap phien ban moi
-                        showMessCallback.value = "Đã có phiên bản mới. Vui lòng thực thực hiện nâng cấp phiên bản mới!"
-                        EventBus.getDefault().post(NeedUpgradeApkEvent(NeedUpgradeApkEvent.SHOW_POPUP, mError.detail))
+                        showMessCallback.value =
+                            "Đã có phiên bản mới. Vui lòng thực thực hiện nâng cấp phiên bản mới!"
+                        EventBus.getDefault().post(
+                            NeedUpgradeApkEvent(
+                                NeedUpgradeApkEvent.SHOW_POPUP,
+                                mError.detail
+                            )
+                        )
                     }
                 }
             } catch (e: IOException) {

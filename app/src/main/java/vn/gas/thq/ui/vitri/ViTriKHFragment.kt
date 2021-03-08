@@ -142,7 +142,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     }
 
     private fun onSearch(view: View) {
-        viewModel.onGetListCustomer("0", "0")
+        viewModel.onGetListCustomer("")
     }
 
     private fun onChooseShop(view: View) {

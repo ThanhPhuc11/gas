@@ -1,6 +1,7 @@
 package vn.gas.thq.util
 
 object ScreenId {
+    const val SCREEN_LOGIN_BACAUSE_EXPIRED = "SCREEN_LOGIN_BACAUSE_EXPIRED"
     const val SCREEN_LOGIN = "SCREEN_LOGIN"
 //    const val SCREEN_CUSTOMER_CONTRACT_MENU = "SCREEN_CUSTOMER_CONTRACT_MENU"
 

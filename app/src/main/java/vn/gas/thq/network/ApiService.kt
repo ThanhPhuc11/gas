@@ -177,4 +177,9 @@ interface ApiService {
     suspend fun getListSaleLine(
         @Query("query") query: String?
     ): List<SaleLineModel>
+
+    @GET("customers")
+    suspend fun queryCustomer(
+        @Query("query") query: String?
+    ): List<Customer>
 }

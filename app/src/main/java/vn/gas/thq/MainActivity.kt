@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import vn.gas.thq.base.BaseActivity
+import vn.gas.thq.model.ExpriteEventModel
 import vn.gas.thq.ui.downloadApk.ApkDialog
 import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import vn.gas.thq.ui.login.LoginFragment
@@ -127,6 +128,12 @@ open class MainActivity : BaseActivity() {
             apkD = ApkDialog(this, "", event.url)
             apkD!!.show()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onNeedUpgradeApEvent(event: ExpriteEventModel?) {
+        viewController.popAllFragment()
+        viewController.pushFragment(ScreenId.SCREEN_LOGIN, LoginFragment.newInstance())
     }
 
     override fun onBackPressed() {
