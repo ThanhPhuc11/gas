@@ -20,9 +20,9 @@ import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
 
-class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListener {
+class LapYCXuatKhoFragment : BaseFragment(), ProductItemV2Adapter.ItemClickListener {
     private lateinit var viewModel: LapYCXuatKhoViewModel
-    private lateinit var productAdapter: ProductItemAdapter
+    private lateinit var productAdapter: ProductItemV2Adapter
     var mList = mutableListOf<ProductModel>()
 
 
@@ -99,12 +99,13 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
     override fun initData() {
         getInfo()
         viewModel.getDataFromShop()
-        productAdapter = ProductItemAdapter(mList)
+        productAdapter = ProductItemV2Adapter(mList)
         productAdapter.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = productAdapter
+        rvRequestItem.itemAnimator = null
 
         btnSubmit.setOnClickListener(this::onSubmitData)
     }
@@ -139,6 +140,15 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemAdapter.ItemClickListene
 
     override fun onItemSLChanged(position: Int, count: Int) {
         mList[position].quantity = count
+        if (mList[position].code == "GAS12") {
+            mList[mList.indexOf(mList.firstOrNull { it.code == "TANK12" })].quantity = count
+//            productAdapter.setSL(mList.indexOf(mList.firstOrNull { it.code == "TANK12" }), count)
+        } else if (mList[position].code == "GAS45") {
+            mList[mList.indexOf(mList.firstOrNull { it.code == "TANK45" })].quantity = count
+//            productAdapter.setSL(mList.indexOf(mList.firstOrNull { it.code == "TANK45" }), count)
+        }
+        hideKeyboard()
+        productAdapter.notifyDataSetChanged()
         Log.e("POSITION: $position", "SL $count")
     }
 }

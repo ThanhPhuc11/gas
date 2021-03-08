@@ -182,4 +182,7 @@ interface ApiService {
     suspend fun queryCustomer(
         @Query("query") query: String?
     ): List<Customer>
+
+    @GET("customers/{id} ")
+    suspend fun detailKH(@Path("id") id: String): Customer
 }

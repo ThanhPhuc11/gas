@@ -9,6 +9,10 @@ class ViTriKHRepositoty(private val apiService: ApiService) : BaseRepository() {
         emit(apiService.queryCustomer(query))
     }
 
+    suspend fun onGetDetailCustomer(id: String) = flow {
+        emit(apiService.detailKH(id))
+    }
+
     suspend fun updateToaDoKH(custId: String?, toaDoModel: ToaDoModel) = flow {
         emit(apiService.updateToaDoKH(custId, toaDoModel))
     }
