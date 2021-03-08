@@ -20,4 +20,12 @@ class Customer {
     @SerializedName("tel_contact")
     @Expose
     var telContact: String? = null
+
+    @SerializedName("staff_name")
+    @Expose
+    var staffName: String? = null
+
+    @SerializedName("sale_line_name")
+    @Expose
+    var saleLineName: String? = null
 }

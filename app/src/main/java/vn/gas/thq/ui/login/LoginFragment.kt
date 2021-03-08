@@ -15,6 +15,7 @@ import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.NickPassModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.LoginRetrofitBuilder
+import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.BuildConfig
@@ -92,7 +93,12 @@ class LoginFragment : BaseFragment() {
                 AppPreferencesHelper(context).nickPass = null
             }
             AppPreferencesHelper(context).remember = cbRemember.isChecked
-            viewController?.replaceByFragment(ScreenId.SCREEN_LOGIN, MainFragment.newInstance())
+            if (this.tag == "SCREEN_LOGIN") {
+                viewController?.replaceByFragment(ScreenId.SCREEN_MAIN, MainFragment.newInstance())
+            } else {
+                viewController?.popFragment()
+                RetrofitBuilder?.retrofit = null
+            }
             hideLoading()
         })
 //
