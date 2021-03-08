@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -45,6 +46,8 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
 
     private var shopId: String? = null
     private var saleLineId: String? = null
+
+    private var queryKH = ""
 
     private var PERMISSION_ALL = 1
     private var PERMISSIONS = arrayOf(
@@ -105,8 +108,14 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         })
 
         viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
+            mListCustomer.clear()
             mListCustomer.addAll(it)
             adapter.notifyDataSetChanged()
+            queryKH = ""
+        })
+
+        viewModel.callbackDetailKH.observe(viewLifecycleOwner, {
+            showDialogDetail(it)
         })
 
         viewModel.callbackUpdateSuccess.observe(viewLifecycleOwner, {
@@ -142,7 +151,23 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     }
 
     private fun onSearch(view: View) {
-        viewModel.onGetListCustomer("")
+        if (!TextUtils.isEmpty(edtMaKH.text.toString())) {
+            queryKH += ";custId==${edtMaKH.text.toString()}"
+        }
+        if (!TextUtils.isEmpty(edtTenKH.text.toString())) {
+            queryKH += ";name=ik=${edtTenKH.text.toString()}"
+        }
+        if (shopId != null) {
+            queryKH += ";shopId==$shopId"
+        }
+        if (saleLineId != null) {
+            queryKH += ";saleLineId==$saleLineId"
+        }
+        if (queryKH == "") {
+            viewModel.onGetListCustomer(queryKH)
+            return
+        }
+        viewModel.onGetListCustomer(queryKH.substring(1, queryKH.length))
     }
 
     private fun onChooseShop(view: View) {
@@ -157,9 +182,15 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             "Trạm",
             getString(R.string.enter_text_search)
         ) { item ->
+            if (AppConstants.NOT_SELECT.equals(item.id)) {
+                shopId = null
+                edtTram.setText("")
+                return@show
+            }
             shopId = item.id
             edtTram.setText(item.name)
         }
+        doc.displayNotSelect()
     }
 
     private fun onChooseTuyen(view: View) {
@@ -174,12 +205,18 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             "Tuyến xe",
             getString(R.string.enter_text_search)
         ) { item ->
+            if (AppConstants.NOT_SELECT.equals(item.id)) {
+                saleLineId = null
+                edtTuyenXe.setText("")
+                return@show
+            }
             saleLineId = item.id
             edtTuyenXe.setText(item.name)
         }
+        doc.displayNotSelect()
     }
 
-    private fun showDialogDetail(custId: String) {
+    private fun showDialogDetail(customer: Customer) {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_vi_tri, null)
@@ -189,9 +226,19 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         val btnHuy = dialogView.findViewById<Button>(R.id.btnHuy)
         val btnCapNhat = dialogView.findViewById<Button>(R.id.btnCapNhat)
 
+        val tvCustId = dialogView.findViewById<TextView>(R.id.tvCustId)
+        val tvCustName = dialogView.findViewById<TextView>(R.id.tvCustName)
         val tvAddress = dialogView.findViewById<TextView>(R.id.tvAddress)
+        val tvVungThiTruong = dialogView.findViewById<TextView>(R.id.tvVungThiTruong)
+        val tvTuyenBH = dialogView.findViewById<TextView>(R.id.tvTuyenBH)
+        val tvNVKD = dialogView.findViewById<TextView>(R.id.tvNVKD)
 
-        tvAddress.text = "${String.format("%.2f", latitude)} : ${String.format("%.2f", longitude)}"
+        tvCustId.text = customer.customerId
+        tvCustName.text = customer.name
+        tvTuyenBH.text = customer.saleLineName
+        tvNVKD.text = customer.staffName
+        tvAddress.text = customer.address
+//        tvAddress.text = "${String.format("%.2f", latitude)} : ${String.format("%.2f", longitude)}"
 
         imgClose.setOnClickListener {
             alertDialog?.dismiss()
@@ -207,7 +254,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
-                    viewModel.capNhatToaDoKH(custId, ToaDoModel().apply {
+                    viewModel.capNhatToaDoKH(customer.customerId, ToaDoModel().apply {
                         lat = latitude.toInt()
                         lng = longitude.toInt()
                     })
@@ -279,6 +326,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             check()
         }
         showMess("${mListCustomer[position].customerId}")
-        showDialogDetail("${mListCustomer[position].customerId}")
+        viewModel.onGetDetailCustomer(mListCustomer[position].customerId.toString())
+//        showDialogDetail("${mListCustomer[position].customerId}")
     }
 }

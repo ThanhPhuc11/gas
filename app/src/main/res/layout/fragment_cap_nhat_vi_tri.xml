@@ -72,10 +72,12 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMaKH"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
                 android:hint="Nhập mã khách hàng"
+                android:inputType="number"
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
                 android:textColor="@color/gray_666E79"
@@ -91,7 +93,7 @@
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtRequestType"
+                android:id="@+id/edtTenKH"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
