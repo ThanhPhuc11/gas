@@ -156,6 +156,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
             staffCode = item.id
             edtLXBH.setText(item.name)
             showInfo(item)
+            viewModel.gasRemainPrice(staffCode!!)
         }
     }
 

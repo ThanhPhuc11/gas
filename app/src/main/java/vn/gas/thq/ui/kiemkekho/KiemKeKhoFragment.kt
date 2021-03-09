@@ -16,17 +16,23 @@ import vn.gas.thq.model.ProductModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
+import vn.gas.thq.ui.xemkho.KhoModel
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
+import java.util.*
 
 class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
+    private var shopCode: String? = null
     private lateinit var viewModel: KiemKeKhoViewModel
     private lateinit var productAdapter: KKKhoItemAdapter
     private var alertDialog: AlertDialog? = null
     private var mOldList = mutableListOf<ProductModel>()
     private var mNewList = mutableListOf<ProductModel>()
+    private var listKho = mutableListOf<KhoModel>()
     private lateinit var kiemKeRequestModel: KiemKeRequestModel
 
     companion object {
@@ -68,13 +74,24 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
     }
 
     override fun initData() {
-        viewModel.getDataFromCode("NTL", null)
+        viewModel.getListKho()
+//        viewModel.getDataFromCode("NTL", null)
         tvCheckDate.text = "Ngày kiểm kê: ${AppDateUtils.getCurrentDate()}"
         initRecyclerView()
+        edtTram.setOnClickListener(this::onChooseShop)
         btnKiemKe.setOnClickListener(this::onSubmit)
     }
 
     override fun initObserver() {
+        viewModel.listKho.observe(viewLifecycleOwner, {
+            listKho.clear()
+            val listOnlyType1 = it.filter { it.type == 1 }
+            listKho.addAll(listOnlyType1)
+            shopCode = listOnlyType1[0].code
+            edtTram.setText(listOnlyType1[0].name)
+            viewModel.getDataFromCode(shopCode, null)
+        })
+
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mOldList.clear()
             mNewList.clear()
@@ -106,7 +123,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         viewModel.callbackKiemKeKho.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
                 alertDialog?.dismiss()
-                viewModel.getDataFromCode("NTL", "admin")
+                viewModel.getDataFromCode(shopCode, null)
             }
         })
 
@@ -169,7 +186,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         ) {
             if (it == AppConstants.YES) {
                 kiemKeRequestModel = KiemKeRequestModel()
-                kiemKeRequestModel.shopCode = "NTL"
+                kiemKeRequestModel.shopCode = shopCode
                 mOldList.forEach {
                     kiemKeRequestModel.originalStock.add(ProductNhapKhoModel().apply {
                         productCode = it.code
@@ -185,6 +202,29 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
                 }
                 viewModel.kiemKeKho(kiemKeRequestModel)
             }
+        }
+    }
+
+    private fun onChooseShop(view: View) {
+        var doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        listKho.forEach {
+            mArrayList.add(DialogListModel(it.code, it.name, it.type.toString()))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Trạm",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            shopCode = item.id
+//            staffCode = null
+//            if (item.other == "1") {
+//                shopCode = item.id
+//            } else {
+//                staffCode = item.id
+//            }
+            edtTram.setText(item.name)
         }
     }
 

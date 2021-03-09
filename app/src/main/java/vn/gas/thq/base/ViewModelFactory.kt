@@ -24,6 +24,8 @@ import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanViewModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachRepository
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachViewModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachRepository
+import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachViewModel
 import vn.gas.thq.ui.retail.RetailRepository
 import vn.gas.thq.ui.retail.RetailViewModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoRepository
@@ -61,6 +63,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             LapKeHoachBHViewModel(LapKeHoachBHRepository(apiService))
         creators[QLYCKeHoachViewModel::class.java] =
             QLYCKeHoachViewModel(QLYCKeHoachRepository(apiService))
+        creators[DetailKeHoachViewModel::class.java] =
+            DetailKeHoachViewModel(DetailKeHoachRepository(apiService))
         creators[ViTriKHViewModel::class.java] =
             ViTriKHViewModel(ViTriKHRepositoty(apiService))
     }

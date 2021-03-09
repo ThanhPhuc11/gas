@@ -12,11 +12,13 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachFragment
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
-class QLYCKeHoachFragment : BaseFragment() {
+class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickListener {
     private lateinit var viewModel: QLYCKeHoachViewModel
     private var status: Int? = null
     private var staffCode: String? = null
@@ -102,7 +104,7 @@ class QLYCKeHoachFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         adapterKHBH = RequestItemKHBHAdapter(listKHBH)
-//        adapterKHBH
+        adapterKHBH.setClickListener(this)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvKHBH.layoutManager = linearLayoutManager
@@ -123,5 +125,12 @@ class QLYCKeHoachFragment : BaseFragment() {
                 edtEndDate.text.toString()
             )
         viewModel.getKeHoachBH(status, fromDate, endDate, staffCode, shopCode, null, 0, 1000)
+    }
+
+    override fun onItemClick(view: View?, position: Int) {
+        viewController?.pushFragment(
+            ScreenId.SCREEN_DETAIL_KE_HOACH,
+            DetailKeHoachFragment.newInstance()
+        )
     }
 }

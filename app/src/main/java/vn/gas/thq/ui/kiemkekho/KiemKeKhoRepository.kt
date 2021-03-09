@@ -12,4 +12,8 @@ class KiemKeKhoRepository(private val apiService: ApiService) : BaseRepository()
     suspend fun kiemKeKho(obj: KiemKeRequestModel) = flow {
         emit(apiService.kiemKeKho(obj))
     }
+
+    suspend fun getDSKho() = flow {
+        emit(apiService.getKho())
+    }
 }
