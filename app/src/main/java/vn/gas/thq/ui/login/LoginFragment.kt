@@ -17,6 +17,7 @@ import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.LoginRetrofitBuilder
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
+import vn.gas.thq.ui.sharedviewmodel.TokenSharedViewModel
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.BuildConfig
 import vn.hongha.ga.R
@@ -24,6 +25,7 @@ import vn.hongha.ga.R
 
 class LoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModelToken: TokenSharedViewModel
 
     companion object {
         // TODO: Rename and change types and number of parameters
@@ -55,6 +57,7 @@ class LoginFragment : BaseFragment() {
                         }
                 })
                 .get(LoginViewModel::class.java)
+        viewModelToken = ViewModelProviders.of(this).get(TokenSharedViewModel::class.java)
     }
 
     override fun initView() {
@@ -93,11 +96,12 @@ class LoginFragment : BaseFragment() {
                 AppPreferencesHelper(context).nickPass = null
             }
             AppPreferencesHelper(context).remember = cbRemember.isChecked
+            viewModelToken.sharedToken.value = AppPreferencesHelper(context).tokenModel.accessToken
             if (this.tag == "SCREEN_LOGIN") {
                 viewController?.replaceByFragment(ScreenId.SCREEN_MAIN, MainFragment.newInstance())
             } else {
                 viewController?.popFragment()
-                RetrofitBuilder?.retrofit = null
+
             }
             hideLoading()
         })
