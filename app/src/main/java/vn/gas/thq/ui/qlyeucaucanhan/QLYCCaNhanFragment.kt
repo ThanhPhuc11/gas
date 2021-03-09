@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.qlyeucaucanhan
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -10,15 +11,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
-import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.tvName
 import kotlinx.android.synthetic.main.fragment_retail.*
 import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.*
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.btnHuyYC
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.imgClose
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.linearAccept
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvName
-import kotlinx.android.synthetic.main.layout_dialog_item_ycxk.view.tvOrderId
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -36,12 +32,9 @@ import vn.gas.thq.ui.retail.ApproveRequestModel
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
-import vn.gas.thq.util.AppConstants
-import vn.gas.thq.util.AppDateUtils
+import vn.gas.thq.util.*
 import vn.gas.thq.util.AppDateUtils.FORMAT_2
 import vn.gas.thq.util.AppDateUtils.FORMAT_5
-import vn.gas.thq.util.CommonUtils
-import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
@@ -53,6 +46,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private lateinit var viewModelThuKho: ThuKhoXuatKhoViewModel
     private lateinit var adapter: RequestItemAdapter
     private lateinit var adapterDetailYCXK: DetailItemProduct4Adapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private var alertDialog: AlertDialog? = null
     private var orderId = ""
     private var mDetailYCXKData: RequestDetailModel? = null
@@ -63,6 +57,9 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private var status: String? = null
     private var type: String? = null
     private var isRetail: Boolean = false
+    private var isReload: Boolean = false
+    private var fromDate: String = ""
+    private var endDate: String = ""
 
     private var tienKhiBan12 = 0
     private var tienKhiBan45 = 0
@@ -126,9 +123,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
     override fun initObserver() {
         viewModel.mLiveData.observe(viewLifecycleOwner, {
-            mList.clear()
+            if (isReload) {
+                mList.clear()
+            }
             mList.addAll(it)
             adapter.notifyDataSetChanged()
+            isReload = false
         })
 
         viewModel.mCancelData.observe(viewLifecycleOwner, {
@@ -334,9 +334,21 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         adapter = RequestItemAdapter(mList, loaiYC, listStatusOrderSale)
         adapter.setClickListener(this)
 
-        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = adapter
+
+    }
+
+    private fun setEndLessScrollListener() {
+        rvRequestItem.clearOnScrollListeners()
+        rvRequestItem.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMoreV2(totalItemsCount: Int) {
+                Log.e("PHUCDZ", "$totalItemsCount")
+                viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
+            }
+        })
     }
 
     private fun onChooseType(view: View) {
@@ -399,12 +411,14 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     private fun onSearchData(view: View) {
-        var fromDate =
+        setEndLessScrollListener()
+        isReload = true
+        fromDate =
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
-        var endDate =
+        endDate =
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
         if (isRetail) {
-            viewModel.onSearchRetail(status, fromDate, endDate)
+            viewModel.onSearchRetail(status, fromDate, endDate, 0)
             return
         }
         viewModel.onSubmitData(status, fromDate, endDate)

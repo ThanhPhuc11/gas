@@ -80,10 +80,12 @@ class QLYCCaNhanViewModel(
         }
     }
 
-    fun onSearchRetail(status: String?, fromDate: String, toDate: String) {
+    fun onSearchRetail(
+        status: String?, fromDate: String, toDate: String, offSet: Int
+    ) {
         val staffCode = AppPreferencesHelper(context).userModel.staffCode
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate)
+            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate, offSet)
                 .onStart {
                     callbackStart.value = Unit
                 }
