@@ -17,7 +17,7 @@ class NhapKhoRepository(private val apiService: ApiService) : BaseRepository() {
         emit(apiService.nhapKho(obj))
     }
 
-    suspend fun gasRemainPrice() = flow {
-        emit(apiService.gasRemainPrice())
+    suspend fun gasRemainPrice(staffCode: String) = flow {
+        emit(apiService.gasRemainPriceNhaoKho(staffCode))
     }
 }

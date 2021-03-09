@@ -74,9 +74,9 @@ class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseV
         }
     }
 
-    fun gasRemainPrice() {
+    fun gasRemainPrice(staffCode: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            nhapKhoRepository.gasRemainPrice()
+            nhapKhoRepository.gasRemainPrice(staffCode)
                 .onStart {
                     callbackStart.value = Unit
                 }

@@ -9,6 +9,7 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.vitri.SaleLineModel
@@ -152,6 +153,9 @@ interface ApiService {
     @GET("prices/gas-remain")
     suspend fun gasRemainPrice(): PriceModel
 
+    @GET("prices/gas-remain")
+    suspend fun gasRemainPriceNhaoKho(@Query("staff_code") staff_code: String): PriceModel
+
     //Lap KH ban hang
     @POST("sale-plans")
     suspend fun lapKeHoachBH(@Body obj: RequestKeHoachModel)
@@ -167,6 +171,9 @@ interface ApiService {
         @Query("offset") offset: Int,
         @Query("size") size: Int
     ): List<KHBHOrderModel>
+
+    @GET("sale-plans/{Id}")
+    suspend fun getDetailKHBH(@Path("Id") Id: String): DetailKHBHModel
 
     @GET("shops")
     suspend fun getListShop(

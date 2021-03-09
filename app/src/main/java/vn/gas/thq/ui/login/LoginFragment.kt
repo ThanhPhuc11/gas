@@ -3,6 +3,7 @@ package vn.gas.thq.ui.login
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,6 +27,7 @@ import vn.hongha.ga.R
 class LoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var viewModelToken: TokenSharedViewModel
+    private var check1: Boolean = false
 
     companion object {
         // TODO: Rename and change types and number of parameters
@@ -73,6 +75,17 @@ class LoginFragment : BaseFragment() {
         }
         btnLogin.setOnClickListener {
             viewModel.doLogin(edtuserName.text.toString(), edtPassword.text.toString())
+        }
+        tvSwapDev.setOnClickListener {
+            check1 = true
+            Handler().postDelayed({
+                check1 = false
+            }, 2000)
+        }
+        imgLogo.setOnClickListener {
+            if (check1) {
+                showMess("Chức năng ẩn")
+            }
         }
     }
 
