@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.core.content.FileProvider;
@@ -59,7 +60,7 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
         super.onPreExecute();
         showProgressDialog();
     }
-
+    private static File fileAPK = new File(Environment.getExternalStorageDirectory(), "gas_hotfix.apk");
     @Override
     protected Void doInBackground(String... arg0) {
         FileOutputStream fos = null;
@@ -69,14 +70,11 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
             c.setRequestMethod("GET");
             c.connect();
 
-            String PATH = "/mnt/sdcard/Download/";
-            File file = new File(PATH);
-            file.mkdirs();
-            File outputFile = new File(file, "gas_hotfix.apk");
-            if (outputFile.exists()) {
-                outputFile.delete();
+            fileAPK.mkdirs();
+            if (fileAPK.exists()) {
+                fileAPK.delete();
             }
-            fos = new FileOutputStream(outputFile);
+            fos = new FileOutputStream(fileAPK);
             int responseCode = c.getResponseCode(); //can call this instead of con.connect()
             // this will be useful to display download percentage
             // might be -1: server did not report the length
@@ -86,16 +84,6 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
 
             long total = 0;
             int count;
-           /* byte[] buffer = new byte[1024];
-            //int len1 = 0;
-            while ((count = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, count);
-
-                total += count;
-                // publishing the progress....
-                //if (fileLength > 0) // only if total length is known
-                  //  publishProgress((int) (total * 100 / fileLength));
-            }*/
             byte data[] = new byte[4096];
             while ((count = is.read(data)) != -1) {
                 // allow canceling with back button
@@ -138,7 +126,8 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
         super.onPostExecute(aVoid);
         dismissProgressDialog();
         try {
-            String urlinstall = "/mnt/sdcard/Download/gas_hotfix.apk";
+            String urlinstall = fileAPK.getAbsolutePath();
+            System.out.println("12345 fileAPK "+fileAPK.getAbsolutePath());
             ApkInstaller.installApplication(activity, urlinstall);
            /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
