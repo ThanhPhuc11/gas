@@ -1,5 +1,6 @@
 package vn.gas.thq.ui.nhapkho
 
+import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.ItemProductType4
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.DecimalDigitsInputFilter
 import vn.hongha.ga.R
 
@@ -39,7 +41,7 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             val obj: ProductModel = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
             holder.tvSLTrenXe.text = obj.quantity?.toString()
-            holder.edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
+//            holder.edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         } else if (holder is ProductViewHolder) {
             val obj: ProductModel = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
@@ -117,22 +119,34 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
 
     inner class ProductViewHolder2 constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
+
         var tvProductName: TextView = itemView.findViewById(R.id.tvProductName)
         var tvSLTrenXe: TextView = itemView.findViewById(R.id.tvSLTrenXe)
-        var edtSLNhapKho: EditText = itemView.findViewById(R.id.edtSLNhapKho)
+        var edtSLNhapKho2: EditText = itemView.findViewById(R.id.edtSLNhapKho2)
         var edtGasRemainPrice1: EditText = itemView.findViewById(R.id.edtGasRemainPrice1)
         var imgIconType: ImageView = itemView.findViewById(R.id.imgIconType)
 
         init {
 //            itemProductType.setOnClickListener(this)
-            edtSLNhapKho.addTextChangedListener(afterTextChanged = {
+            edtSLNhapKho2.addTextChangedListener(afterTextChanged = {
                 mClickListener.onItemSLChangedFloat(
                     adapterPosition,
-                    if (TextUtils.isEmpty(it.toString())) 0f else it.toString().toFloat()
+                    getRealNumberFloat(it)
                 )
             })
 
-//            edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
+            edtSLNhapKho2.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
+        }
+
+        private fun getRealNumberFloat(view: Editable?): Float {
+            return if (TextUtils.isEmpty(
+                    view.toString().trim()
+                )
+            ) 0f else CommonUtils.getFloatFromStringDecimal(
+                view.toString()
+                    .trim()
+            )
         }
 
 //        override fun onClick(p0: View?) {
