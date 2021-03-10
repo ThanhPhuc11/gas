@@ -2,14 +2,11 @@ package vn.gas.thq.ui.downloadApk;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
-
-import androidx.core.content.FileProvider;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +19,8 @@ import vn.hongha.ga.R;
 public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
     private Activity activity;
     private ProgressDialog progress;
+    File folder = null;
+    String apkPath = "";
 
     private void dismissProgressDialog() {
         try {
@@ -60,7 +59,19 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
         super.onPreExecute();
         showProgressDialog();
     }
-    private static File fileAPK = new File(Environment.getExternalStorageDirectory(), "gas_hotfix.apk");
+
+    public boolean createDirectory(Context context, String directoryPath) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            folder = new File(context.getExternalFilesDir(null), directoryPath);
+        else
+            folder = new File(Environment.getExternalStorageState(), directoryPath);
+        if (!folder.exists()) {
+            return folder.mkdirs();
+        }
+
+        return true;
+    }
+
     @Override
     protected Void doInBackground(String... arg0) {
         FileOutputStream fos = null;
@@ -70,11 +81,20 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
             c.setRequestMethod("GET");
             c.connect();
 
-            fileAPK.mkdirs();
-            if (fileAPK.exists()) {
-                fileAPK.delete();
+            File outputFile = null;
+            try {
+                boolean rs = createDirectory(activity, "apknangcap");
+                if (!rs) {
+                    Toast.makeText(activity, "Lỗi tạo thư mục lưu trữ!", Toast.LENGTH_LONG).show();
+                    return null;
+                }
+                System.out.println(rs);
+                outputFile = new File(folder, "gas_hotfix.apk");
+                apkPath = outputFile.getAbsolutePath();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            fos = new FileOutputStream(fileAPK);
+            fos = new FileOutputStream(outputFile);
             int responseCode = c.getResponseCode(); //can call this instead of con.connect()
             // this will be useful to display download percentage
             // might be -1: server did not report the length
@@ -84,6 +104,7 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
 
             long total = 0;
             int count;
+
             byte data[] = new byte[4096];
             while ((count = is.read(data)) != -1) {
                 // allow canceling with back button
@@ -126,9 +147,8 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
         super.onPostExecute(aVoid);
         dismissProgressDialog();
         try {
-            String urlinstall = fileAPK.getAbsolutePath();
-            System.out.println("12345 fileAPK "+fileAPK.getAbsolutePath());
-            ApkInstaller.installApplication(activity, urlinstall);
+            //  String urlinstall = "/mnt/sdcard/Download/gas_hotfix.apk";
+            ApkInstaller.installApplication(activity, apkPath);
            /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(new File(urlinstall)),
