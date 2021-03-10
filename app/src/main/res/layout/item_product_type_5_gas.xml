@@ -116,14 +116,13 @@
                     android:layout_weight="2">
 
                     <EditText
-                        android:id="@+id/edtSLNhapKho"
+                        android:id="@+id/edtSLNhapKho2"
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
                         android:background="@drawable/bg_border_nomal_1"
                         android:inputType="numberDecimal"
                         android:digits="0123456789,"
-                        android:maxLength="7"
                         android:textAlignment="center"
                         android:textColor="@color/blue_2C5181"
                         android:textSize="14sp" />
