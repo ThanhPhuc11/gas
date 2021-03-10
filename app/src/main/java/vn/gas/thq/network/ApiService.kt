@@ -12,6 +12,7 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
+import vn.gas.thq.ui.vitri.ListResponseCustomer
 import vn.gas.thq.ui.vitri.SaleLineModel
 import vn.gas.thq.ui.vitri.ShopModel
 import vn.gas.thq.ui.vitri.ToaDoModel
@@ -188,7 +189,7 @@ interface ApiService {
     @GET("customers")
     suspend fun queryCustomer(
         @Query("query") query: String?
-    ): List<Customer>
+    ): ListResponseCustomer
 
     @GET("customers/{id} ")
     suspend fun detailKH(@Path("id") id: String): Customer

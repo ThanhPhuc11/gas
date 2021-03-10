@@ -190,4 +190,8 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     override fun onItemSLChanged(position: Int, count: Int) {
         mList[position].quantity = count
     }
+
+    override fun onItemSLChangedFloat(position: Int, count: Float) {
+        TODO("Not yet implemented")
+    }
 }
