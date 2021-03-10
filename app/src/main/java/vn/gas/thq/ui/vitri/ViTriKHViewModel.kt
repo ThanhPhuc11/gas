@@ -62,7 +62,7 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveDataCustomer.value = it as MutableList<Customer>
+                    mLiveDataCustomer.value = (it as ListResponseCustomer).data as MutableList<Customer>
                 }
         }
     }

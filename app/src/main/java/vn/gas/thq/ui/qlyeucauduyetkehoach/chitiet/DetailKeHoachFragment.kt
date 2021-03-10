@@ -8,12 +8,15 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.kehoachbh.DSKeHoachAdapter
+import vn.gas.thq.ui.kehoachbh.KeHoachModel
 import vn.gas.thq.util.AppDateUtils
 import vn.hongha.ga.R
 
 class DetailKeHoachFragment : BaseFragment() {
     private lateinit var viewModel: DetailKeHoachViewModel
-
+    private lateinit var adapter: DSKeHoachAdapter
+    private var listKHBH = mutableListOf<KeHoachModel>()
     companion object {
         @JvmStatic
         fun newInstance() = DetailKeHoachFragment()
