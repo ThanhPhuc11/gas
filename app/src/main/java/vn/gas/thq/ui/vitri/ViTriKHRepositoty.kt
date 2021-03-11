@@ -5,8 +5,8 @@ import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
 class ViTriKHRepositoty(private val apiService: ApiService) : BaseRepository() {
-    suspend fun onGetListCustomer(query: String?) = flow {
-        emit(apiService.queryCustomer(query))
+    suspend fun onGetListCustomer(query: String?, page: Int, size: Int) = flow {
+        emit(apiService.queryCustomer(query, page, size))
     }
 
     suspend fun onGetDetailCustomer(id: String) = flow {

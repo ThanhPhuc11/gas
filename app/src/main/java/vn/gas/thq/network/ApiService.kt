@@ -188,7 +188,9 @@ interface ApiService {
 
     @GET("customers")
     suspend fun queryCustomer(
-        @Query("query") query: String?
+        @Query("query") query: String?,
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): ListResponseCustomer
 
     @GET("customers/{id} ")

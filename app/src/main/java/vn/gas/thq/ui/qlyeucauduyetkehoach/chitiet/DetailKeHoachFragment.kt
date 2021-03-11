@@ -1,11 +1,21 @@
 package vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.*
+import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.rvKeHoach
+import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvPlanTime
+import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvStaff
+import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvTram
+import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvTuyenBH
+import kotlinx.android.synthetic.main.fragment_init_ke_hoach.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.kehoachbh.DSKeHoachAdapter
@@ -15,11 +25,16 @@ import vn.hongha.ga.R
 
 class DetailKeHoachFragment : BaseFragment() {
     private lateinit var viewModel: DetailKeHoachViewModel
-    private lateinit var adapter: DSKeHoachAdapter
+    private lateinit var adapter: DSDetailKeHoachAdapter
     private var listKHBH = mutableListOf<KeHoachModel>()
+
     companion object {
         @JvmStatic
-        fun newInstance() = DetailKeHoachFragment()
+        fun newInstance(id: String) = DetailKeHoachFragment().apply {
+            arguments = Bundle().apply {
+                putString("ID", id)
+            }
+        }
     }
 
     override fun getLayoutId(): Int {
@@ -50,13 +65,25 @@ class DetailKeHoachFragment : BaseFragment() {
     }
 
     override fun initData() {
-        viewModel.getKeHoachBH("21")
+        val id = arguments?.getString("ID")
+        if (id != null) {
+            viewModel.getKeHoachBH(id)
+        }
+        initRecyclerView()
     }
 
     override fun initObserver() {
         viewModel.callbackDetailKHBH.observe(viewLifecycleOwner, {
             setViewData(it)
         })
+    }
+
+    private fun initRecyclerView() {
+        adapter = DSDetailKeHoachAdapter(listKHBH)
+//        adapter.setClickListener(this)
+        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        rvKeHoach.layoutManager = linearLayoutManager
+        rvKeHoach.adapter = adapter
     }
 
     private fun setViewData(obj: DetailKHBHModel) {
@@ -68,5 +95,9 @@ class DetailKeHoachFragment : BaseFragment() {
             AppDateUtils.FORMAT_1,
             obj.effectDate
         )
+
+        listKHBH.clear()
+        obj.detail?.let { listKHBH.addAll(it) }
+        adapter.notifyDataSetChanged()
     }
 }

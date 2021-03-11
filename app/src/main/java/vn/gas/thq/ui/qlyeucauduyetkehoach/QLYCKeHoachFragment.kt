@@ -112,13 +112,13 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     }
 
     private fun onSearch(view: View) {
-        var fromDate =
+        val fromDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtStartDate.text.toString()
             )
-        var endDate =
+        val endDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
@@ -128,9 +128,10 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     }
 
     override fun onItemClick(view: View?, position: Int) {
+        val id = listKHBH[position].planId
         viewController?.pushFragment(
             ScreenId.SCREEN_DETAIL_KE_HOACH,
-            DetailKeHoachFragment.newInstance()
+            DetailKeHoachFragment.newInstance(id.toString())
         )
     }
 }

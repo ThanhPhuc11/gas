@@ -19,7 +19,10 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_cap_nhat_vi_tri.*
+import kotlinx.android.synthetic.main.fragment_cap_nhat_vi_tri.btnSearch
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -29,6 +32,8 @@ import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.EndlessPageRecyclerViewScrollListener
+import vn.gas.thq.util.EndlessRecyclerViewScrollListener
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
@@ -37,6 +42,7 @@ import java.util.*
 class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     private lateinit var viewModel: ViTriKHViewModel
     private lateinit var adapter: CustomerAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private var listTram = mutableListOf<ShopModel>()
     private var listSaleLine = mutableListOf<SaleLineModel>()
     private var mListCustomer = mutableListOf<Customer>()
@@ -46,6 +52,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
 
     private var shopId: String? = null
     private var saleLineId: String? = null
+    private var isReload: Boolean = false
 
     private var queryKH = ""
 
@@ -108,10 +115,13 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         })
 
         viewModel.mLiveDataCustomer.observe(viewLifecycleOwner, {
-            mListCustomer.clear()
+            if (isReload) {
+                mListCustomer.clear()
+            }
             mListCustomer.addAll(it)
             adapter.notifyDataSetChanged()
             queryKH = ""
+            isReload = false
         })
 
         viewModel.callbackDetailKH.observe(viewLifecycleOwner, {
@@ -145,12 +155,14 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         adapter = CustomerAdapter(mListCustomer)
         adapter.setClickListener(this)
 
-        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvCust.layoutManager = linearLayoutManager
         rvCust.adapter = adapter
     }
 
     private fun onSearch(view: View) {
+        setEndLessScrollListener()
+        isReload = true
         if (!TextUtils.isEmpty(edtMaKH.text.toString())) {
             queryKH += ";custId==${edtMaKH.text.toString()}"
         }
@@ -164,10 +176,25 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             queryKH += ";saleLineId==$saleLineId"
         }
         if (queryKH == "") {
-            viewModel.onGetListCustomer(queryKH)
+            viewModel.onGetListCustomer(queryKH, 0)
             return
         }
-        viewModel.onGetListCustomer(queryKH.substring(1, queryKH.length))
+        viewModel.onGetListCustomer(queryKH.substring(1, queryKH.length), 0)
+    }
+
+    private fun setEndLessScrollListener() {
+        rvCust.clearOnScrollListeners()
+        rvCust.addOnScrollListener(object :
+            EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                if (queryKH == "") {
+                    viewModel.onGetListCustomer(queryKH, page)
+                    return
+                }
+                queryKH = queryKH.substring(1, queryKH.length)
+                viewModel.onGetListCustomer(queryKH, page)
+            }
+        })
     }
 
     private fun onChooseShop(view: View) {
@@ -182,7 +209,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             "Trạm",
             getString(R.string.enter_text_search)
         ) { item ->
-            if (AppConstants.NOT_SELECT.equals(item.id)) {
+            if (AppConstants.NOT_SELECT == item.id) {
                 shopId = null
                 edtTram.setText("")
                 return@show
@@ -205,7 +232,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             "Tuyến xe",
             getString(R.string.enter_text_search)
         ) { item ->
-            if (AppConstants.NOT_SELECT.equals(item.id)) {
+            if (AppConstants.NOT_SELECT == item.id) {
                 saleLineId = null
                 edtTuyenXe.setText("")
                 return@show

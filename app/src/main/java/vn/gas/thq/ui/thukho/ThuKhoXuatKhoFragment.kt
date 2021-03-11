@@ -1,12 +1,19 @@
 package vn.gas.thq.ui.thukho
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.*
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.btnSearch
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.edtEndDate
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.edtStartDate
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.edtStatus
+import kotlinx.android.synthetic.main.fragment_thu_kho_qlyc_xuat_kho.rvRequestItem
 import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
@@ -20,6 +27,7 @@ import vn.gas.thq.ui.qlyeucaucanhan.RequestItemAdapter
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.EndlessRecyclerViewScrollListener
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
@@ -31,6 +39,10 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     private lateinit var viewModel: ThuKhoXuatKhoViewModel
     private lateinit var adapter: RequestItemAdapter
     private lateinit var adapterDetail: DetailItemProduct2Adapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var isReload: Boolean = false
+    private var fromDate: String = ""
+    private var endDate: String = ""
     private var alertDialog: AlertDialog? = null
     private var mDetalData: RequestDetailModel? = null
     private var staffCode: String? = null
@@ -85,9 +97,12 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         })
 
         viewModel.mLiveData.observe(viewLifecycleOwner, {
-            mList.clear()
+            if (isReload) {
+                mList.clear()
+            }
             mList.addAll(it)
             adapter.notifyDataSetChanged()
+            isReload = false
         })
 
         viewModel.mDetailData.observe(viewLifecycleOwner, {
@@ -150,7 +165,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         adapter = RequestItemAdapter(mList, "Xuất kho", null)
         adapter.setClickListener(this)
 
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = adapter
     }
@@ -199,19 +214,32 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     }
 
     private fun onSubmitData(view: View) {
-        var fromDate =
+        setEndLessScrollListener()
+        isReload = true
+        fromDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtStartDate.text.toString()
             )
-        var endDate =
+        endDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onSearchRequest(staffCode, status, fromDate, endDate)
+        viewModel.onSearchRequest(staffCode, status, fromDate, endDate, 0)
+    }
+
+    private fun setEndLessScrollListener() {
+        rvRequestItem.clearOnScrollListeners()
+        rvRequestItem.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMoreV2(totalItemsCount: Int) {
+                Log.e("PHUCDZ", "$totalItemsCount")
+                viewModel.onSearchRequest(staffCode, status, fromDate, endDate, totalItemsCount)
+            }
+        })
     }
 
     private fun showDiglogDetail(

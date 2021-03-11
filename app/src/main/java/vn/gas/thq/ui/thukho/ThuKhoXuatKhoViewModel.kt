@@ -37,14 +37,27 @@ class ThuKhoXuatKhoViewModel(
     lateinit var fromDate: String
     lateinit var toDate: String
 
-    fun onSearchRequest(staffCode: String?, status: String?, fromDate: String, toDate: String) {
+    fun onSearchRequest(
+        staffCode: String?,
+        status: String?,
+        fromDate: String,
+        toDate: String,
+        offSet: Int
+    ) {
         this.staffCode = staffCode
         this.status = status
         this.fromDate = fromDate
         this.toDate = toDate
 
         viewModelScope.launch(Dispatchers.Main) {
-            thuKhoXuatKhoRepository.onSearchRequest(staffCode, status, fromDate, toDate)
+            thuKhoXuatKhoRepository.onSearchRequest(
+                staffCode,
+                status,
+                fromDate,
+                toDate,
+                offSet,
+                100
+            )
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -108,7 +121,7 @@ class ThuKhoXuatKhoViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     mAcceptData.value = Unit
-                    onSearchRequest(staffCode, status, fromDate, toDate)
+                    onSearchRequest(staffCode, status, fromDate, toDate, 0)
                 }
         }
     }

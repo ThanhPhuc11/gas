@@ -346,7 +346,11 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMoreV2(totalItemsCount: Int) {
                 Log.e("PHUCDZ", "$totalItemsCount")
-                viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
+                if (isRetail) {
+                    viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
+                } else {
+                    viewModel.onSubmitData(status, fromDate, endDate, totalItemsCount)
+                }
             }
         })
     }
@@ -421,7 +425,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             viewModel.onSearchRetail(status, fromDate, endDate, 0)
             return
         }
-        viewModel.onSubmitData(status, fromDate, endDate)
+        viewModel.onSubmitData(status, fromDate, endDate, 0)
     }
 
     private fun showDiglogDetailYCXK(
