@@ -5,8 +5,15 @@ import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
 class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository() {
-    suspend fun onSubmitRequest(status: String?, fromDate: String, toDate: String) = flow {
-        emit(apiService.searchRequest(null, status, fromDate, toDate, 0, 100))
+    suspend fun onSubmitRequest(
+        staffCode: String?,
+        status: String?,
+        fromDate: String,
+        toDate: String,
+        offSet: Int,
+        size: Int
+    ) = flow {
+        emit(apiService.searchRequest(staffCode, status, fromDate, toDate, offSet, size))
     }
 
     suspend fun onCancelRequest(orderId: String?) = flow {
@@ -20,8 +27,9 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         fromDate: String,
         toDate: String,
         offSet: Int,
+        size: Int
     ) = flow {
-        emit(apiService.searchRequestRetail(status, staffCode, fromDate, toDate, offSet, 10))
+        emit(apiService.searchRequestRetail(status, staffCode, fromDate, toDate, offSet, size))
     }
 
     suspend fun onGetSaleOrderStatus() = flow {

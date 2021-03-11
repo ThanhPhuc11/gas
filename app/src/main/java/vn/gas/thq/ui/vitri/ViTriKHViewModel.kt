@@ -48,9 +48,9 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
         }
     }
 
-    fun onGetListCustomer(query: String?) {
+    fun onGetListCustomer(query: String?, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            viTriKHRepositoty.onGetListCustomer(query)
+            viTriKHRepositoty.onGetListCustomer(query, page, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -62,7 +62,8 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveDataCustomer.value = (it as ListResponseCustomer).data as MutableList<Customer>
+                    mLiveDataCustomer.value =
+                        (it as ListResponseCustomer).data as MutableList<Customer>
                 }
         }
     }

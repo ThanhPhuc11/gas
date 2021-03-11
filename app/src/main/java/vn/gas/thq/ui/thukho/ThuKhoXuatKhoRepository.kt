@@ -9,11 +9,13 @@ class ThuKhoXuatKhoRepository(private val apiService: ApiService) : BaseReposito
         staffCode: String?,
         status: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        offSet: Int,
+        size: Int
     ) = flow {
         emit(
             apiService.searchRequest(
-                staffCode, status, fromDate, toDate, 0, 100
+                staffCode, status, fromDate, toDate, offSet, size
             )
         )
     }

@@ -27,9 +27,10 @@ class QLYCCaNhanViewModel(
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
     val detailApproveCallback = MutableLiveData<ApproveRequestModel>()
 
-    fun onSubmitData(status: String?, fromDate: String, toDate: String) {
+    fun onSubmitData(status: String?, fromDate: String, toDate: String, offSet: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSubmitRequest(status, fromDate, toDate)
+            val staffCode = AppPreferencesHelper(context).userModel.staffCode
+            qlycCaNhanRepository.onSubmitRequest(staffCode, status, fromDate, toDate, offSet, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -85,7 +86,7 @@ class QLYCCaNhanViewModel(
     ) {
         val staffCode = AppPreferencesHelper(context).userModel.staffCode
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate, offSet)
+            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate, offSet, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }
