@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.nhapkho
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -192,6 +193,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     }
 
     override fun onItemSLChangedFloat(position: Int, count: Float) {
-
+        Log.e("Float", "$position. $count. ${count.toInt()}")
+        mList[position].quantity = count.toInt()
     }
 }

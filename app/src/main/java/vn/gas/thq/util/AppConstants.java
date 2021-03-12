@@ -40,9 +40,8 @@ public final class AppConstants {
     public static int NO = 1;
     public static int BOTTOM_SHEET_DELAY = 310;
 
-    public static int LEVEL_PROVINCE = 1;
-    public static int LEVEL_DISTRICT = 2;
-    public static int LEVEL_COMMUNE = 3;
+    public static int LEVEL_DUYET_GIA = 1;
+    public static int LEVEL_DUYET_SO_LUONG = 2;
 
     public static int REQUEST_CAMERA_PERMISSION = 1;
     public static int REQUEST_WRITE_EXTERNAL_PERMISSION = 2;
