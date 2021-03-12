@@ -39,6 +39,36 @@ class DSDetailKeHoachAdapter(
         val obj: KeHoachModel = mList[position]
 //        holder.edtLXBH.setText(obj.custName)
         holder.tvCustName.text = obj.custName
+
+        holder.edtQuantityGas12.isFocusable = false
+        holder.edtPriceGas12.isFocusable = false
+        holder.edtQuantityGas45.isFocusable = false
+        holder.edtPriceGas45.isFocusable = false
+        holder.edtQuantityTank12.isFocusable = false
+        holder.edtPriceTank12.isFocusable = false
+        holder.edtQuantityTank45.isFocusable = false
+        holder.edtPriceTank45.isFocusable = false
+
+        obj.item.forEach {
+            when (it.productCode) {
+                "GAS12" -> {
+                    holder.edtQuantityGas12.setText(it.amount.toString())
+                    holder.edtPriceGas12.setText(CommonUtils.priceWithoutDecimal(it.price?.toDouble()))
+                }
+                "GAS45" -> {
+                    holder.edtQuantityGas45.setText(it.amount.toString())
+                    holder.edtPriceGas45.setText(CommonUtils.priceWithoutDecimal(it.price?.toDouble()))
+                }
+                "TANK12" -> {
+                    holder.edtQuantityTank12.setText(it.amount.toString())
+                    holder.edtPriceTank12.setText(CommonUtils.priceWithoutDecimal(it.price?.toDouble()))
+                }
+                "TANK45" -> {
+                    holder.edtQuantityTank45.setText(it.amount.toString())
+                    holder.edtPriceTank45.setText(CommonUtils.priceWithoutDecimal(it.price?.toDouble()))
+                }
+            }
+        }
 //        holder.edtQuantityGas12.clearComposingText()
 //        holder.edtPriceGas12.clearComposingText()
 //        holder.edtQuantityGas45.clearComposingText()

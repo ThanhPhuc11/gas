@@ -1,6 +1,11 @@
 package vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,19 +25,29 @@ import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.kehoachbh.DSKeHoachAdapter
 import vn.gas.thq.ui.kehoachbh.KeHoachModel
+import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
+import vn.gas.thq.util.CommonUtils
 import vn.hongha.ga.R
 
 class DetailKeHoachFragment : BaseFragment() {
     private lateinit var viewModel: DetailKeHoachViewModel
     private lateinit var adapter: DSDetailKeHoachAdapter
     private var listKHBH = mutableListOf<KeHoachModel>()
+    private var alertDialog: AlertDialog? = null
+    private var id = ""
+    private var option = 0
 
     companion object {
+        private const val ID = "ID"
+        private const val OPTION = "OPTION"
+
         @JvmStatic
-        fun newInstance(id: String) = DetailKeHoachFragment().apply {
+        fun newInstance(id: String, option: Int) = DetailKeHoachFragment().apply {
             arguments = Bundle().apply {
-                putString("ID", id)
+                putString(ID, id)
+                putInt(OPTION, option)
             }
         }
     }
@@ -65,18 +80,100 @@ class DetailKeHoachFragment : BaseFragment() {
     }
 
     override fun initData() {
-        val id = arguments?.getString("ID")
-        if (id != null) {
-            viewModel.getKeHoachBH(id)
-        }
+        id = arguments?.getString(ID).toString()
+        option = arguments?.getInt(OPTION) ?: 0
+        viewModel.getKeHoachBH(id)
         initRecyclerView()
+        if (option == AppConstants.LEVEL_DUYET_GIA) {
+            btnDuyet.text = "Duyệt giá"
+        } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
+            btnDuyet.text = "Duyệt số lượng"
+        }
+        btnDuyet.setOnClickListener(this::duyet)
+        btnTuChoi.setOnClickListener(this::showDiaLogReason)
     }
 
     override fun initObserver() {
         viewModel.callbackDetailKHBH.observe(viewLifecycleOwner, {
             setViewData(it)
         })
+
+        viewModel.callbackDuyetSuccessKHBH.observe(viewLifecycleOwner, {
+            showMess("Thanh Cong")
+        })
+
+        viewModel.callbackTuChoiSuccessKHBH.observe(viewLifecycleOwner, {
+            showMess("Tu Choi Thanh Cong")
+        })
     }
+
+    private fun duyet(view: View) {
+        CommonUtils.showConfirmDiglog2Button(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
+                R.string.biometric_negative_button_text
+            ), getString(R.string.text_ok)
+        ) {
+            if (it == AppConstants.YES) {
+                if (option == AppConstants.LEVEL_DUYET_GIA) {
+                    viewModel.duyetKeHoachBH(id, DetailTypeKHBHModel().apply { approveType = "1" })
+                } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
+                    viewModel.duyetKeHoachBH(id, DetailTypeKHBHModel().apply { approveType = "2" })
+                }
+            }
+        }
+    }
+
+    private fun tuChoi(strReason: String?) {
+        CommonUtils.showConfirmDiglog2Button(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
+                R.string.biometric_negative_button_text
+            ), getString(R.string.text_ok)
+        ) {
+            if (it == AppConstants.YES) {
+                if (option == AppConstants.LEVEL_DUYET_GIA) {
+                    viewModel.tuChoiKeHoachBH(id, DetailTypeKHBHModel().apply {
+                        approveType = "1"
+                        reason = strReason
+                    })
+                } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
+                    viewModel.tuChoiKeHoachBH(id, DetailTypeKHBHModel().apply {
+                        approveType = "2"
+                        reason = strReason
+                    })
+                }
+            }
+        }
+    }
+
+    private fun showDiaLogReason(view: View) {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_reject_reason, null)
+        builder?.setView(dialogView)
+
+        val imgClose: ImageView = dialogView.findViewById(R.id.imgClose)
+        val edtReason: EditText = dialogView.findViewById(R.id.edtReason)
+        val btnHuy: Button = dialogView.findViewById(R.id.btnHuy)
+        val btnDongY: Button = dialogView.findViewById(R.id.btnDongY)
+
+        imgClose.setOnClickListener {
+            alertDialog?.dismiss()
+        }
+
+        btnHuy.setOnClickListener {
+            alertDialog?.dismiss()
+        }
+
+        btnDongY.setOnClickListener {
+            tuChoi(edtReason.text.toString())
+            alertDialog?.dismiss()
+        }
+
+        alertDialog = builder?.create()
+        alertDialog?.window?.setLayout(500, 200)
+        alertDialog?.show()
+    }
+
 
     private fun initRecyclerView() {
         adapter = DSDetailKeHoachAdapter(listKHBH)

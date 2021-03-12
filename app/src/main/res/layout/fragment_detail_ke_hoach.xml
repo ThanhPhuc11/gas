@@ -133,16 +133,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:orientation="vertical">
+        android:layout_marginVertical="17dp"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
+            android:id="@+id/btnTuChoi"
+            android:layout_width="0dp"
             android:layout_height="@dimen/_35sdp"
-            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_border_login_1"
+            android:text="Từ chối"
+            android:textAllCaps="true"
+            android:textColor="@color/blue_2C5181" />
+
+        <Button
+            android:id="@+id/btnDuyet"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_border_login"
-            android:text="Tạo KH bán hàng"
+            android:text="Duyệt giá"
             android:textAllCaps="true"
             android:textColor="@color/white_ffffff" />
     </LinearLayout>

@@ -14,18 +14,54 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 class DetailKeHoachViewModel(private val detailKeHoachRepository: DetailKeHoachRepository) :
     BaseViewModel() {
     val callbackDetailKHBH = MutableLiveData<DetailKHBHModel>()
+    val callbackDuyetSuccessKHBH = MutableLiveData<Unit>()
+    val callbackTuChoiSuccessKHBH = MutableLiveData<Unit>()
+
     fun getKeHoachBH(id: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            detailKeHoachRepository.getDetailKeHoachBH(id).onStart {
-                callbackStart.value = Unit
-            }.onCompletion {
+            detailKeHoachRepository.getDetailKeHoachBH(id)
+                .onStart {
+                    callbackStart.value = Unit
+                }.onCompletion {
 
-            }.catch {
-                handleError(it)
-            }.collect {
-                callbackSuccess.value = Unit
-                callbackDetailKHBH.value = it
-            }
+                }.catch {
+                    handleError(it)
+                }.collect {
+                    callbackSuccess.value = Unit
+                    callbackDetailKHBH.value = it
+                }
+        }
+    }
+
+    fun duyetKeHoachBH(id: String, type: DetailTypeKHBHModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            detailKeHoachRepository.duyetKHBH(id, type)
+                .onStart {
+                    callbackStart.value = Unit
+                }.onCompletion {
+
+                }.catch {
+                    handleError(it)
+                }.collect {
+                    callbackSuccess.value = Unit
+                    callbackDuyetSuccessKHBH.value = Unit
+                }
+        }
+    }
+
+    fun tuChoiKeHoachBH(id: String, type: DetailTypeKHBHModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            detailKeHoachRepository.tuChoiKHBH(id, type)
+                .onStart {
+                    callbackStart.value = Unit
+                }.onCompletion {
+
+                }.catch {
+                    handleError(it)
+                }.collect {
+                    callbackSuccess.value = Unit
+                    callbackTuChoiSuccessKHBH.value = Unit
+                }
         }
     }
 }

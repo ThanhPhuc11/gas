@@ -10,6 +10,7 @@ import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.vitri.ListResponseCustomer
@@ -195,4 +196,10 @@ interface ApiService {
 
     @GET("customers/{id} ")
     suspend fun detailKH(@Path("id") id: String): Customer
+
+    @POST("sale-plans/{salePlanId}/accept")
+    suspend fun duyetKHBH(@Path("salePlanId") salePlanId: String, @Body type: DetailTypeKHBHModel)
+
+    @POST("sale-plans/{salePlanId}/reject")
+    suspend fun tuChoiKHBH(@Path("salePlanId") salePlanId: String, @Body type: DetailTypeKHBHModel)
 }

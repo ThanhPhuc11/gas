@@ -13,6 +13,7 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachFragment
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ScreenId
@@ -131,7 +132,7 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
         val id = listKHBH[position].planId
         viewController?.pushFragment(
             ScreenId.SCREEN_DETAIL_KE_HOACH,
-            DetailKeHoachFragment.newInstance(id.toString())
+            DetailKeHoachFragment.newInstance(id.toString(), AppConstants.LEVEL_DUYET_GIA)
         )
     }
 }
