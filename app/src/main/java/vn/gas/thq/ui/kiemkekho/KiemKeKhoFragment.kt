@@ -87,9 +87,11 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
             listKho.clear()
             val listOnlyType1 = it.filter { it.type == 1 }
             listKho.addAll(listOnlyType1)
-            shopCode = listOnlyType1[0].code
-            edtTram.setText(listOnlyType1[0].name)
-            viewModel.getDataFromCode(shopCode, null)
+            if (listOnlyType1.isNotEmpty()) {
+                shopCode = listOnlyType1[0].code
+                edtTram.setText(listOnlyType1[0].name)
+                viewModel.getDataFromCode(shopCode, null)
+            }
         })
 
         viewModel.mLiveData.observe(viewLifecycleOwner, {
