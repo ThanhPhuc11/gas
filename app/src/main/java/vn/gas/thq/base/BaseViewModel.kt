@@ -29,7 +29,7 @@ abstract class BaseViewModel : ViewModel() {
                     response?.errorBody()?.string(),
                     ErrorModel::class.java
                 )
-                showMessCallback.value = "${response?.code().toString()} ${mError.detail}"
+                showMessCallback.value = "[CODE - ${response?.code().toString()}] ${mError.detail}\nTraceId: ${mError?.instance}"
                 when (response?.code()) {
                     400 -> {
 //                showMessCallback.value = response.code().toString()

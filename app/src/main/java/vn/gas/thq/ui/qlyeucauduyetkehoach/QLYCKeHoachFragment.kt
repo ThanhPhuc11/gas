@@ -60,7 +60,7 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     }
 
     override fun initData() {
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(

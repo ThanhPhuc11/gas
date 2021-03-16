@@ -33,8 +33,7 @@ import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.util.*
-import vn.gas.thq.util.AppDateUtils.FORMAT_2
-import vn.gas.thq.util.AppDateUtils.FORMAT_5
+import vn.gas.thq.util.AppDateUtils.*
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
@@ -304,7 +303,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 //        }
         getInfo()
         initRecyclerView()
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(

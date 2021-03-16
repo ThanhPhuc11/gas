@@ -137,7 +137,7 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
     override fun initData() {
         viewModel.getListStaff()
         initRecyclerView()
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(
