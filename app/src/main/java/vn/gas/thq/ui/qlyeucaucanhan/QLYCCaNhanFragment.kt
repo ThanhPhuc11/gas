@@ -456,13 +456,13 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
-                2 -> {
+                3 -> {
                     tvStatus.text = resources.getString(R.string.approved_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                     adapterDetailYCXK.isReadOnly()
                 }
-                3 -> {
+                2 -> {
                     tvStatus.text = resources.getString(R.string.reject_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE

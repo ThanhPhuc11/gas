@@ -51,7 +51,7 @@ class RequestItemAdapter(
                 }
             }
         } else {
-            holder.itemRequestType1.setColorTrangThaiBanLe(R.color.yellow_FFBF00)
+            holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_2C5181)
             if (obj.status == 8 || obj.status == 9) {
                 holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_14AFB4)
             } else if (obj.approve_status.contains("4")) {
