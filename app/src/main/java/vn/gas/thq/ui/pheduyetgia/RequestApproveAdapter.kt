@@ -57,7 +57,7 @@ class RequestApproveAdapter(
             AppDateUtils.FORMAT_1,
             obj.created_date
         )
-        holder.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.yellow_FFBF00))
+        holder.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.blue_2C5181))
         if (obj.status == 8 || obj.status == 9) {
             holder.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.blue_14AFB4))
         } else if (obj.approve_status!!.contains("4")) {

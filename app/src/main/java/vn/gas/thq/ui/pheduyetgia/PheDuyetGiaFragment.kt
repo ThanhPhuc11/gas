@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.layout_toolbar.tvTitle
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
-import vn.gas.thq.model.BussinesRequestModel
-import vn.gas.thq.model.StatusValueModel
-import vn.gas.thq.model.UserModel
+import vn.gas.thq.customview.ItemProductType1
+import vn.gas.thq.customview.ItemProductType2
+import vn.gas.thq.model.*
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.ApproveRequestModel
@@ -46,6 +46,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var staffName: String? = null
     private var createDate: String? = null
     private var canApproveStatus: String? = null
+    private var obj: TransferRetailModel? = null
 
     private var soLuong12: Int? = 0
     private var priceKHBH12: Int? = 0
@@ -63,6 +64,16 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var congNoGiaTang45: Int? = 0
     private var congNoLuyKe: Int? = 0
     private var congNoGiaTang: Int? = 0
+
+    private var tienKhiBan12 = 0
+    private var tienKhiBan45 = 0
+    private var tienVoBan12 = 0
+    private var tienVoBan45 = 0
+    private var tienVoMua12 = 0
+    private var tienVoMua45 = 0
+    private var tongTien = 0
+    private var tienNo = 0
+    private var tienThucTe = 0
 
     companion object {
         @JvmStatic
@@ -121,7 +132,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
         viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
             mDetailRetailData = it
-//            mapListToRetailProduct()
+            mapListToRetailProduct()
             autoSelectDialog(it)
         })
 
@@ -279,8 +290,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             showDiglogDetailRetail()
             return
         }
-
-        showMess("Bạn không có quyền thực hiện với yêu cầu này")
+        showDiglogDetailRetailV2()
+//        showMess("Bạn không có quyền thực hiện với yêu cầu này")
     }
 
     private fun setValueApproveDetail(type: Int) {
@@ -458,6 +469,201 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
+    }
+
+    private fun showDiglogDetailRetailV2() {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_retail, null)
+        builder?.setView(dialogView)
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)
+
+        val imgClose = dialogView.findViewById<ImageView>(R.id.imgClose)
+        val btnHuy = dialogView.findViewById<Button>(R.id.btnHuy)
+        val tvOrderId = dialogView.findViewById<TextView>(R.id.tvOrderId)
+
+        val tvName: TextView = dialogView.findViewById(R.id.tvName)
+        val tvAddress: TextView = dialogView.findViewById(R.id.tvAddress)
+        val tvPhone: TextView = dialogView.findViewById(R.id.tvPhone)
+
+        val productBanKhi12: ItemProductType1 = dialogView.findViewById(R.id.productBanKhi12)
+        val productBanKhi45: ItemProductType1 = dialogView.findViewById(R.id.productBanKhi45)
+        val productVoThuHoi12: ItemProductType2 = dialogView.findViewById(R.id.productVoThuHoi12)
+        val productVoThuHoi45: ItemProductType2 = dialogView.findViewById(R.id.productVoThuHoi45)
+        val productVoBan12: ItemProductType1 = dialogView.findViewById(R.id.productVoBan12)
+        val productVoBan45: ItemProductType1 = dialogView.findViewById(R.id.productVoBan45)
+        val productVoMua12: ItemProductType1 = dialogView.findViewById(R.id.productVoMua12)
+        val productVoMua45: ItemProductType1 = dialogView.findViewById(R.id.productVoMua45)
+
+        val btnCongNo12: Button = dialogView.findViewById(R.id.btnCongNo12)
+        val btnCongNo45: Button = dialogView.findViewById(R.id.btnCongNo45)
+        val btnCongNoTien: Button = dialogView.findViewById(R.id.btnCongNoTien)
+
+        val tvTienKhi12: TextView = dialogView.findViewById(R.id.tvTienKhi12)
+        val tvTienKhi45: TextView = dialogView.findViewById(R.id.tvTienKhi45)
+        val tvTienBanVo: TextView = dialogView.findViewById(R.id.tvTienBanVo)
+        val tvTienMuaVo: TextView = dialogView.findViewById(R.id.tvTienMuaVo)
+        val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
+        val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
+
+        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+
+        dialogView.apply {
+            imgClose.setOnClickListener {
+                alertDialog?.dismiss()
+            }
+            tvOrderId.text = "Mã yêu cầu $orderId"
+            tvName.text = mDetailRetailData?.customerName ?: "- -"
+            tvAddress.text = mDetailRetailData?.customerAddress ?: "- -"
+            tvPhone.text = mDetailRetailData?.customerTelContact ?: "- -"
+
+            productBanKhi12.setSoLuong(obj?.khiBan12?.toString())
+            productBanKhi12.setGia(CommonUtils.priceWithoutDecimal(obj?.khiBanPrice12?.toDouble()))
+            productBanKhi45.setSoLuong(obj?.khiBan45?.toString())
+            productBanKhi45.setGia(CommonUtils.priceWithoutDecimal(obj?.khiBanPrice45?.toDouble()))
+
+            productVoThuHoi12.setSoLuong(obj?.voThu12?.toString())
+            productVoThuHoi45.setSoLuong(obj?.voThu45?.toString())
+
+            productVoBan12.setSoLuong(obj?.voBan12?.toString())
+            productVoBan12.setGia(CommonUtils.priceWithoutDecimal(obj?.voBanPrice12?.toDouble()))
+            productVoBan45.setSoLuong(obj?.voBan45?.toString())
+            productVoBan45.setGia(CommonUtils.priceWithoutDecimal(obj?.voBanPrice45?.toDouble()))
+
+            productVoMua12.setSoLuong(obj?.voMua12?.toString())
+            productVoMua12.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice12?.toDouble()))
+            productVoMua45.setSoLuong(obj?.voMua45?.toString())
+            productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice45?.toDouble()))
+
+            tvTienThucTe.text = "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
+
+            btnCongNo12.text = mDetailRetailData?.debtAmountTank12?.toString() ?: "0"
+            btnCongNo45.text = mDetailRetailData?.debtAmountTank45?.toString() ?: "0"
+            btnCongNoTien.text =
+                "${CommonUtils.priceWithoutDecimal(mDetailRetailData?.debtAmount?.toDouble())}"
+//            rvProductDialog.layoutManager = linearLayoutManager
+//            rvProductDialog.adapter = adapterDetailYCXK
+
+            tvTienKhi12.text = "$tienKhiBan12 đ"
+            tvTienKhi45.text = "$tienKhiBan45 đ"
+            tvTienBanVo.text = "${tienVoBan12 + tienVoBan45} đ"
+            tvTienMuaVo.text = "${tienVoMua12 + tienVoMua45} đ"
+            tvTienNo.text = "${mDetailRetailData?.debtAmount} đ"
+            tvTongTienCanTT.text = "$tongTien đ"
+
+
+            btnHuy.setOnClickListener {
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn huỷ yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+//                        viewModel.onCancelRequest(orderId)
+                    }
+                }
+            }
+        }
+        alertDialog = builder?.create()
+        alertDialog?.window?.setLayout(500, 200)
+        alertDialog?.show()
+    }
+
+    private fun mapListToRetailProduct() {
+//        var orderId: String? = null
+
+        var khiBan12: Int? = 0
+        var khiBanPrice12: Int? = 0
+        var khiBan45: Int? = 0
+        var khiBanPrice45: Int? = 0
+
+        var voThu12: Int? = 0
+        var voThu45: Int? = 0
+
+        var voBan12: Int? = 0
+        var voBanPrice12: Int? = 0
+        var voBan45: Int? = 0
+        var voBanPrice45: Int? = 0
+
+        var voMua12: Int? = 0
+        var voMuaPrice12: Int? = 0
+        var voMua45: Int? = 0
+        var voMuaPrice45: Int? = 0
+
+        var tienThucTe: Int?
+        for (it: ProductRetailModel in mDetailRetailData?.item!!) {
+            if (it.saleType == "1") {
+                when (it.code) {
+                    "GAS12" -> {
+                        khiBan12 = it.quantity
+                        khiBanPrice12 = it.price
+                    }
+                    "GAS45" -> {
+                        khiBan45 = it.quantity
+                        khiBanPrice45 = it.price
+                    }
+                    "TANK12" -> {
+                        voBan12 = it.quantity
+                        voBanPrice12 = it.price
+                    }
+                    "TANK45" -> {
+                        voBan45 = it.quantity
+                        voBanPrice45 = it.price
+                    }
+                }
+            } else if (it.saleType == "2") {
+                if (it.code == "TANK12") {
+                    voThu12 = it.quantity
+                } else {
+                    voThu45 = it.quantity
+                }
+            } else if (it.saleType == "3") {
+                if (it.code == "TANK12") {
+                    voMua12 = it.quantity
+                    voMuaPrice12 = it.price
+                } else {
+                    voMua45 = it.quantity
+                    voMuaPrice45 = it.price
+                }
+            }
+        }
+
+        tienKhiBan12 = khiBan12!! * khiBanPrice12!!
+        tienKhiBan45 = khiBan45!! * khiBanPrice45!!
+
+        tienVoMua12 = voMua12!! * voMuaPrice12!!
+        tienVoMua45 = voMua45!! * voMuaPrice45!!
+
+        tienVoBan12 = voBan12!! * voBanPrice12!!
+        tienVoBan45 = voBan45!! * voBanPrice45!!
+
+        totalMustPay()
+//        totalDebit()
+        obj = TransferRetailModel(
+            this.orderId.toString(),
+            khiBan12,
+            khiBanPrice12,
+            khiBan45,
+            khiBanPrice45,
+            voThu12,
+            voThu45,
+            voBan12,
+            voBanPrice12,
+            voBan45,
+            voBanPrice45,
+            voMua12,
+            voMuaPrice12,
+            voMua45,
+            voMuaPrice45,
+            tongTien - mDetailRetailData?.debtAmount!!
+        )
+    }
+
+    private fun totalMustPay() {
+        tongTien =
+            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45)
+//        tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
     }
 
     override fun onItemClick(view: View?, position: Int) {
