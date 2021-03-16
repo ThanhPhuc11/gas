@@ -40,13 +40,13 @@ class ItemRequestType1 : CardView {
             }
             "1" -> {
                 tvStatus.text = "Chờ duyệt"
-                tvStatus.setTextColor(resources.getColor(R.color.yellow_FFBF00))
+                tvStatus.setTextColor(resources.getColor(R.color.blue_2C5181))
             }
-            "2" -> {
+            "3" -> {
                 tvStatus.text = "Đã duyệt"
                 tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
             }
-            "3" -> {
+            "2" -> {
                 tvStatus.text = "Từ chối"
                 tvStatus.setTextColor(resources.getColor(R.color.red_DB4755))
             }

@@ -12,6 +12,8 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
 import vn.gas.thq.ui.retail.*
+import vn.gas.thq.ui.sangchiet.nhapsangchiet.AvailableKHLResponse
+import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.vitri.ListResponseCustomer
 import vn.gas.thq.ui.vitri.SaleLineModel
@@ -202,4 +204,10 @@ interface ApiService {
 
     @POST("sale-plans/{salePlanId}/reject")
     suspend fun tuChoiKHBH(@Path("salePlanId") salePlanId: String, @Body type: DetailTypeKHBHModel)
+
+    @GET("stocks/gas/amount")
+    suspend fun getAvailableKHL(): AvailableKHLResponse
+
+    @POST("stocks/gas/transfer")
+    suspend fun initSangChiet(@Body obj: InitSangChiet)
 }
