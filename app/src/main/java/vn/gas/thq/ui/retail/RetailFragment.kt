@@ -696,6 +696,7 @@ class RetailFragment : BaseFragment() {
         tongTien =
             tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45) - gasPrice
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
+        edtTienThucTe.setText(tongTien.toString())
     }
 
 //    private fun realPay() {

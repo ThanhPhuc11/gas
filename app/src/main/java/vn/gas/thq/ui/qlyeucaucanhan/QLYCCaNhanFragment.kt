@@ -33,8 +33,7 @@ import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.util.*
-import vn.gas.thq.util.AppDateUtils.FORMAT_2
-import vn.gas.thq.util.AppDateUtils.FORMAT_5
+import vn.gas.thq.util.AppDateUtils.*
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
@@ -304,7 +303,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 //        }
         getInfo()
         initRecyclerView()
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(
@@ -456,13 +455,13 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.VISIBLE
                 }
-                2 -> {
+                3 -> {
                     tvStatus.text = resources.getString(R.string.approved_status)
                     tvStatus.setTextColor(resources.getColor(R.color.blue_14AFB4))
                     linearAccept.visibility = View.GONE
                     adapterDetailYCXK.isReadOnly()
                 }
-                3 -> {
+                2 -> {
                     tvStatus.text = resources.getString(R.string.reject_status)
                     tvStatus.setTextColor(resources.getColor(R.color.red_EA7035))
                     linearAccept.visibility = View.GONE
