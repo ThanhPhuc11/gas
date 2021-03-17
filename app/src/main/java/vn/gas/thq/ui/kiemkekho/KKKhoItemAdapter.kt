@@ -59,7 +59,7 @@ class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val
             edtCheckQuantity.addTextChangedListener(afterTextChanged = {
                 mClickListener.onItemSLChanged(
                     adapterPosition,
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                    if (TextUtils.isEmpty(it.toString())) null else it.toString().toInt()
                 )
             })
         }
@@ -71,6 +71,6 @@ class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val
     }
 
     interface ItemClickListener {
-        fun onItemSLChanged(position: Int, count: Int)
+        fun onItemSLChanged(position: Int, count: Int?)
     }
 }

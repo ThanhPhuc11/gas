@@ -114,7 +114,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
                         it.productCode,
                         "",
                         "",
-                        0,
+                        null,
                         it.unit
                     )
                 )
@@ -181,6 +181,10 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
 
     private fun onSubmit(view: View) {
 //        viewModel.getDataFromShop()
+        if (mNewList.filter { it.quantity != 0 }.isEmpty()) {
+            showMess("Bạn phải nhập ít nhất 1 số lượng kiểm kê")
+            return
+        }
         CommonUtils.showConfirmDiglog2Button(
             activity, "Xác nhận", "Bạn có chắc chắn muốn kiểm kê?", getString(
                 R.string.biometric_negative_button_text
@@ -196,7 +200,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
                     })
                 }
 
-                mNewList.forEach {
+                mNewList.filter { it1 -> it1.quantity != null }.forEach {
                     kiemKeRequestModel.newStock.add(ProductNhapKhoModel().apply {
                         productCode = it.code
                         amount = it.quantity
@@ -230,7 +234,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         }
     }
 
-    override fun onItemSLChanged(position: Int, count: Int) {
+    override fun onItemSLChanged(position: Int, count: Int?) {
         mNewList[position].quantity = count
     }
 }
