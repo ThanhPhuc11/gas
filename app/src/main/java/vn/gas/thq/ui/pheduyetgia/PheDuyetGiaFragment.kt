@@ -175,7 +175,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
         edtLXBH.setOnClickListener(this::onChooseLXBH)
         edtStatus.setOnClickListener(this::onChooseStatus)
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(

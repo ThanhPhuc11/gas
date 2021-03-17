@@ -40,6 +40,27 @@ public class AppDateUtils {
         return result;
     }
 
+    public static String changeDateFormatV2(String currentFormat, String requiredFormat, String dateString) {
+        String result = dateString;
+        if (dateString == null || TextUtils.isEmpty(dateString)) {
+            return result;
+        }
+        SimpleDateFormat formatterOld = new SimpleDateFormat(currentFormat);
+//        formatterOld.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SimpleDateFormat formatterNew = new SimpleDateFormat(requiredFormat);
+        formatterNew.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = formatterOld.parse(dateString);
+        } catch (Exception e) {
+            //  e.printStackTrace();
+        }
+        if (date != null) {
+            result = formatterNew.format(date);
+        }
+        return result;
+    }
+
     public static Date convertStringDateToDate(String startDateString, String format) {
         try {
             DateFormat df = new SimpleDateFormat(format);
@@ -93,6 +114,30 @@ public class AppDateUtils {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        String fromMothStr = "";
+        int tempMonth = mMonth + 1;
+        if (tempMonth < 10) {
+            fromMothStr = "0" + tempMonth;
+        } else {
+            fromMothStr = "" + tempMonth;
+        }
+        String fromDayStr = "";
+        if (mDay < 10) {
+            fromDayStr = "0" + mDay;
+        } else {
+            fromDayStr = "" + mDay;
+        }
+        String currentDate = fromDayStr + "/" + fromMothStr + "/" + mYear;
+        return currentDate;
+    }
+
+    public static String getYesterdayDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
