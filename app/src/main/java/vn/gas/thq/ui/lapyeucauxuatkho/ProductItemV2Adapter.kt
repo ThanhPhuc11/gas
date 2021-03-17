@@ -36,19 +36,19 @@ class ProductItemV2Adapter(private val mList: MutableList<ProductModel>) :
         when (obj.code) {
             "GAS12" -> {
                 holder.imgIconType.setImageResource(R.drawable.ic_fire)
-                holder.tvProductDes.text = "SKU: Bình gas 12kg"
+//                holder.tvProductDes.text = "SKU: Bình gas 12kg"
             }
             "GAS45" -> {
                 holder.imgIconType.setImageResource(R.drawable.ic_fire)
-                holder.tvProductDes.text = "SKU: Bình gas 45kg"
+//                holder.tvProductDes.text = "SKU: Bình gas 45kg"
             }
             "TANK12" -> {
                 holder.imgIconType.setImageResource(R.drawable.ic_vo_gas)
-                holder.tvProductDes.text = "SKU: Bình gas 12kg"
+//                holder.tvProductDes.text = "SKU: Bình gas 12kg"
             }
             "TANK45" -> {
                 holder.imgIconType.setImageResource(R.drawable.ic_vo_gas)
-                holder.tvProductDes.text = "SKU: Bình gas 45kg"
+//                holder.tvProductDes.text = "SKU: Bình gas 45kg"
             }
         }
 

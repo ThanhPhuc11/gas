@@ -73,6 +73,10 @@ class XemKhoFragment : BaseFragment() {
         viewModel.listKho.observe(viewLifecycleOwner, {
             listKho.clear()
             listKho.addAll(it)
+            if (it.size == 1 && it[0].type == 2) {
+                edtShop.setText(it[0].name)
+                staffCode = it[0].code
+            }
         })
         viewModel.mLiveData.observe(viewLifecycleOwner, {
             mList.clear()
@@ -151,7 +155,7 @@ class XemKhoFragment : BaseFragment() {
         var doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         listKho.forEach {
-            mArrayList.add(DialogListModel(it.code, it.name, it.type.toString()))
+            mArrayList.add(DialogListModel(it.code, "${it.code} - ${it.name}", it.type.toString()))
         }
 
         doc.show(

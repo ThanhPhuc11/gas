@@ -1,11 +1,12 @@
 package vn.gas.thq.model
 
 import android.os.Parcelable
+import vn.gas.thq.ui.retail.Customer
 import java.io.Serializable
 
 data class TransferRetailModel(
     val orderId: String?,
-
+    val customerInfo: Customer?,
     val khiBan12: Int?,
     val khiBanPrice12: Int?,
     val khiBan45: Int?,

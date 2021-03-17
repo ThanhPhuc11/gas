@@ -105,12 +105,15 @@ class RetailFragment : BaseFragment() {
 //        }
         if ("STEP_2" == arguments?.getString("STEP")) {
             (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
+            edtCustomer.visibility = View.GONE
+            layoutCustomerInfo.visibility = View.VISIBLE
             linearGasRemain.visibility = View.VISIBLE
             linearGasRemainPrice.visibility = View.VISIBLE
             linearTienGasDu.visibility = View.VISIBLE
             productVoThuHoi12.visibility = View.GONE
             productVoThuHoi45.visibility = View.GONE
             btnSubmit.text = "BÁN HÀNG"
+
             transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
 
             disableInput()
@@ -298,8 +301,15 @@ class RetailFragment : BaseFragment() {
             }
             return
         }
+        val customer = Customer().apply {
+            name = tvCustName.text?.toString() ?: ""
+            customerId = tvCustId.text?.toString() ?: ""
+            telContact = tvPhoneNumber.text?.toString() ?: ""
+            address = tvAddress.text?.toString() ?: ""
+        }
         transferRetailModel = TransferRetailModel(
             it?.id?.toString(),
+            customer,
             getRealNumber(productBanKhi12.getEditTextSL()),
             getRealNumber(productBanKhi12.getEditTextGia()),
             getRealNumber(productBanKhi45.getEditTextSL()),
@@ -814,6 +824,12 @@ class RetailFragment : BaseFragment() {
 
     private fun fillData(obj: TransferRetailModel?) {
         if (obj == null) return
+
+        tvCustName.text = obj.customerInfo?.name
+        tvCustId.text = obj.customerInfo?.customerId
+        tvPhoneNumber.text = obj.customerInfo?.telContact
+        tvAddress.text = obj.customerInfo?.address
+
         productBanKhi12.setSoLuong(obj.khiBan12?.toString())
         productBanKhi12.setGia("${obj.khiBanPrice12}")
         productBanKhi45.setSoLuong(obj.khiBan45?.toString())
