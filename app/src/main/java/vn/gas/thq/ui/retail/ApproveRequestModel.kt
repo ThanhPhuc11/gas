@@ -6,6 +6,10 @@ import vn.gas.thq.model.ProductRetailModel
 
 
 class ApproveRequestModel {
+    @SerializedName("customer_id")
+    @Expose
+    var customerId: Int? = null
+
     @SerializedName("customer_name")
     @Expose
     var customerName: String? = null

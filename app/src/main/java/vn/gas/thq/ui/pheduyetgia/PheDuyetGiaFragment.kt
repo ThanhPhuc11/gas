@@ -642,6 +642,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 //        totalDebit()
         obj = TransferRetailModel(
             this.orderId.toString(),
+            null,
             khiBan12,
             khiBanPrice12,
             khiBan45,

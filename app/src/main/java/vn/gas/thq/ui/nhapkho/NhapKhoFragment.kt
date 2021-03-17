@@ -144,7 +144,13 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
         val doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         mListStaff.forEach {
-            mArrayList.add(DialogListModel(it.staffCode, it.name, it.saleLineName))
+            mArrayList.add(
+                DialogListModel(
+                    it.staffCode,
+                    "${it.staffCode} - ${it.name}",
+                    it.saleLineName
+                )
+            )
         }
         doc.show(
             activity, mArrayList,
