@@ -175,7 +175,11 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     }
 
     private fun submitNhapKho(view: View) {
-        mList.forEach {
+        if (mList.filter { it.quantity != null }.isEmpty()) {
+            showMess("Bạn phải nhập ít nhất 1 số lượng nhập kho")
+            return
+        }
+        mList.filter { it.quantity != null }.forEach {
             requestNhapKho.item.add(ProductNhapKhoModel().apply {
                 productCode = it.code
                 amount = it.quantity
@@ -194,12 +198,17 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
         }
     }
 
-    override fun onItemSLChanged(position: Int, count: Int) {
+    override fun onItemSLChanged(position: Int, count: Int?) {
         mList[position].quantity = count
     }
 
-    override fun onItemSLChangedFloat(position: Int, count: Float) {
-        Log.e("Float", "$position. $count. ${count.toInt()}")
-        mList[position].quantity = count.toInt()
+    override fun onItemSLChangedFloat(position: Int, count: Float?) {
+//        Log.e("Float", "$position. $count. ${count.toInt()}")
+        if (count == null) {
+            mList[position].quantity = null
+        } else {
+            mList[position].quantity = count.toInt()
+        }
+
     }
 }

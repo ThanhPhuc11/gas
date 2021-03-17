@@ -1,4 +1,4 @@
- package vn.gas.thq.ui.nhapkho
+package vn.gas.thq.ui.nhapkho
 
 import android.text.Editable
 import android.text.InputFilter
@@ -41,11 +41,13 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             val obj: ProductModel = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
             holder.tvSLTrenXe.text = obj.quantity?.toString()
+            holder.edtSLNhapKho2.setText(obj.quantity?.toString())
 //            holder.edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         } else if (holder is ProductViewHolder) {
             val obj: ProductModel = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
             holder.tvSLTrenXe.text = obj.quantity?.toString()
+            holder.edtSLNhapKho.setText(obj.quantity?.toString())
 
             when (obj.code) {
                 "GAS12", "GAS45" -> {
@@ -107,7 +109,7 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             edtSLNhapKho.addTextChangedListener(afterTextChanged = {
                 mClickListener.onItemSLChanged(
                     adapterPosition,
-                    if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+                    if (TextUtils.isEmpty(it.toString())) null else it.toString().toInt()
                 )
             })
         }
@@ -139,11 +141,11 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             edtSLNhapKho2.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         }
 
-        private fun getRealNumberFloat(view: Editable?): Float {
+        private fun getRealNumberFloat(view: Editable?): Float? {
             return if (TextUtils.isEmpty(
                     view.toString().trim()
                 )
-            ) 0f else CommonUtils.getFloatFromStringDecimal(
+            ) null else CommonUtils.getFloatFromStringDecimal(
                 view.toString()
                     .trim()
             )
@@ -160,8 +162,8 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
 
     interface ItemClickListener {
         //        fun onItemTopClick(view: View?, position: Int)
-        fun onItemSLChanged(position: Int, count: Int)
-        fun onItemSLChangedFloat(position: Int, count: Float)
+        fun onItemSLChanged(position: Int, count: Int?)
+        fun onItemSLChangedFloat(position: Int, count: Float?)
 //        fun onItemIncreaseClick(view: View?, position: Int)
 //        fun onItemDecreaseClick(view: View?, position: Int)
     }
