@@ -29,6 +29,7 @@ import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.ApproveRequestModel
+import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
@@ -84,6 +85,10 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         }
     }
 
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_qlyc_ca_nhan
+    }
+
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
     }
@@ -117,8 +122,39 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_qlyc_ca_nhan
+    override fun initData() {
+//        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
+        isRetail = true
+        loaiYC = "Bán hàng"
+        type = "2"
+        edtRequestType.setText("Bán lẻ")
+        viewModel.onGetSaleOrderStatus()
+//        } else {
+//            isRetail = false
+//            loaiYC = "Xuất kho"
+//            type = "1"
+//            edtRequestType.setText("Xuất kho")
+//        }
+        getInfo()
+        initRecyclerView()
+        edtStartDate.setText(AppDateUtils.getCurrentDate())
+        edtEndDate.setText(AppDateUtils.getCurrentDate())
+        edtStartDate.setOnClickListener {
+            CommonUtils.showCalendarDialog(
+                context,
+                edtStartDate.text.toString()
+            ) { strDate -> edtStartDate.setText(strDate) }
+        }
+
+        edtEndDate.setOnClickListener {
+            CommonUtils.showCalendarDialog(
+                context,
+                edtEndDate.text.toString()
+            ) { strDate -> edtEndDate.setText(strDate) }
+        }
+        edtRequestType.setOnClickListener(this::onChooseType)
+        edtStatus.setOnClickListener(this::onChooseStatus)
+        btnSearch.setOnClickListener(this::onSearchData)
     }
 
     override fun initObserver() {
@@ -268,9 +304,16 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         tienVoBan45 = voBan45!! * voBanPrice45!!
 
         totalMustPay()
+        val customer = Customer().apply {
+            customerId = mDetailRetailData?.customerId.toString()
+            name = mDetailRetailData?.customerName
+            telContact = mDetailRetailData?.customerTelContact
+            address = mDetailRetailData?.customerAddress
+        }
 //        totalDebit()
         obj = TransferRetailModel(
             this.orderId,
+            customer,
             khiBan12,
             khiBanPrice12,
             khiBan45,
@@ -287,41 +330,6 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             voMuaPrice45,
             tongTien - mDetailRetailData?.debtAmount!!
         )
-    }
-
-    override fun initData() {
-//        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
-        isRetail = true
-        loaiYC = "Bán hàng"
-        type = "2"
-        edtRequestType.setText("Bán lẻ")
-        viewModel.onGetSaleOrderStatus()
-//        } else {
-//            isRetail = false
-//            loaiYC = "Xuất kho"
-//            type = "1"
-//            edtRequestType.setText("Xuất kho")
-//        }
-        getInfo()
-        initRecyclerView()
-        edtStartDate.setText(AppDateUtils.getCurrentDate())
-        edtEndDate.setText(AppDateUtils.getCurrentDate())
-        edtStartDate.setOnClickListener {
-            CommonUtils.showCalendarDialog(
-                context,
-                edtStartDate.text.toString()
-            ) { strDate -> edtStartDate.setText(strDate) }
-        }
-
-        edtEndDate.setOnClickListener {
-            CommonUtils.showCalendarDialog(
-                context,
-                edtEndDate.text.toString()
-            ) { strDate -> edtEndDate.setText(strDate) }
-        }
-        edtRequestType.setOnClickListener(this::onChooseType)
-        edtStatus.setOnClickListener(this::onChooseStatus)
-        btnSearch.setOnClickListener(this::onSearchData)
     }
 
     private fun getInfo() {

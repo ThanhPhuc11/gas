@@ -89,7 +89,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
             listKho.addAll(listOnlyType1)
             if (listOnlyType1.isNotEmpty()) {
                 shopCode = listOnlyType1[0].code
-                edtTram.setText(listOnlyType1[0].name)
+                edtTram.setText(listOnlyType1[0].code + " - " + listOnlyType1[0].name)
                 viewModel.getDataFromCode(shopCode, null)
             }
         })
@@ -211,7 +211,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
         var doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         listKho.forEach {
-            mArrayList.add(DialogListModel(it.code, it.name, it.type.toString()))
+            mArrayList.add(DialogListModel(it.code, "${it.code} - ${it.name}", it.type.toString()))
         }
 
         doc.show(

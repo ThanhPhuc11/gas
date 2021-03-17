@@ -120,7 +120,6 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             }
             mListCustomer.addAll(it)
             adapter.notifyDataSetChanged()
-            queryKH = ""
             isReload = false
         })
 
@@ -163,11 +162,12 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     private fun onSearch(view: View) {
         setEndLessScrollListener()
         isReload = true
+        queryKH = ""
         if (!TextUtils.isEmpty(edtMaKH.text.toString())) {
             queryKH += ";custId==${edtMaKH.text.toString()}"
         }
         if (!TextUtils.isEmpty(edtTenKH.text.toString())) {
-            queryKH += ";name=ik=${edtTenKH.text.toString()}"
+            queryKH += ";name=ik='${edtTenKH.text.toString()}'"
         }
         if (shopId != null) {
             queryKH += ";shopId==$shopId"
