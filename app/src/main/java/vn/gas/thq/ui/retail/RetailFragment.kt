@@ -70,6 +70,7 @@ class RetailFragment : BaseFragment() {
     //    private var banKhi12 = productBanKhi12.getEditTextSL().text.toString()
 //    private var banKhi45 = productBanKhi45.getEditTextSL().text.toString()
     private lateinit var suggestAdapter: CustomArrayAdapter
+    private lateinit var suggestAdapter2: CustomArrayAdapter
 
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
@@ -209,6 +210,7 @@ class RetailFragment : BaseFragment() {
 
 //        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
+        suggestAdapter2 = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
 
 
         handleBanKhiChange(
@@ -242,7 +244,7 @@ class RetailFragment : BaseFragment() {
         edtTienThucTe.addTextChangedListener(
             NumberTextWatcher(
                 edtTienThucTe,
-                suggestAdapter,
+                suggestAdapter2,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
                         tienThucTe = getRealNumberV2(it)
@@ -257,7 +259,7 @@ class RetailFragment : BaseFragment() {
 //            }
 //        }
 
-        edtTienThucTe.setAdapter(suggestAdapter)
+        edtTienThucTe.setAdapter(suggestAdapter2)
 
 //        edtGasRemain.addTextChangedListener(
 //            NumberTextWatcher(
