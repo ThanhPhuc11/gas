@@ -13,10 +13,7 @@ import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
-import vn.gas.thq.util.AppConstants
-import vn.gas.thq.util.CallBackChange
-import vn.gas.thq.util.CommonUtils
-import vn.gas.thq.util.NumberTextWatcher
+import vn.gas.thq.util.*
 import vn.hongha.ga.R
 
 class NhapSangChietFragment : BaseFragment() {
@@ -79,6 +76,34 @@ class NhapSangChietFragment : BaseFragment() {
             }
         })
 
+        viewModel.callbackCheckTransfer.observe(viewLifecycleOwner, {
+            val obj = InitSangChiet()
+            obj.amountGasLiquidBf = edtUseKHL.text.toString().replace(".", "").toInt()
+            obj.amountGas12 =
+                if (TextUtils.isEmpty(edtAmount12.text)) 0 else edtAmount12.text.toString()
+                    .toInt()
+            obj.amountGas45 =
+                if (TextUtils.isEmpty(edtAmount45.text)) 0 else edtAmount45.text.toString()
+                    .toInt()
+            if (it) {
+                CommonUtils.showConfirmDiglog2Button(
+                    activity,
+                    "Xác nhận",
+                    "Ngày ${AppDateUtils.getCurrentDate()} đã nhập thành phẩm sau sang chiết,\nbạn có chắc chắn tiếp tục nhập?",
+                    getString(
+                        R.string.biometric_negative_button_text
+                    ),
+                    getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        viewModel.initSangChiet(obj)
+                    }
+                }
+            } else {
+                viewModel.initSangChiet(obj)
+            }
+        })
+
         viewModel.callbackInitSangChietSuccess.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Đã nhập thành phẩm thành công") {
                 alertDialog?.dismiss()
@@ -113,12 +138,6 @@ class NhapSangChietFragment : BaseFragment() {
             showMess("Bạn chưa nhập số lượng thành phẩm sau khi sang chiết được")
             return
         }
-        val obj = InitSangChiet()
-        obj.amountGasLiquidBf = edtUseKHL.text.toString().replace(".", "").toInt()
-        obj.amountGas12 =
-            if (TextUtils.isEmpty(edtAmount12.text)) 0 else edtAmount12.text.toString().toInt()
-        obj.amountGas45 =
-            if (TextUtils.isEmpty(edtAmount45.text)) 0 else edtAmount45.text.toString().toInt()
 
         CommonUtils.showConfirmDiglog2Button(
             activity, "Xác nhận", "Bạn có chắc chắn muốn nhập thông tin sang chiết?", getString(
@@ -126,7 +145,8 @@ class NhapSangChietFragment : BaseFragment() {
             ), getString(R.string.text_ok)
         ) {
             if (it == AppConstants.YES) {
-                viewModel.initSangChiet(obj)
+//                viewModel.initSangChiet(obj)
+                viewModel.checkTransfer()
             }
         }
     }

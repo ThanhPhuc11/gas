@@ -30,6 +30,8 @@ import vn.gas.thq.ui.retail.RetailRepository
 import vn.gas.thq.ui.retail.RetailViewModel
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietRepository
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietViewModel
+import vn.gas.thq.ui.sangchiet.qlsangchiet.QLSangChietRepository
+import vn.gas.thq.ui.sangchiet.qlsangchiet.QLSangChietViewModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoRepository
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.ui.vitri.ViTriKHRepositoty
@@ -71,6 +73,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             ViTriKHViewModel(ViTriKHRepositoty(apiService))
         creators[NhapSangChietViewModel::class.java] =
             NhapSangChietViewModel(NhapSangChietRepository(apiService))
+        creators[QLSangChietViewModel::class.java] =
+            QLSangChietViewModel(QLSangChietRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
