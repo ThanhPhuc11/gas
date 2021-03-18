@@ -61,6 +61,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
                 .get(NhapKhoViewModel::class.java)
     }
 
+
     override fun initView() {
         tvTitle.text = "Nhập kho từ LXBH"
         imgBack.setOnClickListener {

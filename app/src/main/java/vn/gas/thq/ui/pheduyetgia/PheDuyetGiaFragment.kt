@@ -125,6 +125,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         })
 
         viewModel.mListDataSearch.observe(viewLifecycleOwner, {
+            it.forEach {
+                it.approve_staffs = mutableListOf<String>().apply {
+                    add("Phucdz1")
+                    add("Phucdz2")
+                    add("Phucdz3")
+                }
+            }
             mList.clear()
             mList.addAll(it)
             adapter.notifyDataSetChanged()

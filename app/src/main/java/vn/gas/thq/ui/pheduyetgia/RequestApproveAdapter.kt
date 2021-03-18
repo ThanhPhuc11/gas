@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
@@ -75,6 +77,14 @@ class RequestApproveAdapter(
             enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                 ?: "${obj.status};${obj.approve_status}"
 
+        holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
+        var strNguoiDuyetMore = ""
+        obj.approve_staffs?.forEach {
+            strNguoiDuyetMore += "\n" +
+                    "\n${it}"
+        }
+        holder.tvNguoiDuyetMore.text = strNguoiDuyetMore
+
 //        holder.itemRequestType1.setLoaiYC(loaiYC)
     }
 
@@ -93,11 +103,19 @@ class RequestApproveAdapter(
         var tvLXBH: TextView = itemView.findViewById(R.id.tvLXBH)
         var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
+        var llWrap: LinearLayout = itemView.findViewById(R.id.llWrap)
+        var tvNguoiDuyet: TextView = itemView.findViewById(R.id.tvNguoiDuyet)
+        var tvNguoiDuyetMore: TextView = itemView.findViewById(R.id.tvNguoiDuyetMore)
         var tvDate: TextView = itemView.findViewById(R.id.tvDate)
         var tvSaleOrderType: TextView = itemView.findViewById(R.id.tvSaleOrderType)
 
         init {
             itemView.setOnClickListener(this)
+            llWrap.setOnClickListener {
+                if (!tvNguoiDuyetMore.isVisible)
+                    tvNguoiDuyetMore.visibility = View.VISIBLE
+                else tvNguoiDuyetMore.visibility = View.GONE
+            }
         }
 
         override fun onClick(p0: View?) {
