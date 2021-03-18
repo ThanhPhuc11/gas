@@ -14,6 +14,7 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.AvailableKHLResponse
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
+import vn.gas.thq.ui.sangchiet.qlsangchiet.HistorySangChietModel
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.vitri.ListResponseCustomer
 import vn.gas.thq.ui.vitri.SaleLineModel
@@ -208,6 +209,16 @@ interface ApiService {
     @GET("stocks/gas/amount")
     suspend fun getAvailableKHL(): AvailableKHLResponse
 
+    @GET("stocks/gas/check-transfer")
+    suspend fun checkTransfer(): Boolean
+
     @POST("stocks/gas/transfer")
     suspend fun initSangChiet(@Body obj: InitSangChiet)
+
+    @GET("stocks/gas/history")
+    suspend fun historySangChiet(
+        @Query("shop_id") shop_id: Int,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String
+    ): List<HistorySangChietModel>
 }

@@ -1,12 +1,14 @@
 package vn.gas.thq.ui.lapyeucauxuatkho
 
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
@@ -119,14 +121,27 @@ class ProductItemV2Adapter(private val mList: MutableList<ProductModel>) :
                 }
             }
 
-            edtSL.addTextChangedListener(afterTextChanged = {
-                if (edtSL.isFocused)
-                    mClickListener.onItemSLChanged(
-                        adapterPosition,
-                        if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
-                    )
-//            holder.edtSL.isSelected = false
-            })
+//            edtSL.addTextChangedListener(afterTextChanged = {
+//                if (edtSL.isFocused)
+//                    mClickListener.onItemSLChanged(
+//                        adapterPosition,
+//                        if (TextUtils.isEmpty(it.toString())) 0 else it.toString().toInt()
+//                    )
+////            holder.edtSL.isSelected = false
+//            })
+
+            edtSL.setOnFocusChangeListener { _, hasFocus ->
+                run {
+                    if (!hasFocus) {
+                        mClickListener.onItemSLChanged(
+                            adapterPosition,
+                            if (TextUtils.isEmpty(edtSL.text.toString())) 0 else edtSL.text.toString()
+                                .toInt()
+                        )
+                    }
+                    Log.e("Phuc", "haha $hasFocus")
+                }
+            }
 
 
 //            itemProductType.setOnClickListener(this)

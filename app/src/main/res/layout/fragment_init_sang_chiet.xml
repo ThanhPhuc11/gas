@@ -43,6 +43,7 @@
         android:layout_height="@dimen/_35sdp"
         android:background="@drawable/bg_border_nomal"
         android:hint="Nhập giá trị"
+        android:inputType="number"
         android:maxLength="11"
         android:paddingHorizontal="13dp"
         android:singleLine="true"
