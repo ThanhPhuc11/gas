@@ -9,6 +9,10 @@ class NhapSangChietRepository(private val apiService: ApiService) : BaseReposito
         emit(apiService.getAvailableKHL())
     }
 
+    suspend fun checkTransfer() = flow {
+        emit(apiService.checkTransfer())
+    }
+
     suspend fun initSangChiet(obj: InitSangChiet) = flow {
         emit(apiService.initSangChiet(obj))
     }
