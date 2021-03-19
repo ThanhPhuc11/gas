@@ -282,8 +282,8 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             ) {
                 if (it == AppConstants.YES) {
                     viewModel.capNhatToaDoKH(customer.customerId, ToaDoModel().apply {
-                        lat = latitude.toInt()
-                        lng = longitude.toInt()
+                        lat = latitude.toFloat()
+                        lng = longitude.toFloat()
                     })
 //                        viewModel.onCancelRequest(orderId)
                 }
