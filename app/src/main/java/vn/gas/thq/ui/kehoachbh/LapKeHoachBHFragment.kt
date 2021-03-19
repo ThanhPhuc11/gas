@@ -79,7 +79,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         tvStaff.text = user.name
         tvTuyenBH.text = user.saleLineName
         tvPlanTime.text = AppDateUtils.getCurrentDate()
-        viewModel.onGetListCustomer("21", "105")
+        viewModel.onGetListCustomer("21.000275", "105.74243")
         initRecyclerView()
 //        addKeHoach(view)
 //        tvAddKeHoach.setOnClickListener(this::addKeHoach)
