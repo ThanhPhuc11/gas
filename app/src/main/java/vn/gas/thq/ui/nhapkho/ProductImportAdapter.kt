@@ -42,6 +42,15 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             holder.tvProductName.text = obj.name ?: "- -"
             holder.tvSLTrenXe.text = obj.quantity?.toString()
             holder.edtSLNhapKho2.setText(obj.quantity?.toString())
+            holder.edtSLNhapKho2.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    holder.edtGasRemainPrice1.setText("${getRealNumberFloat(holder.edtSLNhapKho2.text)}")
+                    mClickListener.onItemSLChangedFloat(
+                        position,
+                        getRealNumberFloat(holder.edtSLNhapKho2.text)
+                    )
+                }
+            }
 //            holder.edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         } else if (holder is ProductViewHolder) {
             val obj: ProductModel = mList[position]
@@ -89,6 +98,16 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
         }
     }
 
+    private fun getRealNumberFloat(view: Editable?): Float? {
+        return if (TextUtils.isEmpty(
+                view.toString().trim()
+            )
+        ) null else CommonUtils.getFloatFromStringDecimal(
+            view.toString()
+                .trim()
+        )
+    }
+
 //    fun getQuantityFromCode(): MutableList<ProductModel> {
 //        var listTemp = mutableListOf<ProductModel>()
 //        for (obj: ProductModel in mList) {
@@ -131,25 +150,33 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
 
         init {
 //            itemProductType.setOnClickListener(this)
-            edtSLNhapKho2.addTextChangedListener(afterTextChanged = {
-                mClickListener.onItemSLChangedFloat(
-                    adapterPosition,
-                    getRealNumberFloat(it)
-                )
-            })
+//            edtSLNhapKho2.addTextChangedListener(afterTextChanged = {
+//                mClickListener.onItemSLChangedFloat(
+//                    adapterPosition,
+//                    getRealNumberFloat(it)
+//                )
+//            })
+//            edtSLNhapKho2.setOnFocusChangeListener { v, hasFocus ->
+//                if (!hasFocus) {
+//                    mClickListener.onItemSLChangedFloat(
+//                        adapterPosition,
+//                        getRealNumberFloat(edtSLNhapKho2.text)
+//                    )
+//                }
+//            }
 
             edtSLNhapKho2.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         }
 
-        private fun getRealNumberFloat(view: Editable?): Float? {
-            return if (TextUtils.isEmpty(
-                    view.toString().trim()
-                )
-            ) null else CommonUtils.getFloatFromStringDecimal(
-                view.toString()
-                    .trim()
-            )
-        }
+//        private fun getRealNumberFloat(view: Editable?): Float? {
+//            return if (TextUtils.isEmpty(
+//                    view.toString().trim()
+//                )
+//            ) null else CommonUtils.getFloatFromStringDecimal(
+//                view.toString()
+//                    .trim()
+//            )
+//        }
 
 //        override fun onClick(p0: View?) {
 //            mClickListener.onItemTopClick(p0, adapterPosition)

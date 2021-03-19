@@ -28,6 +28,8 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachRepository
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachViewModel
 import vn.gas.thq.ui.retail.RetailRepository
 import vn.gas.thq.ui.retail.RetailViewModel
+import vn.gas.thq.ui.retailtongdaily.RetailBossRepository
+import vn.gas.thq.ui.retailtongdaily.RetailBossViewModel
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietRepository
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietViewModel
 import vn.gas.thq.ui.sangchiet.qlsangchiet.QLSangChietRepository
@@ -55,6 +57,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             ThuKhoXuatKhoViewModel(ThuKhoXuatKhoRepository(apiService), context)
         creators[RetailViewModel::class.java] =
             RetailViewModel(RetailRepository(apiService))
+        creators[RetailBossViewModel::class.java] =
+            RetailBossViewModel(RetailBossRepository(apiService))
         creators[PheDuyetGiaViewModel::class.java] =
             PheDuyetGiaViewModel(PheDuyetGiaRepository(apiService))
         creators[XemKhoViewModel::class.java] =

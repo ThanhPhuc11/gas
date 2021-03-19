@@ -129,52 +129,52 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         showDiglogConfirmPlan()
     }
 
-    private fun expand(titleGroup: TextView, container: View) {
-        if (container.isVisible) {
-            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_arrow_right_circle,
-                0
-            )
-            CommonUtils.collapse(container)
-        } else {
-            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_arrow_down_circle,
-                0
-            )
-            CommonUtils.expand(container)
-        }
-    }
-
-    private fun addKeHoach(view: View?) {
-        var keHoachModel = KeHoachModel()
-        keHoachModel.item.add(ProductNhapKhoModel().apply {
-            productCode = "GAS12"
-            amount = 0
-            price = 0
-        })
-        keHoachModel.item.add(ProductNhapKhoModel().apply {
-            productCode = "GAS45"
-            amount = 0
-            price = 0
-        })
-        keHoachModel.item.add(ProductNhapKhoModel().apply {
-            productCode = "TANK12"
-            amount = 0
-            price = 0
-        })
-        keHoachModel.item.add(ProductNhapKhoModel().apply {
-            productCode = "TANK45"
-            amount = 0
-            price = 0
-        })
-        listKHBH.add(keHoachModel)
-        adapter.notifyDataSetChanged()
-        rvKeHoach.scrollToPosition(listKHBH.size - 1)
-    }
+//    private fun expand(titleGroup: TextView, container: View) {
+//        if (container.isVisible) {
+//            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+//                0,
+//                0,
+//                R.drawable.ic_arrow_right_circle,
+//                0
+//            )
+//            CommonUtils.collapse(container)
+//        } else {
+//            titleGroup.setCompoundDrawablesWithIntrinsicBounds(
+//                0,
+//                0,
+//                R.drawable.ic_arrow_down_circle,
+//                0
+//            )
+//            CommonUtils.expand(container)
+//        }
+//    }
+//
+//    private fun addKeHoach(view: View?) {
+//        var keHoachModel = KeHoachModel()
+//        keHoachModel.item.add(ProductNhapKhoModel().apply {
+//            productCode = "GAS12"
+//            amount = 0
+//            price = 0
+//        })
+//        keHoachModel.item.add(ProductNhapKhoModel().apply {
+//            productCode = "GAS45"
+//            amount = 0
+//            price = 0
+//        })
+//        keHoachModel.item.add(ProductNhapKhoModel().apply {
+//            productCode = "TANK12"
+//            amount = 0
+//            price = 0
+//        })
+//        keHoachModel.item.add(ProductNhapKhoModel().apply {
+//            productCode = "TANK45"
+//            amount = 0
+//            price = 0
+//        })
+//        listKHBH.add(keHoachModel)
+//        adapter.notifyDataSetChanged()
+//        rvKeHoach.scrollToPosition(listKHBH.size - 1)
+//    }
 
     private fun addKeHoachV2(id: Int?, name: String): KeHoachModel {
         val keHoachModel = KeHoachModel()
@@ -217,10 +217,10 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_confirm_plan, null)
         builder?.setView(dialogView)
-        var tvGas12 = dialogView.findViewById<TextView>(R.id.tvGas12)
-        var tvGas45 = dialogView.findViewById<TextView>(R.id.tvGas45)
-        var tvTank12 = dialogView.findViewById<TextView>(R.id.tvTank12)
-        var tvTank45 = dialogView.findViewById<TextView>(R.id.tvTank45)
+        val tvGas12 = dialogView.findViewById<TextView>(R.id.tvGas12)
+        val tvGas45 = dialogView.findViewById<TextView>(R.id.tvGas45)
+        val tvTank12 = dialogView.findViewById<TextView>(R.id.tvTank12)
+        val tvTank45 = dialogView.findViewById<TextView>(R.id.tvTank45)
 
         var gas12 = 0
         var gas45 = 0
@@ -279,8 +279,8 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
     }
 
     private fun chooseCustomer(position: Int) {
-        var doc = DialogList()
-        var mArrayList = ArrayList<DialogListModel>()
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
         mListCustomer.forEach {
             mArrayList.add(DialogListModel(it.customerId ?: "", it.name ?: ""))
         }

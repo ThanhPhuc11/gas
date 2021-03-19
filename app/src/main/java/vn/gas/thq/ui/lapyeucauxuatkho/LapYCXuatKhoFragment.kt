@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.lapyeucauxuatkho
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -147,8 +148,10 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemV2Adapter.ItemClickListe
             mList[mList.indexOf(mList.firstOrNull { it.code == "TANK45" })].quantity = count
 //            productAdapter.setSL(mList.indexOf(mList.firstOrNull { it.code == "TANK45" }), count)
         }
-        hideKeyboard()
         productAdapter.notifyDataSetChanged()
+        Handler().postDelayed({
+            hideKeyboard()
+        }, 100)
         Log.e("POSITION: $position", "SL $count")
     }
 }
