@@ -125,13 +125,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         })
 
         viewModel.mListDataSearch.observe(viewLifecycleOwner, {
-            it.forEach {
-                it.approve_staffs = mutableListOf<String>().apply {
-                    add("Phucdz1")
-                    add("Phucdz2")
-                    add("Phucdz3")
-                }
-            }
+//            it.forEach {
+//                it.approve_staffs = mutableListOf<String>().apply {
+//                    add("Phucdz1")
+//                    add("Phucdz2")
+//                    add("Phucdz3")
+//                }
+//            }
             mList.clear()
             mList.addAll(it)
             adapter.notifyDataSetChanged()
@@ -214,7 +214,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         var mArrayList = ArrayList<DialogListModel>()
         mArrayList.add(0, DialogListModel(AppConstants.SELECT_ALL, getString(R.string.all)))
         mListStaff.forEach {
-            mArrayList.add(DialogListModel(it.staffCode, it.name))
+            mArrayList.add(DialogListModel(it.staffCode, "${it.staffCode} - ${it.name}"))
         }
         doc.show(
             activity, mArrayList,

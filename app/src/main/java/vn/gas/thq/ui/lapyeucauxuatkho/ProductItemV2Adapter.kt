@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.item_product_type_4.view.*
 import vn.gas.thq.customview.ItemProductType4
 import vn.gas.thq.model.ProductModel
 import vn.hongha.ga.R
+import java.lang.Exception
 
 class ProductItemV2Adapter(private val mList: MutableList<ProductModel>) :
     RecyclerView.Adapter<ProductItemV2Adapter.ProductViewHolder>() {
@@ -132,7 +133,7 @@ class ProductItemV2Adapter(private val mList: MutableList<ProductModel>) :
 
             edtSL.setOnFocusChangeListener { _, hasFocus ->
                 run {
-                    if (!hasFocus) {
+                    if (!hasFocus && adapterPosition != -1) {
                         mClickListener.onItemSLChanged(
                             adapterPosition,
                             if (TextUtils.isEmpty(edtSL.text.toString())) 0 else edtSL.text.toString()

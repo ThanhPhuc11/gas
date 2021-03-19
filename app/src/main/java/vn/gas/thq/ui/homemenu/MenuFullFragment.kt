@@ -17,6 +17,7 @@ import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
+import vn.gas.thq.ui.retailtongdaily.RetailContainerBossFragment
 import vn.gas.thq.ui.sangchiet.SangChietFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.vitri.ViTriKHFragment
@@ -98,6 +99,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
     private fun initMenuData() {
         val mList = mutableListOf<MenuModel>()
         mList.add(MenuModel(1, "Bán lẻ", R.drawable.ic_menu_1))
+        mList.add(MenuModel(13, "Bán hàng\nTổng đại lý", R.drawable.ic_menu_1))
         mList.add(MenuModel(2, "Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
         mList.add(MenuModel(3, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
         mList.add(MenuModel(4, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
@@ -163,6 +165,10 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
             12 -> viewController?.pushFragment(
                 ScreenId.SCREEN_SANG_CHIET,
                 SangChietFragment.newInstance()
+            )
+            13 -> viewController?.pushFragment(
+                ScreenId.SCREEN_RETAIL_BOSS_CONTAINER,
+                RetailContainerBossFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
             )
             100 -> {
                 viewController?.popAllFragment()

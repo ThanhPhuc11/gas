@@ -45,6 +45,7 @@ class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepo
             }
             if (obj.detail?.size == 0) {
                 showMessCallback.value = "Vui lòng nhập số lượng"
+                return@launch
             }
             lapKeHoachBHRepository.lapKeHoachBH(obj)
                 .onStart {

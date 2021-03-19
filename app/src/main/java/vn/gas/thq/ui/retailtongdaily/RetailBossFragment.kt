@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.retail
+package vn.gas.thq.ui.retailtongdaily
 
 import android.Manifest
 import android.content.Context
@@ -24,7 +24,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
-import kotlinx.android.synthetic.main.fragment_retail.*
+import kotlinx.android.synthetic.main.fragment_retail_boss.*
 import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -37,6 +37,10 @@ import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
+import vn.gas.thq.ui.retail.Customer
+import vn.gas.thq.ui.retail.GasRemainModel
+import vn.gas.thq.ui.retail.RequestInitRetail
+import vn.gas.thq.ui.retail.ResponseInitRetail
 import vn.gas.thq.util.*
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
@@ -44,9 +48,9 @@ import vn.hongha.ga.R
 import java.util.*
 
 
-class RetailFragment : BaseFragment() {
+class RetailBossFragment : BaseFragment() {
     private var custId: String? = null
-    private lateinit var viewModel: RetailViewModel
+    private lateinit var viewModel: RetailBossViewModel
     private var mListCustomer = mutableListOf<Customer>()
     private var alertDialog: AlertDialog? = null
 
@@ -83,20 +87,20 @@ class RetailFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(step: String?, transferData: TransferRetailModel?): RetailFragment {
+        fun newInstance(step: String?, transferData: TransferRetailModel?): RetailBossFragment {
             val bundle = Bundle()
             bundle.apply {
                 putString("STEP", step)
                 transferData?.let { putSerializable("DATA", it) }
             }
-            val fragment = RetailFragment()
+            val fragment = RetailBossFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_retail
+        return R.layout.fragment_retail_boss
     }
 
     override fun initView() {
@@ -104,7 +108,7 @@ class RetailFragment : BaseFragment() {
 //            viewController?.popFragment()
 //        }
         if ("STEP_2" == arguments?.getString("STEP")) {
-            (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
+            (parentFragment as RetailContainerBossFragment).stepView.setStepDone("2")
             edtCustomer.visibility = View.GONE
             layoutCustomerInfo.visibility = View.VISIBLE
             linearGasRemain.visibility = View.VISIBLE
@@ -119,8 +123,8 @@ class RetailFragment : BaseFragment() {
             disableInput()
             return
         }
-        linearGasRemain.visibility = View.GONE
-        linearGasRemainPrice.visibility = View.GONE
+//        linearGasRemain.visibility = View.GONE
+//        linearGasRemainPrice.visibility = View.GONE
         layoutThuHoiStep2.visibility = View.GONE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!hasPermissions(context, *PERMISSIONS)) {
@@ -182,7 +186,7 @@ class RetailFragment : BaseFragment() {
 
     override fun setViewController() {
         viewController = (activity as MainActivity).viewController
-        childViewController = (parentFragment as RetailContainerFragment).childViewController
+        childViewController = (parentFragment as RetailContainerBossFragment).childViewController
     }
 
     override fun setupViewModel() {
@@ -194,7 +198,7 @@ class RetailFragment : BaseFragment() {
                             ViewModelFactory(apiService, context)
                         }
                 })
-                .get(RetailViewModel::class.java)
+                .get(RetailBossViewModel::class.java)
     }
 
     override fun initData() {
@@ -330,7 +334,7 @@ class RetailFragment : BaseFragment() {
             ScreenId.SCREEN_RETAIL_STEP_2,
             newInstance("STEP_2", transferRetailModel)
         )
-        (parentFragment as RetailContainerFragment).stepView.setStepDone("2")
+        (parentFragment as RetailContainerBossFragment).stepView.setStepDone("2")
     }
 
     private fun onSubmitData(view: View) {
@@ -432,17 +436,9 @@ class RetailFragment : BaseFragment() {
         requestInitRetail.item = listProductRetailModel
         requestInitRetail.payMethod = hinhThucChuyenKhoan
         CommonUtils.showConfirmDiglog2Button(
-            activity,
-            "Xác nhận",
-            "KH đã thanh toán ${CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())} đ \nvà đang nợ ${
-                CommonUtils.priceWithoutDecimal(
-                    tienNo.toDouble()
-                )
-            } đ\nBạn có chắc chắn muốn tạo yêu cầu bán lẻ?",
-            getString(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu bán lẻ?", getString(
                 R.string.biometric_negative_button_text
-            ),
-            getString(R.string.text_ok)
+            ), getString(R.string.text_ok)
         ) {
             if (it == AppConstants.YES) {
                 viewModel.doRequestRetail(requestInitRetail)
