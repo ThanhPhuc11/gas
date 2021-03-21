@@ -352,7 +352,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             }
             check()
         }
-        showMess("${mListCustomer[position].customerId}")
+//        showMess("${mListCustomer[position].customerId}")
         viewModel.onGetDetailCustomer(mListCustomer[position].customerId.toString())
 //        showDialogDetail("${mListCustomer[position].customerId}")
     }

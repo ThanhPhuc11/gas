@@ -99,11 +99,17 @@ class DetailKeHoachFragment : BaseFragment() {
         })
 
         viewModel.callbackDuyetSuccessKHBH.observe(viewLifecycleOwner, {
-            showMess("Thanh Cong")
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Phê duyệt yêu cầu thành công") {
+                alertDialog?.dismiss()
+                viewController?.popNFragment(2)
+            }
         })
 
         viewModel.callbackTuChoiSuccessKHBH.observe(viewLifecycleOwner, {
-            showMess("Tu Choi Thanh Cong")
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Từ chối yêu cầu thành công") {
+                alertDialog?.dismiss()
+                viewController?.popNFragment(2)
+            }
         })
     }
 

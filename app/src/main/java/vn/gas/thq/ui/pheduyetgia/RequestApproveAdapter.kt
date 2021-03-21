@@ -77,13 +77,20 @@ class RequestApproveAdapter(
             enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                 ?: "${obj.status};${obj.approve_status}"
 
-        holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
+        if (obj.approve_staffs?.size!! > 0)
+            holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
         var strNguoiDuyetMore = ""
-        obj.approve_staffs?.forEach {
-            strNguoiDuyetMore += "\n" +
-                    "\n${it}"
+        if (obj.approve_staffs?.size!! > 1) {
+//            obj.approve_staffs?.forEach {
+//                strNguoiDuyetMore += "\n" +
+//                        "\n${it}"
+//            }
+            for (i in 1 until obj.approve_staffs!!.size) {
+                strNguoiDuyetMore += "\n" +
+                        "\n${obj.approve_staffs!![i]}"
+            }
+            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore
         }
-        holder.tvNguoiDuyetMore.text = strNguoiDuyetMore
 
 //        holder.itemRequestType1.setLoaiYC(loaiYC)
     }

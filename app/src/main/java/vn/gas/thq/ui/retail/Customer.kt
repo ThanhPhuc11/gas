@@ -28,4 +28,7 @@ class Customer {
     @SerializedName("sale_line_name")
     @Expose
     var saleLineName: String? = null
+
+    var lat: Float? = null
+    var lng: Float? = null
 }
