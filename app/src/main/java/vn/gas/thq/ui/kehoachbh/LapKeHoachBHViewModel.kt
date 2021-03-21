@@ -14,7 +14,7 @@ import vn.gas.thq.ui.retail.Customer
 class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepository) :
     BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
-    val callbackKHBH = MutableLiveData<Unit>()
+    val callbackKHBHSuccess = MutableLiveData<Unit>()
 
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -38,13 +38,13 @@ class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepo
     fun lapKeHoachBH(obj: RequestKeHoachModel) {
         viewModelScope.launch(Dispatchers.Main) {
             obj.detail?.forEach{
-                if (it.item[3].amount == 0) it.item.removeAt(3)
-                if (it.item[2].amount == 0) it.item.removeAt(2)
-                if (it.item[1].amount == 0) it.item.removeAt(1)
-                if (it.item[0].amount == 0) it.item.removeAt(0)
+                if (it.item[3].amount == 0 || it.item[3].price == 0) it.item.removeAt(3)
+                if (it.item[2].amount == 0 || it.item[2].price == 0) it.item.removeAt(2)
+                if (it.item[1].amount == 0 || it.item[1].price == 0) it.item.removeAt(1)
+                if (it.item[0].amount == 0 || it.item[0].price == 0) it.item.removeAt(0)
             }
             if (obj.detail?.size == 0) {
-                showMessCallback.value = "Vui lòng nhập số lượng"
+                showMessCallback.value = "Vui lòng nhập số lượng và giá"
                 return@launch
             }
             lapKeHoachBHRepository.lapKeHoachBH(obj)
@@ -59,7 +59,7 @@ class LapKeHoachBHViewModel(private val lapKeHoachBHRepository: LapKeHoachBHRepo
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackKHBH.value = Unit
+                    callbackKHBHSuccess.value = Unit
                 }
         }
     }

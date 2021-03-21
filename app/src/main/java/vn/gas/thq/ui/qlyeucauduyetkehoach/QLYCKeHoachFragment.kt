@@ -128,11 +128,22 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
         viewModel.getKeHoachBH(status, fromDate, endDate, staffCode, shopCode, null, 0, 1000)
     }
 
+    private fun filterCanApproveStatus(canApproveStatus: String): Int {
+//        if (canApproveStatus[0].toString() == "2") return 0
+        if (canApproveStatus[0].toString() == "0") {
+            return if (canApproveStatus[1].toString() == "1") 1 else 2
+        }
+        return 0
+    }
+
     override fun onItemClick(view: View?, position: Int) {
         val id = listKHBH[position].planId
+        var type = 0
+        if (filterCanApproveStatus(listKHBH[position].canApproveStatus) == 0) return
+        type = filterCanApproveStatus(listKHBH[position].canApproveStatus)
         viewController?.pushFragment(
             ScreenId.SCREEN_DETAIL_KE_HOACH,
-            DetailKeHoachFragment.newInstance(id.toString(), AppConstants.LEVEL_DUYET_GIA)
+            DetailKeHoachFragment.newInstance(id.toString(), type)
         )
     }
 }

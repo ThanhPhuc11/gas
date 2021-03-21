@@ -28,4 +28,8 @@ class KHBHOrderModel {
     @SerializedName("effect_date")
     @Expose
     var effectDate: String? = null
+
+    @SerializedName("can_approve_status")
+    @Expose
+    var canApproveStatus: String = "22"
 }

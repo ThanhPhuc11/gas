@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class CustomerAdapter(
         holder.tvCustId.text = obj.customerId
         holder.tvCustName.text = obj.name
         holder.tvAddress.text = obj.address
+        holder.imgMarker.visibility = if (obj.lat == null) View.GONE else View.VISIBLE
     }
 
     override fun getItemCount(): Int {
@@ -44,6 +46,7 @@ class CustomerAdapter(
     inner class RequestViewHolder constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
+        var imgMarker: ImageView = itemView.findViewById(R.id.imgMarker)
         var tvCustId: TextView = itemView.findViewById(R.id.tvCustId)
         var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var tvAddress: TextView = itemView.findViewById(R.id.tvAddress)

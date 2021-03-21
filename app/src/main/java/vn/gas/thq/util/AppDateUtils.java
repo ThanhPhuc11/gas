@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class AppDateUtils {
-    public static String FORMAT_1 = "dd/MM/yyyy hh:mm:ss";
+    public static String FORMAT_1 = "dd/MM/yyyy HH:mm:ss";
     public static String FORMAT_2 = "dd/MM/yyyy";
     public static String FORMAT_3 = "dd-MM-yyyy";
     public static String FORMAT_4 = "yyyy/MM/dd hh:mm:ss";
@@ -26,7 +26,7 @@ public class AppDateUtils {
             return result;
         }
         SimpleDateFormat formatterOld = new SimpleDateFormat(currentFormat, Locale.getDefault());
-        formatterOld.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        formatterOld.setTimeZone(TimeZone.getTimeZone("GMT"));
         SimpleDateFormat formatterNew = new SimpleDateFormat(requiredFormat, Locale.getDefault());
         Date date = null;
         try {
@@ -114,6 +114,30 @@ public class AppDateUtils {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        String fromMothStr = "";
+        int tempMonth = mMonth + 1;
+        if (tempMonth < 10) {
+            fromMothStr = "0" + tempMonth;
+        } else {
+            fromMothStr = "" + tempMonth;
+        }
+        String fromDayStr = "";
+        if (mDay < 10) {
+            fromDayStr = "0" + mDay;
+        } else {
+            fromDayStr = "" + mDay;
+        }
+        String currentDate = fromDayStr + "/" + fromMothStr + "/" + mYear;
+        return currentDate;
+    }
+
+    public static String getTomorrowDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, +1);
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);

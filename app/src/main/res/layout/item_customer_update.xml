@@ -7,6 +7,14 @@
     app:cardCornerRadius="6dp"
     app:cardUseCompatPadding="true">
 
+    <ImageView
+        android:id="@+id/imgMarker"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="right|top"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_pin" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

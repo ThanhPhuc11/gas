@@ -1,12 +1,10 @@
 package vn.gas.thq.ui.kehoachbh
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +21,13 @@ import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
+import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
@@ -78,7 +79,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         val user = AppPreferencesHelper(context).userModel
         tvStaff.text = user.name
         tvTuyenBH.text = user.saleLineName
-        tvPlanTime.text = AppDateUtils.getCurrentDate()
+        tvPlanTime.text = AppDateUtils.getTomorrowDate()
         viewModel.onGetListCustomer("21.000275", "105.74243")
         initRecyclerView()
 //        addKeHoach(view)
@@ -97,7 +98,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
             adapter.notifyDataSetChanged()
         })
 
-        viewModel.callbackKHBH.observe(viewLifecycleOwner, {
+        viewModel.callbackKHBHSuccess.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Hoàn thành") {
                 alertDialog?.dismiss()
 //                listKHBH.clear()
@@ -105,6 +106,11 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
 //                Handler().postDelayed({
 //                    viewModel.onGetListCustomer("21", "105")
 //                }, 500)
+                viewController?.popFragment()
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_QLYC_KE_HOACH,
+                    QLYCKeHoachFragment.newInstance()
+                )
             }
         })
 
@@ -126,7 +132,13 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
     }
 
     private fun submitData(view: View) {
-        showDiglogConfirmPlan()
+        val listFilterKHBH = listKHBH.filter {
+            (it.item[0].amount != 0 && it.item[0].price != 0)
+                    || (it.item[1].amount != 0 && it.item[1].price != 0)
+                    || (it.item[2].amount != 0 && it.item[2].price != 0)
+                    || (it.item[3].amount != 0 && it.item[3].price != 0)
+        }
+        showDiglogConfirmPlan(listFilterKHBH)
     }
 
 //    private fun expand(titleGroup: TextView, container: View) {
@@ -212,7 +224,10 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         rvKeHoach.adapter = adapter
     }
 
-    private fun showDiglogConfirmPlan() {
+    private fun showDiglogConfirmPlan(listFilterKHBH: List<KeHoachModel>) {
+        val listTemp = mutableListOf<KeHoachModel>().apply {
+            addAll(listFilterKHBH)
+        }
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_confirm_plan, null)
@@ -226,6 +241,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
         var gas45 = 0
         var tank12 = 0
         var tank45 = 0
+
         dialogView.apply {
             imgClose.setOnClickListener {
                 alertDialog?.dismiss()
@@ -237,21 +253,25 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
             }
             btnDongY.setOnClickListener {
                 viewModel.lapKeHoachBH(RequestKeHoachModel().apply {
-                    detail = listKHBH.filter {
-                        it.item[0].amount != 0
-                                || it.item[1].amount != 0
-                                || it.item[2].amount != 0
-                                || it.item[3].amount != 0
-                    }
+                    detail = listTemp
                 })
             }
         }
-        for (item: KeHoachModel in listKHBH) {
-            gas12 += item.item[0].amount ?: 0
-            gas45 += item.item[1].amount ?: 0
-            tank12 += item.item[2].amount ?: 0
-            tank45 += item.item[3].amount ?: 0
+
+        for (item: KeHoachModel in listTemp) {
+            gas12 += if (item.item[0].price != 0) item.item[0].amount ?: 0 else 0
+            gas45 += if (item.item[1].price != 0) item.item[1].amount ?: 0 else 0
+            tank12 += if (item.item[2].price != 0) item.item[2].amount ?: 0 else 0
+            tank45 += if (item.item[3].price != 0) item.item[3].amount ?: 0 else 0
         }
+
+//        listTemp.forEach {
+//            if (it.item[3].amount == 0 || it.item[3].price == 0) it.item.removeAt(3)
+//            if (it.item[2].amount == 0 || it.item[2].price == 0) it.item.removeAt(2)
+//            if (it.item[1].amount == 0 || it.item[1].price == 0) it.item.removeAt(1)
+//            if (it.item[0].amount == 0 || it.item[0].price == 0) it.item.removeAt(0)
+//        }
+
         tvGas12.text = gas12.toString()
         tvGas45.text = gas45.toString()
         tvTank12.text = tank12.toString()
