@@ -25,9 +25,10 @@ public class AppDateUtils {
         if (dateString == null || TextUtils.isEmpty(dateString)) {
             return result;
         }
-        SimpleDateFormat formatterOld = new SimpleDateFormat(currentFormat, Locale.getDefault());
-//        formatterOld.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SimpleDateFormat formatterOld = new SimpleDateFormat(currentFormat);
+        formatterOld.setTimeZone(TimeZone.getTimeZone("UTC"));
         SimpleDateFormat formatterNew = new SimpleDateFormat(requiredFormat, Locale.getDefault());
+//        formatterNew.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
         try {
             date = formatterOld.parse(dateString);

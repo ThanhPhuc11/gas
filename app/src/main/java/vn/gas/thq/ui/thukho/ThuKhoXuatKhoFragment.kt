@@ -253,7 +253,22 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
         builder?.setView(dialogView)
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapterDetail = DetailItemProduct2Adapter(mDetalData!!.item)
-
+        val gas12 = mDetalData!!.item.firstOrNull { it.code == "GAS12" }?.quantity ?: 0
+        val gas45 = mDetalData!!.item.firstOrNull { it.code == "GAS45" }?.quantity ?: 0
+        val tank12 = mDetalData!!.item.firstOrNull { it.code == "TANK12" }?.quantity ?: 0
+        val tank45 = mDetalData!!.item.firstOrNull { it.code == "TANK45" }?.quantity ?: 0
+        var titleWarning = ""
+        var preWarning = ""
+        if (tank12 < gas12) {
+            titleWarning = "Cảnh báo"
+            preWarning = "Số lượng vỏ 12 đang ít hơn số lượng khí 12\n"
+        } else if (tank45 < gas45) {
+            titleWarning = "Cảnh báo"
+            preWarning = "Số lượng vỏ 45 đang ít hơn số lượng khí 45\n"
+        } else {
+            titleWarning = "Xác nhận"
+            preWarning = ""
+        }
         dialogView.apply {
             imgClose.setOnClickListener {
                 alertDialog?.dismiss()
@@ -296,7 +311,8 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
                 CommonUtils.showConfirmDiglog2Button(
                     activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
                         R.string.biometric_negative_button_text
-                    ), getString(R.string.text_ok)
+                    ),
+                    getString(R.string.text_ok)
                 ) {
                     if (it == AppConstants.YES) {
                         viewModel.acceptOrNotRequest(orderId, false)
@@ -305,9 +321,13 @@ class ThuKhoXuatKhoFragment : BaseFragment(), RequestItemAdapter.ItemClickListen
             }
             btnDongY.setOnClickListener {
                 CommonUtils.showConfirmDiglog2Button(
-                    activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
+                    activity,
+                    titleWarning,
+                    "${preWarning}Bạn có chắc chắn muốn phê duyệt yêu cầu?",
+                    getString(
                         R.string.biometric_negative_button_text
-                    ), getString(R.string.text_ok)
+                    ),
+                    getString(R.string.text_ok)
                 ) {
                     if (it == AppConstants.YES) {
                         viewModel.acceptOrNotRequest(orderId, true)
