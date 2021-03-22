@@ -38,8 +38,7 @@ abstract class BaseViewModel : ViewModel() {
                         EventBus.getDefault().post(ExpriteEventModel())
                     }
                     426 -> { // nang cap phien ban moi
-                        showMessCallback.value =
-                            "Đã có phiên bản mới. Vui lòng thực thực hiện nâng cấp phiên bản mới!"
+                      showMessCallback.value = "Vui lòng thực thực hiện nâng cấp phiên bản mới!"
                         EventBus.getDefault().post(
                             NeedUpgradeApkEvent(
                                 NeedUpgradeApkEvent.SHOW_POPUP,

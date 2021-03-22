@@ -39,7 +39,7 @@ public class ApkDialog extends Dialog {
 
         tvDes = findViewById(R.id.tvDes);
         btnUpgrade = findViewById(R.id.btnUpgrade);
-        //    tvDes.setText(contentDes);
+        tvDes.setText(contentDes);
 
         btnUpgrade.setOnClickListener(new View.OnClickListener() {
             @Override

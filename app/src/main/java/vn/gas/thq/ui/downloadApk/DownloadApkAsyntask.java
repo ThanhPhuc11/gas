@@ -63,8 +63,10 @@ public class DownloadApkAsyntask extends AsyncTask<String, Integer, Void> {
     public boolean createDirectory(Context context, String directoryPath) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             folder = new File(context.getExternalFilesDir(null), directoryPath);
-        else
-            folder = new File(Environment.getExternalStorageState(), directoryPath);
+        else {
+          //  folder = new File(Environment.getExternalStorageState(), directoryPath);
+            folder = new File("/mnt/sdcard/", directoryPath);
+        }
         if (!folder.exists()) {
             return folder.mkdirs();
         }
