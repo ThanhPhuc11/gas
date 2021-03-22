@@ -122,11 +122,31 @@ class LapYCXuatKhoFragment : BaseFragment(), ProductItemV2Adapter.ItemClickListe
         initExportRequest.item = mutableListOf()
         val requestList = mList.filter { it.quantity!! > 0 }
         if (requestList.isNotEmpty()) {
+            val gas12 = requestList.firstOrNull { it.code == "GAS12" }?.quantity ?: 0
+            val gas45 = requestList.firstOrNull { it.code == "GAS45" }?.quantity ?: 0
+            val tank12 = requestList.firstOrNull { it.code == "TANK12" }?.quantity ?: 0
+            val tank45 = requestList.firstOrNull { it.code == "TANK45" }?.quantity ?: 0
+            var titleWarning = ""
+            var preWarning = ""
+            if (tank12 < gas12) {
+                titleWarning = "Cảnh báo"
+                preWarning = "Số lượng vỏ 12 đang ít hơn số lượng khí 12\n"
+            } else if (tank45 < gas45) {
+                titleWarning = "Cảnh báo"
+                preWarning = "Số lượng vỏ 45 đang ít hơn số lượng khí 45\n"
+            } else {
+                titleWarning = "Xác nhận"
+                preWarning = ""
+            }
             initExportRequest.item?.addAll(requestList)
             CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu xuất kho?", getString(
+                activity,
+                titleWarning,
+                "${preWarning}Bạn có chắc chắn muốn tạo yêu cầu xuất kho?",
+                getString(
                     R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
+                ),
+                getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
                     viewModel.onSubmitData(initExportRequest)
