@@ -22,7 +22,6 @@ import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
-import java.lang.Exception
 
 
 open class MainActivity : BaseActivity() {
@@ -125,7 +124,20 @@ open class MainActivity : BaseActivity() {
                 } catch (e: Exception) {
                 }
             }
-            apkD = ApkDialog(this, "", event.url)
+            var vName ="";
+            try {
+                var s = event.url
+                val f = s.lastIndexOf("v")
+                val e = s.lastIndexOf("apk") - 1
+                vName = s.substring(f, e)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            apkD = ApkDialog(
+                this,
+                "Đã có phiên bản mới "+vName+" \n\nVui lòng thực thực hiện nâng cấp phiên bản mới!",
+                event.url
+            )
             apkD!!.show()
         }
     }
