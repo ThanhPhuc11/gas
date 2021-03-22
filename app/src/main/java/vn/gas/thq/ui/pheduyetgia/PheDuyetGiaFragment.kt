@@ -367,6 +367,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val tvCongNo: TextView = dialogView.findViewById(R.id.tvCongNo)
 
         val edtReason: EditText = dialogView.findViewById(R.id.edtReason)
+        val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
 
         val cardViewCongNo: CardView = dialogView.findViewById(R.id.cardViewCongNo)
         val cardViewGia: CardView = dialogView.findViewById(R.id.cardViewGia)
@@ -572,6 +573,56 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 }
             }
         }
+        alertDialog = builder?.create()
+        alertDialog?.window?.setLayout(500, 200)
+        alertDialog?.show()
+    }
+
+    private fun showDiglogHistory() {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_duyet_gia, null)
+        builder?.setView(dialogView)
+        val tvTitle: TextView = dialogView.findViewById(R.id.tvTitle)
+        val imgClose: ImageView = dialogView.findViewById(R.id.imgClose)
+
+        val tvNameLXBH: TextView = dialogView.findViewById(R.id.tvNameLXBH)
+        val tvTuyenXe: TextView = dialogView.findViewById(R.id.tvTuyenXe)
+        val tvNameCust: TextView = dialogView.findViewById(R.id.tvNameCust)
+        val tvStatus: TextView = dialogView.findViewById(R.id.tvStatus)
+        val tvDate: TextView = dialogView.findViewById(R.id.tvDate)
+
+        imgClose.setOnClickListener {
+            alertDialog?.dismiss()
+        }
+
+        btnDongY.setOnClickListener {
+            CommonUtils.showConfirmDiglog2Button(
+                activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
+                    R.string.biometric_negative_button_text
+                ), getString(R.string.text_ok)
+            ) {
+                if (it == AppConstants.YES) {
+                    viewModel.doAcceptDuyetGia(orderId?.toString(), DuyetGiaModel(statusShowDialog))
+                }
+            }
+        }
+
+        btnTuChoi.setOnClickListener {
+            CommonUtils.showConfirmDiglog2Button(
+                activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
+                    R.string.biometric_negative_button_text
+                ), getString(R.string.text_ok)
+            ) {
+                if (it == AppConstants.YES) {
+                    viewModel.doRejectDuyetGia(
+                        orderId?.toString(),
+                        DuyetGiaModel(statusShowDialog, edtReason.text.toString())
+                    )
+                }
+            }
+        }
+
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
