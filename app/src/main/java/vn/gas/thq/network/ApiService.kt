@@ -8,6 +8,7 @@ import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
+import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
@@ -148,6 +149,9 @@ interface ApiService {
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
     )
+
+    @GET("orders/sale/history")
+    suspend fun getHistoryAcceptRetail(@Query("sale_order_id") sale_order_id: Int): List<HistoryModel>
 
     @POST("stocks/return")
     suspend fun nhapKho(@Body obj: RequestNhapKho)
