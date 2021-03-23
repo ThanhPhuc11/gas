@@ -6,12 +6,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_phe_duyet_gia.*
-import kotlinx.android.synthetic.main.layout_dialog_item_duyet_gia.*
-import kotlinx.android.synthetic.main.layout_dialog_item_thu_kho.view.*
-import kotlinx.android.synthetic.main.layout_item_phe_duyet_gia.*
+import kotlinx.android.synthetic.main.layout_dialog_item_history.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.layout_toolbar.tvTitle
 import vn.gas.thq.MainActivity
@@ -31,16 +31,20 @@ import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
 import java.util.*
 
+
 class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListener {
     private lateinit var viewModel: PheDuyetGiaViewModel
     private lateinit var adapter: RequestApproveAdapter
+    private lateinit var adapterHistory: HistoryAcceptAdapter
     private var mListStaff = mutableListOf<UserModel>()
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
     private var mList = mutableListOf<BussinesRequestModel>()
+    private var listHistory = mutableListOf<HistoryModel>()
     private var mDetailRetailData: ApproveRequestModel? = null
     private var status: String? = null
     private var staffCode: String? = null
     private var alertDialog: AlertDialog? = null
+    private var alertDialog2: AlertDialog? = null
     private var statusShowDialog: Int? = null
     private var orderId: Int? = null
     private var staffName: String? = null
@@ -157,6 +161,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             }
         })
 
+        viewModel.callbackHistory.observe(viewLifecycleOwner, {
+            listHistory.clear()
+            listHistory.addAll(it)
+//            adapterHistory.notifyDataSetChanged()
+            showDiglogHistory()
+        })
+
         //TODO: chung
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
@@ -179,6 +190,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         viewModel.getListStaff()
         viewModel.onGetSaleOrderStatus()
         initRecyclerView()
+//        initHistoryRecyclerView()
 
         edtLXBH.setOnClickListener(this::onChooseLXBH)
         edtStatus.setOnClickListener(this::onChooseStatus)
@@ -207,6 +219,14 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvRequestApprove.layoutManager = linearLayoutManager
         rvRequestApprove.adapter = adapter
+    }
+
+    private fun initHistoryRecyclerView() {
+        adapterHistory = HistoryAcceptAdapter(listHistory)
+
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvHistory.layoutManager = linearLayoutManager
+        rvHistory.adapter = adapter
     }
 
     private fun onChooseLXBH(view: View) {
@@ -474,6 +494,10 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             }
         }
 
+        tvHistory.setOnClickListener {
+            viewModel.getHistoryAcceptRetail(orderId!!)
+        }
+
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
@@ -583,49 +607,27 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_history, null)
         builder?.setView(dialogView)
-        val tvTitle: TextView = dialogView.findViewById(R.id.tvTitle)
-        val imgClose: ImageView = dialogView.findViewById(R.id.imgClose)
-
-        val tvNameLXBH: TextView = dialogView.findViewById(R.id.tvNameLXBH)
-        val tvTuyenXe: TextView = dialogView.findViewById(R.id.tvTuyenXe)
-        val tvNameCust: TextView = dialogView.findViewById(R.id.tvNameCust)
-        val tvStatus: TextView = dialogView.findViewById(R.id.tvStatus)
-        val tvDate: TextView = dialogView.findViewById(R.id.tvDate)
-
-        imgClose.setOnClickListener {
-            alertDialog?.dismiss()
+//        val tvTitle1: TextView = dialogView.findViewById(R.id.tvTitle1)
+        val imgClose1: ImageView = dialogView.findViewById(R.id.imgClose1)
+        val rvHistory: RecyclerView = dialogView.findViewById(R.id.rvHistory)
+        imgClose1.setOnClickListener {
+            alertDialog2?.dismiss()
         }
 
-        btnDongY.setOnClickListener {
-            CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
-                    R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
-            ) {
-                if (it == AppConstants.YES) {
-                    viewModel.doAcceptDuyetGia(orderId?.toString(), DuyetGiaModel(statusShowDialog))
-                }
-            }
-        }
+        adapterHistory = HistoryAcceptAdapter(listHistory)
 
-        btnTuChoi.setOnClickListener {
-            CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
-                    R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
-            ) {
-                if (it == AppConstants.YES) {
-                    viewModel.doRejectDuyetGia(
-                        orderId?.toString(),
-                        DuyetGiaModel(statusShowDialog, edtReason.text.toString())
-                    )
-                }
-            }
-        }
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvHistory.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(
+            rvHistory.context,
+            linearLayoutManager.orientation
+        )
+        rvHistory.addItemDecoration(dividerItemDecoration)
+        rvHistory.adapter = adapterHistory
 
-        alertDialog = builder?.create()
-        alertDialog?.window?.setLayout(500, 200)
-        alertDialog?.show()
+        alertDialog2 = builder?.create()
+        alertDialog2?.window?.setLayout(500, 200)
+        alertDialog2?.show()
     }
 
     private fun mapListToRetailProduct() {
