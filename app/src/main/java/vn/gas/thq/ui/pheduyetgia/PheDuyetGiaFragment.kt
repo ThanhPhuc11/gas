@@ -581,7 +581,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private fun showDiglogHistory() {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
-        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_duyet_gia, null)
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_history, null)
         builder?.setView(dialogView)
         val tvTitle: TextView = dialogView.findViewById(R.id.tvTitle)
         val imgClose: ImageView = dialogView.findViewById(R.id.imgClose)
