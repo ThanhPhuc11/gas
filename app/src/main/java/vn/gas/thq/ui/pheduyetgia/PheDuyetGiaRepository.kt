@@ -34,4 +34,8 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
     suspend fun doRejectDuyetGia(orderId: String?, obj: DuyetGiaModel) = flow {
         emit(apiService.doRejectDuyetGia(orderId, obj))
     }
+
+    suspend fun getHistoryAcceptRetail(orderId: Int) = flow {
+        emit(apiService.getHistoryAcceptRetail(orderId))
+    }
 }

@@ -8,10 +8,11 @@
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <ImageView
-        android:id="@+id/imgClose"
+        android:id="@+id/imgClose1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -23,22 +24,89 @@
         style="@style/textStyleH6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="- -"
+        android:text="Lịch sử phê duyệt/Từ chối"
         android:textColor="@color/blue_2C5181" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_border_nomal_top">
+
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight=""
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:text="Ngày"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_13sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_DCE0EA" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Hành\nđộng"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_13sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_DCE0EA" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:text="Người thực hiện"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_13sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_DCE0EA" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:text="Nội dung"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_13sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_DCE0EA" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:text="Ghi chú"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_13sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp" />
+        android:background="@drawable/bg_border_nomal_bottom" />
 
 </LinearLayout>
