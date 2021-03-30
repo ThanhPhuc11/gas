@@ -15,11 +15,11 @@ class RequestInitRetail {
 
     @SerializedName("lat")
     @Expose
-    var lat: Int? = null
+    var lat: Float? = null
 
     @SerializedName("lng")
     @Expose
-    var lng: Int? = null
+    var lng: Float? = null
 
     @SerializedName("pay_method")
     @Expose

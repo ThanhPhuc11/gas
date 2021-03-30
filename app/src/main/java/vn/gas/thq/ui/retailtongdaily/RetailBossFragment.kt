@@ -56,6 +56,8 @@ class RetailBossFragment : BaseFragment() {
 
     private var giaTank12: Int? = 0
     private var giaTank45: Int? = 0
+    private var fee12: Int? = 0
+    private var fee45: Int? = 0
     private var transferRetailModel: TransferRetailModel? = null
     private var tienKhiBan12 = 0
     private var tienKhiBan45 = 0
@@ -63,6 +65,11 @@ class RetailBossFragment : BaseFragment() {
     private var tienVoBan45 = 0
     private var tienVoMua12 = 0
     private var tienVoMua45 = 0
+    private var giaVanChuyen12 = 0
+    private var giaVanChuyen45 = 0
+    private var tienVanChuyen12 = 0
+    private var tienVanChuyen45 = 0
+    private var tienVanChuyen = 0
     private var tongTien = 0
     private var tienNo = 0
     private var tienThucTe = 0
@@ -156,6 +163,14 @@ class RetailBossFragment : BaseFragment() {
             productVoBan45.setGia(giaTank45?.toString())
         })
 
+        viewModel.fee12.observe(viewLifecycleOwner, {
+            giaVanChuyen12 = it.transportFee
+        })
+
+        viewModel.fee45.observe(viewLifecycleOwner, {
+            giaVanChuyen45 = it.transportFee
+        })
+
         viewModel.initRequestSuccess.observe(viewLifecycleOwner, {
             handleNextPage(it)
         })
@@ -202,6 +217,32 @@ class RetailBossFragment : BaseFragment() {
     }
 
     override fun initData() {
+        viewModel.getGiaVanChuyen(RequestInitRetail().apply {
+            item = mutableListOf<ProductRetailModel>().apply {
+                add(
+                    ProductRetailModel(
+                        "GAS12",
+                        1,
+                        0,
+                        "1"
+                    )
+                )
+            }
+        }, true)
+
+        viewModel.getGiaVanChuyen(RequestInitRetail().apply {
+            item = mutableListOf<ProductRetailModel>().apply {
+                add(
+                    ProductRetailModel(
+                        "GAS45",
+                        1,
+                        0,
+                        "1"
+                    )
+                )
+            }
+        }, false)
+
         edtCustomer.setOnClickListener(this::chooseCustomer)
         btnSubmit.setOnClickListener(this::onSubmitData)
 
@@ -366,8 +407,8 @@ class RetailBossFragment : BaseFragment() {
         val requestInitRetail = RequestInitRetail()
         requestInitRetail.customerId = custId?.toInt()
         requestInitRetail.debit = tienNo
-        requestInitRetail.lat = latitude.toInt()
-        requestInitRetail.lng = longitude.toInt()
+        requestInitRetail.lat = latitude.toFloat()
+        requestInitRetail.lng = longitude.toFloat()
         val listProductRetailModel = mutableListOf<ProductRetailModel>()
         listProductRetailModel.add(
             ProductRetailModel(
@@ -520,9 +561,13 @@ class RetailBossFragment : BaseFragment() {
                 "${CommonUtils.priceWithoutDecimal((slBanKhi * giaBanKhi).toDouble())} đ"
             if (tienKhiBan == tvTienKhi12) {
                 tienKhiBan12 = slBanKhi * giaBanKhi
+                tienVanChuyen12 = slBanKhi * giaVanChuyen12
             } else {
                 tienKhiBan45 = slBanKhi * giaBanKhi
+                tienVanChuyen45 = slBanKhi * giaVanChuyen45
             }
+            tienVanChuyen = tienVanChuyen12 + tienVanChuyen45
+            totalFee()
             totalMustPay()
             totalDebit()
         })
@@ -710,7 +755,7 @@ class RetailBossFragment : BaseFragment() {
 
     private fun totalMustPay() {
         tongTien =
-            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45) - gasPrice
+            tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 + tienVanChuyen - (tienVoMua12 + tienVoMua45) - gasPrice
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
         edtTienThucTe.setText(tongTien.toString())
     }
@@ -748,6 +793,10 @@ class RetailBossFragment : BaseFragment() {
                 return hangNghin * 1000
             }
         }
+    }
+
+    private fun totalFee() {
+        tvGiaCuocVanTai.text = "${CommonUtils.priceWithoutDecimal(tienVanChuyen.toDouble())} đ"
     }
 
     private fun totalDebit() {
@@ -894,8 +943,8 @@ class RetailBossFragment : BaseFragment() {
         longitude = location?.longitude ?: 0.0
         latitude = location?.latitude ?: 0.0
         viewModel.onGetListCustomer(
-            String.format("%.0f", latitude),
-            String.format("%.0f", longitude)
+            latitude.toString(),
+            longitude.toString()
         )
         Log.e("PHUC", "$longitude : $latitude")
     }

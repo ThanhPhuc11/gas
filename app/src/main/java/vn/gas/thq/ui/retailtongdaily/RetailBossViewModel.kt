@@ -22,6 +22,8 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
     val doRetailSuccess = MutableLiveData<Unit>()
     val giaTANK12 = MutableLiveData<Int>()
     val giaTANK45 = MutableLiveData<Int>()
+    val fee12 = MutableLiveData<FeeVanChuyenModel>()
+    val fee45 = MutableLiveData<FeeVanChuyenModel>()
 
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -88,6 +90,43 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
                     callbackSuccess.value = Unit
                     initRequestSuccess.value = it
                 }
+        }
+    }
+
+    fun getGiaVanChuyen(obj: RequestInitRetail, isGas12: Boolean) {
+        viewModelScope.launch(Dispatchers.Main) {
+            if (isGas12) {
+                retailRepository.getPhiVanChuyen(obj)
+                    .onStart {
+                        callbackStart.value = Unit
+                    }
+                    .onCompletion {
+
+                    }
+                    .catch {
+                        handleError(it)
+                    }
+                    .collect {
+                        callbackSuccess.value = Unit
+                        fee12.value = it
+                    }
+            } else {
+                retailRepository.getPhiVanChuyen(obj)
+                    .onStart {
+                        callbackStart.value = Unit
+                    }
+                    .onCompletion {
+
+                    }
+                    .catch {
+                        handleError(it)
+                    }
+                    .collect {
+                        callbackSuccess.value = Unit
+                        fee45.value = it
+                    }
+            }
+
         }
     }
 

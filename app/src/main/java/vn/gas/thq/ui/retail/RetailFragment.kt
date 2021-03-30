@@ -362,8 +362,8 @@ class RetailFragment : BaseFragment() {
         val requestInitRetail = RequestInitRetail()
         requestInitRetail.customerId = custId?.toInt()
         requestInitRetail.debit = tienNo
-        requestInitRetail.lat = latitude.toInt()
-        requestInitRetail.lng = longitude.toInt()
+        requestInitRetail.lat = latitude.toFloat()
+        requestInitRetail.lng = longitude.toFloat()
         val listProductRetailModel = mutableListOf<ProductRetailModel>()
         listProductRetailModel.add(
             ProductRetailModel(
@@ -898,8 +898,8 @@ class RetailFragment : BaseFragment() {
         longitude = location?.longitude ?: 0.0
         latitude = location?.latitude ?: 0.0
         viewModel.onGetListCustomer(
-            String.format("%.0f", latitude),
-            String.format("%.0f", longitude)
+            latitude.toString(),
+            longitude.toString()
         )
         Log.e("PHUC", "$longitude : $latitude")
     }

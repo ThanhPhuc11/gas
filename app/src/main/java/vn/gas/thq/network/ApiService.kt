@@ -13,6 +13,7 @@ import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
 import vn.gas.thq.ui.retail.*
+import vn.gas.thq.ui.retailtongdaily.FeeVanChuyenModel
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.AvailableKHLResponse
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
 import vn.gas.thq.ui.sangchiet.qlsangchiet.HistorySangChietModel
@@ -47,6 +48,9 @@ interface ApiService {
         @Query("product_code") product_code: String,
         @Query("sale_trans_type") sale_type: String
     ): PriceModel
+
+    @POST("orders/agent/transport")
+    suspend fun getPhiVanChuyen(@Body obj: RequestInitRetail): FeeVanChuyenModel
 
 
     @GET("stocks")
