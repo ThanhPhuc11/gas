@@ -106,6 +106,12 @@ interface ApiService {
         @Query("lng") lng: String?
     ): List<Customer>
 
+    @GET("staffs/customer/agent")
+    suspend fun getListCustomerBoss(
+        @Query("lat") lat: String?,
+        @Query("lng") lng: String?
+    ): List<Customer>
+
     @POST("customers/{customerId}/coordinate")
     suspend fun updateToaDoKH(@Path("customerId") customerId: String?, @Body toaDo: ToaDoModel)
 

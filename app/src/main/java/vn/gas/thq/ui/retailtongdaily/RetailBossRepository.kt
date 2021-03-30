@@ -8,7 +8,7 @@ import vn.gas.thq.ui.retail.RequestInitRetail
 
 class RetailBossRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun onGetListCustomer(lat: String?, lng: String?) = flow {
-        emit(apiService.getListCustomer(lat, lng))
+        emit(apiService.getListCustomerBoss(lat, lng))
     }
 
     suspend fun getGiaNiemYet(customer_id: String, product_code: String, sale_type: String) =
