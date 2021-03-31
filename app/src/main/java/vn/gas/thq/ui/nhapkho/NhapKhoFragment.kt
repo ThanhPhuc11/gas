@@ -1,7 +1,6 @@
 package vn.gas.thq.ui.nhapkho
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,6 +13,7 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -28,7 +28,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     private lateinit var viewModel: NhapKhoViewModel
     private var mListStaff = mutableListOf<UserModel>()
     private var requestNhapKho = RequestNhapKho()
-    private var mList = mutableListOf<ProductModel>()
+    private var mList = mutableListOf<ProductNhapKhoV2Model>()
     private var staffCode: String? = null
     private var gasPrice: Int = 0
     private lateinit var productAdapter: ProductImportAdapter
@@ -81,18 +81,19 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
 
         viewModel.gasPriceData.observe(viewLifecycleOwner, {
             gasPrice = it
+            productAdapter.setGiaGasRemain(it)
         })
 
         viewModel.mListDataProduct.observe(viewLifecycleOwner, {
             mList.clear()
             it.forEach {
                 mList.add(
-                    ProductModel(
+                    ProductNhapKhoV2Model(
                         it.productName,
                         it.productCode,
                         "",
                         "",
-                        it.currentQuantity,
+                        it.currentQuantity?.toFloat(),
                         it.unit
                     )
                 )
@@ -182,7 +183,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
         }
         requestNhapKho.item.clear()
         mList.filter { it.quantity != null }.forEach {
-            requestNhapKho.item.add(ProductNhapKhoModel().apply {
+            requestNhapKho.item.add(ProductNhapKhoV3Model().apply {
                 productCode = it.code
                 amount = it.quantity
             })
@@ -201,7 +202,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
     }
 
     override fun onItemSLChanged(position: Int, count: Int?) {
-        mList[position].quantity = count
+        mList[position].quantity = count?.toFloat()
     }
 
     override fun onItemSLChangedFloat(position: Int, count: Float?) {
@@ -209,7 +210,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
         if (count == null) {
             mList[position].quantity = null
         } else {
-            mList[position].quantity = count.toInt()
+            mList[position].quantity = count
         }
 
     }
