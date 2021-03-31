@@ -15,5 +15,5 @@ class RequestNhapKho {
 
     @SerializedName("item")
     @Expose
-    var item: MutableList<ProductNhapKhoModel> = mutableListOf()
+    var item: MutableList<ProductNhapKhoV3Model> = mutableListOf()
 }

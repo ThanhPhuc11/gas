@@ -12,15 +12,15 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import vn.gas.thq.customview.ItemProductType4
-import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.DecimalDigitsInputFilter
 import vn.hongha.ga.R
 
-class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
+class ProductImportAdapter(private val mList: MutableList<ProductNhapKhoV2Model>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var mClickListener: ItemClickListener
+    private var gia: Int = 0
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,13 +38,18 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ProductViewHolder2) {
-            val obj: ProductModel = mList[position]
+            val obj: ProductNhapKhoV2Model = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
-            holder.tvSLTrenXe.text = obj.quantity?.toString()
+            holder.tvSLTrenXe.text = "${obj.quantity?.toString()} KG"
             holder.edtSLNhapKho2.setText(obj.quantity?.toString())
+            holder.edtSLNhapKho2.requestFocus()
             holder.edtSLNhapKho2.setOnFocusChangeListener { v, hasFocus ->
                 if (!hasFocus) {
-                    holder.edtGasRemainPrice1.setText("${getRealNumberFloat(holder.edtSLNhapKho2.text)}")
+                    if (getRealNumberFloat(holder.edtSLNhapKho2.text) != null) {
+                        holder.edtGasRemainPrice1.setText("${CommonUtils.priceWithoutDecimal((getRealNumberFloat(holder.edtSLNhapKho2.text)!! * gia).toDouble())}")
+                    } else {
+                        holder.edtGasRemainPrice1.setText("")
+                    }
                     mClickListener.onItemSLChangedFloat(
                         position,
                         getRealNumberFloat(holder.edtSLNhapKho2.text)
@@ -53,10 +58,10 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
             }
 //            holder.edtGasRemainPrice1.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         } else if (holder is ProductViewHolder) {
-            val obj: ProductModel = mList[position]
+            val obj: ProductNhapKhoV2Model = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
-            holder.tvSLTrenXe.text = obj.quantity?.toString()
-            holder.edtSLNhapKho.setText(obj.quantity?.toString())
+            holder.tvSLTrenXe.text = obj.quantity?.toInt().toString()
+            holder.edtSLNhapKho.setText(obj.quantity?.toInt().toString())
 
             when (obj.code) {
                 "GAS12", "GAS45" -> {
@@ -96,6 +101,10 @@ class ProductImportAdapter(private val mList: MutableList<ProductModel>) :
         } else {
             0
         }
+    }
+
+    fun setGiaGasRemain(gia: Int) {
+        this.gia = gia
     }
 
     private fun getRealNumberFloat(view: Editable?): Float? {

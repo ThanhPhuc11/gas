@@ -8,8 +8,8 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         signkeyGas {
-//            storeFile file('/Users/administrator/Desktop/DATA PROJECT/GasTHQ/app/keyGasThq')
-            storeFile file('D://gas/app/keyGasThq')
+            storeFile file('/Users/administrator/Desktop/DATA PROJECT/GasTHQ/app/keyGasThq')
+//            storeFile file('D://gas/app/keyGasThq')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'

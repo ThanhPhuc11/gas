@@ -77,7 +77,7 @@ class RequestApproveAdapter(
             enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                 ?: "${obj.status};${obj.approve_status}"
 
-        holder.llWrap.visibility = View.GONE
+        holder.llWrap.visibility = View.VISIBLE
         if (obj.approve_staffs?.size!! > 0)
             holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
         var strNguoiDuyetMore = ""
