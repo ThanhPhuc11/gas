@@ -180,6 +180,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
             showMess("Bạn phải nhập ít nhất 1 số lượng nhập kho")
             return
         }
+        requestNhapKho.item.clear()
         mList.filter { it.quantity != null }.forEach {
             requestNhapKho.item.add(ProductNhapKhoModel().apply {
                 productCode = it.code
