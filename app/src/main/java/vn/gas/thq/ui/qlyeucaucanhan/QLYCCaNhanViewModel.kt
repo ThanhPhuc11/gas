@@ -15,6 +15,7 @@ import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
+import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
 
 class QLYCCaNhanViewModel(
@@ -26,6 +27,7 @@ class QLYCCaNhanViewModel(
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
     val detailApproveCallback = MutableLiveData<ApproveRequestModel>()
+    val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
 
     fun onSubmitData(status: String?, fromDate: String, toDate: String, offSet: Int) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -118,6 +120,25 @@ class QLYCCaNhanViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     detailApproveCallback.value = it
+                }
+        }
+    }
+
+    fun getHistoryAcceptRetail(orderId: Int) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.getHistoryAcceptRetail(orderId)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackHistory.value = it as MutableList
                 }
         }
     }

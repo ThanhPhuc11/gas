@@ -667,6 +667,18 @@
                             android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvHistory"
+                        style="@style/textStyleH6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Lịch sử phê duyệt/Từ chối"
+                        android:textColor="@color/blue_2C5181"
+                        android:textStyle="bold|italic" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

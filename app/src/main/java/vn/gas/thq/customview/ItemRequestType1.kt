@@ -5,6 +5,8 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.layout_item_personal_request.view.*
@@ -85,5 +87,17 @@ class ItemRequestType1 : CardView {
 
     fun setOrderId(orderId: String?) {
         tvOrderId.text = orderId ?: "- -"
+    }
+
+    fun getllWrap(): LinearLayout {
+        return llWrap
+    }
+
+    fun getNguoiDuyet(): TextView {
+        return tvNguoiDuyet
+    }
+
+    fun getNguoiDuyetMore(): TextView {
+        return tvNguoiDuyetMore
     }
 }
