@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.customview.ItemRequestType1
 import vn.gas.thq.model.BussinesRequestModel
@@ -82,6 +83,22 @@ class RequestItemAdapter(
         )
         holder.itemRequestType1.setTen(obj.staff_name)
         holder.itemRequestType1.setLoaiYC(loaiYC)
+
+        holder.itemRequestType1.getllWrap().visibility = View.VISIBLE
+        if (obj.approve_staffs?.size!! > 0)
+            holder.itemRequestType1.getNguoiDuyet().text = obj.approve_staffs?.get(0) ?: "- -"
+        var strNguoiDuyetMore = ""
+        if (obj.approve_staffs?.size!! > 1) {
+//            obj.approve_staffs?.forEach {
+//                strNguoiDuyetMore += "\n" +
+//                        "\n${it}"
+//            }
+            for (i in 1 until obj.approve_staffs!!.size) {
+                strNguoiDuyetMore += "\n" +
+                        "\n${obj.approve_staffs!![i]}"
+            }
+            holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore
+        }
     }
 
     override fun getItemCount(): Int {
@@ -99,6 +116,11 @@ class RequestItemAdapter(
 
         init {
             itemRequestType1.setOnClickListener(this)
+            itemRequestType1.getllWrap().setOnClickListener {
+                if (!itemRequestType1.getNguoiDuyetMore().isVisible)
+                    itemRequestType1.getNguoiDuyetMore().visibility = View.VISIBLE
+                else itemRequestType1.getNguoiDuyetMore().visibility = View.GONE
+            }
         }
 
         override fun onClick(p0: View?) {

@@ -538,12 +538,16 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val tvTienMuaVo: TextView = dialogView.findViewById(R.id.tvTienMuaVo)
         val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
         val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
+        val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
 
         val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
 
         dialogView.apply {
             imgClose.setOnClickListener {
                 alertDialog?.dismiss()
+            }
+            tvHistory.setOnClickListener {
+                viewModel.getHistoryAcceptRetail(orderId!!)
             }
             tvOrderId.text = "Mã yêu cầu $orderId"
             tvName.text = mDetailRetailData?.customerName ?: "- -"
