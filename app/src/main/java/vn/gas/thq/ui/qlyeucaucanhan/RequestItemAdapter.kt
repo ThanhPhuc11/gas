@@ -84,21 +84,30 @@ class RequestItemAdapter(
         holder.itemRequestType1.setTen(obj.staff_name)
         holder.itemRequestType1.setLoaiYC(loaiYC)
 
-        holder.itemRequestType1.getllWrap().visibility = View.VISIBLE
-        if (obj.approve_staffs?.size!! > 0)
-            holder.itemRequestType1.getNguoiDuyet().text = obj.approve_staffs?.get(0) ?: "- -"
-        var strNguoiDuyetMore = ""
-        if (obj.approve_staffs?.size!! > 1) {
+        holder.itemRequestType1.getllWrap().visibility = View.GONE
+        if (obj.approve_staffs != null) {
+            holder.itemRequestType1.getllWrap().visibility = View.VISIBLE
+            if (obj.approve_staffs?.size == 0) {
+                holder.itemRequestType1.getllWrap().visibility = View.GONE
+            }
+            if (obj.approve_staffs?.size!! > 0) {
+                holder.itemRequestType1.getNguoiDuyet().text =
+                    obj.approve_staffs?.get(0) ?: "- -"
+            }
+            var strNguoiDuyetMore = ""
+            if (obj.approve_staffs?.size!! > 1) {
 //            obj.approve_staffs?.forEach {
 //                strNguoiDuyetMore += "\n" +
 //                        "\n${it}"
 //            }
-            for (i in 1 until obj.approve_staffs!!.size) {
-                strNguoiDuyetMore += "\n" +
-                        "\n${obj.approve_staffs!![i]}"
+                for (i in 1 until obj.approve_staffs!!.size) {
+                    strNguoiDuyetMore += "\n" +
+                            "\n${obj.approve_staffs!![i]}"
+                }
+                holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore
             }
-            holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore
         }
+
     }
 
     override fun getItemCount(): Int {
