@@ -228,6 +228,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         viewModelThuKho.mDetailData.observe(viewLifecycleOwner, {
             mDetailYCXKData = it
             showDiglogDetailYCXK()
+//            showLoading()
         })
 
         viewModelThuKho.callbackStart.observe(viewLifecycleOwner, {
@@ -235,7 +236,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         })
 
         viewModelThuKho.callbackSuccess.observe(viewLifecycleOwner, {
-            hideLoading()
+//            hideLoading()
         })
 
         viewModelThuKho.callbackFail.observe(viewLifecycleOwner, {
@@ -520,6 +521,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
+        hideLoading()
     }
 
     private fun showDiglogDetailRetail() {
@@ -624,6 +626,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
+        hideLoading()
     }
 
     private fun showDiglogHistory() {
@@ -652,6 +655,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         alertDialog2 = builder?.create()
         alertDialog2?.window?.setLayout(500, 200)
         alertDialog2?.show()
+        hideLoading()
     }
 
     private fun totalMustPay() {
