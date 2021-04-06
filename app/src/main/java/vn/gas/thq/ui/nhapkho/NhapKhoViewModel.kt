@@ -16,7 +16,7 @@ import vn.gas.thq.model.UserModel
 class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseViewModel() {
 
     val mListStaffData = MutableLiveData<MutableList<UserModel>>()
-    val mListDataProduct = MutableLiveData<MutableList<ProductShopModel>>()
+    val mListDataProduct = MutableLiveData<MutableList<ProductShopNhapKhoModel>>()
     val gasPriceData = MutableLiveData<Int>()
     val callbackNhapKhoSuccess = MutableLiveData<Unit>()
 
@@ -50,7 +50,7 @@ class NhapKhoViewModel(private val nhapKhoRepository: NhapKhoRepository) : BaseV
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mListDataProduct.value = it as MutableList<ProductShopModel>
+                    mListDataProduct.value = it as MutableList<ProductShopNhapKhoModel>
                 }
         }
     }

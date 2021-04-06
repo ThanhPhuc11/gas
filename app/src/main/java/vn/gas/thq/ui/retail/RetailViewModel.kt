@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.util.AppConstants
 
 class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
@@ -18,6 +19,7 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
     val doRetailSuccess = MutableLiveData<Unit>()
     val giaTANK12 = MutableLiveData<Int>()
     val giaTANK45 = MutableLiveData<Int>()
+    val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
 
     fun onGetListCustomer(lat: String?, lng: String?) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -103,6 +105,25 @@ class RetailViewModel(private val retailRepository: RetailRepository) : BaseView
                 .collect {
                     callbackSuccess.value = Unit
                     doRetailSuccess.value = Unit
+                }
+        }
+    }
+
+    fun getHistoryAcceptRetail(orderId: Int) {
+        viewModelScope.launch(Dispatchers.Main) {
+            retailRepository.getHistoryAcceptRetail(orderId)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackHistory.value = it as MutableList
                 }
         }
     }
