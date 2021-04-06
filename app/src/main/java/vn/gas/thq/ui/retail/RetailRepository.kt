@@ -19,4 +19,8 @@ class RetailRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun doRetailLXBH(orderId: String?, obj: GasRemainModel) = flow {
         emit(apiService.doRetailLXBH(orderId, obj))
     }
+
+    suspend fun getHistoryAcceptRetail(orderId: Int) = flow {
+        emit(apiService.getHistoryAcceptRetail(orderId))
+    }
 }

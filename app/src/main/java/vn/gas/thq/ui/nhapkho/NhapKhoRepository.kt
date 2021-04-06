@@ -10,7 +10,7 @@ class NhapKhoRepository(private val apiService: ApiService) : BaseRepository() {
     }
 
     suspend fun getProductFromCode(shop_code: String?, staff_code: String?) = flow {
-        emit(apiService.getProductFromCode(shop_code, staff_code))
+        emit(apiService.getProductNhapKhoFromCode(shop_code, staff_code))
     }
 
     suspend fun nhapKho(obj: RequestNhapKho) = flow {

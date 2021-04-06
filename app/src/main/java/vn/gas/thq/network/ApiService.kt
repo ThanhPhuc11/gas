@@ -6,6 +6,7 @@ import vn.gas.thq.service.RegisterDeviceResponse
 import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgia.HistoryModel
@@ -58,6 +59,12 @@ interface ApiService {
         @Query("shop_code") shop_code: String?,
         @Query("staff_code") staff_code: String?
     ): List<ProductShopModel>
+
+    @GET("stocks")
+    suspend fun getProductNhapKhoFromCode(
+        @Query("shop_code") shop_code: String?,
+        @Query("staff_code") staff_code: String?
+    ): List<ProductShopNhapKhoModel>
 
     @GET("shop-orders/stocks/shop")
     suspend fun getProductFromShop(): List<ProductShopModel>

@@ -3,6 +3,7 @@ package vn.gas.thq.ui.nhapkho
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.DecimalDigitsInputFilter
 import vn.hongha.ga.R
+import kotlin.math.roundToInt
 
 class ProductImportAdapter(private val mList: MutableList<ProductNhapKhoV2Model>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,13 +42,21 @@ class ProductImportAdapter(private val mList: MutableList<ProductNhapKhoV2Model>
         if (holder is ProductViewHolder2) {
             val obj: ProductNhapKhoV2Model = mList[position]
             holder.tvProductName.text = obj.name ?: "- -"
-            holder.tvSLTrenXe.text = "${obj.quantity?.toString()} KG"
-            holder.edtSLNhapKho2.setText(obj.quantity?.toString())
+            holder.tvSLTrenXe.text = "${obj.quantity?.toString()?.replace(".", ",")} KG"
+            holder.edtSLNhapKho2.setText(obj.quantity?.toString()?.replace(".", ","))
             holder.edtSLNhapKho2.requestFocus()
             holder.edtSLNhapKho2.setOnFocusChangeListener { v, hasFocus ->
                 if (!hasFocus) {
                     if (getRealNumberFloat(holder.edtSLNhapKho2.text) != null) {
-                        holder.edtGasRemainPrice1.setText("${CommonUtils.priceWithoutDecimal((getRealNumberFloat(holder.edtSLNhapKho2.text)!! * gia).toDouble())}")
+                        var x = getRealNumberFloat(
+                            holder.edtSLNhapKho2.text
+                        )!! * gia
+                        Log.e("Phuc", x.toString())
+                        holder.edtGasRemainPrice1.setText(
+                            CommonUtils.priceWithoutDecimal(lamTronGasPrice(
+                                x.toString().substring(0, x.toString().indexOf("."))
+                            ).toDouble())
+                        )
                     } else {
                         holder.edtGasRemainPrice1.setText("")
                     }
@@ -100,6 +110,19 @@ class ProductImportAdapter(private val mList: MutableList<ProductNhapKhoV2Model>
             1
         } else {
             0
+        }
+    }
+
+    fun lamTronGasPrice(oldTongTien: String): Int {
+        if (oldTongTien.toInt() < 500) return 0
+        else {
+            val hangNghin = oldTongTien.toInt() / 1000
+            val soLe = oldTongTien.toInt() % 1000
+            if (soLe >= 500) {
+                return hangNghin * 1000 + 1000
+            } else {
+                return hangNghin * 1000
+            }
         }
     }
 

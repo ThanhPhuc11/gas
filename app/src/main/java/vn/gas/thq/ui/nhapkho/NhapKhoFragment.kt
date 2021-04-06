@@ -93,7 +93,7 @@ class NhapKhoFragment : BaseFragment(), ProductImportAdapter.ItemClickListener {
                         it.productCode,
                         "",
                         "",
-                        it.currentQuantity?.toFloat(),
+                        it.currentQuantity,
                         it.unit
                     )
                 )

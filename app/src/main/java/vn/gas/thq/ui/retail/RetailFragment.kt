@@ -12,16 +12,16 @@ import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_retail.*
@@ -36,6 +36,8 @@ import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.pheduyetgia.HistoryAcceptAdapter
+import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.util.*
 import vn.gas.thq.util.dialog.DialogList
@@ -48,7 +50,11 @@ class RetailFragment : BaseFragment() {
     private var custId: String? = null
     private lateinit var viewModel: RetailViewModel
     private var mListCustomer = mutableListOf<Customer>()
+    private var listHistory = mutableListOf<HistoryModel>()
     private var alertDialog: AlertDialog? = null
+    private var alertDialog2: AlertDialog? = null
+
+    private lateinit var adapterHistory: HistoryAcceptAdapter
 
     private var giaTank12: Int? = 0
     private var giaTank45: Int? = 0
@@ -113,7 +119,7 @@ class RetailFragment : BaseFragment() {
             productVoThuHoi12.visibility = View.GONE
             productVoThuHoi45.visibility = View.GONE
             btnSubmit.text = "BÁN HÀNG"
-
+            tvHistory.visibility = View.VISIBLE
             transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
 
             disableInput()
@@ -122,6 +128,7 @@ class RetailFragment : BaseFragment() {
         linearGasRemain.visibility = View.GONE
         linearGasRemainPrice.visibility = View.GONE
         layoutThuHoiStep2.visibility = View.GONE
+        tvHistory.visibility = View.GONE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!hasPermissions(context, *PERMISSIONS)) {
                 requestPermissions(
@@ -163,6 +170,13 @@ class RetailFragment : BaseFragment() {
             }
         })
 
+        viewModel.callbackHistory.observe(viewLifecycleOwner, {
+            listHistory.clear()
+            listHistory.addAll(it)
+//            adapterHistory.notifyDataSetChanged()
+            showDiglogHistory()
+        })
+
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
@@ -200,6 +214,9 @@ class RetailFragment : BaseFragment() {
     override fun initData() {
         edtCustomer.setOnClickListener(this::chooseCustomer)
         btnSubmit.setOnClickListener(this::onSubmitData)
+        tvHistory.setOnClickListener {
+            viewModel.getHistoryAcceptRetail(transferRetailModel?.orderId!!.toInt())
+        }
 
         tvLabelThuHoiVo.setOnClickListener { this.expand(tvLabelThuHoiVo, linearThuHoiVo) }
         tvLabelBanVo.setOnClickListener { this.expand(tvLabelBanVo, linearBanVo) }
@@ -732,7 +749,7 @@ class RetailFragment : BaseFragment() {
         gasPrice = lamTronGasPrice((gasRemain * giaKhi).toInt().toString())
         totalMustPay()
         totalDebit()
-        edtGasRemainPrice.setText("${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())}")
+        edtGasRemainPrice.setText(CommonUtils.priceWithoutDecimal(gasPrice.toDouble()))
         if (gasPrice == 0) {
             tvTienGasDu.text = "${CommonUtils.priceWithoutDecimal(gasPrice.toDouble())} đ"
             return
@@ -929,5 +946,33 @@ class RetailFragment : BaseFragment() {
             }
         }
         return bestLocation
+    }
+
+    private fun showDiglogHistory() {
+        val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
+        val inflater = this.layoutInflater
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_history, null)
+        builder?.setView(dialogView)
+//        val tvTitle1: TextView = dialogView.findViewById(R.id.tvTitle1)
+        val imgClose1: ImageView = dialogView.findViewById(R.id.imgClose1)
+        val rvHistory: RecyclerView = dialogView.findViewById(R.id.rvHistory)
+        imgClose1.setOnClickListener {
+            alertDialog2?.dismiss()
+        }
+
+        adapterHistory = HistoryAcceptAdapter(listHistory)
+
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvHistory.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(
+            rvHistory.context,
+            linearLayoutManager.orientation
+        )
+        rvHistory.addItemDecoration(dividerItemDecoration)
+        rvHistory.adapter = adapterHistory
+
+        alertDialog2 = builder?.create()
+        alertDialog2?.window?.setLayout(500, 200)
+        alertDialog2?.show()
     }
 }
