@@ -11,6 +11,9 @@ class RetailBossRepository(private val apiService: ApiService) : BaseRepository(
         emit(apiService.getListCustomerBoss(lat, lng))
     }
 
+    suspend fun getGiaTongDaiLy(cust_id: Int, product_code: String) =
+        flow { emit(apiService.getGiaTongDaiLy(product_code, cust_id)) }
+
     suspend fun getGiaNiemYet(customer_id: String, product_code: String, sale_type: String) =
         flow { emit(apiService.getGiaNiemYet(customer_id, product_code, sale_type)) }
 
