@@ -505,6 +505,7 @@ class RetailBossFragment : BaseFragment() {
             edtCustomer.setText(item.name)
             expandCustomerInfor(item.id)
             viewModel.getGiaNiemYet(item.id)
+            viewModel.getGiaTongDaiLy(item.id.toInt())
         }
     }
 

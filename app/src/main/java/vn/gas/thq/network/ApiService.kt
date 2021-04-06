@@ -50,6 +50,12 @@ interface ApiService {
         @Query("sale_trans_type") sale_type: String
     ): PriceModel
 
+    @GET("price/standard/agency/")
+    suspend fun getGiaTongDaiLy(
+        @Query("product_code") product_code: String,
+        @Query("cust_id") cust_id: Int
+    ): PriceModel
+
     @POST("orders/agent/transport")
     suspend fun getPhiVanChuyen(@Body obj: RequestInitRetail): FeeVanChuyenModel
 
