@@ -9,6 +9,10 @@ class RequestInitRetail {
     @Expose
     var customerId: Int? = null
 
+    @SerializedName("gas_return")
+    @Expose
+    var gasReturn: Float? = null
+
     @SerializedName("debit")
     @Expose
     var debit: Int? = null

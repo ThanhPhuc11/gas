@@ -13,13 +13,14 @@ import vn.gas.thq.base.BaseViewModel
 import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.ProductShopModel
 import vn.gas.thq.model.UserModel
+import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 
 class XemKhoViewModel(
     private val xemKhoRepository: XemKhoRepository
 ) :
     BaseViewModel() {
 
-    val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
+    val mLiveData = MutableLiveData<MutableList<ProductShopNhapKhoModel>>()
     val listKho = MutableLiveData<MutableList<KhoModel>>()
 
     fun getDataFromShop(shop_code: String?, staff_code: String?) {
@@ -35,7 +36,7 @@ class XemKhoViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<ProductShopModel>
+                    mLiveData.value = it as MutableList<ProductShopNhapKhoModel>
                 }
         }
     }

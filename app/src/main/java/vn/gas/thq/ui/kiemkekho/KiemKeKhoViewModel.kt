@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.model.ProductShopModel
+import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.xemkho.KhoModel
 
 class KiemKeKhoViewModel(
@@ -17,7 +19,7 @@ class KiemKeKhoViewModel(
 ) :
     BaseViewModel() {
 
-    val mLiveData = MutableLiveData<MutableList<ProductShopModel>>()
+    val mLiveData = MutableLiveData<MutableList<ProductShopNhapKhoModel>>()
     val callbackKiemKeKho = MutableLiveData<Unit>()
     val listKho = MutableLiveData<MutableList<KhoModel>>()
 
@@ -34,7 +36,7 @@ class KiemKeKhoViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<ProductShopModel>
+                    mLiveData.value = it as MutableList<ProductShopNhapKhoModel>
                 }
         }
     }

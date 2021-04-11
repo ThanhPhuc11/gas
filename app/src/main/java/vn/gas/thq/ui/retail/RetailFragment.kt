@@ -33,9 +33,11 @@ import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
 import vn.gas.thq.model.ProductRetailModel
+import vn.gas.thq.model.ProductShopModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
 import vn.gas.thq.ui.pheduyetgia.HistoryAcceptAdapter
 import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
@@ -341,6 +343,7 @@ class RetailFragment : BaseFragment() {
             getRealNumber(productVoMua12.getEditTextGia()),
             getRealNumber(productVoMua45.getEditTextSL()),
             getRealNumber(productVoMua45.getEditTextGia()),
+            null,
             tienThucTe
         )
         childViewController?.pushFragment(
@@ -362,6 +365,16 @@ class RetailFragment : BaseFragment() {
                 if (it == AppConstants.YES) {
                     val gasRemainModel = GasRemainModel()
                     gasRemainModel.gasRemain = this.gasRemain
+                    gasRemainModel.returnItem = mutableListOf<ProductNhapKhoModel>().apply {
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK12_OTHER"
+                            amount = getRealNumber(edtSLKhac12)
+                        })
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK45_OTHER"
+                            amount = getRealNumber(edtSLKhac45)
+                        })
+                    }
                     viewModel.doRetailLXBH(transferRetailModel?.orderId, gasRemainModel)
                 }
             }

@@ -50,7 +50,7 @@ interface ApiService {
         @Query("sale_trans_type") sale_type: String
     ): PriceModel
 
-    @GET("price/standard/agency/")
+    @GET("price/plan/agency/")
     suspend fun getGiaTongDaiLy(
         @Query("product_code") product_code: String,
         @Query("cust_id") cust_id: Int
@@ -64,7 +64,7 @@ interface ApiService {
     suspend fun getProductFromCode(
         @Query("shop_code") shop_code: String?,
         @Query("staff_code") staff_code: String?
-    ): List<ProductShopModel>
+    ): List<ProductShopNhapKhoModel> // change ProductShopModel -> ProductShopNhapKhoModel
 
     @GET("stocks")
     suspend fun getProductNhapKhoFromCode(
@@ -135,6 +135,9 @@ interface ApiService {
 
     @POST("orders/sale")
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
+
+    @POST("agent-orders")
+    suspend fun doRequestRetailBoss(@Body obj: RequestInitRetail): ResponseInitRetail
 
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>

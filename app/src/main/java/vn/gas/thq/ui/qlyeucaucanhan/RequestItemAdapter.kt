@@ -82,7 +82,7 @@ class RequestItemAdapter(
             )
         )
         holder.itemRequestType1.setTen(obj.staff_name)
-        holder.itemRequestType1.setLoaiYC(loaiYC)
+        holder.itemRequestType1.setLoaiYC(obj.sale_order_type ?: "Xuất kho")
 
         holder.itemRequestType1.getllWrap().visibility = View.GONE
         if (obj.approve_staffs != null) {

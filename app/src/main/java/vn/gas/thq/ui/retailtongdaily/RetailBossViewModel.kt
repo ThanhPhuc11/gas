@@ -9,12 +9,10 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
-import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.retail.GasRemainModel
 import vn.gas.thq.ui.retail.RequestInitRetail
 import vn.gas.thq.ui.retail.ResponseInitRetail
-import vn.gas.thq.util.AppConstants
 
 class RetailBossViewModel(private val retailRepository: RetailBossRepository) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()
@@ -22,8 +20,8 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
     val doRetailSuccess = MutableLiveData<Unit>()
     val giaTANK12 = MutableLiveData<Int>()
     val giaTANK45 = MutableLiveData<Int>()
-    val giaTDLGAS12 = MutableLiveData<Int>()
-    val giaTDLGAS45 = MutableLiveData<Int>()
+    val giaTDLGAS12 = MutableLiveData<Int?>()
+    val giaTDLGAS45 = MutableLiveData<Int?>()
     val fee12 = MutableLiveData<FeeVanChuyenModel>()
     val fee45 = MutableLiveData<FeeVanChuyenModel>()
 
@@ -48,7 +46,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
 
     fun getGiaTongDaiLy(cust_id: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.getGiaTongDaiLy(cust_id, "GAS12")
+            retailRepository.getGiaKHBHTongDaiLy(cust_id, "GAS12")
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -61,7 +59,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
                     giaTDLGAS12.value = it.price
                 }
 
-            retailRepository.getGiaTongDaiLy(cust_id, "GAS45")
+            retailRepository.getGiaKHBHTongDaiLy(cust_id, "GAS45")
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -108,7 +106,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
 
     fun doRequestRetail(obj: RequestInitRetail) {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.doRequestRetail(obj)
+            retailRepository.doRequestRetailBoss(obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
