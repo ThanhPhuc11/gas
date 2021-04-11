@@ -3,7 +3,9 @@ package vn.gas.thq.ui.kiemkekho
 import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
+import vn.gas.thq.ui.nhapkho.ProductNhapKhoV3Model
 
 class KiemKeRequestModel {
     @SerializedName("shop_code")
@@ -12,9 +14,9 @@ class KiemKeRequestModel {
 
     @SerializedName("original_stock")
     @Expose
-    var originalStock: MutableList<ProductNhapKhoModel> = mutableListOf()
+    var originalStock: MutableList<ProductNhapKhoV3Model> = mutableListOf()
 
     @SerializedName("new_stock")
     @Expose
-    var newStock: MutableList<ProductNhapKhoModel> = mutableListOf()
+    var newStock: MutableList<ProductNhapKhoV3Model> = mutableListOf()
 }

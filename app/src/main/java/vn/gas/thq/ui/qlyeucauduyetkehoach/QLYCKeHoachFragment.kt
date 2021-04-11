@@ -130,10 +130,15 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
 
     private fun filterCanApproveStatus(canApproveStatus: String): Int {
 //        if (canApproveStatus[0].toString() == "2") return 0
-        if (canApproveStatus[0].toString() == "0") {
-            return if (canApproveStatus[1].toString() == "1") 1 else 2
+//        if (canApproveStatus[0].toString() == "0") {
+//            return if (canApproveStatus[1].toString() == "1") 1 else 2
+//        }
+//        return 0
+        return when (canApproveStatus) {
+            "00", "02" -> 1
+            "20" -> 2
+            else -> 0
         }
-        return 0
     }
 
     override fun onItemClick(view: View?, position: Int) {

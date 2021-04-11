@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -111,6 +112,22 @@ class DetailKeHoachFragment : BaseFragment() {
                 viewController?.popNFragment(2)
             }
         })
+
+        viewModel.callbackStart.observe(viewLifecycleOwner, {
+            showLoading()
+        })
+
+        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.callbackFail.observe(viewLifecycleOwner, {
+            hideLoading()
+        })
+
+        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun duyet(view: View) {
@@ -121,9 +138,9 @@ class DetailKeHoachFragment : BaseFragment() {
         ) {
             if (it == AppConstants.YES) {
                 if (option == AppConstants.LEVEL_DUYET_GIA) {
-                    viewModel.duyetKeHoachBH(id, DetailTypeKHBHModel().apply { approveType = "1" })
-                } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
                     viewModel.duyetKeHoachBH(id, DetailTypeKHBHModel().apply { approveType = "2" })
+                } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
+                    viewModel.duyetKeHoachBH(id, DetailTypeKHBHModel().apply { approveType = "1" })
                 }
             }
         }
@@ -138,12 +155,12 @@ class DetailKeHoachFragment : BaseFragment() {
             if (it == AppConstants.YES) {
                 if (option == AppConstants.LEVEL_DUYET_GIA) {
                     viewModel.tuChoiKeHoachBH(id, DetailTypeKHBHModel().apply {
-                        approveType = "1"
+                        approveType = "2"
                         reason = strReason
                     })
                 } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
                     viewModel.tuChoiKeHoachBH(id, DetailTypeKHBHModel().apply {
-                        approveType = "2"
+                        approveType = "1"
                         reason = strReason
                     })
                 }

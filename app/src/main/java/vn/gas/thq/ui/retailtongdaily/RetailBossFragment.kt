@@ -36,6 +36,7 @@ import vn.gas.thq.model.ProductRetailModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.retail.GasRemainModel
@@ -53,6 +54,8 @@ class RetailBossFragment : BaseFragment() {
     private lateinit var viewModel: RetailBossViewModel
     private var mListCustomer = mutableListOf<Customer>()
     private var alertDialog: AlertDialog? = null
+
+    private var isNullPriceKHBH = 0
 
     private var giaTank12: Int? = 0
     private var giaTank45: Int? = 0
@@ -151,6 +154,46 @@ class RetailBossFragment : BaseFragment() {
             mListCustomer.addAll(it)
         })
 
+        viewModel.giaTDLGAS12.observe(viewLifecycleOwner, {
+            if (it == null) {
+                productBanKhi12.getEditTextSL().isFocusable = false
+                isNullPriceKHBH++
+                if (isNullPriceKHBH == 2) {
+                    CommonUtils.showDiglog1Button(
+                        activity,
+                        "Thông báo",
+                        "Khách hàng này chưa có giá bán theo kế hoạch được duyệt trước, đề nghị bổ sung giá theo kế hoạch"
+                    ) {
+                        alertDialog?.dismiss()
+                        viewController?.popFragment()
+                    }
+                }
+            } else {
+                val gia = CommonUtils.priceWithoutDecimal(it.toDouble())
+                productBanKhi12.getEditTextGia().setText(gia)
+            }
+        })
+
+        viewModel.giaTDLGAS45.observe(viewLifecycleOwner, {
+            if (it == null) {
+                productBanKhi45.getEditTextSL().isFocusable = false
+                isNullPriceKHBH++
+                if (isNullPriceKHBH == 2) {
+                    CommonUtils.showDiglog1Button(
+                        activity,
+                        "Thông báo",
+                        "Khách hàng này chưa có giá bán theo kế hoạch được duyệt trước, đề nghị bổ sung giá theo kế hoạch"
+                    ) {
+                        alertDialog?.dismiss()
+                        viewController?.popFragment()
+                    }
+                }
+            } else {
+                val gia = CommonUtils.priceWithoutDecimal(it.toDouble())
+                productBanKhi45.getEditTextGia().setText(gia)
+            }
+        })
+
         viewModel.giaTANK12.observe(viewLifecycleOwner, {
             giaTank12 = it
             productVoMua12.setGia(giaTank12?.toString())
@@ -217,6 +260,8 @@ class RetailBossFragment : BaseFragment() {
     }
 
     override fun initData() {
+        productBanKhi12.getEditTextGia().isFocusable = false
+        productBanKhi45.getEditTextGia().isFocusable = false
         viewModel.getGiaVanChuyen(RequestInitRetail().apply {
             item = mutableListOf<ProductRetailModel>().apply {
                 add(
@@ -369,6 +414,7 @@ class RetailBossFragment : BaseFragment() {
             getRealNumber(productVoMua12.getEditTextGia()),
             getRealNumber(productVoMua45.getEditTextSL()),
             getRealNumber(productVoMua45.getEditTextGia()),
+            gasRemain,
             tienThucTe
         )
         childViewController?.pushFragment(
@@ -390,6 +436,16 @@ class RetailBossFragment : BaseFragment() {
                 if (it == AppConstants.YES) {
                     val gasRemainModel = GasRemainModel()
                     gasRemainModel.gasRemain = this.gasRemain
+                    gasRemainModel.returnItem = mutableListOf<ProductNhapKhoModel>().apply {
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK12_OTHER"
+                            amount = getRealNumber(edtSLKhac12)
+                        })
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK45_OTHER"
+                            amount = getRealNumber(edtSLKhac45)
+                        })
+                    }
                     viewModel.doRetailLXBH(transferRetailModel?.orderId, gasRemainModel)
                 }
             }
@@ -406,6 +462,7 @@ class RetailBossFragment : BaseFragment() {
 //        (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
         val requestInitRetail = RequestInitRetail()
         requestInitRetail.customerId = custId?.toInt()
+        requestInitRetail.gasReturn = gasRemain
         requestInitRetail.debit = tienNo
         requestInitRetail.lat = latitude.toFloat()
         requestInitRetail.lng = longitude.toFloat()
@@ -901,6 +958,10 @@ class RetailBossFragment : BaseFragment() {
         productVoMua12.setGia("${obj.voMuaPrice12}")
         productVoMua45.setSoLuong(obj.voMua45?.toString())
         productVoMua45.setGia("${obj.voMuaPrice45}")
+
+        if (obj.gasRemain != null) {
+            edtGasRemain.setText(obj.gasRemain.toString())
+        }
 
         edtTienThucTe.setText(obj.tienThucTe?.toString())
     }

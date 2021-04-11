@@ -11,7 +11,7 @@ class RetailBossRepository(private val apiService: ApiService) : BaseRepository(
         emit(apiService.getListCustomerBoss(lat, lng))
     }
 
-    suspend fun getGiaTongDaiLy(cust_id: Int, product_code: String) =
+    suspend fun getGiaKHBHTongDaiLy(cust_id: Int, product_code: String) =
         flow { emit(apiService.getGiaTongDaiLy(product_code, cust_id)) }
 
     suspend fun getGiaNiemYet(customer_id: String, product_code: String, sale_type: String) =
@@ -20,8 +20,8 @@ class RetailBossRepository(private val apiService: ApiService) : BaseRepository(
     suspend fun getPhiVanChuyen(obj: RequestInitRetail) =
         flow { emit(apiService.getPhiVanChuyen(obj)) }
 
-    suspend fun doRequestRetail(obj: RequestInitRetail) = flow {
-        emit(apiService.doRequestRetail(obj))
+    suspend fun doRequestRetailBoss(obj: RequestInitRetail) = flow {
+        emit(apiService.doRequestRetailBoss(obj))
     }
 
     suspend fun doRetailLXBH(orderId: String?, obj: GasRemainModel) = flow {

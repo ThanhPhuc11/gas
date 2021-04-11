@@ -12,9 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.hongha.ga.R
 
-class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val context: Context) :
+class KKKhoItemAdapter(private val mList: MutableList<ProductNhapKhoV2Model>, private val context: Context) :
     RecyclerView.Adapter<KKKhoItemAdapter.ProductViewHolder>() {
     private lateinit var mClickListener: ItemClickListener
 
@@ -27,7 +28,7 @@ class KKKhoItemAdapter(private val mList: MutableList<ProductModel>, private val
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val obj: ProductModel = mList[position]
+        val obj: ProductNhapKhoV2Model = mList[position]
         if (position % 2 != 0) {
             holder.llWrap.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_F6F6F6))
         }

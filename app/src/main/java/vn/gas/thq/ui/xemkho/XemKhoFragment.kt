@@ -14,6 +14,7 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.util.AppConstants
@@ -26,7 +27,7 @@ class XemKhoFragment : BaseFragment() {
     private lateinit var viewModel: XemKhoViewModel
     private lateinit var productAdapter: KhoItemAdapter
     private var alertDialog: AlertDialog? = null
-    var mList = mutableListOf<ProductModel>()
+    var mList = mutableListOf<ProductNhapKhoV2Model>()
     private var listKho = mutableListOf<KhoModel>()
     private var shopCode: String? = null
     private var staffCode: String? = null
@@ -82,7 +83,7 @@ class XemKhoFragment : BaseFragment() {
             mList.clear()
             it.forEach {
                 mList.add(
-                    ProductModel(
+                    ProductNhapKhoV2Model(
                         it.productName,
                         it.productCode,
                         "",

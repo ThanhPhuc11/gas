@@ -341,6 +341,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             voMuaPrice12,
             voMua45,
             voMuaPrice45,
+            null,
             tongTien - mDetailRetailData?.debtAmount!!
         )
     }

@@ -25,5 +25,7 @@ data class TransferRetailModel(
     val voMua45: Int?,
     val voMuaPrice45: Int?,
 
+    val gasRemain: Float?,
+
     val tienThucTe: Int?
 ) : Serializable

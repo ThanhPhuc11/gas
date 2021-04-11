@@ -721,6 +721,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             voMuaPrice12,
             voMua45,
             voMuaPrice45,
+            null,
             tongTien - mDetailRetailData?.debtAmount!!
         )
     }

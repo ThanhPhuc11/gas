@@ -10,9 +10,10 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.hongha.ga.R
 
-class KhoItemAdapter(private val mList: MutableList<ProductModel>, private val context: Context) :
+class KhoItemAdapter(private val mList: MutableList<ProductNhapKhoV2Model>, private val context: Context) :
     RecyclerView.Adapter<KhoItemAdapter.ProductViewHolder>() {
     lateinit var mClickListener: ItemClickListener
 
@@ -25,7 +26,7 @@ class KhoItemAdapter(private val mList: MutableList<ProductModel>, private val c
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val obj: ProductModel = mList[position]
+        val obj: ProductNhapKhoV2Model = mList[position]
         if (position % 2 != 0) {
             holder.llWrap.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_F6F6F6))
         }

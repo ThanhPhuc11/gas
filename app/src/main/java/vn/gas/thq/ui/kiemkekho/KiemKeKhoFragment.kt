@@ -13,9 +13,11 @@ import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.model.ProductModel
+import vn.gas.thq.model.ProductNhapKhoV2Model
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
+import vn.gas.thq.ui.nhapkho.ProductNhapKhoV3Model
 import vn.gas.thq.ui.xemkho.KhoModel
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
@@ -30,8 +32,8 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
     private lateinit var viewModel: KiemKeKhoViewModel
     private lateinit var productAdapter: KKKhoItemAdapter
     private var alertDialog: AlertDialog? = null
-    private var mOldList = mutableListOf<ProductModel>()
-    private var mNewList = mutableListOf<ProductModel>()
+    private var mOldList = mutableListOf<ProductNhapKhoV2Model>()
+    private var mNewList = mutableListOf<ProductNhapKhoV2Model>()
     private var listKho = mutableListOf<KhoModel>()
     private lateinit var kiemKeRequestModel: KiemKeRequestModel
 
@@ -99,7 +101,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
             mNewList.clear()
             it.forEach {
                 mOldList.add(
-                    ProductModel(
+                    ProductNhapKhoV2Model(
                         it.productName,
                         it.productCode,
                         "",
@@ -109,7 +111,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
                     )
                 )
                 mNewList.add(
-                    ProductModel(
+                    ProductNhapKhoV2Model(
                         it.productName,
                         it.productCode,
                         "",
@@ -181,7 +183,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
 
     private fun onSubmit(view: View) {
 //        viewModel.getDataFromShop()
-        if (mNewList.filter { it.quantity != 0 }.isEmpty()) {
+        if (mNewList.filter { it.quantity != 0f }.isEmpty()) {
             showMess("Bạn phải nhập ít nhất 1 số lượng kiểm kê")
             return
         }
@@ -194,14 +196,14 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
                 kiemKeRequestModel = KiemKeRequestModel()
                 kiemKeRequestModel.shopCode = shopCode
                 mOldList.forEach {
-                    kiemKeRequestModel.originalStock.add(ProductNhapKhoModel().apply {
+                    kiemKeRequestModel.originalStock.add(ProductNhapKhoV3Model().apply {
                         productCode = it.code
                         amount = it.quantity
                     })
                 }
 
                 mNewList.filter { it1 -> it1.quantity != null }.forEach {
-                    kiemKeRequestModel.newStock.add(ProductNhapKhoModel().apply {
+                    kiemKeRequestModel.newStock.add(ProductNhapKhoV3Model().apply {
                         productCode = it.code
                         amount = it.quantity
                     })
@@ -235,6 +237,6 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
     }
 
     override fun onItemSLChanged(position: Int, count: Int?) {
-        mNewList[position].quantity = count
+        mNewList[position].quantity = count?.toFloat()
     }
 }
