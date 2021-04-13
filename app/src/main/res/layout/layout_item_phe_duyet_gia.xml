@@ -114,39 +114,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/textStyleBody"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Người duyệt gần nhất"
-                android:textColor="@color/gray_666E79" />
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textStyleBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Người duyệt gần nhất"
+                    android:textColor="@color/gray_666E79" />
 
                 <TextView
                     android:id="@+id/tvNguoiDuyet"
                     style="@style/textStyleBody"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="- -"
                     android:textColor="@color/blue_2C5181" />
-
-                <TextView
-                    android:id="@+id/tvNguoiDuyetMore"
-                    style="@style/textStyleBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=". . ."
-                    android:textColor="@color/blue_2C5181"
-                    android:visibility="gone" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNguoiDuyetMore"
+                style="@style/textStyleBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=". . ."
+                android:textColor="@color/blue_2C5181"
+                android:visibility="gone" />
 
         </LinearLayout>
 
