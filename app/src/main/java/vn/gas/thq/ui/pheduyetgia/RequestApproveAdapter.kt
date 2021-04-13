@@ -77,20 +77,24 @@ class RequestApproveAdapter(
             enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                 ?: "${obj.status};${obj.approve_status}"
 
-        holder.llWrap.visibility = View.VISIBLE
-        if (obj.approve_staffs?.size!! > 0)
+        holder.llWrap.visibility = View.GONE
+        holder.tvNguoiDuyet.visibility = View.VISIBLE
+        holder.tvNguoiDuyetMore.visibility = View.GONE
+        if (obj.approve_staffs?.size!! > 0) {
+            holder.llWrap.visibility = View.VISIBLE
             holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
+        }
+
         var strNguoiDuyetMore = ""
         if (obj.approve_staffs?.size!! > 1) {
 //            obj.approve_staffs?.forEach {
 //                strNguoiDuyetMore += "\n" +
 //                        "\n${it}"
 //            }
-            for (i in 1 until obj.approve_staffs!!.size) {
-                strNguoiDuyetMore += "\n" +
-                        "\n${obj.approve_staffs!![i]}"
+            for (i in 0 until obj.approve_staffs!!.size) {
+                strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
             }
-            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore
+            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore.trim()
         }
 
 //        holder.itemRequestType1.setLoaiYC(loaiYC)
@@ -120,9 +124,13 @@ class RequestApproveAdapter(
         init {
             itemView.setOnClickListener(this)
             llWrap.setOnClickListener {
-                if (!tvNguoiDuyetMore.isVisible)
+                if (!tvNguoiDuyetMore.isVisible) {
                     tvNguoiDuyetMore.visibility = View.VISIBLE
-                else tvNguoiDuyetMore.visibility = View.GONE
+                    tvNguoiDuyet.visibility = View.GONE
+                } else {
+                    tvNguoiDuyetMore.visibility = View.GONE
+                    tvNguoiDuyet.visibility = View.VISIBLE
+                }
             }
         }
 

@@ -85,6 +85,8 @@ class RequestItemAdapter(
         holder.itemRequestType1.setLoaiYC(obj.sale_order_type ?: "Xuất kho")
 
         holder.itemRequestType1.getllWrap().visibility = View.GONE
+        holder.itemRequestType1.getNguoiDuyet().visibility = View.VISIBLE
+        holder.itemRequestType1.getNguoiDuyetMore().visibility = View.GONE
         if (obj.approve_staffs != null) {
             holder.itemRequestType1.getllWrap().visibility = View.VISIBLE
             if (obj.approve_staffs?.size == 0) {
@@ -100,11 +102,10 @@ class RequestItemAdapter(
 //                strNguoiDuyetMore += "\n" +
 //                        "\n${it}"
 //            }
-                for (i in 1 until obj.approve_staffs!!.size) {
-                    strNguoiDuyetMore += "\n" +
-                            "\n${obj.approve_staffs!![i]}"
+                for (i in 0 until obj.approve_staffs!!.size) {
+                    strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
                 }
-                holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore
+                holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore.trim()
             }
         }
 
@@ -126,9 +127,13 @@ class RequestItemAdapter(
         init {
             itemRequestType1.setOnClickListener(this)
             itemRequestType1.getllWrap().setOnClickListener {
-                if (!itemRequestType1.getNguoiDuyetMore().isVisible)
+                if (!itemRequestType1.getNguoiDuyetMore().isVisible) {
                     itemRequestType1.getNguoiDuyetMore().visibility = View.VISIBLE
-                else itemRequestType1.getNguoiDuyetMore().visibility = View.GONE
+                    itemRequestType1.getNguoiDuyet().visibility = View.GONE
+                } else {
+                    itemRequestType1.getNguoiDuyetMore().visibility = View.GONE
+                    itemRequestType1.getNguoiDuyet().visibility = View.VISIBLE
+                }
             }
         }
 
