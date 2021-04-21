@@ -62,7 +62,9 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private var loaiYC: String? = "Xuất kho"
     private var status: String? = null
     private var type: String? = null
-    private var isRetail: Boolean = false
+
+    //    private var isRetail: Boolean = false
+//    private var isRetailBoss: Boolean = false
     private var isReload: Boolean = false
     private var fromDate: String = ""
     private var endDate: String = ""
@@ -129,7 +131,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
     override fun initData() {
 //        if (ScreenId.HOME_SCREEN != arguments?.getString("SCREEN", "")) {
-        isRetail = true
+//        isRetail = true
         loaiYC = "Bán hàng"
         type = "2"
         edtRequestType.setText("Bán lẻ")
@@ -368,10 +370,16 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMoreV2(totalItemsCount: Int) {
                 Log.e("PHUCDZ", "$totalItemsCount")
-                if (isRetail) {
-                    viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
-                } else {
-                    viewModel.onSubmitData(status, fromDate, endDate, totalItemsCount)
+                when (type) {
+                    "3" -> {
+                        viewModel.onSearchRetailTDL(status, fromDate, endDate, totalItemsCount)
+                    }
+                    "2" -> {
+                        viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
+                    }
+                    "1" -> {
+                        viewModel.onSubmitData(status, fromDate, endDate, totalItemsCount)
+                    }
                 }
             }
         })
@@ -397,12 +405,15 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun handleStatus(type: String?) {
         status = null
         edtStatus.setText("Tất cả")
-        if (type == "2") {
-            isRetail = true
+        if (type == "3") {
+//            isRetailBoss = true
+            viewModel.onGetSaleOrderStatus()
+        } else if (type == "2") {
+//            isRetail = true
             viewModel.onGetSaleOrderStatus()
             loaiYC = "Bán hàng"
         } else if (type == "1") {
-            isRetail = false
+//            isRetail = false
             loaiYC = "Xuất kho"
             initRecyclerView()
         }
@@ -411,7 +422,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun onChooseStatus(view: View) {
         var doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
-        if (!isRetail) {
+        if (type == "1") {
             mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
         } else {
             mArrayList.add(0, DialogListModel("-2", "Tất cả"))
@@ -443,8 +454,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
         endDate =
             AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
-        if (isRetail) {
+        if (type == "2") {
             viewModel.onSearchRetail(status, fromDate, endDate, 0)
+            return
+        }
+        if (type == "3") {
+            viewModel.onSearchRetailTDL(status, fromDate, endDate, 0)
             return
         }
         viewModel.onSubmitData(status, fromDate, endDate, 0)

@@ -142,7 +142,7 @@ interface ApiService {
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>
 
-    @GET(" orders/sale")
+    @GET("orders/sale")
     suspend fun searchRequestRetail(
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
@@ -151,6 +151,29 @@ interface ApiService {
         @Query("offset") offset: Int,
         @Query("size") size: Int,
     ): List<BussinesRequestModel>
+
+    @GET("agent-orders")
+    suspend fun searchRequestRetailTDL(
+        @Query("status") status: String?,
+        @Query("staff_code") staff_code: String?,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("offset") offset: Int,
+        @Query("size") size: Int,
+    ): ResponseModel<BussinesRequestModel>
+
+    @POST("orders/agent/{orderId}/accept")
+    suspend fun doAcceptDuyetGiaTDL(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
+    )
+
+    @POST("orders/agent/{orderId}/reject")
+    suspend fun doRejectDuyetGiaTDL(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
+    )
+
 
     @GET("orders/sale/{orderId}")
     suspend fun detailApproveLXBH(

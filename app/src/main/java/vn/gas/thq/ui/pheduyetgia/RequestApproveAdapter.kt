@@ -83,19 +83,23 @@ class RequestApproveAdapter(
         if (obj.approve_staffs?.size!! > 0) {
             holder.llWrap.visibility = View.VISIBLE
             holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
-        }
 
-        var strNguoiDuyetMore = ""
-        if (obj.approve_staffs?.size!! > 1) {
-//            obj.approve_staffs?.forEach {
-//                strNguoiDuyetMore += "\n" +
-//                        "\n${it}"
-//            }
+            var strNguoiDuyetMore = ""
             for (i in 0 until obj.approve_staffs!!.size) {
                 strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
             }
             holder.tvNguoiDuyetMore.text = strNguoiDuyetMore.trim()
         }
+//        if (obj.approve_staffs?.size!! > 0) {
+//            obj.approve_staffs?.forEach {
+//                strNguoiDuyetMore += "\n" +
+//                        "\n${it}"
+//            }
+//            for (i in 0 until obj.approve_staffs!!.size) {
+//                strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
+//            }
+//            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore.trim()
+//        }
 
 //        holder.itemRequestType1.setLoaiYC(loaiYC)
     }

@@ -58,7 +58,31 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         }
     }
 
-    fun onSearchRetail(status: String?, staffCode: String?, fromDate: String, toDate: String) {
+    fun onHandleSearch(
+        type: String,
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String
+    ) {
+        if (type == "1") onSearchRetail(status, staffCode, fromDate, toDate)
+        else onSearchRetailTDL(status, staffCode, fromDate, toDate)
+    }
+
+    fun onHandleAccept(type: String, orderId: String?, obj: DuyetGiaModel) {
+        if (type == "1") doAcceptDuyetGia(orderId, obj) else doAcceptDuyetGiaTDL(orderId, obj)
+    }
+
+    fun onHandleReject(type: String, orderId: String?, obj: DuyetGiaModel) {
+        if (type == "1") doRejectDuyetGia(orderId, obj) else doRejectDuyetGiaTDL(orderId, obj)
+    }
+
+    private fun onSearchRetail(
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
             pheDuyetGiaRepository.onSearchRetail(status, staffCode, fromDate, toDate)
                 .onStart {
@@ -69,6 +93,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
                 }
                 .catch {
                     handleError(it)
+                    mListDataSearch.value?.clear()
                 }
                 .collect {
                     callbackSuccess.value = Unit
@@ -96,7 +121,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         }
     }
 
-    fun doAcceptDuyetGia(orderId: String?, obj: DuyetGiaModel) {
+    private fun doAcceptDuyetGia(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
             pheDuyetGiaRepository.doAcceptDuyetGia(orderId, obj)
                 .onStart {
@@ -115,9 +140,72 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         }
     }
 
-    fun doRejectDuyetGia(orderId: String?, obj: DuyetGiaModel) {
+    private fun doRejectDuyetGia(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
             pheDuyetGiaRepository.doRejectDuyetGia(orderId, obj)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackReject.value = Unit
+                }
+        }
+    }
+
+    private fun onSearchRetailTDL(
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String
+    ) {
+        viewModelScope.launch(Dispatchers.Main) {
+            pheDuyetGiaRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                    mListDataSearch.value?.clear()
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    mListDataSearch.value = (it.listData) as MutableList<BussinesRequestModel>
+                }
+        }
+    }
+
+    private fun doAcceptDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            pheDuyetGiaRepository.doAcceptDuyetGiaTDL(orderId, obj)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackAccept.value = Unit
+                }
+        }
+    }
+
+    private fun doRejectDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) {
+        viewModelScope.launch(Dispatchers.Main) {
+            pheDuyetGiaRepository.doRejectDuyetGiaTDL(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }

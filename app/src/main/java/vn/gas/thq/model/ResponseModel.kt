@@ -7,9 +7,9 @@ import java.io.Serializable
 class ResponseModel<V> : Serializable {
     @SerializedName("data")
     @Expose
-    var singleData: V? = null
+    var listData: List<V>? = null
 
-    @SerializedName("status")
+    @SerializedName("page")
     @Expose
-    var mess: StatusModel? = null
+    var page: PageModel? = null
 }
