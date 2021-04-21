@@ -20,6 +20,7 @@ public class GetListDataDemo {
         ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
         modelArrayList.add(new DialogListModel("1", mContext.getString(R.string.type_xk)));
         modelArrayList.add(new DialogListModel("2", mContext.getString(R.string.type_ban_le)));
+        modelArrayList.add(new DialogListModel("3", mContext.getString(R.string.type_ban_le_tdl)));
         return modelArrayList;
     }
 

@@ -32,6 +32,17 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         emit(apiService.searchRequestRetail(status, staffCode, fromDate, toDate, offSet, size))
     }
 
+    suspend fun onSearchRetailTDL(
+        status: String?,
+        staffCode: String?,
+        fromDate: String,
+        toDate: String,
+        offSet: Int,
+        size: Int
+    ) = flow {
+        emit(apiService.searchRequestRetailTDL(status, staffCode, fromDate, toDate, offSet, size))
+    }
+
     suspend fun onGetSaleOrderStatus() = flow {
         emit(apiService.saleOrderStatus())
     }

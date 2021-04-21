@@ -41,6 +41,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var mList = mutableListOf<BussinesRequestModel>()
     private var listHistory = mutableListOf<HistoryModel>()
     private var mDetailRetailData: ApproveRequestModel? = null
+    private var type: String = "1"
     private var status: String? = null
     private var staffCode: String? = null
     private var alertDialog: AlertDialog? = null
@@ -192,6 +193,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         initRecyclerView()
 //        initHistoryRecyclerView()
 
+        edtType.setOnClickListener(this::onChooseType)
         edtLXBH.setOnClickListener(this::onChooseLXBH)
         edtStatus.setOnClickListener(this::onChooseStatus)
         edtStartDate.setText(AppDateUtils.getYesterdayDate())
@@ -227,6 +229,21 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvHistory.layoutManager = linearLayoutManager
         rvHistory.adapter = adapter
+    }
+
+    private fun onChooseType(view: View) {
+        val doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        mArrayList.add(DialogListModel("1", "Bán lẻ"))
+        mArrayList.add(DialogListModel("2", "Bán lẻ Tổng đại lý"))
+        doc.show(
+            activity, mArrayList,
+            "Loại",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            type = item.id
+            edtType.setText(item.name)
+        }
     }
 
     private fun onChooseLXBH(view: View) {
@@ -284,7 +301,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onSearchRetail(status, staffCode, fromDate, endDate)
+        viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate)
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {
@@ -474,7 +491,11 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
-                    viewModel.doAcceptDuyetGia(orderId?.toString(), DuyetGiaModel(statusShowDialog))
+                    viewModel.onHandleAccept(
+                        type,
+                        orderId?.toString(),
+                        DuyetGiaModel(statusShowDialog)
+                    )
                 }
             }
         }
@@ -486,7 +507,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
-                    viewModel.doRejectDuyetGia(
+                    viewModel.onHandleReject(
+                        type,
                         orderId?.toString(),
                         DuyetGiaModel(statusShowDialog, edtReason.text.toString())
                     )

@@ -105,6 +105,28 @@ class QLYCCaNhanViewModel(
         }
     }
 
+    fun onSearchRetailTDL(
+        status: String?, fromDate: String, toDate: String, offSet: Int
+    ) {
+        val staffCode = AppPreferencesHelper(context).userModel.staffCode
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, offSet, 100)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    mLiveData.value = it.listData as MutableList<BussinesRequestModel>
+                }
+        }
+    }
+
     fun detailApproveLXBH(orderId: String?) {
         viewModelScope.launch(Dispatchers.Main) {
             qlycCaNhanRepository.detailApproveLXBH(orderId)

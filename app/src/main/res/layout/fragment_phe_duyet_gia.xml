@@ -24,6 +24,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
+                android:text="Phân loại"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtType"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="Bán lẻ"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
                 android:text="Lái xe bán hàng"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
@@ -176,23 +198,23 @@
                 android:layout_weight="1"
                 android:padding="9dp" />
 
-<!--            <include-->
-<!--                layout="@layout/layout_item_phe_duyet_gia"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="8dp" />-->
+            <!--            <include-->
+            <!--                layout="@layout/layout_item_phe_duyet_gia"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="8dp" />-->
 
-<!--            <include-->
-<!--                layout="@layout/layout_item_phe_duyet_gia"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="13dp" />-->
+            <!--            <include-->
+            <!--                layout="@layout/layout_item_phe_duyet_gia"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="13dp" />-->
 
-<!--            <include-->
-<!--                layout="@layout/layout_item_phe_duyet_gia"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="13dp" />-->
+            <!--            <include-->
+            <!--                layout="@layout/layout_item_phe_duyet_gia"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="13dp" />-->
 
 
         </LinearLayout>

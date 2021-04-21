@@ -95,18 +95,24 @@ class RequestItemAdapter(
             if (obj.approve_staffs?.size!! > 0) {
                 holder.itemRequestType1.getNguoiDuyet().text =
                     obj.approve_staffs?.get(0) ?: "- -"
-            }
-            var strNguoiDuyetMore = ""
-            if (obj.approve_staffs?.size!! > 1) {
-//            obj.approve_staffs?.forEach {
-//                strNguoiDuyetMore += "\n" +
-//                        "\n${it}"
-//            }
+
+                var strNguoiDuyetMore = ""
                 for (i in 0 until obj.approve_staffs!!.size) {
                     strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
                 }
                 holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore.trim()
             }
+//            var strNguoiDuyetMore = ""
+//            if (obj.approve_staffs?.size!! > 1) {
+////            obj.approve_staffs?.forEach {
+////                strNguoiDuyetMore += "\n" +
+////                        "\n${it}"
+////            }
+//                for (i in 0 until obj.approve_staffs!!.size) {
+//                    strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
+//                }
+//                holder.itemRequestType1.getNguoiDuyetMore().text = strNguoiDuyetMore.trim()
+//            }
         }
 
     }
