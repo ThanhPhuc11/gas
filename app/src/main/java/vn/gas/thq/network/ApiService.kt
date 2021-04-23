@@ -144,6 +144,7 @@ interface ApiService {
 
     @GET("orders/sale")
     suspend fun searchRequestRetail(
+        @Query("sale_order_type") sale_order_type: Int,
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
@@ -154,6 +155,7 @@ interface ApiService {
 
     @GET("agent-orders")
     suspend fun searchRequestRetailTDL(
+        @Query("sale_order_type") sale_order_type: Int,
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
