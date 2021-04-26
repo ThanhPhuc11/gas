@@ -26,10 +26,10 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         staffCode: String?,
         fromDate: String,
         toDate: String,
-        offSet: Int,
+        page: Int,
         size: Int
     ) = flow {
-        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, offSet, size))
+        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, page, size))
     }
 
     suspend fun onSearchRetailTDL(
@@ -37,10 +37,20 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         staffCode: String?,
         fromDate: String,
         toDate: String,
-        offSet: Int,
+        page: Int,
         size: Int
     ) = flow {
-        emit(apiService.searchRequestRetailTDL(3, status, staffCode, fromDate, toDate, offSet, size))
+        emit(
+            apiService.searchRequestRetailTDL(
+                3,
+                status,
+                staffCode,
+                fromDate,
+                toDate,
+                page,
+                size
+            )
+        )
     }
 
     suspend fun onGetSaleOrderStatus() = flow {

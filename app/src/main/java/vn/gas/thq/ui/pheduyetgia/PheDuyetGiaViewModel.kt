@@ -63,10 +63,11 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         status: String?,
         staffCode: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        page: Int
     ) {
-        if (type == "1") onSearchRetail(status, staffCode, fromDate, toDate)
-        else onSearchRetailTDL(status, staffCode, fromDate, toDate)
+        if (type == "1") onSearchRetail(status, staffCode, fromDate, toDate, page)
+        else onSearchRetailTDL(status, staffCode, fromDate, toDate, page)
     }
 
     fun onHandleAccept(type: String, orderId: String?, obj: DuyetGiaModel) {
@@ -81,10 +82,11 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         status: String?,
         staffCode: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        page: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onSearchRetail(status, staffCode, fromDate, toDate)
+            pheDuyetGiaRepository.onSearchRetail(status, staffCode, fromDate, toDate, page)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -97,7 +99,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mListDataSearch.value = it as MutableList<BussinesRequestModel>
+                    mListDataSearch.value = it.listData as MutableList<BussinesRequestModel>
                 }
         }
     }
@@ -163,10 +165,11 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         status: String?,
         staffCode: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        page: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate)
+            pheDuyetGiaRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, page)
                 .onStart {
                     callbackStart.value = Unit
                 }

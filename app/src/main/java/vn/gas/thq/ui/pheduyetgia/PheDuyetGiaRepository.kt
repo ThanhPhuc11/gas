@@ -18,9 +18,10 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
         status: String?,
         staffCode: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        page: Int
     ) = flow {
-        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, 0, 100))
+        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, page, 100))
     }
 
     suspend fun detailApproveLXBH(orderId: String?) = flow {
@@ -43,9 +44,10 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
         status: String?,
         staffCode: String?,
         fromDate: String,
-        toDate: String
+        toDate: String,
+        page: Int
     ) = flow {
-        emit(apiService.searchRequestRetailTDL(3, status, staffCode, fromDate, toDate, 0, 100))
+        emit(apiService.searchRequestRetailTDL(3, status, staffCode, fromDate, toDate, page, 100))
     }
 
 //    suspend fun detailTDL(orderId: String?) = flow {

@@ -358,7 +358,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         adapter = RequestItemAdapter(mList, loaiYC, listStatusOrderSale)
         adapter.setClickListener(this)
 
-        linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvRequestItem.layoutManager = linearLayoutManager
         rvRequestItem.adapter = adapter
 
@@ -367,15 +367,15 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun setEndLessScrollListener() {
         rvRequestItem.clearOnScrollListeners()
         rvRequestItem.addOnScrollListener(object :
-            EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMoreV2(totalItemsCount: Int) {
+            EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 Log.e("PHUCDZ", "$totalItemsCount")
                 when (type) {
                     "3" -> {
                         viewModel.onSearchRetailTDL(status, fromDate, endDate, totalItemsCount)
                     }
                     "2" -> {
-                        viewModel.onSearchRetail(status, fromDate, endDate, totalItemsCount)
+                        viewModel.onSearchRetail(status, fromDate, endDate, page)
                     }
                     "1" -> {
                         viewModel.onSubmitData(status, fromDate, endDate, totalItemsCount)
@@ -386,8 +386,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     private fun onChooseType(view: View) {
-        var doc = DialogList()
-        var mArrayList = GetListDataDemo.getListRequestType(Objects.requireNonNull(context))
+        val doc = DialogList()
+        val mArrayList = GetListDataDemo.getListRequestType(Objects.requireNonNull(context))
         doc.show(
             activity, mArrayList,
             getString(R.string.status),

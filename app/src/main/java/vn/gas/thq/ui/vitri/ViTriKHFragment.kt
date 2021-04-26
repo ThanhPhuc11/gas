@@ -198,8 +198,8 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
     }
 
     private fun onChooseShop(view: View) {
-        var doc = DialogList()
-        var mArrayList = ArrayList<DialogListModel>()
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
         listTram.forEach {
             mArrayList.add(DialogListModel(it.shopId.toString(), it.name))
         }

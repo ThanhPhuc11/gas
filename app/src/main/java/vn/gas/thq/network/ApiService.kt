@@ -142,16 +142,16 @@ interface ApiService {
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>
 
-    @GET("orders/sale")
+    @GET("sale-orders")
     suspend fun searchRequestRetail(
         @Query("sale_order_type") sale_order_type: Int,
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String,
-        @Query("offset") offset: Int,
+        @Query("page") page: Int,
         @Query("size") size: Int,
-    ): List<BussinesRequestModel>
+    ): ResponseModel<BussinesRequestModel>
 
     @GET("agent-orders")
     suspend fun searchRequestRetailTDL(
@@ -160,7 +160,7 @@ interface ApiService {
         @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String,
-        @Query("offset") offset: Int,
+        @Query("page") page: Int,
         @Query("size") size: Int,
     ): ResponseModel<BussinesRequestModel>
 
