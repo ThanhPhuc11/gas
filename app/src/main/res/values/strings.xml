@@ -29,7 +29,7 @@
     <string name="text_ok">Đồng ý</string>
     <string name="type_xk">Xuất kho</string>
     <string name="type_ban_le">Bán lẻ</string>
-    <string name="type_ban_le_tdl">Bán lẻ Tổng đại lý</string>
+    <string name="type_ban_le_tdl">Bán Tổng đại lý</string>
     <string name="biometric_negative_button_text">Hủy bỏ</string>
 
     <string name="loading">Đang tải...</string>

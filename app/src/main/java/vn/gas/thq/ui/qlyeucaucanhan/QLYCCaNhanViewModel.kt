@@ -84,11 +84,11 @@ class QLYCCaNhanViewModel(
     }
 
     fun onSearchRetail(
-        status: String?, fromDate: String, toDate: String, offSet: Int
+        status: String?, fromDate: String, toDate: String, page: Int
     ) {
         val staffCode = AppPreferencesHelper(context).userModel.staffCode
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate, offSet, 100)
+            qlycCaNhanRepository.onSearchRetail(status, staffCode, fromDate, toDate, page, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -100,17 +100,17 @@ class QLYCCaNhanViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<BussinesRequestModel>
+                    mLiveData.value = it.listData as MutableList<BussinesRequestModel>
                 }
         }
     }
 
     fun onSearchRetailTDL(
-        status: String?, fromDate: String, toDate: String, offSet: Int
+        status: String?, fromDate: String, toDate: String, page: Int
     ) {
         val staffCode = AppPreferencesHelper(context).userModel.staffCode
         viewModelScope.launch(Dispatchers.Main) {
-            qlycCaNhanRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, offSet, 100)
+            qlycCaNhanRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, page, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }

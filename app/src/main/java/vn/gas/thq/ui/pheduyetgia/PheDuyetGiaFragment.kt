@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.pheduyetgia
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -26,6 +27,7 @@ import vn.gas.thq.ui.retail.ApproveRequestModel
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
+import vn.gas.thq.util.EndlessPageRecyclerViewScrollListener
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
@@ -36,6 +38,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private lateinit var viewModel: PheDuyetGiaViewModel
     private lateinit var adapter: RequestApproveAdapter
     private lateinit var adapterHistory: HistoryAcceptAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private var mListStaff = mutableListOf<UserModel>()
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
     private var mList = mutableListOf<BussinesRequestModel>()
@@ -52,6 +55,10 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var createDate: String? = null
     private var canApproveStatus: String? = null
     private var obj: TransferRetailModel? = null
+
+    private var fromDate: String = ""
+    private var endDate: String = ""
+    private var isReload: Boolean = false
 
     private var soLuong12: Int? = 0
     private var priceKHBH12: Int? = 0
@@ -137,9 +144,12 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 //                    add("Phucdz3")
 //                }
 //            }
-            mList.clear()
+            if (isReload) {
+                mList.clear()
+            }
             mList.addAll(it)
             adapter.notifyDataSetChanged()
+            isReload = false
         })
 
         viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
@@ -218,7 +228,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         adapter = context?.let { RequestApproveAdapter(mList, listStatusOrderSale, it) }!!
         adapter.setClickListener(this)
 
-        val linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         rvRequestApprove.layoutManager = linearLayoutManager
         rvRequestApprove.adapter = adapter
     }
@@ -235,7 +245,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         mArrayList.add(DialogListModel("1", "Bán lẻ"))
-        mArrayList.add(DialogListModel("2", "Bán lẻ Tổng đại lý"))
+        mArrayList.add(DialogListModel("2", "Bán Tổng đại lý"))
         doc.show(
             activity, mArrayList,
             "Loại",
@@ -289,19 +299,32 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun onSearchData(view: View) {
-        var fromDate =
+        setEndLessScrollListener()
+        isReload = true
+        fromDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtStartDate.text.toString()
             )
-        var endDate =
+        endDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate)
+        viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, 0)
+    }
+
+    private fun setEndLessScrollListener() {
+        rvRequestApprove.clearOnScrollListeners()
+        rvRequestApprove.addOnScrollListener(object :
+            EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                Log.e("PHUCDZ", "$totalItemsCount")
+                viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, page)
+            }
+        })
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {
