@@ -18,10 +18,12 @@ import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvTram
 import kotlinx.android.synthetic.main.fragment_detail_ke_hoach.tvTuyenBH
 import kotlinx.android.synthetic.main.fragment_init_ke_hoach.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import org.greenrobot.eventbus.EventBus
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.CustomArrayAdapter
+import vn.gas.thq.event.UpdateEvent
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.kehoachbh.DSKeHoachAdapter
@@ -102,14 +104,16 @@ class DetailKeHoachFragment : BaseFragment() {
         viewModel.callbackDuyetSuccessKHBH.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Phê duyệt yêu cầu thành công") {
                 alertDialog?.dismiss()
-                viewController?.popNFragment(2)
+                EventBus.getDefault().post(UpdateEvent())
+                viewController?.popFragment()
             }
         })
 
         viewModel.callbackTuChoiSuccessKHBH.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Từ chối yêu cầu thành công") {
                 alertDialog?.dismiss()
-                viewController?.popNFragment(2)
+                EventBus.getDefault().post(UpdateEvent())
+                viewController?.popFragment()
             }
         })
 
