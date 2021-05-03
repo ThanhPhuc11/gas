@@ -1,23 +1,25 @@
 package vn.gas.thq.ui.qlyeucauduyetkehoach
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.event.UpdateEvent
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachFragment
-import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
+
 
 class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickListener {
     private lateinit var viewModel: QLYCKeHoachViewModel
@@ -150,5 +152,20 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
             ScreenId.SCREEN_DETAIL_KE_HOACH,
             DetailKeHoachFragment.newInstance(id.toString(), type)
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun onEvent(event: UpdateEvent) {
+        btnSearch.performClick()
     }
 }
