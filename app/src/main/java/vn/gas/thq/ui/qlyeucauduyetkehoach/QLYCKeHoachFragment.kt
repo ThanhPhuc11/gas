@@ -146,7 +146,7 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     override fun onItemClick(view: View?, position: Int) {
         val id = listKHBH[position].planId
         var type = 0
-        if (filterCanApproveStatus(listKHBH[position].canApproveStatus) == 0) return
+//        if (filterCanApproveStatus(listKHBH[position].canApproveStatus) == 0) return
         type = filterCanApproveStatus(listKHBH[position].canApproveStatus)
         viewController?.pushFragment(
             ScreenId.SCREEN_DETAIL_KE_HOACH,

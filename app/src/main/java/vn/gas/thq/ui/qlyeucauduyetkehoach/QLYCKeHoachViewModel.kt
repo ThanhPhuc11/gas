@@ -41,7 +41,7 @@ class QLYCKeHoachViewModel(private val qlycKeHoachRepository: QLYCKeHoachReposit
                 handleError(it)
             }.collect {
                 callbackSuccess.value = Unit
-                callbackListKHBH.value = it as MutableList
+                callbackListKHBH.value = it.listData as MutableList<KHBHOrderModel>
             }
         }
     }

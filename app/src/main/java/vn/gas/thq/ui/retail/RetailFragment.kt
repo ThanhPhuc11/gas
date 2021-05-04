@@ -384,6 +384,10 @@ class RetailFragment : BaseFragment() {
             showMess("Vui lòng chọn khách hàng")
             return
         }
+        if (checkGia() != null) {
+            showMess(checkGia())
+            return
+        }
 //        childViewController?.pushFragment(
 //            ScreenId.SCREEN_RETAIL_STEP_2,
 //            newInstance("STEP_2")
@@ -478,6 +482,29 @@ class RetailFragment : BaseFragment() {
                 viewModel.doRequestRetail(requestInitRetail)
             }
         }
+    }
+
+    private fun checkGia(): String? {
+        if (getRealNumber(productBanKhi12.getEditTextSL()) > 0 && getRealNumber(productBanKhi12.getEditTextGia()) < 1000) {
+            return "Giá khí 12kg bạn đang nhập là ${productBanKhi12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productBanKhi45.getEditTextSL()) > 0 && getRealNumber(productBanKhi45.getEditTextGia()) < 1000) {
+            return "Giá khí 45kg bạn đang nhập là ${productBanKhi45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoBan12.getEditTextSL()) > 0 && getRealNumber(productVoBan12.getEditTextGia()) < 1000) {
+            return "Giá bán vỏ 12kg bạn đang nhập là ${productVoBan12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoBan45.getEditTextSL()) > 0 && getRealNumber(productVoBan45.getEditTextGia()) < 1000) {
+            return "Giá bán vỏ 45kg bạn đang nhập là ${productVoBan45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+
+        if (getRealNumber(productVoMua12.getEditTextSL()) > 0 && getRealNumber(productVoMua12.getEditTextGia()) < 1000) {
+            return "Giá mua vỏ 12kg bạn đang nhập là ${productVoMua12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoMua45.getEditTextSL()) > 0 && getRealNumber(productVoMua45.getEditTextGia()) < 1000) {
+            return "Giá mua vỏ 45kg bạn đang nhập là ${productVoBan45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        return null
     }
 
     private fun chooseCustomer(view: View) {

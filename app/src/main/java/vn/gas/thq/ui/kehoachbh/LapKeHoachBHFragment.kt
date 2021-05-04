@@ -77,6 +77,7 @@ class LapKeHoachBHFragment : BaseFragment(), DSKeHoachAdapter.ItemClickListener 
 
     override fun initData() {
         val user = AppPreferencesHelper(context).userModel
+        tvTram.text = user.shopName
         tvStaff.text = user.name
         tvTuyenBH.text = user.saleLineName
         tvPlanTime.text = AppDateUtils.getTomorrowDate()

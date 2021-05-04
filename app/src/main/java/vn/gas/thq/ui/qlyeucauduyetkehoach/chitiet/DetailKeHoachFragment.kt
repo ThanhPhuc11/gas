@@ -91,6 +91,9 @@ class DetailKeHoachFragment : BaseFragment() {
             btnDuyet.text = "Duyệt giá"
         } else if (option == AppConstants.LEVEL_DUYET_SO_LUONG) {
             btnDuyet.text = "Duyệt số lượng"
+        } else {
+            btnDuyet.visibility = View.GONE
+            btnTuChoi.visibility = View.GONE
         }
         btnDuyet.setOnClickListener(this::duyet)
         btnTuChoi.setOnClickListener(this::showDiaLogReason)
