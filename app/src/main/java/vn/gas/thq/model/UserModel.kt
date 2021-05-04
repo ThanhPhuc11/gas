@@ -14,6 +14,14 @@ class UserModel {
     @Expose
     var staffCode: String? = null
 
+    @SerializedName("shop_name")
+    @Expose
+    var shopName: String? = null
+
+    @SerializedName("shop_id")
+    @Expose
+    var shopId: Int? = null
+
     @SerializedName("sale_line_name")
     @Expose
     var saleLineName: String? = null

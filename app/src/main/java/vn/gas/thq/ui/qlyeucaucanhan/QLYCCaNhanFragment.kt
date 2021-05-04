@@ -690,7 +690,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         if (type == "1") {
             orderId = mList[position].stock_trans_id.toString()
             viewModelThuKho.onDetailRequest(orderId)
-        } else if (type == "2") {
+        } else if (type == "2" || type == "3") {
             orderId = mList[position].order_id.toString()
             viewModel.detailApproveLXBH(orderId)
         }

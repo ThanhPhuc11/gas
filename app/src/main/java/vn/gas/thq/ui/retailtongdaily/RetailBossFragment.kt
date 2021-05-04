@@ -24,7 +24,51 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
+import kotlinx.android.synthetic.main.fragment_retail.*
 import kotlinx.android.synthetic.main.fragment_retail_boss.*
+import kotlinx.android.synthetic.main.fragment_retail_boss.btnCongNo12
+import kotlinx.android.synthetic.main.fragment_retail_boss.btnCongNo45
+import kotlinx.android.synthetic.main.fragment_retail_boss.btnCongNoTien
+import kotlinx.android.synthetic.main.fragment_retail_boss.btnSubmit
+import kotlinx.android.synthetic.main.fragment_retail_boss.edtCustomer
+import kotlinx.android.synthetic.main.fragment_retail_boss.edtGasRemain
+import kotlinx.android.synthetic.main.fragment_retail_boss.edtGasRemainPrice
+import kotlinx.android.synthetic.main.fragment_retail_boss.edtTienThucTe
+import kotlinx.android.synthetic.main.fragment_retail_boss.layoutCustomerInfo
+import kotlinx.android.synthetic.main.fragment_retail_boss.layoutThuHoiStep2
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearBanKhi
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearBanVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearCongNoKH
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearGasRemain
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearGasRemainPrice
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearMuaVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearThuHoiVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.linearTienGasDu
+import kotlinx.android.synthetic.main.fragment_retail_boss.productBanKhi12
+import kotlinx.android.synthetic.main.fragment_retail_boss.productBanKhi45
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoBan12
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoBan45
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoMua12
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoMua45
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoThuHoi12
+import kotlinx.android.synthetic.main.fragment_retail_boss.productVoThuHoi45
+import kotlinx.android.synthetic.main.fragment_retail_boss.radioTienMat
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvAddress
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvCustId
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvCustName
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvLabelBanKhi
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvLabelBanVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvLabelCongNoKH
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvLabelMuaVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvLabelThuHoiVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvPhoneNumber
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienBanVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienGasDu
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienKhi12
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienKhi45
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienMuaVo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTienNo
+import kotlinx.android.synthetic.main.fragment_retail_boss.tvTongTienCanTT
 import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -429,9 +473,13 @@ class RetailBossFragment : BaseFragment() {
         if ("STEP_2" == arguments?.getString("STEP")) {
 
             CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn Bán lẻ?", getString(
+                activity,
+                "Xác nhận",
+                "Bạn có chắc chắn thực hiện bán hàng cho khách hàng ${tvCustName.text}?",
+                getString(
                     R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
+                ),
+                getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
                     val gasRemainModel = GasRemainModel()
@@ -453,6 +501,11 @@ class RetailBossFragment : BaseFragment() {
         }
         if (layoutCustomerInfo.visibility == View.GONE) {
             showMess("Vui lòng chọn khách hàng")
+            return
+        }
+
+        if (checkGia() != null) {
+            showMess(checkGia())
             return
         }
 //        childViewController?.pushFragment(
@@ -542,6 +595,29 @@ class RetailBossFragment : BaseFragment() {
                 viewModel.doRequestRetail(requestInitRetail)
             }
         }
+    }
+
+    private fun checkGia(): String? {
+        if (getRealNumber(productBanKhi12.getEditTextSL()) > 0 && getRealNumber(productBanKhi12.getEditTextGia()) < 1000) {
+            return "Giá khí 12kg bạn đang nhập là ${productBanKhi12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productBanKhi45.getEditTextSL()) > 0 && getRealNumber(productBanKhi45.getEditTextGia()) < 1000) {
+            return "Giá khí 45kg bạn đang nhập là ${productBanKhi45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoBan12.getEditTextSL()) > 0 && getRealNumber(productVoBan12.getEditTextGia()) < 1000) {
+            return "Giá bán vỏ 12kg bạn đang nhập là ${productVoBan12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoBan45.getEditTextSL()) > 0 && getRealNumber(productVoBan45.getEditTextGia()) < 1000) {
+            return "Giá bán vỏ 45kg bạn đang nhập là ${productVoBan45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+
+        if (getRealNumber(productVoMua12.getEditTextSL()) > 0 && getRealNumber(productVoMua12.getEditTextGia()) < 1000) {
+            return "Giá mua vỏ 12kg bạn đang nhập là ${productVoMua12.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        if (getRealNumber(productVoMua45.getEditTextSL()) > 0 && getRealNumber(productVoMua45.getEditTextGia()) < 1000) {
+            return "Giá mua vỏ 45kg bạn đang nhập là ${productVoBan45.getEditTextGia().text}, nhỏ hơn so với quy định.\nKhông cho phép tạo đơn hàng"
+        }
+        return null
     }
 
     private fun chooseCustomer(view: View) {

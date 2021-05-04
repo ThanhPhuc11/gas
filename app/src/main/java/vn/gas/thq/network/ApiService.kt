@@ -230,7 +230,7 @@ interface ApiService {
         @Query("sale_line_code") sale_line_code: String?,
         @Query("offset") offset: Int,
         @Query("size") size: Int
-    ): List<KHBHOrderModel>
+    ): ResponseModel<KHBHOrderModel>
 
     @GET("sale-plans/{Id}")
     suspend fun getDetailKHBH(@Path("Id") Id: String): DetailKHBHModel
