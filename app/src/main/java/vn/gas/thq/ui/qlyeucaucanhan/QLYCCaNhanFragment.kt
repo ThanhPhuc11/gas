@@ -34,6 +34,7 @@ import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.retail.RetailContainerFragment
+import vn.gas.thq.ui.retailtongdaily.RetailContainerBossFragment
 import vn.gas.thq.ui.thukho.RequestDetailModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
 import vn.gas.thq.util.*
@@ -134,7 +135,11 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 //        isRetail = true
         loaiYC = "Bán hàng"
         type = "2"
-        edtRequestType.setText("Bán lẻ")
+        edtRequestType.setText(getString(R.string.type_ban_le))
+        if (ScreenId.SCREEN_RETAIL_BOSS_CONTAINER == arguments?.getString("SCREEN", "")) {
+            type = "3"
+            edtRequestType.setText(getString(R.string.type_ban_le_tdl))
+        }
         viewModel.onGetSaleOrderStatus()
 //        } else {
 //            isRetail = false
@@ -194,6 +199,20 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             if (mDetailRetailData?.status == 8) {
                 viewController?.pushFragment(
                     ScreenId.SCREEN_RETAIL_STEP_2, RetailContainerFragment.newInstance(
+                        "STEP_2", obj
+                    )
+                )
+            } else {
+                showDiglogDetailRetail()
+            }
+        })
+
+        viewModel.detailApproveTDLCallback.observe(viewLifecycleOwner, {
+            mDetailRetailData = it
+            mapListToRetailProduct()
+            if (mDetailRetailData?.status == 8) {
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_RETAIL_STEP_2, RetailContainerBossFragment.newInstance(
                         "STEP_2", obj
                     )
                 )
@@ -343,7 +362,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             voMuaPrice12,
             voMua45,
             voMuaPrice45,
-            null,
+            mDetailRetailData?.amountGasReturn,
+            mDetailRetailData?.feeShip,
             tongTien - mDetailRetailData?.debtAmount!!
         )
     }
@@ -690,9 +710,12 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         if (type == "1") {
             orderId = mList[position].stock_trans_id.toString()
             viewModelThuKho.onDetailRequest(orderId)
-        } else if (type == "2" || type == "3") {
+        } else if (type == "2") {
             orderId = mList[position].order_id.toString()
             viewModel.detailApproveLXBH(orderId)
+        } else if (type == "3") {
+            orderId = mList[position].order_id.toString()
+            viewModel.detailApproveTDLLXBH(orderId)
         }
     }
 }

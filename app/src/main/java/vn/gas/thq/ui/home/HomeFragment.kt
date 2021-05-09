@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.RequestDeviceModel
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.network.ApiService
@@ -90,6 +91,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     override fun initData() {
         viewModel.getUserInfo()
+        viewModel.getUserPermission()
         imgLogout.setOnClickListener {
             CommonUtils.showConfirmDiglog2Button(
                 activity, "Đăng xuất", "Bạn có chắc chắn muốn đăng xuất?", getString(
@@ -173,34 +175,58 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
 
     override fun onItemTopClick(view: View?, id: Int) {
         when (id) {
-            1 -> viewController?.pushFragment(
-                ScreenId.SCREEN_RETAIL_CONTAINER,
-                RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
-            )
-            2 -> viewController?.pushFragment(
-                ScreenId.SCREEN_PHE_DUYET_GIA,
-                PheDuyetGiaFragment.newInstance()
-            )
-            3 -> viewController?.pushFragment(
-                ScreenId.SCREEN_LAP_YC_XUAT_KHO,
-                LapYCXuatKhoFragment.newInstance()
-            )
-            4 -> viewController?.pushFragment(
-                ScreenId.SCREEN_THU_KHO,
-                ThuKhoXuatKhoFragment.newInstance()
-            )
+            1 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_LE_LAP_YEU_CAU" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_RETAIL_CONTAINER,
+                        RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            2 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_XEM_YEU_CAU" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_PHE_DUYET_GIA,
+                        PheDuyetGiaFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            3 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_DAT_YEU_CAU_XUAT_KHO" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_LAP_YC_XUAT_KHO,
+                        LapYCXuatKhoFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            4 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_TU_CHOI_YEU_CAU_XUAT_KHO" || it == "KHO_DUYET_YEU_CAU_XUAT_KHO" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_THU_KHO,
+                        ThuKhoXuatKhoFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
             5 -> viewController?.pushFragment(
                 ScreenId.SCREEN_QLYC_CA_NHAN,
                 QLYCCaNhanFragment.newInstance(ScreenId.HOME_SCREEN)
             )
-            6 -> viewController?.pushFragment(
-                ScreenId.SCREEN_XEM_KHO,
-                XemKhoFragment.newInstance()
-            )
-            7 -> viewController?.pushFragment(
-                ScreenId.SCREEN_KIEM_KE_KHO,
-                KiemKeKhoFragment.newInstance()
-            )
+            6 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_XEM_KHO" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_XEM_KHO,
+                        XemKhoFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            7 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_KIEM_KE" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_KIEM_KE_KHO,
+                        KiemKeKhoFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
             8 -> viewController?.pushFragment(
                 ScreenId.MENU_FULL_SCREEN,
                 MenuFullFragment.newInstance()

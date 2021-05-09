@@ -38,6 +38,14 @@ class ApproveRequestModel {
     @Expose
     var debtAmount: Int? = null
 
+    @SerializedName("gas_return")
+    @Expose
+    var amountGasReturn: Float? = null
+
+    @SerializedName("fee_ship")
+    @Expose
+    var feeShip: Int? = null
+
     @SerializedName("status")
     @Expose
     var status: Int? = null

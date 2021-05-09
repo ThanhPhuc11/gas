@@ -29,6 +29,9 @@ interface ApiService {
     @GET("staffs")
     suspend fun getUsers(): UserModel
 
+    @GET("staffs/permissions")
+    suspend fun getPermission(): List<String>
+
     @FormUrlEncoded
     @POST("staff/oauth/token")
     suspend fun login(
@@ -182,9 +185,22 @@ interface ApiService {
         @Path("orderId") orderId: String?
     ): ApproveRequestModel
 
+
+    //Chi tiet yc TDL
+    @GET("agent-orders/{orderId}")
+    suspend fun detailApproveTDLLXBH(
+        @Path("orderId") orderId: String?
+    ): ApproveRequestModel
+
     //Thuc hien Ban le
     @POST("orders/sale/{orderId}/process")
     suspend fun doRetailLXBH(
+        @Path("orderId") orderId: String?,
+        @Body obj: GasRemainModel
+    )
+
+    @POST("orders/agent/{orderId}/process")
+    suspend fun doRetailTDLLXBH(
         @Path("orderId") orderId: String?,
         @Body obj: GasRemainModel
     )

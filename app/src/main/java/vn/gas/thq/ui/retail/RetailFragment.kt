@@ -25,6 +25,50 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_container_retail.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_retail.*
+import kotlinx.android.synthetic.main.fragment_retail.btnCongNo12
+import kotlinx.android.synthetic.main.fragment_retail.btnCongNo45
+import kotlinx.android.synthetic.main.fragment_retail.btnCongNoTien
+import kotlinx.android.synthetic.main.fragment_retail.btnSubmit
+import kotlinx.android.synthetic.main.fragment_retail.edtCustomer
+import kotlinx.android.synthetic.main.fragment_retail.edtGasRemain
+import kotlinx.android.synthetic.main.fragment_retail.edtGasRemainPrice
+import kotlinx.android.synthetic.main.fragment_retail.edtTienThucTe
+import kotlinx.android.synthetic.main.fragment_retail.layoutCustomerInfo
+import kotlinx.android.synthetic.main.fragment_retail.layoutThuHoiStep2
+import kotlinx.android.synthetic.main.fragment_retail.linearBanKhi
+import kotlinx.android.synthetic.main.fragment_retail.linearBanVo
+import kotlinx.android.synthetic.main.fragment_retail.linearCongNoKH
+import kotlinx.android.synthetic.main.fragment_retail.linearGasRemain
+import kotlinx.android.synthetic.main.fragment_retail.linearGasRemainPrice
+import kotlinx.android.synthetic.main.fragment_retail.linearMuaVo
+import kotlinx.android.synthetic.main.fragment_retail.linearThuHoiVo
+import kotlinx.android.synthetic.main.fragment_retail.linearTienGasDu
+import kotlinx.android.synthetic.main.fragment_retail.productBanKhi12
+import kotlinx.android.synthetic.main.fragment_retail.productBanKhi45
+import kotlinx.android.synthetic.main.fragment_retail.productVoBan12
+import kotlinx.android.synthetic.main.fragment_retail.productVoBan45
+import kotlinx.android.synthetic.main.fragment_retail.productVoMua12
+import kotlinx.android.synthetic.main.fragment_retail.productVoMua45
+import kotlinx.android.synthetic.main.fragment_retail.productVoThuHoi12
+import kotlinx.android.synthetic.main.fragment_retail.productVoThuHoi45
+import kotlinx.android.synthetic.main.fragment_retail.radioTienMat
+import kotlinx.android.synthetic.main.fragment_retail.tvAddress
+import kotlinx.android.synthetic.main.fragment_retail.tvCustId
+import kotlinx.android.synthetic.main.fragment_retail.tvCustName
+import kotlinx.android.synthetic.main.fragment_retail.tvLabelBanKhi
+import kotlinx.android.synthetic.main.fragment_retail.tvLabelBanVo
+import kotlinx.android.synthetic.main.fragment_retail.tvLabelCongNoKH
+import kotlinx.android.synthetic.main.fragment_retail.tvLabelMuaVo
+import kotlinx.android.synthetic.main.fragment_retail.tvLabelThuHoiVo
+import kotlinx.android.synthetic.main.fragment_retail.tvPhoneNumber
+import kotlinx.android.synthetic.main.fragment_retail.tvTienBanVo
+import kotlinx.android.synthetic.main.fragment_retail.tvTienGasDu
+import kotlinx.android.synthetic.main.fragment_retail.tvTienKhi12
+import kotlinx.android.synthetic.main.fragment_retail.tvTienKhi45
+import kotlinx.android.synthetic.main.fragment_retail.tvTienMuaVo
+import kotlinx.android.synthetic.main.fragment_retail.tvTienNo
+import kotlinx.android.synthetic.main.fragment_retail.tvTongTienCanTT
+import kotlinx.android.synthetic.main.fragment_retail_boss.*
 import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -344,6 +388,7 @@ class RetailFragment : BaseFragment() {
             getRealNumber(productVoMua45.getEditTextSL()),
             getRealNumber(productVoMua45.getEditTextGia()),
             null,
+            null,
             tienThucTe
         )
         childViewController?.pushFragment(
@@ -358,9 +403,13 @@ class RetailFragment : BaseFragment() {
         if ("STEP_2" == arguments?.getString("STEP")) {
 
             CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn Bán lẻ?", getString(
+                activity,
+                "Xác nhận",
+                "Bạn có chắc chắn thực hiện bán hàng cho khách hàng ${tvCustName.text}??",
+                getString(
                     R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
+                ),
+                getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
                     val gasRemainModel = GasRemainModel()

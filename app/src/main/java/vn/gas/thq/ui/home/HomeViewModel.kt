@@ -39,6 +39,26 @@ class HomeViewModel(private val homeRepository: HomeRepository, private val cont
         }
     }
 
+    fun getUserPermission() {
+        viewModelScope.launch(Dispatchers.Main) {
+            homeRepository.getUserPermission()
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                    AppPreferencesHelper(context).permission = null
+                }
+                .collect {
+                    AppPreferencesHelper(context).permission = it
+                    callbackSuccess.value = Unit
+
+//                    getGiaNiemYet("1", "GAS12", "1")
+                }
+        }
+    }
+
     fun layGiaNiemYet() {
 //        getGiaNiemYet()
     }

@@ -1,6 +1,5 @@
 package vn.gas.thq.model
 
-import android.os.Parcelable
 import vn.gas.thq.ui.retail.Customer
 import java.io.Serializable
 
@@ -26,6 +25,7 @@ data class TransferRetailModel(
     val voMuaPrice45: Int?,
 
     val gasRemain: Float?,
+    val feeShip: Int?,
 
     val tienThucTe: Int?
 ) : Serializable

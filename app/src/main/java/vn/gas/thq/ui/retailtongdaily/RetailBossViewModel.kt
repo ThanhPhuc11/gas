@@ -76,7 +76,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
 
     fun getGiaNiemYet(customer_id: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.getGiaNiemYet(customer_id, "TANK12", "1")
+            retailRepository.getGiaNiemYet(customer_id, "TANK12", "3")
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -89,7 +89,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
                     giaTANK12.value = it.price
                 }
 
-            retailRepository.getGiaNiemYet(customer_id, "TANK45", "1")
+            retailRepository.getGiaNiemYet(customer_id, "TANK45", "3")
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -163,7 +163,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
     //TODO: STEP 2
     fun doRetailLXBH(orderId: String?, obj: GasRemainModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            retailRepository.doRetailLXBH(orderId, obj)
+            retailRepository.doRetailBossLXBH(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
