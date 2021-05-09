@@ -183,7 +183,7 @@ class KiemKeKhoFragment : BaseFragment(), KKKhoItemAdapter.ItemClickListener {
 
     private fun onSubmit(view: View) {
 //        viewModel.getDataFromShop()
-        if (mNewList.filter { it.quantity != 0f }.isEmpty()) {
+        if (mNewList.filter { it.quantity != 0f && it.quantity != null }.isEmpty()) {
             showMess("Bạn phải nhập ít nhất 1 số lượng kiểm kê")
             return
         }

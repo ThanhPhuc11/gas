@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -195,8 +196,18 @@ class DetailKeHoachFragment : BaseFragment() {
         }
 
         btnDongY.setOnClickListener {
-            tuChoi(edtReason.text.toString())
-            alertDialog?.dismiss()
+            if (TextUtils.isEmpty(edtReason.text.toString())) {
+                CommonUtils.showDiglog1Button(
+                    activity,
+                    "Thông báo",
+                    "Vui lòng nhập lý do từ chối"
+                ) {
+
+                }
+            } else {
+                tuChoi(edtReason.text.toString())
+                alertDialog?.dismiss()
+            }
         }
 
         alertDialog = builder?.create()

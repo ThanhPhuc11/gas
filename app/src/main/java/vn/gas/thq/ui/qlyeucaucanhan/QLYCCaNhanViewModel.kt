@@ -27,6 +27,7 @@ class QLYCCaNhanViewModel(
     val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
     val detailApproveCallback = MutableLiveData<ApproveRequestModel>()
+    val detailApproveTDLCallback = MutableLiveData<ApproveRequestModel>()
     val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
 
     fun onSubmitData(status: String?, fromDate: String, toDate: String, offSet: Int) {
@@ -142,6 +143,25 @@ class QLYCCaNhanViewModel(
                 .collect {
                     callbackSuccess.value = Unit
                     detailApproveCallback.value = it
+                }
+        }
+    }
+
+    fun detailApproveTDLLXBH(orderId: String?) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.detailApproveTDLLXBH(orderId)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    detailApproveTDLCallback.value = it
                 }
         }
     }

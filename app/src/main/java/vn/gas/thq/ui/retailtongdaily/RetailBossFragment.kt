@@ -430,7 +430,7 @@ class RetailBossFragment : BaseFragment() {
                 alertDialog?.dismiss()
                 viewController?.pushFragment(
                     ScreenId.SCREEN_QLYC_CA_NHAN,
-                    QLYCCaNhanFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1)
+                    QLYCCaNhanFragment.newInstance(ScreenId.SCREEN_RETAIL_BOSS_CONTAINER)
                 )
             }
             return
@@ -459,6 +459,7 @@ class RetailBossFragment : BaseFragment() {
             getRealNumber(productVoMua45.getEditTextSL()),
             getRealNumber(productVoMua45.getEditTextGia()),
             gasRemain,
+            tienVanChuyen,
             tienThucTe
         )
         childViewController?.pushFragment(
@@ -587,7 +588,7 @@ class RetailBossFragment : BaseFragment() {
         requestInitRetail.item = listProductRetailModel
         requestInitRetail.payMethod = hinhThucChuyenKhoan
         CommonUtils.showConfirmDiglog2Button(
-            activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu bán lẻ?", getString(
+            activity, "Xác nhận", "Bạn có chắc chắn muốn tạo yêu cầu bán hàng?", getString(
                 R.string.biometric_negative_button_text
             ), getString(R.string.text_ok)
         ) {
@@ -1039,7 +1040,15 @@ class RetailBossFragment : BaseFragment() {
             edtGasRemain.setText(obj.gasRemain.toString())
         }
 
-        edtTienThucTe.setText(obj.tienThucTe?.toString())
+        if (obj.feeShip != null) {
+            tienVanChuyen = obj.feeShip
+            tvGiaCuocVanTai.text = "${CommonUtils.priceWithoutDecimal(obj.feeShip.toDouble())} đ"
+        }
+
+        totalMustPay()
+
+//        tvTongTienCanTT.text = obj.tienThucTe?.toString()
+//        edtTienThucTe.setText(obj.tienThucTe?.toString())
     }
 
     private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {

@@ -6,4 +6,5 @@ import vn.gas.thq.network.ApiService
 
 class HomeRepository(private val apiService: ApiService) : BaseRepository() {
     suspend fun getUserInfo() = flow { emit(apiService.getUsers()) }
+    suspend fun getUserPermission() = flow { emit(apiService.getPermission()) }
 }

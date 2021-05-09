@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import vn.gas.thq.model.NickPassModel;
 import vn.gas.thq.model.TokenModel;
 import vn.gas.thq.model.UserModel;
@@ -14,6 +19,7 @@ import vn.gas.thq.util.AppConstants;
 public class AppPreferencesHelper implements PreferencesHelper {
     // key
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
+    private static final String PREF_KEY_ROLL = "PREF_KEY_ROLL";
     private static final String LOGIN_BIOMETRIC = "LOGIN_BIOMETRIC";
     private static final String OLD_ACCOUNT = "OLD_ACCOUNT";
     private static final String OLD_PASSWORD = "OLD_PASSWORD";
@@ -72,6 +78,21 @@ public class AppPreferencesHelper implements PreferencesHelper {
             mPrefs.edit().putString(PREF_KEY_USER, json).apply();
         } else {
             mPrefs.edit().putString(PREF_KEY_USER, "").apply();
+        }
+    }
+
+    @Override
+    public List<String> getPermission() {
+        Set<String> set = mPrefs.getStringSet(PREF_KEY_ROLL, null);
+        return new ArrayList<>(set);
+    }
+
+    @Override
+    public void setPermission(List<String> list) {
+        if (list != null) {
+            Set<String> set = new HashSet<>();
+            set.addAll(list);
+            mPrefs.edit().putStringSet(PREF_KEY_ROLL, set).apply();
         }
     }
 
