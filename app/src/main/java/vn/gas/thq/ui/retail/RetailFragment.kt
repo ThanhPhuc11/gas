@@ -423,6 +423,14 @@ class RetailFragment : BaseFragment() {
                             productCode = "TANK45_OTHER"
                             amount = getRealNumber(edtSLKhac45)
                         })
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK12"
+                            amount = getRealNumber(edtSLHongHa12)
+                        })
+                        add(ProductNhapKhoModel().apply {
+                            productCode = "TANK45"
+                            amount = getRealNumber(edtSLHongHa45)
+                        })
                     }
                     viewModel.doRetailLXBH(transferRetailModel?.orderId, gasRemainModel)
                 }
