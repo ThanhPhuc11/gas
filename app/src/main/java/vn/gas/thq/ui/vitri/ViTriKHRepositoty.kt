@@ -18,7 +18,7 @@ class ViTriKHRepositoty(private val apiService: ApiService) : BaseRepository() {
     }
 
     suspend fun getAllShop(query: String?) = flow {
-        emit(apiService.getListShop(query))
+        emit(apiService.getListShopByStaff())
     }
 
     suspend fun getSaleLine(query: String?) = flow {

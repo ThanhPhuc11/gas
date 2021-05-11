@@ -32,6 +32,7 @@ class CustomerAdapter(
         holder.tvCustId.text = obj.customerId
         holder.tvCustName.text = obj.name
         holder.tvAddress.text = obj.address
+        holder.tvNVKD.text = obj.staffName
         holder.imgMarker.visibility = if (obj.lat == null) View.GONE else View.VISIBLE
     }
 

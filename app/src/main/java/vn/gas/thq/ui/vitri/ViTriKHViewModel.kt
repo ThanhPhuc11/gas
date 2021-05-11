@@ -33,9 +33,9 @@ class ViTriKHViewModel(private val viTriKHRepositoty: ViTriKHRepositoty) : BaseV
         }
     }
 
-    fun getSaleLine() {
+    fun getSaleLine(shopId: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            viTriKHRepositoty.getSaleLine("")
+            viTriKHRepositoty.getSaleLine("shopId==$shopId")
                 .onStart { callbackStart.value = Unit }
                 .onCompletion { }
                 .catch {
