@@ -362,6 +362,21 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun setValueApproveDetail(type: Int) {
+        soLuong12 = 0
+        priceKHBH12 = 0
+        priceNiemYet12 = 0
+        priceDeXuat12 = 0
+
+        soLuong45 = 0
+        priceKHBH45 = 0
+        priceNiemYet45 = 0
+        priceDeXuat45 = 0
+
+        congNoGiaTang12 = 0
+        congNoGiaTang45 = 0
+        congNoGiaTang = 0
+
+
         mDetailRetailData?.item?.forEach {
             when (type) {
                 1 -> {

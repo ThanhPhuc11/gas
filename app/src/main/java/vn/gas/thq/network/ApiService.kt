@@ -256,6 +256,11 @@ interface ApiService {
         @Query("query") query: String?
     ): List<ShopModel>
 
+    @GET("staffs/shops")
+    suspend fun getListShopByStaff(
+//        @Query("query") query: String?
+    ): List<ShopModel>
+
     @GET("sale-lines")
     suspend fun getListSaleLine(
         @Query("query") query: String?

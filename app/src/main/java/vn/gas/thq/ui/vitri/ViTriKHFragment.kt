@@ -96,7 +96,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
 
     override fun initData() {
         viewModel.getAllShop()
-        viewModel.getSaleLine()
+//        viewModel.getSaleLine()
         initRecyclerView()
         edtTram.setOnClickListener(this::onChooseShop)
         edtTuyenXe.setOnClickListener(this::onChooseTuyen)
@@ -107,6 +107,11 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         viewModel.callbackListShop.observe(viewLifecycleOwner, {
             listTram.clear()
             listTram.addAll(it)
+            if (listTram.size == 1) {
+                shopId = listTram[0].shopId.toString()
+                edtTram.setText(listTram[0].name)
+                viewModel.getSaleLine(shopId!!)
+            }
         })
 
         viewModel.callbackListSaleLine.observe(viewLifecycleOwner, {
@@ -217,7 +222,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
             shopId = item.id
             edtTram.setText(item.name)
         }
-        doc.displayNotSelect()
+//        doc.displayNotSelect()
     }
 
     private fun onChooseTuyen(view: View) {
@@ -265,6 +270,7 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         tvTuyenBH.text = customer.saleLineName
         tvNVKD.text = customer.staffName
         tvAddress.text = customer.address
+        tvVungThiTruong.text = customer.shopArea
 //        tvAddress.text = "${String.format("%.2f", latitude)} : ${String.format("%.2f", longitude)}"
 
         imgClose.setOnClickListener {
