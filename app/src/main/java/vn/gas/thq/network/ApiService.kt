@@ -6,6 +6,7 @@ import vn.gas.thq.service.RegisterDeviceResponse
 import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
+import vn.gas.thq.ui.nghiphep.VacationModel
 import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
@@ -297,4 +298,24 @@ interface ApiService {
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String
     ): List<HistorySangChietModel>
+
+    @GET("vacations")
+    suspend fun getVacation(
+        @Query("staff_id") staff_id: Int,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String
+    ): List<VacationModel>
+
+    @PUT("vacations")
+    suspend fun registerVacation(
+        @Query("staff_id") staff_id: Int,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("reason") reason: String
+    )
+
+    @GET("shops/{shopId}/staffs")
+    suspend fun getStaffByShopId(
+        @Path("shopId") shopId: Int
+    ): List<UserModel>
 }
