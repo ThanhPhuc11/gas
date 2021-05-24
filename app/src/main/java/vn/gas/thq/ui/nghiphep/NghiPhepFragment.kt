@@ -27,7 +27,7 @@ class NghiPhepFragment : BaseFragment() {
     }
 
     override fun initView() {
-        tvTitle.text = "Nhập thành phẩm sau sang chiết"
+        tvTitle.text = "Đăng ký nghỉ"
         imgBack.setOnClickListener {
             viewController?.popFragment()
         }
