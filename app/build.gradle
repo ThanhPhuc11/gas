@@ -8,8 +8,8 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         signkeyGas {
-//            storeFile file('/Users/administrator/Desktop/DATA PROJECT/GasTHQ/app/keyGasThq')
-            storeFile file('D://gas/app/keyGasThq')
+            storeFile file('/Users/administrator/Desktop/DATA PROJECT/GasTHQ/app/keyGasThq')
+//            storeFile file('D://gas/app/keyGasThq')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'
@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 25
-        versionName "1.0.25"
+        versionName "1.1.0"
         flavorDimensions "default"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

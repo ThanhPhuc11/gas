@@ -76,13 +76,13 @@ public class AppDateUtils {
         return null;
     }
 
-    public static boolean validateEndDateGreaterThanStartDate(String sStartDate, String sEndDate) {
+    public static boolean validateEndDateGreaterorEqualThanStartDate(String sStartDate, String sEndDate) {
         try {
             if (sStartDate.length() > 0 && sEndDate.length() > 0) {
-                Date startDate = AppDateUtils.convertStringDateToDate(sStartDate, AppDateUtils.FORMAT_2);
-                Date endDate = AppDateUtils.convertStringDateToDate(sEndDate, AppDateUtils.FORMAT_2);
+                Date startDate = AppDateUtils.convertStringDateToDate(sStartDate, AppDateUtils.FORMAT_5);
+                Date endDate = AppDateUtils.convertStringDateToDate(sEndDate, AppDateUtils.FORMAT_5);
                 //"endDate is after startDate
-                if (endDate.compareTo(startDate) > 0) {
+                if (endDate.compareTo(startDate) >= 0) {
                     return true;
                 } else if (endDate.compareTo(startDate) < 0) {
                     return false;

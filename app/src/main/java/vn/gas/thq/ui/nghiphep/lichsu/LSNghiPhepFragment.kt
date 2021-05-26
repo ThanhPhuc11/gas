@@ -139,7 +139,9 @@ class LSNghiPhepFragment : BaseFragment() {
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.getVacation(staffId!!, fromDate, endDate)
+        if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
+            viewModel.getVacation(staffId!!, fromDate, endDate)
+        }
     }
 
     private fun initRecyclerView() {

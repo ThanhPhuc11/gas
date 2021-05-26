@@ -19,17 +19,20 @@ class VacationAdapter(private val listVacation: MutableList<VacationModel>) :
 
     override fun onBindViewHolder(holder: VacationViewHolder, position: Int) {
         val obj = listVacation[position]
-        "${
-            AppDateUtils.changeDateFormat(
-                AppDateUtils.FORMAT_6,
-                AppDateUtils.FORMAT_7, obj.fromDate
-            )
-        }\n${
-            AppDateUtils.changeDateFormat(
-                AppDateUtils.FORMAT_6,
-                AppDateUtils.FORMAT_7, obj.toDate
-            )
-        }".also { holder.itemBinding.tvDate.text = it }
+        val fromDate = AppDateUtils.changeDateFormat(
+            AppDateUtils.FORMAT_6,
+            AppDateUtils.FORMAT_5, obj.fromDate
+        )
+        val endDate = AppDateUtils.changeDateFormat(
+            AppDateUtils.FORMAT_6,
+            AppDateUtils.FORMAT_5, obj.toDate
+        )
+        if (fromDate != endDate) {
+            "$fromDate\n$endDate".also { holder.itemBinding.tvDate.text = it }
+        } else {
+            endDate.also { holder.itemBinding.tvDate.text = it }
+        }
+
         holder.itemBinding.tvStaffName.text = obj.staffName
         holder.itemBinding.tvReason.text = obj.reason
         holder.itemBinding.tvRegisterDate.text = AppDateUtils.changeDateFormat(

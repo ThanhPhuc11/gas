@@ -496,6 +496,38 @@
                                 android:textColor="@color/blue_2C5181"
                                 android:textSize="14sp" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingStart="18dp"
+                                android:text="Ngày hẹn trả"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/blue_3D4E63"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:layout_width="160dp"
+                                android:layout_height="36dp"
+                                android:layout_marginEnd="20dp"
+                                android:background="@drawable/bg_border_nomal_1"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:drawableTint="@color/blue_2C5181"
+                                android:inputType="number"
+                                android:paddingEnd="13dp"
+                                android:textAlignment="center"
+                                android:textColor="@color/blue_2C5181"
+                                android:textSize="14sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -819,7 +851,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="0dp"
@@ -845,13 +878,77 @@
                             android:textColor="@color/blue_2C5181"
                             android:textSize="14sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical|right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="18dp"
+                            android:text="Tiền mặt KH TT"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/blue_3D4E63"
+                            android:textSize="14sp" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/edtTienMat"
+                            android:layout_width="160dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/bg_border_nomal_1"
+                            android:completionThreshold="1"
+                            android:inputType="number"
+                            android:maxLength="11"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/blue_2C5181"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical|right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="18dp"
+                            android:text="Tiền chuyển khoản KH TT"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/blue_3D4E63"
+                            android:textSize="14sp" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/edtTienChuyenKhoan"
+                            android:layout_width="160dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/bg_border_nomal_1"
+                            android:completionThreshold="1"
+                            android:inputType="number"
+                            android:maxLength="11"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/blue_2C5181"
+                            android:textSize="14sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/gray_E7E7E7" />
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="2dp"-->
+            <!--                android:background="@color/gray_E7E7E7" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -859,7 +956,8 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_11sdp"
                 android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:paddingBottom="@dimen/_15sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -899,7 +997,8 @@
                 android:layout_marginTop="8dp"
                 android:text="Lịch sử phê duyệt/Từ chối"
                 android:textColor="@color/blue_2C5181"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
