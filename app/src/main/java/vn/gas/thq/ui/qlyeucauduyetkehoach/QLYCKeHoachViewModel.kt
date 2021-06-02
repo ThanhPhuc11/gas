@@ -9,10 +9,45 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.ui.vitri.SaleLineModel
+import vn.gas.thq.ui.vitri.ShopModel
 
 class QLYCKeHoachViewModel(private val qlycKeHoachRepository: QLYCKeHoachRepository) :
     BaseViewModel() {
+    val callbackListShop = MutableLiveData<MutableList<ShopModel>>()
+    val callbackListSaleLine = MutableLiveData<MutableList<SaleLineModel>>()
     val callbackListKHBH = MutableLiveData<MutableList<KHBHOrderModel>>()
+
+    fun getAllShop() {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycKeHoachRepository.getAllShop()
+                .onStart { callbackStart.value = Unit }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackListShop.value = it as MutableList
+                }
+        }
+    }
+
+    fun getSaleLine(shopId: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycKeHoachRepository.getSaleLine("shopId==$shopId")
+                .onStart { callbackStart.value = Unit }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackListSaleLine.value = it as MutableList
+                }
+        }
+    }
+
     fun getKeHoachBH(
         status: Int?,
         from_date: String,

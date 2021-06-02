@@ -1,12 +1,8 @@
 package vn.gas.thq.ui.login
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import vn.gas.thq.MainActivity
@@ -16,7 +12,6 @@ import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.NickPassModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.LoginRetrofitBuilder
-import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.main.MainFragment
 import vn.gas.thq.ui.sharedviewmodel.TokenSharedViewModel
 import vn.gas.thq.util.ScreenId

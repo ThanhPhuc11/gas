@@ -210,7 +210,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
                 else showMess("Nhân viên không có quyền truy cập")
             }
             13 -> {
-                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_LE_LAP_YEU_CAU" } != null)
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DL_LAP_YEU_CAU" } != null)
                     viewController?.pushFragment(
                         ScreenId.SCREEN_RETAIL_BOSS_CONTAINER,
                         RetailContainerBossFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
@@ -218,13 +218,12 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
                 else showMess("Nhân viên không có quyền truy cập")
             }
             14 -> {
-//                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_NHAP_THANH_PHAM_SANG_CHIET" } != null)
-//                    viewController?.pushFragment(
-//                        ScreenId.SCREEN_SANG_CHIET,
-//                        SangChietFragment.newInstance()
-//                    )
-//                else showMess("Nhân viên không có quyền truy cập")
-                viewController?.pushFragment(ScreenId.SCREEN_DANG_KY_NGHI, NghiPhepFragment.newInstance())
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DIEM_DANH" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_DANG_KY_NGHI,
+                        NghiPhepFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
             }
             100 -> {
                 viewController?.popAllFragment()

@@ -6,6 +6,7 @@ public final class AppConstants {
 
     public static final String EXTRA_KEY1 = "EXTRA_KEY1";
     public static final String EXTRA_KEY2 = "EXTRA_KEY2";
+    public static final String NOTIFI_TYPE = "NOTIFI_TYPE";
     public static final String EXTRA_KEY_CUSTOMER_MODEL = "EXTRA_KEY_CUSTOMER_MODEL";
 
     public static final String TAB_KEY = "TAB_KEY";

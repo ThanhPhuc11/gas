@@ -18,11 +18,12 @@
         android:textSize="@dimen/text_14sp" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edtTram"
+        android:id="@+id/edtStaff"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:background="@drawable/bg_border_nomal"
         android:drawableEnd="@drawable/ic_arrow_down"
+        android:enabled="false"
         android:focusable="false"
         android:paddingHorizontal="13dp"
         android:singleLine="true"

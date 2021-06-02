@@ -1,14 +1,17 @@
 package vn.gas.thq
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -18,7 +21,9 @@ import vn.gas.thq.model.ExpriteEventModel
 import vn.gas.thq.ui.downloadApk.ApkDialog
 import vn.gas.thq.ui.downloadApk.NeedUpgradeApkEvent
 import vn.gas.thq.ui.login.LoginFragment
+import vn.gas.thq.ui.main.IntentShareViewModel
 import vn.gas.thq.ui.main.MainFragment
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.ScreenId
 import vn.gas.thq.util.ViewController
 import vn.hongha.ga.R
@@ -26,7 +31,7 @@ import vn.hongha.ga.R
 
 open class MainActivity : BaseActivity() {
     override lateinit var viewController: ViewController
-    lateinit var userDefinedColorName: String
+    private lateinit var intentShareViewModel: IntentShareViewModel
     private var doubleBackToExitPressedOnce = false
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -53,8 +58,18 @@ open class MainActivity : BaseActivity() {
 //            "Login", LoginFragment.newInstance(), R.id.flContainer, supportFragmentManager
 //        )
         viewController.pushFragment(ScreenId.SCREEN_LOGIN, LoginFragment.newInstance())
+        intentShareViewModel = ViewModelProviders.of(this).get(IntentShareViewModel::class.java)
 
         checkPermissions()
+        intentShareViewModel.callbackFirebaseType.value =
+            intent?.extras?.getString(AppConstants.NOTIFI_TYPE)
+
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intentShareViewModel.callbackFirebaseType.value =
+            intent?.extras?.getString(AppConstants.NOTIFI_TYPE)
     }
 
     var permissions = arrayOf<String>(
@@ -124,7 +139,7 @@ open class MainActivity : BaseActivity() {
                 } catch (e: Exception) {
                 }
             }
-            var vName ="";
+            var vName = "";
             try {
                 var s = event.url
                 val f = s.lastIndexOf("v")
@@ -135,7 +150,7 @@ open class MainActivity : BaseActivity() {
             }
             apkD = ApkDialog(
                 this,
-                "Đã có phiên bản mới "+vName+" \n\nVui lòng thực thực hiện nâng cấp phiên bản mới!",
+                "Đã có phiên bản mới " + vName + " \n\nVui lòng thực thực hiện nâng cấp phiên bản mới!",
                 event.url
             )
             apkD!!.show()
