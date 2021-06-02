@@ -26,6 +26,7 @@ class DKNghiPhepFragment : BaseFragment() {
     private var listStaff = mutableListOf<UserModel>()
     private var staffId: Int? = 0
     private var staffName: String = ""
+
     companion object {
         @JvmStatic
         fun newInstance() = DKNghiPhepFragment()
@@ -81,8 +82,9 @@ class DKNghiPhepFragment : BaseFragment() {
         if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DIEM_DANH_HO" } != null) {
             AppPreferencesHelper(context).userModel.shopId?.let { viewModel.getStaffFromShopId(it) }
             edtStaff.isClickable = true
+            edtStaff.isEnabled = true
         } else {
-            showMess("Nhân viên không có quyền truy cập")
+//            showMess("Nhân viên không có quyền truy cập")
         }
 
         edtStaff.setOnClickListener(this::onChoose)
@@ -138,9 +140,7 @@ class DKNghiPhepFragment : BaseFragment() {
             )
 
         if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
-            if (!TextUtils.isEmpty(edtLyDo.text)) {
-                viewModel.registerVacation(1, fromDate, endDate, edtLyDo.text.toString())
-            }
+            viewModel.registerVacation(staffId!!, fromDate, endDate, edtLyDo.text.toString())
         }
 
     }

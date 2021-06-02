@@ -1,9 +1,11 @@
 package vn.gas.thq.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.*
 import vn.gas.thq.MainActivity
@@ -21,7 +23,6 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
     lateinit var homeFragment: HomeFragment
     lateinit var retailFragment: RetailFragment
     lateinit var quanLyYeuCauDuyetGiaFragment: QuanLyYeuCauDuyetGiaFragment
-//    lateinit var homeFragment: HomeFragment
 
     companion object {
         fun newInstance(): MainFragment {
@@ -71,11 +72,17 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
             }
             R.id.navigation_buy -> {
 //                pushToTab(retailFragment)
-                viewController?.pushFragment(ScreenId.SCREEN_RETAIL_CONTAINER, RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null))
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_RETAIL_CONTAINER,
+                    RetailContainerFragment.newInstance(ScreenId.SCREEN_RETAIL_STEP_1, null)
+                )
             }
             R.id.navigation_setting -> {
 //                pushToTab(quanLyYeuCauDuyetGiaFragment)
-                viewController?.pushFragment(ScreenId.SCREEN_THU_KHO, ThuKhoXuatKhoFragment.newInstance())
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_THU_KHO,
+                    ThuKhoXuatKhoFragment.newInstance()
+                )
             }
             R.id.navigation_other -> {
             }
@@ -94,7 +101,7 @@ class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelect
         val transaction =
             fragmentManager?.beginTransaction()
         if (fragmentManager?.findFragmentByTag(fragment.tag)?.javaClass?.name == fragment.tag) {
-            for (fragment in fragmentManager!!.fragments) {
+            for (fragment in requireFragmentManager().fragments) {
                 if (fragment.isVisible)
                     transaction?.hide(fragment)
             }

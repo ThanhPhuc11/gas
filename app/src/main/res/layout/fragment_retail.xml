@@ -852,7 +852,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center_vertical|right"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <TextView
                             android:layout_width="0dp"

@@ -4,7 +4,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_cap_nhat_vi_tri.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.*
+import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.btnSearch
+import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.edtTram
+import kotlinx.android.synthetic.main.fragment_qlyc_ke_hoach.edtTuyenXe
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -15,10 +19,16 @@ import vn.gas.thq.event.UpdateEvent
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKeHoachFragment
+import vn.gas.thq.ui.vitri.SaleLineModel
+import vn.gas.thq.ui.vitri.ShopModel
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.ScreenId
+import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
+import java.util.ArrayList
 
 
 class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickListener {
@@ -27,7 +37,12 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     private var staffCode: String? = null
     private var shopCode: String? = null
     private var listKHBH = mutableListOf<KHBHOrderModel>()
+    private var listTram = mutableListOf<ShopModel>()
+    private var listSaleLine = mutableListOf<SaleLineModel>()
     private lateinit var adapterKHBH: RequestItemKHBHAdapter
+
+    private var shopId: String? = null
+    private var saleLineId: String? = null
 
     companion object {
         @JvmStatic
@@ -62,6 +77,9 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     }
 
     override fun initData() {
+        viewModel.getAllShop()
+        edtTram.setOnClickListener(this::onChooseShop)
+        edtTuyenXe.setOnClickListener(this::onChooseTuyen)
         edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
@@ -82,6 +100,21 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
     }
 
     override fun initObserver() {
+        viewModel.callbackListShop.observe(viewLifecycleOwner, {
+            listTram.clear()
+            listTram.addAll(it)
+            if (listTram.size == 1) {
+                shopId = listTram[0].shopId.toString()
+                edtTram.setText(listTram[0].name)
+                viewModel.getSaleLine(shopId!!)
+            }
+        })
+
+        viewModel.callbackListSaleLine.observe(viewLifecycleOwner, {
+            listSaleLine.clear()
+            listSaleLine.addAll(it)
+        })
+
         viewModel.callbackListKHBH.observe(viewLifecycleOwner, {
             listKHBH.clear()
             listKHBH.addAll(it)
@@ -128,6 +161,52 @@ class QLYCKeHoachFragment : BaseFragment(), RequestItemKHBHAdapter.ItemClickList
                 edtEndDate.text.toString()
             )
         viewModel.getKeHoachBH(status, fromDate, endDate, staffCode, shopCode, null, 0, 1000)
+    }
+
+    private fun onChooseShop(view: View) {
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
+        listTram.forEach {
+            mArrayList.add(DialogListModel(it.shopId.toString(), it.name))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Trạm",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                shopId = null
+                edtTram.setText("")
+                return@show
+            }
+            shopId = item.id
+            edtTram.setText(item.name)
+        }
+//        doc.displayNotSelect()
+    }
+
+    private fun onChooseTuyen(view: View) {
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
+        listSaleLine.forEach {
+            mArrayList.add(DialogListModel(it.saleLineId.toString(), it.name))
+        }
+
+        doc.show(
+            activity, mArrayList,
+            "Tuyến xe",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                saleLineId = null
+                edtTuyenXe.setText("")
+                return@show
+            }
+            saleLineId = item.id
+            edtTuyenXe.setText(item.name)
+        }
+        doc.displayNotSelect()
     }
 
     private fun filterCanApproveStatus(canApproveStatus: String): Int {
