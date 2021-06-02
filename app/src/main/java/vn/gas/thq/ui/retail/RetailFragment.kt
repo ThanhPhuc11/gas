@@ -644,21 +644,6 @@ class RetailFragment : BaseFragment() {
             totalDebit()
         })
 
-//        bankhi.getEditTextGia().addTextChangedListener(afterTextChanged = {
-//            val slBanKhi = getRealNumber(bankhi.getEditTextSL())
-//            val giaBanKhi = getRealNumberV2(it)
-//            tienKhiBan.text =
-//                "${CommonUtils.priceWithoutDecimal((slBanKhi * giaBanKhi).toDouble())} đ"
-//
-//            if (tienKhiBan == tvTienKhi12) {
-//                tienKhiBan12 = slBanKhi * giaBanKhi
-//            } else {
-//                tienKhiBan45 = slBanKhi * giaBanKhi
-//            }
-//            totalMustPay()
-//            totalDebit()
-//        })
-
         bankhi.getEditTextGia().setAdapter(suggestAdapter)
         bankhi.getEditTextGia().addTextChangedListener(
             NumberTextWatcher(bankhi.getEditTextGia(), suggestAdapter, object : CallBackChange {

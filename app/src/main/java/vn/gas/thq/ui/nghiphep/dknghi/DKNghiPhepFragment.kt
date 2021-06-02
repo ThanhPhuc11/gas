@@ -141,6 +141,8 @@ class DKNghiPhepFragment : BaseFragment() {
 
         if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
             viewModel.registerVacation(staffId!!, fromDate, endDate, edtLyDo.text.toString())
+        } else {
+            showMess("Từ ngày không được lớn hơn Đến ngày")
         }
 
     }

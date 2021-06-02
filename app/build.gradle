@@ -53,6 +53,10 @@ android {
                         def name = "gas-hq-product-v${variant.versionName}.apk"
                         output.outputFileName = name
                         break
+                    case "banle":
+                        def name = "gas-hq-banle-v${variant.versionName}.apk"
+                        output.outputFileName = name
+                        break
                     default:
                         def name = "gas-hq-v${variant.versionName}.apk"
                         output.outputFileName = name
@@ -82,6 +86,10 @@ android {
         product {
             manifestPlaceholders = [app_name: "@string/app_name"]
             buildConfigField 'String', 'BASE_URL', '"https://thq-gas.duckdns.org:8090/thq-gas/"'
+        }
+        banle {
+            manifestPlaceholders = [app_name: "@string/app_name_banle_version"]
+            buildConfigField 'String', 'BASE_URL', '"https://thq-gas.duckdns.org:8092/thq-gas/"'
         }
     }
     kotlinOptions {

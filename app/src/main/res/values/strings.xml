@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Gas THQ</string>
     <string name="app_name_dev_version">Gas DEV</string>
+    <string name="app_name_banle_version">Gas BanLe</string>
 
     <string name="not_select">-- Chọn --</string>
     <!-- TODO: Remove or change this placeholder text -->
