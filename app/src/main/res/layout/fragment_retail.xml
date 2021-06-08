@@ -516,17 +516,18 @@
                                 android:textSize="14sp" />
 
                             <EditText
+                                android:id="@+id/edtExpireDate"
                                 android:layout_width="160dp"
                                 android:layout_height="36dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/bg_border_nomal_1"
                                 android:drawableEnd="@drawable/ic_calendar"
-                                android:drawableTint="@color/blue_2C5181"
-                                android:inputType="number"
+                                android:focusable="false"
                                 android:paddingEnd="13dp"
                                 android:textAlignment="center"
                                 android:textColor="@color/blue_2C5181"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                app:drawableTint="@color/blue_2C5181" />
                         </LinearLayout>
                     </LinearLayout>
 

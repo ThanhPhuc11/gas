@@ -32,4 +32,12 @@ class RequestInitRetail {
     @SerializedName("item")
     @Expose
     var item: List<ProductRetailModel>? = null
+
+    @SerializedName("paid_amounts")
+    @Expose
+    var paidAmounts: List<PaidAmoutModel>? = null
+
+    @SerializedName("debt_expire_date")
+    @Expose
+    var debtExpireDate: String? = null
 }

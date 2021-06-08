@@ -137,7 +137,7 @@ interface ApiService {
     @POST("customers/{customerId}/coordinate")
     suspend fun updateToaDoKH(@Path("customerId") customerId: String?, @Body toaDo: ToaDoModel)
 
-    @POST("orders/sale")
+    @POST("sale-orders")
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
 
     @POST("agent-orders")

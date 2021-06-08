@@ -23,51 +23,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_container_retail.*
+import kotlinx.android.synthetic.main.fragment_dang_ky_nghi.*
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
 import kotlinx.android.synthetic.main.fragment_retail.*
-import kotlinx.android.synthetic.main.fragment_retail.btnCongNo12
-import kotlinx.android.synthetic.main.fragment_retail.btnCongNo45
-import kotlinx.android.synthetic.main.fragment_retail.btnCongNoTien
-import kotlinx.android.synthetic.main.fragment_retail.btnSubmit
-import kotlinx.android.synthetic.main.fragment_retail.edtCustomer
-import kotlinx.android.synthetic.main.fragment_retail.edtGasRemain
-import kotlinx.android.synthetic.main.fragment_retail.edtGasRemainPrice
-import kotlinx.android.synthetic.main.fragment_retail.edtTienThucTe
-import kotlinx.android.synthetic.main.fragment_retail.layoutCustomerInfo
-import kotlinx.android.synthetic.main.fragment_retail.layoutThuHoiStep2
-import kotlinx.android.synthetic.main.fragment_retail.linearBanKhi
-import kotlinx.android.synthetic.main.fragment_retail.linearBanVo
-import kotlinx.android.synthetic.main.fragment_retail.linearCongNoKH
-import kotlinx.android.synthetic.main.fragment_retail.linearGasRemain
-import kotlinx.android.synthetic.main.fragment_retail.linearGasRemainPrice
-import kotlinx.android.synthetic.main.fragment_retail.linearMuaVo
-import kotlinx.android.synthetic.main.fragment_retail.linearThuHoiVo
-import kotlinx.android.synthetic.main.fragment_retail.linearTienGasDu
-import kotlinx.android.synthetic.main.fragment_retail.productBanKhi12
-import kotlinx.android.synthetic.main.fragment_retail.productBanKhi45
-import kotlinx.android.synthetic.main.fragment_retail.productVoBan12
-import kotlinx.android.synthetic.main.fragment_retail.productVoBan45
-import kotlinx.android.synthetic.main.fragment_retail.productVoMua12
-import kotlinx.android.synthetic.main.fragment_retail.productVoMua45
-import kotlinx.android.synthetic.main.fragment_retail.productVoThuHoi12
-import kotlinx.android.synthetic.main.fragment_retail.productVoThuHoi45
-import kotlinx.android.synthetic.main.fragment_retail.radioTienMat
-import kotlinx.android.synthetic.main.fragment_retail.tvAddress
-import kotlinx.android.synthetic.main.fragment_retail.tvCustId
-import kotlinx.android.synthetic.main.fragment_retail.tvCustName
-import kotlinx.android.synthetic.main.fragment_retail.tvLabelBanKhi
-import kotlinx.android.synthetic.main.fragment_retail.tvLabelBanVo
-import kotlinx.android.synthetic.main.fragment_retail.tvLabelCongNoKH
-import kotlinx.android.synthetic.main.fragment_retail.tvLabelMuaVo
-import kotlinx.android.synthetic.main.fragment_retail.tvLabelThuHoiVo
-import kotlinx.android.synthetic.main.fragment_retail.tvPhoneNumber
-import kotlinx.android.synthetic.main.fragment_retail.tvTienBanVo
-import kotlinx.android.synthetic.main.fragment_retail.tvTienGasDu
-import kotlinx.android.synthetic.main.fragment_retail.tvTienKhi12
-import kotlinx.android.synthetic.main.fragment_retail.tvTienKhi45
-import kotlinx.android.synthetic.main.fragment_retail.tvTienMuaVo
-import kotlinx.android.synthetic.main.fragment_retail.tvTienNo
-import kotlinx.android.synthetic.main.fragment_retail.tvTongTienCanTT
 import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -76,7 +34,6 @@ import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
 import vn.gas.thq.model.ProductRetailModel
-import vn.gas.thq.model.ProductShopModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -112,7 +69,11 @@ class RetailFragment : BaseFragment() {
     private var tienVoMua45 = 0
     private var tongTien = 0
     private var tienNo = 0
-    private var tienThucTe = 0
+
+    //    private var tienThucTe = 0
+    private var tienMatTT = 0
+    private var tienCKTT = 0
+
     private var gasRemain = 0f
     private var gasPrice = 0
 
@@ -269,9 +230,12 @@ class RetailFragment : BaseFragment() {
         tvLabelBanKhi.setOnClickListener { this.expand(tvLabelBanKhi, linearBanKhi) }
         tvLabelCongNoKH.setOnClickListener { this.expand(tvLabelCongNoKH, linearCongNoKH) }
 
-        //        mList.add("34");
-//        mList.add("340");
-//        mList.add("3400");
+        edtExpireDate.setOnClickListener {
+            CommonUtils.showCalendarDialog(
+                context,
+                edtExpireDate.text.toString()
+            ) { strDate -> edtExpireDate.setText(strDate) }
+        }
 
 //        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
@@ -306,40 +270,44 @@ class RetailFragment : BaseFragment() {
                 hinhThucChuyenKhoan = if (radioTienMat.isChecked) 1 else 2
             }
         }
-        edtTienThucTe.addTextChangedListener(
+//        edtTienThucTe.addTextChangedListener(
+//            NumberTextWatcher(
+//                edtTienThucTe,
+//                suggestAdapter2,
+//                object : CallBackChange {
+//                    override fun afterEditTextChange(it: Editable?) {
+//                        tienThucTe = getRealNumberV2(it)
+//                        totalDebit()
+//                    }
+//                })
+//        )
+
+        edtTienMat.addTextChangedListener(
             NumberTextWatcher(
-                edtTienThucTe,
+                edtTienMat,
                 suggestAdapter2,
                 object : CallBackChange {
                     override fun afterEditTextChange(it: Editable?) {
-                        tienThucTe = getRealNumberV2(it)
+                        tienMatTT = getRealNumberV2(it)
                         totalDebit()
                     }
                 })
         )
 
-//        edtTienThucTe.setOnFocusChangeListener { v, hasFocus ->
-//            if (!hasFocus) {
-//                edtTienThucTe.setText("${edtTienThucTe.text}000")
-//            }
-//        }
+        edtTienChuyenKhoan.addTextChangedListener(
+            NumberTextWatcher(
+                edtTienChuyenKhoan,
+                suggestAdapter2,
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        tienCKTT = getRealNumberV2(it)
+                        totalDebit()
+                    }
+                })
+        )
 
-        edtTienThucTe.setAdapter(suggestAdapter2)
+//        edtTienThucTe.setAdapter(suggestAdapter2)
 
-//        edtGasRemain.addTextChangedListener(
-//            NumberTextWatcher(
-//                edtGasRemain,
-//                suggestAdapter,
-//                object : CallBackChange {
-//                    override fun afterEditTextChange(it: Editable?) {
-//                        gasRemain = getRealNumberV2(it)
-//                        totalGasPrice(
-//                            getRealNumber(productBanKhi12.getEditTextGia()),
-//                            getRealNumber(productBanKhi45.getEditTextGia())
-//                        )
-//                    }
-//                })
-//        )
         edtGasRemain.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 1))
         edtGasRemain.addTextChangedListener(afterTextChanged = {
             gasRemain = getRealNumberFloat(it)
@@ -388,7 +356,7 @@ class RetailFragment : BaseFragment() {
             getRealNumber(productVoMua45.getEditTextGia()),
             null,
             null,
-            tienThucTe
+            null,
         )
         childViewController?.pushFragment(
             ScreenId.SCREEN_RETAIL_STEP_2,
@@ -444,16 +412,16 @@ class RetailFragment : BaseFragment() {
             showMess(checkGia())
             return
         }
-//        childViewController?.pushFragment(
-//            ScreenId.SCREEN_RETAIL_STEP_2,
-//            newInstance("STEP_2")
-//        )
-//        (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
         val requestInitRetail = RequestInitRetail()
         requestInitRetail.customerId = custId?.toInt()
         requestInitRetail.debit = tienNo
         requestInitRetail.lat = latitude.toFloat()
         requestInitRetail.lng = longitude.toFloat()
+        requestInitRetail.debtExpireDate = AppDateUtils.changeDateFormatV2(
+            AppDateUtils.FORMAT_2,
+            AppDateUtils.FORMAT_6,
+            edtExpireDate.text.toString()
+        )
         val listProductRetailModel = mutableListOf<ProductRetailModel>()
         listProductRetailModel.add(
             ProductRetailModel(
@@ -520,11 +488,21 @@ class RetailFragment : BaseFragment() {
             )
         )
         requestInitRetail.item = listProductRetailModel
-        requestInitRetail.payMethod = hinhThucChuyenKhoan
+//        requestInitRetail.payMethod = hinhThucChuyenKhoan
+        val listTienCK = mutableListOf<PaidAmoutModel>()
+        listTienCK.add(PaidAmoutModel().apply {
+            amount = tienMatTT
+            pay_method = 1
+        })
+        listTienCK.add(PaidAmoutModel().apply {
+            amount = tienCKTT
+            pay_method = 2
+        })
+        requestInitRetail.paidAmounts = listTienCK
         CommonUtils.showConfirmDiglog2Button(
             activity,
             "Xác nhận",
-            "KH đã thanh toán ${CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())} đ \nvà đang nợ ${
+            "KH đã thanh toán ${CommonUtils.priceWithoutDecimal((tienMatTT + tienCKTT).toDouble())} đ \nvà đang nợ ${
                 CommonUtils.priceWithoutDecimal(
                     tienNo.toDouble()
                 )
@@ -810,17 +788,13 @@ class RetailFragment : BaseFragment() {
         )
     }
 
+    //TODO: Tổng tiền KH cần thanh toán
     private fun totalMustPay() {
         tongTien =
             tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45) - gasPrice
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
-        edtTienThucTe.setText(tongTien.toString())
+        edtTienMat.setText(tongTien.toString())
     }
-
-//    private fun realPay() {
-//        tienThucTe = tongTien - tienNo
-//        btnTienThucTe.text = CommonUtils.priceWithoutDecimal(tienThucTe.toDouble())
-//    }
 
     private fun totalGasPrice(khiPrice12: Int, khiPrice45: Int) {
         var giaKhi = khiPrice45 / 45
@@ -839,7 +813,7 @@ class RetailFragment : BaseFragment() {
 
     }
 
-    fun lamTronGasPrice(oldTongTien: String): Int {
+    private fun lamTronGasPrice(oldTongTien: String): Int {
         if (oldTongTien.toInt() < 500) return 0
         else {
             val hangNghin = oldTongTien.toInt() / 1000
@@ -853,7 +827,8 @@ class RetailFragment : BaseFragment() {
     }
 
     private fun totalDebit() {
-        tienNo = if (tongTien - tienThucTe > 0) (tongTien - tienThucTe) else 0
+        tienNo =
+            if (tongTien - (tienMatTT + tienCKTT) > 0) (tongTien - (tienMatTT + tienCKTT)) else 0
         btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
         tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
     }
