@@ -29,7 +29,7 @@ class RequestInitRetail {
     @Expose
     var payMethod: Int? = 1
 
-    @SerializedName("item")
+    @SerializedName("items")
     @Expose
     var item: List<ProductRetailModel>? = null
 
