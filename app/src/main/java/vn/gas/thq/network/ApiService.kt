@@ -181,7 +181,7 @@ interface ApiService {
     )
 
 
-    @GET("orders/sale/{orderId}")
+    @GET("sale-orders/{orderId}")
     suspend fun detailApproveLXBH(
         @Path("orderId") orderId: String?
     ): ApproveRequestModel

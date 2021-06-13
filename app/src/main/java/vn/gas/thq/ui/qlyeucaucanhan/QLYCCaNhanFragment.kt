@@ -196,7 +196,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
             mDetailRetailData = it
             mapListToRetailProduct()
-            if (mDetailRetailData?.status == 8) {
+            if (mDetailRetailData?.status == 18) {
                 viewController?.pushFragment(
                     ScreenId.SCREEN_RETAIL_STEP_2, RetailContainerFragment.newInstance(
                         "STEP_2", obj
@@ -407,7 +407,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
     private fun onChooseType(view: View) {
         val doc = DialogList()
-        val mArrayList = GetListDataDemo.getListRequestType(Objects.requireNonNull(context))
+        val mArrayList = GetListDataDemo.getListRequestType(requireContext())
         doc.show(
             activity, mArrayList,
             getString(R.string.status),
@@ -443,7 +443,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         var doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         if (type == "1") {
-            mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
+            mArrayList = GetListDataDemo.getListStatus(requireContext())
         } else {
             mArrayList.add(0, DialogListModel("-2", "Tất cả"))
             listStatusOrderSale.forEach {
@@ -563,7 +563,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun showDiglogDetailRetail() {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
-        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_retail, null)
+        val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_retail_first_step, null)
         builder?.setView(dialogView)
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 //        adapterDetailYCXK = DetailItemProduct4Adapter(mDetailYCXKData!!.item)

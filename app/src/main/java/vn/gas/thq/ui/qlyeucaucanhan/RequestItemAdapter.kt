@@ -55,18 +55,11 @@ class RequestItemAdapter(
             holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_2C5181)
             if (obj.status == 8 || obj.status == 9) {
                 holder.itemRequestType1.setColorTrangThaiBanLe(R.color.blue_14AFB4)
-            } else if (obj.approve_status.contains("4")) {
+            } else if (obj.approve_status!!.contains("4")) {
                 holder.itemRequestType1.setColorTrangThaiBanLe(R.color.red_DB4755)
             }
             holder.itemRequestType1.isVisibleKH(true)
             holder.itemRequestType1.setTenKH(obj.customer_name)
-//            holder.itemRequestType1.setTrangThaiBanLe("${obj.status};${obj.approve_status}")
-//            enumStatus?.forEach {
-//                if (it.value == "${obj.status};${obj.approve_status}") {
-//                    holder.itemRequestType1.setTrangThaiBanLe(it.name)
-//                    return@forEach
-//                }
-//            }
             holder.itemRequestType1.setTrangThaiBanLe(
                 enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                     ?: "${obj.status};${obj.approve_status}"

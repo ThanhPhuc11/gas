@@ -80,7 +80,7 @@ class RequestApproveAdapter(
         holder.llWrap.visibility = View.GONE
         holder.tvNguoiDuyet.visibility = View.VISIBLE
         holder.tvNguoiDuyetMore.visibility = View.GONE
-        if (obj.approve_staffs?.size!! > 0) {
+        if (obj.approve_staffs != null && obj.approve_staffs?.size!! > 0) {
             holder.llWrap.visibility = View.VISIBLE
             holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
 
