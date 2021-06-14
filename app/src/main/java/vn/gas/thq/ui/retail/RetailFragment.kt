@@ -68,7 +68,6 @@ import kotlinx.android.synthetic.main.fragment_retail.tvTienKhi45
 import kotlinx.android.synthetic.main.fragment_retail.tvTienMuaVo
 import kotlinx.android.synthetic.main.fragment_retail.tvTienNo
 import kotlinx.android.synthetic.main.fragment_retail.tvTongTienCanTT
-import kotlinx.android.synthetic.main.fragment_retail_boss.*
 import kotlinx.android.synthetic.main.item_product_type_6.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
@@ -1026,10 +1025,10 @@ class RetailFragment : BaseFragment() {
         var bestLocation: Location? = null
         for (provider in providers) {
             if (ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {

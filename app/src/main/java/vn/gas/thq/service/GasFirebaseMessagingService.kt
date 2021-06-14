@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 import vn.gas.thq.MainActivity
+import vn.gas.thq.util.AppConstants
 import vn.hongha.ga.R
 
 class GasFirebaseMessagingService : FirebaseMessagingService() {
@@ -42,17 +44,20 @@ class GasFirebaseMessagingService : FirebaseMessagingService() {
 
         // notify data
         val data = remoteMessage.data
-        val type = data.get(0)
-        Log.e("PHUC", "Message data payload: ${remoteMessage.data["body"]}")
+        val type = Gson().fromJson(data["custom"], TypeNotiResponse::class.java).type
+
+        Log.e("PHUC", "map-data: $data")
 
         val title = "Thông báo"
         val body = data["body"]
 
         // intent, prepare data
-        val intent = Intent()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         intent.action = System.currentTimeMillis().toString()
         val bundle = Bundle()
-        bundle.putString("notificationType", type)
+        bundle.putString(AppConstants.NOTIFI_TYPE, type)
         intent.putExtras(bundle)
         val resultPendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)

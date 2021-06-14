@@ -23,9 +23,11 @@ import vn.gas.thq.ui.homemenu.MenuFullFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.login.LoginFragment
+import vn.gas.thq.ui.main.IntentShareViewModel
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
+import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
@@ -38,6 +40,7 @@ import vn.hongha.ga.R
 class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     private lateinit var viewModel: HomeViewModel
     private lateinit var fcmViewModel: FcmHomeViewModel
+    private lateinit var intentShareViewModel: IntentShareViewModel
     private lateinit var menuAdapter: MenuAdapter
     private var user: UserModel? = null
 
@@ -80,6 +83,9 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
                         }
                 })
                 .get(FcmHomeViewModel::class.java)
+
+        intentShareViewModel =
+            ViewModelProviders.of(requireActivity()).get(IntentShareViewModel::class.java)
     }
 
     override fun initView() {
@@ -92,6 +98,9 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     override fun initData() {
         viewModel.getUserInfo()
         viewModel.getUserPermission()
+        //handle push screen, then set null now
+//        showMess(intentShareViewModel.callbackFirebaseType.value)
+        handlePutScreenWhenFireIntent(intentShareViewModel.callbackFirebaseType.value)
         imgLogout.setOnClickListener {
             CommonUtils.showConfirmDiglog2Button(
                 activity, "Đăng xuất", "Bạn có chắc chắn muốn đăng xuất?", getString(
@@ -111,6 +120,10 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
         viewModel.userModelCallback.observe(viewLifecycleOwner, {
             showInfo(it)
             registerFCM()
+        })
+
+        intentShareViewModel.callbackFirebaseType.observe(viewLifecycleOwner, {
+            handlePutScreenWhenFireIntent(it)
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -157,6 +170,51 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
             }
             fcmViewModel.registerFcm(requestDeviceModel)
         })
+    }
+
+    private fun handlePutScreenWhenFireIntent(type: String?) {
+        type?.let {
+            when (type) {
+                "APPROVE_SHOP_ORDER" -> {
+                    if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_TU_CHOI_YEU_CAU_XUAT_KHO" || it == "KHO_DUYET_YEU_CAU_XUAT_KHO" } != null)
+                        viewController?.pushFragment(
+                            ScreenId.SCREEN_THU_KHO,
+                            ThuKhoXuatKhoFragment.newInstance()
+                        )
+                    else showMess("Nhân viên không có quyền truy cập")
+                }
+                "SHOP_ORDER_APPROVED", "SHOP_ORDER_REJECTED", "SALE_ORDER_APPROVED", "SALE_ORDER_REJECTED" -> {
+                    // man ca nhan
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_QLYC_CA_NHAN,
+                        QLYCCaNhanFragment.newInstance(ScreenId.HOME_SCREEN)
+                    )
+                }
+                "APPROVE_SALE_ORDER" -> {
+                    // phe duyet gia
+                    if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_XEM_YEU_CAU" } != null)
+                        viewController?.pushFragment(
+                            ScreenId.SCREEN_PHE_DUYET_GIA,
+                            PheDuyetGiaFragment.newInstance()
+                        )
+                    else showMess("Nhân viên không có quyền truy cập")
+                }
+                "APPROVE_SALE_PLAN", "SALE_PLAN_APPROVED", "SALE_PLAN_REJECTED" -> {
+                    // tim ke hoach
+                    if (AppPreferencesHelper(context).permission.firstOrNull { it == "QLKHBH_VIEW_KHBH" } != null)
+                        viewController?.pushFragment(
+                            ScreenId.SCREEN_QLYC_KE_HOACH,
+                            QLYCKeHoachFragment.newInstance()
+                        )
+                    else showMess("Nhân viên không có quyền truy cập")
+                }
+                else -> {
+
+                }
+            }
+            intentShareViewModel.callbackFirebaseType.value = null
+        }
+
     }
 
     private fun initMenuData() {

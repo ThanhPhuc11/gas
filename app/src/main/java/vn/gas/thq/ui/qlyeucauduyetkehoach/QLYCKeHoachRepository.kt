@@ -8,6 +8,14 @@ import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 
 class QLYCKeHoachRepository(private val apiService: ApiService) : BaseRepository() {
 
+    suspend fun getAllShop() = flow {
+        emit(apiService.getListShopByStaff())
+    }
+
+    suspend fun getSaleLine(query: String?) = flow {
+        emit(apiService.getListSaleLine(query))
+    }
+
     suspend fun getKeHoachBH(
         status: Int?,
         from_date: String,
