@@ -9,6 +9,8 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nghiphep.VacationModel
 import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
+import vn.gas.thq.ui.nhapvo.BienXeModel
+import vn.gas.thq.ui.nhapvo.VoModel
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
@@ -318,4 +320,19 @@ interface ApiService {
     suspend fun getStaffByShopId(
         @Path("shopId") shopId: Int
     ): List<UserModel>
+
+    @GET("license-plates")
+    suspend fun getBienXe(
+        @Query("query") query: String?
+    ): List<BienXeModel>
+
+    @GET("products/tank")
+    suspend fun getTank(): List<VoModel>
+
+    @POST("stocks/tank/transfer")
+    suspend fun xuatnhapVo(
+        @Query("shop_id") shop_id: Int,
+        @Query("license_plate_id") license_plate_id: Int,
+        @Body transfer: List<VoModel>
+    )
 }
