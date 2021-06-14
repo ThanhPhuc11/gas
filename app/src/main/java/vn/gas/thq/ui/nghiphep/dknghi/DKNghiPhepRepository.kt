@@ -9,4 +9,8 @@ class DKNghiPhepRepository(private val apiService: ApiService) {
         flow {
             emit(apiService.registerVacation(staffId, fromDate, toDate, reason))
         }
+
+    suspend fun getStaffFromShopId(shopId: Int) = flow {
+        emit(apiService.getStaffByShopId(shopId))
+    }
 }

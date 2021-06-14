@@ -4,7 +4,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_dang_ky_nghi.*
 import kotlinx.android.synthetic.main.fragment_lich_su_nghi.*
+import kotlinx.android.synthetic.main.fragment_lich_su_nghi.edtEndDate
+import kotlinx.android.synthetic.main.fragment_lich_su_nghi.edtStaff
+import kotlinx.android.synthetic.main.fragment_lich_su_nghi.edtStartDate
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
@@ -85,8 +89,9 @@ class LSNghiPhepFragment : BaseFragment() {
         if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DIEM_DANH_HO" } != null) {
             AppPreferencesHelper(context).userModel.shopId?.let { viewModel.getStaffFromShopId(it) }
             edtStaff.isClickable = true
+            edtStaff.isEnabled = true
         } else {
-            showMess("Nhân viên không có quyền truy cập")
+//            showMess("Nhân viên không có quyền truy cập")
         }
 
         edtStaff.setOnClickListener(this::onChoose)
@@ -139,7 +144,11 @@ class LSNghiPhepFragment : BaseFragment() {
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.getVacation(staffId!!, fromDate, endDate)
+        if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
+            viewModel.getVacation(staffId!!, fromDate, endDate)
+        } else {
+            showMess("Từ ngày không được lớn hơn Đến ngày")
+        }
     }
 
     private fun initRecyclerView() {
