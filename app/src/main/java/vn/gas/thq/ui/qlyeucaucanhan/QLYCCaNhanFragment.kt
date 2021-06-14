@@ -407,7 +407,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 
     private fun onChooseType(view: View) {
         val doc = DialogList()
-        val mArrayList = GetListDataDemo.getListRequestType(Objects.requireNonNull(context))
+        val mArrayList = GetListDataDemo.getListRequestType(requireContext())
         doc.show(
             activity, mArrayList,
             getString(R.string.status),
@@ -443,7 +443,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         var doc = DialogList()
         var mArrayList = ArrayList<DialogListModel>()
         if (type == "1") {
-            mArrayList = GetListDataDemo.getListStatus(Objects.requireNonNull(context))
+            mArrayList = GetListDataDemo.getListStatus(requireContext())
         } else {
             mArrayList.add(0, DialogListModel("-2", "Tất cả"))
             listStatusOrderSale.forEach {
