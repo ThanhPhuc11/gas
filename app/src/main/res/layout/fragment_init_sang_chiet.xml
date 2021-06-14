@@ -125,7 +125,7 @@
                     android:background="@drawable/bg_border_nomal_1"
                     android:hint="Nhập khối lượng"
                     android:inputType="number"
-                    android:maxLength="3"
+                    android:maxLength="9"
                     android:textAlignment="center"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="14sp" />
@@ -199,7 +199,7 @@
                     android:background="@drawable/bg_border_nomal_1"
                     android:hint="Nhập khối lượng"
                     android:inputType="number"
-                    android:maxLength="3"
+                    android:maxLength="9"
                     android:textAlignment="center"
                     android:textColor="@color/blue_2C5181"
                     android:textSize="14sp" />

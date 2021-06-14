@@ -146,6 +146,8 @@ class LSNghiPhepFragment : BaseFragment() {
             )
         if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
             viewModel.getVacation(staffId!!, fromDate, endDate)
+        } else {
+            showMess("Từ ngày không được lớn hơn Đến ngày")
         }
     }
 
