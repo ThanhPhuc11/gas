@@ -440,6 +440,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val tvCongNo12: TextView = dialogView.findViewById(R.id.tvCongNo12)
         val tvCongNo45: TextView = dialogView.findViewById(R.id.tvCongNo45)
         val tvCongNo: TextView = dialogView.findViewById(R.id.tvCongNo)
+        val llWrapNgayHenTra: LinearLayout = dialogView.findViewById(R.id.llWapNgayHenTra)
 
         val edtReason: EditText = dialogView.findViewById(R.id.edtReason)
         val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
@@ -471,6 +472,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
         when (statusShowDialog) {
             1 -> {
+                llWrapNgayHenTra.visibility = View.GONE
                 tvTitle.text = "Phê duyệt giá khí"
                 product12.text = "Khí 12Kg"
                 product45.text = "Khí 45Kg"
@@ -490,6 +492,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 cardViewCongNo.visibility = View.GONE
             }
             2 -> {
+                llWrapNgayHenTra.visibility = View.GONE
                 tvTitle.text = "Phê duyệt giá vỏ"
                 product12.text = "Vỏ 12Kg"
                 product45.text = "Vỏ 45Kg"
