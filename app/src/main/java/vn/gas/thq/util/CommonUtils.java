@@ -16,6 +16,7 @@ import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -345,6 +346,44 @@ public final class CommonUtils {
 
             tv_header_dialog.setText("" + title);
             tv_content_dialog.setText("" + message);
+
+            TextView tv_cancel = dialogView.findViewById(R.id.tv_dialog_cancel);
+            TextView tv_ok = dialogView.findViewById(R.id.tv_dialog_ok);
+            if (!TextUtils.isEmpty(leftText)) {
+                tv_cancel.setText(leftText);
+            }
+            if (!TextUtils.isEmpty(rightText)) {
+                tv_ok.setText(rightText);
+            }
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            tv_cancel.setOnClickListener((view) -> {
+                alertDialog.dismiss();
+                if (callback != null) {
+                    callback.ConfirmDialogCallback(AppConstants.NO);
+                }
+            });
+            tv_ok.setOnClickListener(view -> {
+                alertDialog.dismiss();
+                if (callback != null) {
+                    callback.ConfirmDialogCallback(AppConstants.YES);
+                }
+            });
+        }
+    }
+
+    public static void showConfirmDiglog2ButtonStartGravity(Activity activity, String title, String message, String leftText, String rightText, ConfirmDialogCallback callback) {
+        if (activity != null && !activity.isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogNoBG);
+            LayoutInflater inflater = activity.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.layout_dialog2button, null);
+            builder.setView(dialogView);
+            TextView tv_header_dialog = dialogView.findViewById(R.id.tv_header_dialog);
+            TextView tv_content_dialog = dialogView.findViewById(R.id.tv_content_dialog);
+
+            tv_header_dialog.setText("" + title);
+            tv_content_dialog.setText("" + message);
+            tv_content_dialog.setGravity(Gravity.START);
 
             TextView tv_cancel = dialogView.findViewById(R.id.tv_dialog_cancel);
             TextView tv_ok = dialogView.findViewById(R.id.tv_dialog_ok);

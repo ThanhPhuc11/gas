@@ -11,8 +11,8 @@ import vn.hongha.ga.databinding.ItemTankBinding
 class TankAdapter(private val listVacation: MutableList<VoModel>) :
     RecyclerView.Adapter<TankAdapter.TankViewHolder>() {
 
-    var onItemXuatChange: ((Int, Int) -> Unit)? = null
-    var onItemNhapChange: ((Int, Int) -> Unit)? = null
+    var onItemXuatChange: ((Int, Int?) -> Unit)? = null
+    var onItemNhapChange: ((Int, Int?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TankViewHolder {
         val itemBinding =
@@ -33,10 +33,11 @@ class TankAdapter(private val listVacation: MutableList<VoModel>) :
 
         holder.itemBinding.edtSLXuat.setOnFocusChangeListener { _, hasFocus ->
             run {
-                if (!hasFocus && position != -1 && !TextUtils.isEmpty(holder.itemBinding.edtSLXuat.text)) {
+                if (!hasFocus && position != -1) {
                     onItemXuatChange?.invoke(
                         obj.productOfferingId!!,
-                        holder.itemBinding.edtSLXuat.text.toString().toInt()
+                        if (!TextUtils.isEmpty(holder.itemBinding.edtSLXuat.text)) holder.itemBinding.edtSLXuat.text.toString()
+                            .toInt() else null
                     )
                 }
             }
@@ -44,10 +45,11 @@ class TankAdapter(private val listVacation: MutableList<VoModel>) :
 
         holder.itemBinding.edtSLNhap.setOnFocusChangeListener { _, hasFocus ->
             run {
-                if (!hasFocus && position != -1 && !TextUtils.isEmpty(holder.itemBinding.edtSLNhap.text)) {
+                if (!hasFocus && position != -1) {
                     onItemNhapChange?.invoke(
                         obj.productOfferingId!!,
-                        holder.itemBinding.edtSLNhap.text.toString().toInt()
+                        if (!TextUtils.isEmpty(holder.itemBinding.edtSLNhap.text)) holder.itemBinding.edtSLNhap.text.toString()
+                            .toInt() else null
                     )
                 }
             }
