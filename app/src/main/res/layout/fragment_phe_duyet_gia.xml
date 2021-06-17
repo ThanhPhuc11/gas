@@ -24,12 +24,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="Phân loại"
+                android:text="Trạm"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtType"
+                android:id="@+id/edtTram"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:background="@drawable/bg_border_nomal"
@@ -37,7 +37,7 @@
                 android:focusable="false"
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
-                android:text="Bán lẻ"
+                android:text="@string/all"
                 android:textColor="@color/gray_666E79"
                 android:textSize="14sp" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="Lái xe bán hàng"
+                android:text="LXBH"
                 android:textColor="@color/gray_404A57"
                 android:textSize="@dimen/text_14sp" />
 
@@ -60,6 +60,50 @@
                 android:paddingHorizontal="13dp"
                 android:singleLine="true"
                 android:text="@string/all"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Khách hàng"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="@string/all"
+                android:textColor="@color/gray_666E79"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="Loại yêu cầu"
+                android:textColor="@color/gray_404A57"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtType"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:focusable="false"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:text="Bán lẻ"
                 android:textColor="@color/gray_666E79"
                 android:textSize="14sp" />
 
@@ -155,6 +199,15 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/cbTick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="YC tôi cần có ý kiến/phê duyệt"
+                android:textSize="@dimen/text_13sp"
+                app:buttonTint="@color/blue_2C5181" />
 
             <LinearLayout
                 android:id="@+id/btnSearch"
