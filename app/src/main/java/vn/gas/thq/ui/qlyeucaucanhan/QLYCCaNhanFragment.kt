@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_qlyc_ca_nhan.*
@@ -29,8 +28,8 @@ import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
-import vn.gas.thq.ui.pheduyetgia.HistoryAcceptAdapter
-import vn.gas.thq.ui.pheduyetgia.HistoryModel
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryAcceptBanLeAdapter
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.ui.retail.RetailContainerFragment
@@ -50,7 +49,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private lateinit var viewModelThuKho: ThuKhoXuatKhoViewModel
     private lateinit var adapter: RequestItemAdapter
     private lateinit var adapterDetailYCXK: DetailItemProduct4Adapter
-    private lateinit var adapterHistory: HistoryAcceptAdapter
+    private lateinit var adapterHistory: HistoryAcceptBanLeAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var alertDialog: AlertDialog? = null
     private var alertDialog2: AlertDialog? = null
@@ -677,7 +676,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             alertDialog2?.dismiss()
         }
 
-        adapterHistory = HistoryAcceptAdapter(listHistory)
+        adapterHistory = HistoryAcceptBanLeAdapter(listHistory)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvHistory.layoutManager = linearLayoutManager

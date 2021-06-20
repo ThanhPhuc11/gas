@@ -12,7 +12,6 @@ import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.CustomArrayAdapter
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
-import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.util.*
 import vn.hongha.ga.R
 

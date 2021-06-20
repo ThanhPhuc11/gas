@@ -1,10 +1,10 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
 import kotlinx.coroutines.flow.flow
 import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
-class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository() {
+class PheDuyetGiaBanLeRepository(private val apiService: ApiService) : BaseRepository() {
 
     suspend fun getListStaff() = flow {
         emit(apiService.getListStaff())

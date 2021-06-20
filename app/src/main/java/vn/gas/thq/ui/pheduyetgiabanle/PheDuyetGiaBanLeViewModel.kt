@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
 
-class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaRepository) :
+class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyetGiaBanLeRepository) :
     BaseViewModel() {
     val mListStaffData = MutableLiveData<MutableList<UserModel>>()
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
@@ -27,7 +27,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     fun getListStaff() {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.getListStaff()
+            pheDuyetGiaBanLeRepository.getListStaff()
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -44,7 +44,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     fun onGetSaleOrderStatus() {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onGetSaleOrderStatus()
+            pheDuyetGiaBanLeRepository.onGetSaleOrderStatus()
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -87,7 +87,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         page: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onSearchRetail(status, staffCode, fromDate, toDate, page)
+            pheDuyetGiaBanLeRepository.onSearchRetail(status, staffCode, fromDate, toDate, page)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -107,7 +107,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     fun detailBanLe(orderId: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.detailBanLe(orderId)
+            pheDuyetGiaBanLeRepository.detailBanLe(orderId)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -126,7 +126,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     private fun doAcceptDuyetGia(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.doAcceptDuyetGia(orderId, obj)
+            pheDuyetGiaBanLeRepository.doAcceptDuyetGia(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -145,7 +145,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     private fun doRejectDuyetGia(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.doRejectDuyetGia(orderId, obj)
+            pheDuyetGiaBanLeRepository.doRejectDuyetGia(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -170,7 +170,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         page: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, page)
+            pheDuyetGiaBanLeRepository.onSearchRetailTDL(status, staffCode, fromDate, toDate, page)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -190,7 +190,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     private fun doAcceptDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.doAcceptDuyetGiaTDL(orderId, obj)
+            pheDuyetGiaBanLeRepository.doAcceptDuyetGiaTDL(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -209,7 +209,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     private fun doRejectDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.doRejectDuyetGiaTDL(orderId, obj)
+            pheDuyetGiaBanLeRepository.doRejectDuyetGiaTDL(orderId, obj)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -228,7 +228,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     fun getHistoryAcceptRetail(orderId: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.getHistoryAcceptRetail(orderId)
+            pheDuyetGiaBanLeRepository.getHistoryAcceptRetail(orderId)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -247,7 +247,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
 
     fun commentBanLe(orderId: String?, commentModel: CommentModel) {
         viewModelScope.launch {
-            pheDuyetGiaRepository.commentBanLe(orderId, commentModel)
+            pheDuyetGiaBanLeRepository.commentBanLe(orderId, commentModel)
                 .onStart {
                     callbackStart.value = Unit
                 }

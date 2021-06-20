@@ -9,9 +9,9 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nghiphep.VacationModel
 import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
-import vn.gas.thq.ui.pheduyetgia.CommentModel
-import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
-import vn.gas.thq.ui.pheduyetgia.HistoryModel
+import vn.gas.thq.ui.pheduyetgiabanle.CommentModel
+import vn.gas.thq.ui.pheduyetgiabanle.DuyetGiaModel
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel

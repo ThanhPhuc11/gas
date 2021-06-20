@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
-import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
-import vn.gas.thq.ui.pheduyetgia.HistoryModel
-import vn.gas.thq.util.AppConstants
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
 
 class RetailViewModel(private val retailRepository: RetailRepository) : BaseViewModel() {
     val mLiveDataCustomer = MutableLiveData<MutableList<Customer>>()

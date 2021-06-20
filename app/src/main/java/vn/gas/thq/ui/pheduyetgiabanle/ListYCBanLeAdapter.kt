@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,19 +15,19 @@ import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.util.AppDateUtils
 import vn.hongha.ga.R
 
-class RequestApproveAdapter(
+class ListYCBanLeAdapter(
     private val mList: MutableList<BussinesRequestModel>,
     private val enumStatus: MutableList<StatusValueModel>?,
     private val context: Context
 //    private val loaiYC: String?
 ) :
-    RecyclerView.Adapter<RequestApproveAdapter.RequestViewHolder>() {
+    RecyclerView.Adapter<ListYCBanLeAdapter.RequestViewHolder>() {
     var mClickListener: ItemClickListener? = null
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_request_duyet_gia, parent, false)
+            .inflate(R.layout.item_request_duyet_gia_ban_le, parent, false)
 
         return RequestViewHolder(view)
     }
@@ -77,31 +77,19 @@ class RequestApproveAdapter(
             enumStatus?.firstOrNull { it.value!!.contains("${obj.status};${obj.approve_status}") }?.name
                 ?: "${obj.status};${obj.approve_status}"
 
-        holder.llWrap.visibility = View.GONE
-        holder.tvNguoiDuyet.visibility = View.VISIBLE
-        holder.tvNguoiDuyetMore.visibility = View.GONE
-        if (obj.approve_staffs != null && obj.approve_staffs?.size!! > 0) {
-            holder.llWrap.visibility = View.VISIBLE
-            holder.tvNguoiDuyet.text = obj.approve_staffs?.get(0) ?: "- -"
-
-            var strNguoiDuyetMore = ""
-            for (i in 0 until obj.approve_staffs!!.size) {
-                strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
+        var strCapDuyet = ""
+        holder.llWrap.visibility = View.VISIBLE
+        obj.approve_levels?.forEach { it1 ->
+            if (it1.level != 0) {
+                strCapDuyet += "${getNameProductType(it1.productType!!)}: ${getNameLevel(it1.level!!)}\n"
             }
-            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore.trim()
         }
-//        if (obj.approve_staffs?.size!! > 0) {
-//            obj.approve_staffs?.forEach {
-//                strNguoiDuyetMore += "\n" +
-//                        "\n${it}"
-//            }
-//            for (i in 0 until obj.approve_staffs!!.size) {
-//                strNguoiDuyetMore += "+ ${obj.approve_staffs!![i]}\n"
-//            }
-//            holder.tvNguoiDuyetMore.text = strNguoiDuyetMore.trim()
-//        }
-
-//        holder.itemRequestType1.setLoaiYC(loaiYC)
+        if (strCapDuyet.isEmpty()) {
+            holder.llWrap.visibility = View.GONE
+        } else {
+            holder.llWrap.visibility = View.VISIBLE
+            holder.tvCapDuyet.text = strCapDuyet.trim()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -112,6 +100,25 @@ class RequestApproveAdapter(
         return position
     }
 
+    private fun getNameProductType(type: Int): String {
+        return when (type) {
+            1 -> "Giá khí"
+            2 -> "Giá vỏ"
+            3 -> "Công nợ"
+            else -> ""
+        }
+    }
+
+    private fun getNameLevel(level: Int): String {
+        return when (level) {
+            2 -> "NVKD"
+            3 -> "PGD KD"
+            4 -> "TT"
+            5 -> "CÔNG TY"
+            else -> ""
+        }
+    }
+
     inner class RequestViewHolder constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
@@ -120,22 +127,13 @@ class RequestApproveAdapter(
         var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         var llWrap: LinearLayout = itemView.findViewById(R.id.llWrap)
-        var tvNguoiDuyet: TextView = itemView.findViewById(R.id.tvNguoiDuyet)
+        var tvCapDuyet: TextView = itemView.findViewById(R.id.tvCapDuyet)
         var tvNguoiDuyetMore: TextView = itemView.findViewById(R.id.tvNguoiDuyetMore)
         var tvDate: TextView = itemView.findViewById(R.id.tvDate)
         var tvSaleOrderType: TextView = itemView.findViewById(R.id.tvSaleOrderType)
 
         init {
             itemView.setOnClickListener(this)
-            llWrap.setOnClickListener {
-                if (!tvNguoiDuyetMore.isVisible) {
-                    tvNguoiDuyetMore.visibility = View.VISIBLE
-                    tvNguoiDuyet.visibility = View.GONE
-                } else {
-                    tvNguoiDuyetMore.visibility = View.GONE
-                    tvNguoiDuyet.visibility = View.VISIBLE
-                }
-            }
         }
 
         override fun onClick(p0: View?) {

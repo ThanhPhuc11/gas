@@ -24,8 +24,7 @@ import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
 import vn.gas.thq.ui.lapyeucauxuatkho.LapYCXuatKhoFragment
 import vn.gas.thq.ui.login.LoginFragment
 import vn.gas.thq.ui.main.IntentShareViewModel
-import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
-import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaFragment
+import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
 import vn.gas.thq.ui.retail.RetailContainerFragment
@@ -195,7 +194,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
                     if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_XEM_YEU_CAU" } != null)
                         viewController?.pushFragment(
                             ScreenId.SCREEN_PHE_DUYET_GIA,
-                            PheDuyetGiaFragment.newInstance()
+                            PheDuyetGiaBanLeFragment.newInstance()
                         )
                     else showMess("Nhân viên không có quyền truy cập")
                 }
@@ -220,7 +219,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
     private fun initMenuData() {
         val mList = mutableListOf<MenuModel>()
         mList.add(MenuModel(1, "Bán lẻ", R.drawable.ic_menu_1))
-        mList.add(MenuModel(2, "Phê duyệt yêu cầu giảm giá", R.drawable.ic_menu_2))
+        mList.add(MenuModel(2, "Phê duyệt yêu cầu bán hàng", R.drawable.ic_menu_2))
         mList.add(MenuModel(3, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
         mList.add(MenuModel(4, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(5, "Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
@@ -245,7 +244,7 @@ class HomeFragment : BaseFragment(), MenuAdapter.ItemClickListener {
                 if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_XEM_YEU_CAU" } != null)
                     viewController?.pushFragment(
                         ScreenId.SCREEN_PHE_DUYET_GIA,
-                        PheDuyetGiaFragment.newInstance()
+                        PheDuyetGiaBanLeFragment.newInstance()
                     )
                 else showMess("Nhân viên không có quyền truy cập")
             }

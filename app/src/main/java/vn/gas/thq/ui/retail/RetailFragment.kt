@@ -38,8 +38,8 @@ import vn.gas.thq.model.TransferRetailModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.nhapkho.ProductNhapKhoModel
-import vn.gas.thq.ui.pheduyetgia.HistoryAcceptAdapter
-import vn.gas.thq.ui.pheduyetgia.HistoryModel
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryAcceptBanLeAdapter
+import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.util.*
 import vn.gas.thq.util.dialog.DialogList
@@ -56,7 +56,7 @@ class RetailFragment : BaseFragment() {
     private var alertDialog: AlertDialog? = null
     private var alertDialog2: AlertDialog? = null
 
-    private lateinit var adapterHistory: HistoryAcceptAdapter
+    private lateinit var adapterHistory: HistoryAcceptBanLeAdapter
 
     private var giaTank12: Int? = 0
     private var giaTank45: Int? = 0
@@ -1016,7 +1016,7 @@ class RetailFragment : BaseFragment() {
             alertDialog2?.dismiss()
         }
 
-        adapterHistory = HistoryAcceptAdapter(listHistory)
+        adapterHistory = HistoryAcceptBanLeAdapter(listHistory)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvHistory.layoutManager = linearLayoutManager

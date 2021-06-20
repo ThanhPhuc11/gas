@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 class ApproveLevelModel {
     @SerializedName("product_type")
     @Expose
-    var productType: String? = null
+    var productType: Int? = null
 
     @SerializedName("level")
     @Expose

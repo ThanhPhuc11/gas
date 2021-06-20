@@ -22,8 +22,8 @@ import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepRepository
 import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepViewModel
 import vn.gas.thq.ui.nhapkho.NhapKhoRepository
 import vn.gas.thq.ui.nhapkho.NhapKhoViewModel
-import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaRepository
-import vn.gas.thq.ui.pheduyetgia.PheDuyetGiaViewModel
+import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeRepository
+import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeViewModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanViewModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachRepository
@@ -63,8 +63,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             RetailViewModel(RetailRepository(apiService))
         creators[RetailBossViewModel::class.java] =
             RetailBossViewModel(RetailBossRepository(apiService))
-        creators[PheDuyetGiaViewModel::class.java] =
-            PheDuyetGiaViewModel(PheDuyetGiaRepository(apiService))
+        creators[PheDuyetGiaBanLeViewModel::class.java] =
+            PheDuyetGiaBanLeViewModel(PheDuyetGiaBanLeRepository(apiService))
         creators[XemKhoViewModel::class.java] =
             XemKhoViewModel(XemKhoRepository(apiService))
         creators[KiemKeKhoViewModel::class.java] =

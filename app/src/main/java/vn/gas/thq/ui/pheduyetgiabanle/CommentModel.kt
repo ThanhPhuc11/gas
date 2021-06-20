@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
 import com.google.gson.annotations.Expose
 

@@ -1,27 +1,21 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import vn.gas.thq.model.BussinesRequestModel
-import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.AppDateUtils.FORMAT_6
 import vn.gas.thq.util.AppDateUtils.FORMAT_7
 import vn.hongha.ga.R
 
-class HistoryAcceptAdapter(
+class HistoryAcceptBanLeAdapter(
     private val mList: MutableList<HistoryModel>,
 //    private val context: Context
 //    private val loaiYC: String?
-) : RecyclerView.Adapter<HistoryAcceptAdapter.RequestViewHolder>() {
+) : RecyclerView.Adapter<HistoryAcceptBanLeAdapter.RequestViewHolder>() {
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {

@@ -72,11 +72,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="LXBH"
+                android:text="Tuyến xe"
                 android:textColor="@color/gray_666E79" />
 
             <TextView
-                android:id="@+id/tvLXBH"
+                android:id="@+id/tvTuyenXe"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -126,11 +126,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Người duyệt gần nhất"
+                    android:text="Cấp phê duyệt"
                     android:textColor="@color/gray_666E79" />
 
                 <TextView
-                    android:id="@+id/tvNguoiDuyet"
+                    android:id="@+id/tvCapDuyet"
                     style="@style/textStyleBody"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

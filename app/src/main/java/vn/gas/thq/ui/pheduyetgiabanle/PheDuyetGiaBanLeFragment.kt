@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.pheduyetgia
+package vn.gas.thq.ui.pheduyetgiabanle
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_phe_duyet_gia.*
+import kotlinx.android.synthetic.main.fragment_phe_duyet_gia_ban_le.*
 import kotlinx.android.synthetic.main.layout_dialog_item_history.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.layout_toolbar.tvTitle
@@ -34,10 +34,10 @@ import vn.hongha.ga.R
 import java.util.*
 
 
-class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListener {
-    private lateinit var viewModel: PheDuyetGiaViewModel
-    private lateinit var adapter: RequestApproveAdapter
-    private lateinit var adapterHistory: HistoryAcceptAdapter
+class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickListener {
+    private lateinit var banLeViewModel: PheDuyetGiaBanLeViewModel
+    private lateinit var adapter: ListYCBanLeAdapter
+    private lateinit var adapterHistory: HistoryAcceptBanLeAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var mListStaff = mutableListOf<UserModel>()
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
@@ -90,10 +90,10 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
     companion object {
         @JvmStatic
-        fun newInstance(): PheDuyetGiaFragment {
+        fun newInstance(): PheDuyetGiaBanLeFragment {
             val args = Bundle()
 
-            val fragment = PheDuyetGiaFragment()
+            val fragment = PheDuyetGiaBanLeFragment()
             fragment.arguments = args
             return fragment
         }
@@ -104,7 +104,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     override fun setupViewModel() {
-        viewModel =
+        banLeViewModel =
             ViewModelProviders.of(this,
                 context?.let {
                     RetrofitBuilder.getInstance(it)?.create(ApiService::class.java)
@@ -112,7 +112,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                             ViewModelFactory(apiService, context)
                         }
                 })
-                .get(PheDuyetGiaViewModel::class.java)
+                .get(PheDuyetGiaBanLeViewModel::class.java)
     }
 
     override fun initView() {
@@ -123,21 +123,21 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_phe_duyet_gia
+        return R.layout.fragment_phe_duyet_gia_ban_le
     }
 
     override fun initObserver() {
-        viewModel.mListStaffData.observe(viewLifecycleOwner, {
+        banLeViewModel.mListStaffData.observe(viewLifecycleOwner, {
             mListStaff.clear()
             mListStaff.addAll(it)
         })
 
-        viewModel.listStatus.observe(viewLifecycleOwner, {
+        banLeViewModel.listStatus.observe(viewLifecycleOwner, {
             listStatusOrderSale.clear()
             listStatusOrderSale.addAll(it)
         })
 
-        viewModel.mListDataSearch.observe(viewLifecycleOwner, {
+        banLeViewModel.mListDataSearch.observe(viewLifecycleOwner, {
 //            it.forEach {
 //                it.approve_staffs = mutableListOf<String>().apply {
 //                    add("Phucdz1")
@@ -153,27 +153,27 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             isReload = false
         })
 
-        viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
+        banLeViewModel.detailApproveCallback.observe(viewLifecycleOwner, {
             mDetailRetailData = it
             mapListToRetailProduct()
             autoSelectDialog(it)
         })
 
-        viewModel.callbackAccept.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackAccept.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Phê duyệt yêu cầu thành công") {
                 alertDialog?.dismiss()
                 view?.let { it1 -> onSearchData(it1) }
             }
         })
 
-        viewModel.callbackReject.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackReject.observe(viewLifecycleOwner, {
             CommonUtils.showDiglog1Button(activity, "Thông báo", "Từ chối yêu cầu thành công") {
                 alertDialog?.dismiss()
                 view?.let { it1 -> onSearchData(it1) }
             }
         })
 
-        viewModel.callbackHistory.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackHistory.observe(viewLifecycleOwner, {
             listHistory.clear()
             listHistory.addAll(it)
 //            adapterHistory.notifyDataSetChanged()
@@ -181,26 +181,26 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         })
 
         //TODO: chung
-        viewModel.callbackStart.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
         })
 
-        viewModel.callbackSuccess.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackSuccess.observe(viewLifecycleOwner, {
             hideLoading()
         })
 
-        viewModel.callbackFail.observe(viewLifecycleOwner, {
+        banLeViewModel.callbackFail.observe(viewLifecycleOwner, {
             hideLoading()
         })
 
-        viewModel.showMessCallback.observe(viewLifecycleOwner, {
+        banLeViewModel.showMessCallback.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
 
     override fun initData() {
-        viewModel.getListStaff()
-        viewModel.onGetSaleOrderStatus()
+        banLeViewModel.getListStaff()
+        banLeViewModel.onGetSaleOrderStatus()
         initRecyclerView()
 //        initHistoryRecyclerView()
 
@@ -226,7 +226,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun initRecyclerView() {
-        adapter = context?.let { RequestApproveAdapter(mList, listStatusOrderSale, it) }!!
+        adapter = context?.let { ListYCBanLeAdapter(mList, listStatusOrderSale, it) }!!
         adapter.setClickListener(this)
 
         linearLayoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
@@ -235,7 +235,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun initHistoryRecyclerView() {
-        adapterHistory = HistoryAcceptAdapter(listHistory)
+        adapterHistory = HistoryAcceptBanLeAdapter(listHistory)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvHistory.layoutManager = linearLayoutManager
@@ -314,7 +314,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, 0)
+        banLeViewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, 0)
     }
 
     private fun setEndLessScrollListener() {
@@ -323,7 +323,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 Log.e("PHUCDZ", "$totalItemsCount")
-                viewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, page)
+                banLeViewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, page)
             }
         })
     }
@@ -577,7 +577,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 if (edtReason.text.isEmpty()) {
                     showMess("NVKD bắt buộc phải cho ý kiến trên đơn hàng")
                 } else {
-                    viewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
+                    banLeViewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
                         productType = statusShowDialog.toString()
                         comment = edtReason.text.toString()
                         ok = true
@@ -591,7 +591,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
-                    viewModel.onHandleAccept(
+                    banLeViewModel.onHandleAccept(
                         type,
                         orderId?.toString(),
                         DuyetGiaModel(statusShowDialog)
@@ -605,7 +605,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 if (edtReason.text.isEmpty()) {
                     showMess("Bạn phải nhập ý kiến nếu không đồng ý với đề xuất của đơn hàng")
                 } else {
-                    viewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
+                    banLeViewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
                         productType = statusShowDialog.toString()
                         comment = edtReason.text.toString()
                         ok = false
@@ -619,7 +619,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 ), getString(R.string.text_ok)
             ) {
                 if (it == AppConstants.YES) {
-                    viewModel.onHandleReject(
+                    banLeViewModel.onHandleReject(
                         type,
                         orderId?.toString(),
                         DuyetGiaModel(statusShowDialog, edtReason.text.toString())
@@ -629,7 +629,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         }
 
         tvHistory.setOnClickListener {
-            viewModel.getHistoryAcceptRetail(orderId!!)
+            banLeViewModel.getHistoryAcceptRetail(orderId!!)
         }
 
         alertDialog = builder?.create()
@@ -681,7 +681,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 alertDialog?.dismiss()
             }
             tvHistory.setOnClickListener {
-                viewModel.getHistoryAcceptRetail(orderId!!)
+                banLeViewModel.getHistoryAcceptRetail(orderId!!)
             }
             tvOrderId.text = "Mã yêu cầu $orderId"
             tvName.text = mDetailRetailData?.customerName ?: "- -"
@@ -752,7 +752,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
             alertDialog2?.dismiss()
         }
 
-        adapterHistory = HistoryAcceptAdapter(listHistory)
+        adapterHistory = HistoryAcceptBanLeAdapter(listHistory)
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvHistory.layoutManager = linearLayoutManager
@@ -874,6 +874,6 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         canApproveStatus = mList[position].can_approve_status
         canCommentStatus = mList[position].can_comment_status
 //        showMess(mList[position].approve_status)
-        viewModel.detailBanLe(orderId.toString())
+        banLeViewModel.detailBanLe(orderId.toString())
     }
 }
