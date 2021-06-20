@@ -15,6 +15,7 @@ class BussinesRequestModel {
     var customer_name: String? = null
     var approve_status: String? = null
     var can_approve_status: String? = null
+    var can_comment_status: String? = null
     var sale_order_type: String? = null
 
     var approve_staffs: MutableList<String>? = null

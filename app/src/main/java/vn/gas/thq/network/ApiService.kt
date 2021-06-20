@@ -9,6 +9,7 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nghiphep.VacationModel
 import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
+import vn.gas.thq.ui.pheduyetgia.CommentModel
 import vn.gas.thq.ui.pheduyetgia.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgia.HistoryModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
@@ -146,16 +147,6 @@ interface ApiService {
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>
 
-    @GET("sale-orders")
-    suspend fun searchRequestRetail(
-        @Query("sale_order_type") sale_order_type: Int,
-        @Query("status") status: String?,
-        @Query("staff_code") staff_code: String?,
-        @Query("from_date") from_date: String,
-        @Query("to_date") to_date: String,
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-    ): ResponseModel<BussinesRequestModel>
 
     @GET("agent-orders")
     suspend fun searchRequestRetailTDL(
@@ -179,12 +170,6 @@ interface ApiService {
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
     )
-
-
-    @GET("sale-orders/{orderId}")
-    suspend fun detailApproveLXBH(
-        @Path("orderId") orderId: String?
-    ): ApproveRequestModel
 
 
     //Chi tiet yc TDL
@@ -318,4 +303,31 @@ interface ApiService {
     suspend fun getStaffByShopId(
         @Path("shopId") shopId: Int
     ): List<UserModel>
+
+    // TODO: Tong hop cac Api Ban le new
+
+    //ban le
+    @GET("sale-orders")
+    suspend fun searchRequestRetail(
+        @Query("sale_order_type") sale_order_type: Int,
+        @Query("status") status: String?,
+        @Query("staff_code") staff_code: String?,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): ResponseModel<BussinesRequestModel>
+
+    //Chi tiet ban le
+    @GET("sale-orders/{orderId}")
+    suspend fun detailApproveLXBH(
+        @Path("orderId") orderId: String?
+    ): ApproveRequestModel
+
+    //Comment
+    @POST("sale-orders/{orderId}/comment")
+    suspend fun commentBanLe(
+        @Path("orderId") orderId: String?,
+        @Body commentModel: CommentModel
+    )
 }

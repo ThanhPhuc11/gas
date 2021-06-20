@@ -58,7 +58,7 @@ class ApproveRequestModel {
     @Expose
     var canApproveStatus: String? = null
 
-    @SerializedName("item")
+    @SerializedName("items")
     @Expose
     var item: List<ProductRetailModel>? = null
 }

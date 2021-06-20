@@ -54,6 +54,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     private var staffName: String? = null
     private var createDate: String? = null
     private var canApproveStatus: String? = null
+    private var canCommentStatus: String? = null
     private var obj: TransferRetailModel? = null
 
     private var fromDate: String = ""
@@ -115,7 +116,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     override fun initView() {
-        tvTitle.text = "Phê duyệt yêu cầu giảm giá"
+        tvTitle.text = "Phê duyệt yêu cầu bán hàng"
         imgBack.setOnClickListener {
             viewController?.popFragment()
         }
@@ -328,6 +329,29 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {
+        //xem xet can_comment_status
+        if (canCommentStatus?.get(0).toString() == "1") {
+            // mo comment khi
+            statusShowDialog = 1
+            setValueApproveDetail(1)
+            showDiglogDetailRetail(true)
+            return
+        } else if (canCommentStatus?.get(1).toString() == "1") {
+            // mo comment vo
+            statusShowDialog = 2
+            setValueApproveDetail(2)
+            showDiglogDetailRetail(true)
+            return
+        } else if (canCommentStatus?.get(2).toString() == "1") {
+            // mo comment cong no
+            statusShowDialog = 3
+            congNoGiaTang12 = mDetailRetailData?.debtAmountTank12 ?: 0
+            congNoGiaTang45 = mDetailRetailData?.debtAmountTank45 ?: 0
+            congNoGiaTang = mDetailRetailData?.debtAmount ?: 0
+            showDiglogDetailRetail(true)
+            return
+        }
+
         val array = this.canApproveStatus?.toCharArray()
         val a = array?.get(0).toString()
         val b = array?.get(1).toString()
@@ -349,7 +373,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         }
 
         if (c == "1" || c == "2" || c == "3") {
-            // vo cong no
+            // mo cong no
             statusShowDialog = 3
             congNoGiaTang12 = mDetailRetailData?.debtAmountTank12 ?: 0
             congNoGiaTang45 = mDetailRetailData?.debtAmountTank45 ?: 0
@@ -410,7 +434,7 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
 
     }
 
-    private fun showDiglogDetailRetail() {
+    private fun showDiglogDetailRetail(isComment: Boolean = false) {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
         val dialogView: View = inflater.inflate(R.layout.layout_dialog_item_duyet_gia, null)
@@ -449,6 +473,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         val cardViewGia: CardView = dialogView.findViewById(R.id.cardViewGia)
         val btnDongY: Button = dialogView.findViewById(R.id.btnDongY)
         val btnTuChoi: Button = dialogView.findViewById(R.id.btnTuChoi)
+
+        val tvLabelReason: TextView = dialogView.findViewById(R.id.tvLabelReason)
 
         tvNameLXBH.text = staffName
         tvTuyenXe.text = mDetailRetailData?.saleLineName
@@ -490,6 +516,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 tvPrice45.text = "${CommonUtils.priceWithoutDecimal(priceDeXuat45?.toDouble())} đ"
 
                 cardViewCongNo.visibility = View.GONE
+
+                if (isComment) {
+                    tvTitle.text = "Cho ý kiến"
+                    tvLabelReason.text = "Ý kiến"
+                    edtReason.hint = "Nhập ý kiến"
+                    btnTuChoi.text = "Không đồng ý"
+                }
             }
             2 -> {
                 llWrapNgayHenTra.visibility = View.GONE
@@ -510,6 +543,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 tvPrice45.text = "${CommonUtils.priceWithoutDecimal(priceDeXuat45?.toDouble())} đ"
 
                 cardViewCongNo.visibility = View.GONE
+
+                if (isComment) {
+                    tvTitle.text = "Cho ý kiến"
+                    tvLabelReason.text = "Ý kiến"
+                    edtReason.hint = "Nhập ý kiến"
+                    btnTuChoi.text = "Không đồng ý"
+                }
             }
             3 -> {
                 tvTitle.text = "Phê duyệt công nợ"
@@ -518,6 +558,13 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
                 tvCongNo12.text = congNoGiaTang12.toString()
                 tvCongNo45.text = congNoGiaTang45.toString()
                 tvCongNo.text = "${CommonUtils.priceWithoutDecimal(congNoGiaTang?.toDouble())} đ"
+
+                if (isComment) {
+                    tvTitle.text = "Cho ý kiến"
+                    tvLabelReason.text = "Ý kiến"
+                    edtReason.hint = "Nhập ý kiến"
+                    btnTuChoi.text = "Không đồng ý"
+                }
             }
         }
 
@@ -526,6 +573,18 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         }
 
         btnDongY.setOnClickListener {
+            if (isComment) {
+                if (edtReason.text.isEmpty()) {
+                    showMess("NVKD bắt buộc phải cho ý kiến trên đơn hàng")
+                } else {
+                    viewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
+                        productType = statusShowDialog.toString()
+                        comment = edtReason.text.toString()
+                        ok = true
+                    })
+                }
+                return@setOnClickListener
+            }
             CommonUtils.showConfirmDiglog2Button(
                 activity, "Xác nhận", "Bạn có chắc chắn muốn phê duyệt yêu cầu?", getString(
                     R.string.biometric_negative_button_text
@@ -542,6 +601,18 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         }
 
         btnTuChoi.setOnClickListener {
+            if (isComment) {
+                if (edtReason.text.isEmpty()) {
+                    showMess("Bạn phải nhập ý kiến nếu không đồng ý với đề xuất của đơn hàng")
+                } else {
+                    viewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
+                        productType = statusShowDialog.toString()
+                        comment = edtReason.text.toString()
+                        ok = false
+                    })
+                }
+                return@setOnClickListener
+            }
             CommonUtils.showConfirmDiglog2Button(
                 activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
                     R.string.biometric_negative_button_text
@@ -801,7 +872,8 @@ class PheDuyetGiaFragment : BaseFragment(), RequestApproveAdapter.ItemClickListe
         staffName = mList[position].staff_name
         createDate = mList[position].created_date
         canApproveStatus = mList[position].can_approve_status
+        canCommentStatus = mList[position].can_comment_status
 //        showMess(mList[position].approve_status)
-        viewModel.detailApproveLXBH(orderId.toString())
+        viewModel.detailBanLe(orderId.toString())
     }
 }

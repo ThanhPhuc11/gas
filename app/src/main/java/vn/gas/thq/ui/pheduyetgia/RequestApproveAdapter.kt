@@ -51,7 +51,7 @@ class RequestApproveAdapter(
 //        }
 
         holder.tvOrderId.text = obj.order_id?.toString()
-        holder.tvLXBH.text = obj.staff_name ?: "- -"
+        holder.tvTuyenXe.text = obj.sale_line ?: "- -"
         holder.tvCustName.text = obj.customer_name ?: "- -"
         holder.tvSaleOrderType.text = obj.sale_order_type ?: "- -"
         holder.tvDate.text = AppDateUtils.changeDateFormat(
@@ -116,7 +116,7 @@ class RequestApproveAdapter(
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         var tvOrderId: TextView = itemView.findViewById(R.id.tvOrderId)
-        var tvLXBH: TextView = itemView.findViewById(R.id.tvLXBH)
+        var tvTuyenXe: TextView = itemView.findViewById(R.id.tvTuyenXe)
         var tvCustName: TextView = itemView.findViewById(R.id.tvCustName)
         var tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         var llWrap: LinearLayout = itemView.findViewById(R.id.llWrap)

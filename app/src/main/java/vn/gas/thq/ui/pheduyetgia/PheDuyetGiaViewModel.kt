@@ -23,6 +23,7 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
     val callbackAccept = MutableLiveData<Unit>()
     val callbackReject = MutableLiveData<Unit>()
     val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
+    val callbackComment = MutableLiveData<Unit>()
 
     fun getListStaff() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -104,9 +105,9 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
         }
     }
 
-    fun detailApproveLXBH(orderId: String?) {
+    fun detailBanLe(orderId: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaRepository.detailApproveLXBH(orderId)
+            pheDuyetGiaRepository.detailBanLe(orderId)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -240,6 +241,25 @@ class PheDuyetGiaViewModel(private val pheDuyetGiaRepository: PheDuyetGiaReposit
                 .collect {
                     callbackSuccess.value = Unit
                     callbackHistory.value = it as MutableList
+                }
+        }
+    }
+
+    fun commentBanLe(orderId: String?, commentModel: CommentModel) {
+        viewModelScope.launch {
+            pheDuyetGiaRepository.commentBanLe(orderId, commentModel)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackComment.value = Unit
                 }
         }
     }

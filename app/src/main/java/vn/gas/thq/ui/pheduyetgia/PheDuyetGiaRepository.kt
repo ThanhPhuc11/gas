@@ -24,7 +24,7 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
         emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, page, 100))
     }
 
-    suspend fun detailApproveLXBH(orderId: String?) = flow {
+    suspend fun detailBanLe(orderId: String?) = flow {
         emit(apiService.detailApproveLXBH(orderId))
     }
 
@@ -60,5 +60,9 @@ class PheDuyetGiaRepository(private val apiService: ApiService) : BaseRepository
 
     suspend fun doRejectDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) = flow {
         emit(apiService.doRejectDuyetGiaTDL(orderId, obj))
+    }
+
+    suspend fun commentBanLe(orderId: String?, commentModel: CommentModel) = flow {
+        emit(apiService.commentBanLe(orderId, commentModel))
     }
 }
