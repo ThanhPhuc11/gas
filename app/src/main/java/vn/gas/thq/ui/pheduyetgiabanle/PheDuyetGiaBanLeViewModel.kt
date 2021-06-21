@@ -13,6 +13,7 @@ import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.model.StatusValueModel
 import vn.gas.thq.model.UserModel
 import vn.gas.thq.ui.retail.ApproveRequestModel
+import vn.gas.thq.ui.retail.Customer
 
 class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyetGiaBanLeRepository) :
     BaseViewModel() {
@@ -24,6 +25,7 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
     val callbackReject = MutableLiveData<Unit>()
     val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
     val callbackComment = MutableLiveData<Unit>()
+    val callbackListCustomer = MutableLiveData<MutableList<Customer>>()
 
     fun getListStaff() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -38,6 +40,25 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
                 .collect {
                     callbackSuccess.value = Unit
                     mListStaffData.value = it as MutableList
+                }
+        }
+    }
+
+    fun onGetListCustomer(lat: String?, lng: String?) {
+        viewModelScope.launch(Dispatchers.Main) {
+            pheDuyetGiaBanLeRepository.onGetListCustomer(lat, lng)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackListCustomer.value = it as MutableList<Customer>
                 }
         }
     }
@@ -63,11 +84,13 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
         type: String,
         status: String?,
         staffCode: String?,
+        custId: Int?,
+        needMyInput: Boolean?,
         fromDate: String,
         toDate: String,
         page: Int
     ) {
-        if (type == "1") onSearchRetail(status, staffCode, fromDate, toDate, page)
+        if (type == "1") onSearchRetail(status, staffCode, custId, needMyInput, fromDate, toDate, page)
         else onSearchRetailTDL(status, staffCode, fromDate, toDate, page)
     }
 
@@ -82,12 +105,22 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
     private fun onSearchRetail(
         status: String?,
         staffCode: String?,
+        custId: Int?,
+        needMyInput: Boolean?,
         fromDate: String,
         toDate: String,
         page: Int
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            pheDuyetGiaBanLeRepository.onSearchRetail(status, staffCode, fromDate, toDate, page)
+            pheDuyetGiaBanLeRepository.onSearchRetail(
+                status,
+                staffCode,
+                custId,
+                needMyInput,
+                fromDate,
+                toDate,
+                page
+            )
                 .onStart {
                     callbackStart.value = Unit
                 }

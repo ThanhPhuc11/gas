@@ -10,6 +10,10 @@ class PheDuyetGiaBanLeRepository(private val apiService: ApiService) : BaseRepos
         emit(apiService.getListStaff())
     }
 
+    suspend fun onGetListCustomer(lat: String?, lng: String?) = flow {
+        emit(apiService.getListCustomer(lat, lng))
+    }
+
     suspend fun onGetSaleOrderStatus() = flow {
         emit(apiService.saleOrderStatus())
     }
@@ -17,11 +21,25 @@ class PheDuyetGiaBanLeRepository(private val apiService: ApiService) : BaseRepos
     suspend fun onSearchRetail(
         status: String?,
         staffCode: String?,
+        custId: Int?,
+        needMyInput: Boolean?,
         fromDate: String,
         toDate: String,
         page: Int
     ) = flow {
-        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, page, 100))
+        emit(
+            apiService.searchRequestRetail(
+                1,
+                status,
+                staffCode,
+                custId,
+                needMyInput,
+                fromDate,
+                toDate,
+                page,
+                100
+            )
+        )
     }
 
     suspend fun detailBanLe(orderId: String?) = flow {
@@ -37,7 +55,7 @@ class PheDuyetGiaBanLeRepository(private val apiService: ApiService) : BaseRepos
     }
 
     suspend fun getHistoryAcceptRetail(orderId: Int) = flow {
-        emit(apiService.getHistoryAcceptRetail(orderId))
+        emit(apiService.getHistoryBanLe(orderId))
     }
 
     suspend fun onSearchRetailTDL(

@@ -1,17 +1,27 @@
 package vn.gas.thq.ui.pheduyetgiabanle
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_phe_duyet_gia_ban_le.*
+import kotlinx.android.synthetic.main.fragment_phe_duyet_gia_ban_le.edtCustomer
+import kotlinx.android.synthetic.main.fragment_retail.*
 import kotlinx.android.synthetic.main.layout_dialog_item_history.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.android.synthetic.main.layout_toolbar.tvTitle
@@ -24,6 +34,7 @@ import vn.gas.thq.model.*
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.ApproveRequestModel
+import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
@@ -43,6 +54,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
     private var mList = mutableListOf<BussinesRequestModel>()
     private var listHistory = mutableListOf<HistoryModel>()
+    private var mListCustomer = mutableListOf<Customer>()
     private var mDetailRetailData: ApproveRequestModel? = null
     private var type: String = "1"
     private var status: String? = null
@@ -52,6 +64,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private var statusShowDialog: Int? = null
     private var orderId: Int? = null
     private var staffName: String? = null
+    private var custId: Int? = null
     private var createDate: String? = null
     private var canApproveStatus: String? = null
     private var canCommentStatus: String? = null
@@ -87,6 +100,15 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private var tongTien = 0
     private var tienNo = 0
     private var tienThucTe = 0
+
+    private var longitude: Double = 0.0
+    private var latitude: Double = 0.0
+
+    private var PERMISSION_ALL = 1
+    private var PERMISSIONS = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     companion object {
         @JvmStatic
@@ -137,6 +159,10 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             listStatusOrderSale.addAll(it)
         })
 
+        banLeViewModel.callbackListCustomer.observe(viewLifecycleOwner, {
+            mListCustomer.addAll(it)
+        })
+
         banLeViewModel.mListDataSearch.observe(viewLifecycleOwner, {
 //            it.forEach {
 //                it.approve_staffs = mutableListOf<String>().apply {
@@ -157,6 +183,13 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             mDetailRetailData = it
             mapListToRetailProduct()
             autoSelectDialog(it)
+        })
+
+        banLeViewModel.callbackComment.observe(viewLifecycleOwner, {
+            CommonUtils.showDiglog1Button(activity, "Thông báo", "Cho ý kiến thành công") {
+                alertDialog?.dismiss()
+                view?.let { it1 -> onSearchData(it1) }
+            }
         })
 
         banLeViewModel.callbackAccept.observe(viewLifecycleOwner, {
@@ -206,6 +239,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
 
         edtType.setOnClickListener(this::onChooseType)
         edtLXBH.setOnClickListener(this::onChooseLXBH)
+        edtCustomer.setOnClickListener(this::chooseCustomer)
         edtStatus.setOnClickListener(this::onChooseStatus)
         edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
@@ -223,6 +257,16 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         }
 
         btnSearch.setOnClickListener(this::onSearchData)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!hasPermissions(context, *PERMISSIONS)) {
+                requestPermissions(
+                    PERMISSIONS,
+                    PERMISSION_ALL
+                ) // cai nay use cho Fragment, ActivityCompat use cho Activity
+                return
+            }
+            getLocation()
+        }
     }
 
     private fun initRecyclerView() {
@@ -299,6 +343,26 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         }
     }
 
+    private fun chooseCustomer(view: View) {
+        var doc = DialogList()
+        var mArrayList = ArrayList<DialogListModel>()
+        mListCustomer.forEach {
+            mArrayList.add(DialogListModel(it.customerId ?: "", it.name ?: ""))
+        }
+        doc.show(
+            activity, mArrayList,
+            getString(R.string.customer),
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                return@show
+            }
+//            status = item.id
+            custId = item.id.toInt()
+            edtCustomer.setText(item.name)
+        }
+    }
+
     private fun onSearchData(view: View) {
         setEndLessScrollListener()
         isReload = true
@@ -314,7 +378,16 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        banLeViewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, 0)
+        banLeViewModel.onHandleSearch(
+            type,
+            status,
+            staffCode,
+            custId,
+            cbTick.isChecked,
+            fromDate,
+            endDate,
+            0
+        )
     }
 
     private fun setEndLessScrollListener() {
@@ -323,12 +396,22 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 Log.e("PHUCDZ", "$totalItemsCount")
-                banLeViewModel.onHandleSearch(type, status, staffCode, fromDate, endDate, page)
+                banLeViewModel.onHandleSearch(
+                    type,
+                    status,
+                    staffCode,
+                    custId,
+                    cbTick.isChecked,
+                    fromDate,
+                    endDate,
+                    page
+                )
             }
         })
     }
 
     private fun autoSelectDialog(it: ApproveRequestModel) {
+        showLoading()
         //xem xet can_comment_status
         if (canCommentStatus?.get(0).toString() == "1") {
             // mo comment khi
@@ -465,6 +548,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         val tvCongNo45: TextView = dialogView.findViewById(R.id.tvCongNo45)
         val tvCongNo: TextView = dialogView.findViewById(R.id.tvCongNo)
         val llWrapNgayHenTra: LinearLayout = dialogView.findViewById(R.id.llWapNgayHenTra)
+        val edtExpireDate: EditText = dialogView.findViewById(R.id.edtExpireDate)
 
         val edtReason: EditText = dialogView.findViewById(R.id.edtReason)
         val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
@@ -558,7 +642,13 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
                 tvCongNo12.text = congNoGiaTang12.toString()
                 tvCongNo45.text = congNoGiaTang45.toString()
                 tvCongNo.text = "${CommonUtils.priceWithoutDecimal(congNoGiaTang?.toDouble())} đ"
-
+                edtExpireDate.setText(
+                    AppDateUtils.changeDateFormat(
+                        AppDateUtils.FORMAT_6,
+                        AppDateUtils.FORMAT_2,
+                        mDetailRetailData?.debtExpireDate
+                    )
+                )
                 if (isComment) {
                     tvTitle.text = "Cho ý kiến"
                     tvLabelReason.text = "Ý kiến"
@@ -635,6 +725,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
+        hideLoading()
     }
 
     private fun showDiglogDetailRetailV2() {
@@ -672,6 +763,9 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         val tvTienMuaVo: TextView = dialogView.findViewById(R.id.tvTienMuaVo)
         val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
         val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
+        val edtTienMat: TextView = dialogView.findViewById(R.id.edtTienMat)
+        val edtTienChuyenKhoan: TextView = dialogView.findViewById(R.id.edtTienChuyenKhoan)
+        val tvNgayHenTra: TextView = dialogView.findViewById(R.id.tvNgayHenTra)
         val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
 
         val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
@@ -715,12 +809,33 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
 //            rvProductDialog.layoutManager = linearLayoutManager
 //            rvProductDialog.adapter = adapterDetailYCXK
 
-            tvTienKhi12.text = "$tienKhiBan12 đ"
-            tvTienKhi45.text = "$tienKhiBan45 đ"
-            tvTienBanVo.text = "${tienVoBan12 + tienVoBan45} đ"
-            tvTienMuaVo.text = "${tienVoMua12 + tienVoMua45} đ"
-            tvTienNo.text = "${mDetailRetailData?.debtAmount} đ"
-            tvTongTienCanTT.text = "$tongTien đ"
+            "${CommonUtils.priceWithoutDecimal(tienKhiBan12.toDouble())} đ".also {
+                tvTienKhi12.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(tienKhiBan45.toDouble())} đ".also {
+                tvTienKhi45.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal((tienVoBan12 + tienVoBan45).toDouble())} đ".also {
+                tvTienBanVo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienVoMua45).toDouble())} đ".also {
+                tvTienMuaVo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(mDetailRetailData?.debtAmount?.toDouble())} đ".also {
+                tvTienNo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ".also {
+                tvTongTienCanTT.text = it
+            }
+            edtTienMat.text =
+                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountMoney?.toDouble())
+            edtTienChuyenKhoan.text =
+                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountTransfer?.toDouble())
+            tvNgayHenTra.text = AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_2,
+                mDetailRetailData?.debtExpireDate
+            )
 
 
             btnHuy.setOnClickListener {
@@ -738,6 +853,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)
         alertDialog?.show()
+        hideLoading()
     }
 
     private fun showDiglogHistory() {
@@ -865,6 +981,78 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         tongTien =
             tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45)
 //        tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
+    }
+
+    private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {
+        if (context != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        permission!!
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_ALL -> {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    getLocation()
+                } else {
+//                    showMess("NON-ACCEPT")
+                }
+                return
+            }
+        }
+    }
+
+    private fun getLocation() {
+        val location = getLastKnownLocation()
+        longitude = location?.longitude ?: 0.0
+        latitude = location?.latitude ?: 0.0
+        banLeViewModel.onGetListCustomer(
+            latitude.toString(),
+            longitude.toString()
+        )
+        Log.e("PHUC", "$longitude : $latitude")
+    }
+
+    private fun getLastKnownLocation(): Location? {
+        val mLocationManager: LocationManager = context?.getSystemService(
+            AppCompatActivity.LOCATION_SERVICE
+        ) as LocationManager
+        val providers: List<String> = mLocationManager.getProviders(true)
+        var bestLocation: Location? = null
+        for (provider in providers) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                break
+            }
+            val l: Location = mLocationManager.getLastKnownLocation(provider)
+                ?: continue
+            if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
+                // Found best last known location: %s", l);
+                bestLocation = l
+            }
+        }
+        return bestLocation
     }
 
     override fun onItemClick(view: View?, position: Int) {

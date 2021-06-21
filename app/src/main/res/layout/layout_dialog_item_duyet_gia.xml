@@ -648,13 +648,14 @@
                     android:textSize="@dimen/text_14sp" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtEndDate"
+                    android:id="@+id/edtExpireDate"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_margin="10dp"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_border_nomal"
                     android:drawableEnd="@drawable/ic_calendar"
+                    android:enabled="false"
                     android:focusable="false"
                     android:paddingHorizontal="13dp"
                     android:singleLine="true"

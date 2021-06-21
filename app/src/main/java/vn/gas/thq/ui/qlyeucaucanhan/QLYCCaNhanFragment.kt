@@ -195,7 +195,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         viewModel.detailApproveCallback.observe(viewLifecycleOwner, {
             mDetailRetailData = it
             mapListToRetailProduct()
-            if (mDetailRetailData?.status == 18) {
+            if (mDetailRetailData?.status == 8) {
                 viewController?.pushFragment(
                     ScreenId.SCREEN_RETAIL_STEP_2, RetailContainerFragment.newInstance(
                         "STEP_2", obj
@@ -363,7 +363,9 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             voMuaPrice45,
             mDetailRetailData?.amountGasReturn,
             mDetailRetailData?.feeShip,
-            tongTien - mDetailRetailData?.debtAmount!!
+            tongTien - mDetailRetailData?.debtAmount!!,
+            mDetailRetailData?.paymentAmountMoney,
+            mDetailRetailData?.paymentAmountTransfer
         )
     }
 

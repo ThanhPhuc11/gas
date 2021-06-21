@@ -930,6 +930,8 @@ class RetailFragment : BaseFragment() {
         productVoMua45.setGia("${obj.voMuaPrice45}")
 
         edtTienThucTe.setText(obj.tienThucTe?.toString())
+        edtTienMat.setText(CommonUtils.priceWithoutDecimal(obj.tienMatTT?.toDouble()))
+        edtTienChuyenKhoan.setText(obj.tienCKTT?.toString())
     }
 
     private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {

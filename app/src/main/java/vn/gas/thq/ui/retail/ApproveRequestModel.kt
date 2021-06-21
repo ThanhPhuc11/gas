@@ -61,4 +61,16 @@ class ApproveRequestModel {
     @SerializedName("items")
     @Expose
     var item: List<ProductRetailModel>? = null
+
+    @SerializedName("payment_amount_money")
+    @Expose
+    var paymentAmountMoney: Int? = null
+
+    @SerializedName("payment_amount_transfer")
+    @Expose
+    var paymentAmountTransfer: Int? = null
+
+    @SerializedName("debt_expire_date")
+    @Expose
+    var debtExpireDate: String? = null
 }

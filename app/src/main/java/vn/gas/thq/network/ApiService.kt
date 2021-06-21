@@ -179,7 +179,7 @@ interface ApiService {
     ): ApproveRequestModel
 
     //Thuc hien Ban le
-    @POST("orders/sale/{orderId}/process")
+    @POST("sale-orders/{orderId}/process")
     suspend fun doRetailLXBH(
         @Path("orderId") orderId: String?,
         @Body obj: GasRemainModel
@@ -191,13 +191,13 @@ interface ApiService {
         @Body obj: GasRemainModel
     )
 
-    @POST("orders/sale/{orderId}/accept")
+    @POST("sale-orders/{orderId}/accept")
     suspend fun doAcceptDuyetGia(
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
     )
 
-    @POST("orders/sale/{orderId}/reject")
+    @POST("sale-orders/{orderId}/reject")
     suspend fun doRejectDuyetGia(
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
@@ -312,6 +312,8 @@ interface ApiService {
         @Query("sale_order_type") sale_order_type: Int,
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
+        @Query("customer_id") customer_id: Int?,
+        @Query("need_my_input") need_my_input: Boolean?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String,
         @Query("page") page: Int,
@@ -330,4 +332,8 @@ interface ApiService {
         @Path("orderId") orderId: String?,
         @Body commentModel: CommentModel
     )
+
+    //History Ban le new
+    @GET("sale-orders/history")
+    suspend fun getHistoryBanLe(@Query("sale_order_id") sale_order_id: Int): List<HistoryModel>
 }

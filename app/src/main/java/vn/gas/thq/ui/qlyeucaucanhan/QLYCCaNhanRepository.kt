@@ -29,7 +29,7 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         page: Int,
         size: Int
     ) = flow {
-        emit(apiService.searchRequestRetail(1, status, staffCode, fromDate, toDate, page, size))
+        emit(apiService.searchRequestRetail(1, status, staffCode, null, null, fromDate, toDate, page, size))
     }
 
     suspend fun onSearchRetailTDL(

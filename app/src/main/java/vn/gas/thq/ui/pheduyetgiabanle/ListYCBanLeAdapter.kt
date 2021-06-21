@@ -114,7 +114,7 @@ class ListYCBanLeAdapter(
             2 -> "NVKD"
             3 -> "PGD KD"
             4 -> "TT"
-            5 -> "CÔNG TY"
+            7 -> "CÔNG TY"
             else -> ""
         }
     }
