@@ -181,9 +181,9 @@
                     android:textStyle="bold"
                     app:drawableEndCompat="@drawable/ic_arrow_down_circle" />
 
-                <include
-                    android:id="@+id/layoutThuHoiStep2"
-                    layout="@layout/item_product_type_6" />
+<!--                <include-->
+<!--                    android:id="@+id/layoutThuHoiStep2"-->
+<!--                    layout="@layout/item_product_type_6" />-->
 
                 <LinearLayout
                     android:id="@+id/linearThuHoiVo"
@@ -460,18 +460,18 @@
                                 android:textColor="@color/blue_3D4E63"
                                 android:textSize="14sp" />
 
-                            <EditText
+                            <TextView
+                                android:id="@+id/tvNgayHenTra"
                                 android:layout_width="160dp"
                                 android:layout_height="36dp"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/bg_border_nomal_1"
-                                android:drawableEnd="@drawable/ic_calendar"
-                                android:drawableTint="@color/blue_2C5181"
-                                android:inputType="number"
+                                android:gravity="center"
                                 android:paddingEnd="13dp"
-                                android:textAlignment="center"
                                 android:textColor="@color/blue_2C5181"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                app:drawableEndCompat="@drawable/ic_calendar"
+                                app:drawableTint="@color/blue_2C5181" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -722,17 +722,16 @@
                             android:textColor="@color/blue_3D4E63"
                             android:textSize="14sp" />
 
-                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        <TextView
                             android:id="@+id/edtTienMat"
                             android:layout_width="160dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="20dp"
                             android:background="@drawable/bg_border_nomal_1"
-                            android:completionThreshold="1"
-                            android:inputType="number"
+                            android:enabled="false"
+                            android:gravity="center"
                             android:maxLength="11"
                             android:text="0"
-                            android:textAlignment="center"
                             android:textColor="@color/blue_2C5181"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -754,17 +753,16 @@
                             android:textColor="@color/blue_3D4E63"
                             android:textSize="14sp" />
 
-                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        <TextView
                             android:id="@+id/edtTienChuyenKhoan"
                             android:layout_width="160dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="20dp"
                             android:background="@drawable/bg_border_nomal_1"
-                            android:completionThreshold="1"
-                            android:inputType="number"
+                            android:enabled="false"
+                            android:gravity="center"
                             android:maxLength="11"
                             android:text="0"
-                            android:textAlignment="center"
                             android:textColor="@color/blue_2C5181"
                             android:textSize="14sp" />
                     </LinearLayout>

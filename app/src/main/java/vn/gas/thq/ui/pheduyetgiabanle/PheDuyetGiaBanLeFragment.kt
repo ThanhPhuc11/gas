@@ -703,17 +703,21 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
                 }
                 return@setOnClickListener
             }
-            CommonUtils.showConfirmDiglog2Button(
-                activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
-                    R.string.biometric_negative_button_text
-                ), getString(R.string.text_ok)
-            ) {
-                if (it == AppConstants.YES) {
-                    banLeViewModel.onHandleReject(
-                        type,
-                        orderId?.toString(),
-                        DuyetGiaModel(statusShowDialog, edtReason.text.toString())
-                    )
+            if (edtReason.text.isEmpty()) {
+                showMess("Bạn phải nhập ý kiến nếu không đồng ý với đề xuất của đơn hàng")
+            } else {
+                CommonUtils.showConfirmDiglog2Button(
+                    activity, "Xác nhận", "Bạn có chắc chắn muốn từ chối yêu cầu?", getString(
+                        R.string.biometric_negative_button_text
+                    ), getString(R.string.text_ok)
+                ) {
+                    if (it == AppConstants.YES) {
+                        banLeViewModel.onHandleReject(
+                            type,
+                            orderId?.toString(),
+                            DuyetGiaModel(statusShowDialog, edtReason.text.toString())
+                        )
+                    }
                 }
             }
         }

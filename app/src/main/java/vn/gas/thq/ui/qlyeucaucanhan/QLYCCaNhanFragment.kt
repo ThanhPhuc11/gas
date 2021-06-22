@@ -597,7 +597,10 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
         val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
 
-        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+//        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+        val edtTienMat: TextView = dialogView.findViewById(R.id.edtTienMat)
+        val edtTienChuyenKhoan: TextView = dialogView.findViewById(R.id.edtTienChuyenKhoan)
+        val tvNgayHenTra: TextView = dialogView.findViewById(R.id.tvNgayHenTra)
 
         val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
 
@@ -631,7 +634,16 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             productVoMua45.setSoLuong(obj?.voMua45?.toString())
             productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice45?.toDouble()))
 
-            tvTienThucTe.text = "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
+//            tvTienThucTe.text = "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
+            edtTienMat.text =
+                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountMoney?.toDouble())
+            edtTienChuyenKhoan.text =
+                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountTransfer?.toDouble())
+            tvNgayHenTra.text = AppDateUtils.changeDateFormat(
+                AppDateUtils.FORMAT_6,
+                AppDateUtils.FORMAT_2,
+                mDetailRetailData?.debtExpireDate
+            )
 
             btnCongNo12.text = mDetailRetailData?.debtAmountTank12?.toString() ?: "0"
             btnCongNo45.text = mDetailRetailData?.debtAmountTank45?.toString() ?: "0"
@@ -640,12 +652,31 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
 //            rvProductDialog.layoutManager = linearLayoutManager
 //            rvProductDialog.adapter = adapterDetailYCXK
 
-            tvTienKhi12.text = "$tienKhiBan12 đ"
-            tvTienKhi45.text = "$tienKhiBan45 đ"
-            tvTienBanVo.text = "${tienVoBan12 + tienVoBan45} đ"
-            tvTienMuaVo.text = "${tienVoMua12 + tienVoMua45} đ"
-            tvTienNo.text = "${mDetailRetailData?.debtAmount} đ"
-            tvTongTienCanTT.text = "$tongTien đ"
+//            tvTienKhi12.text = "$tienKhiBan12 đ"
+//            tvTienKhi45.text = "$tienKhiBan45 đ"
+//            tvTienBanVo.text = "${tienVoBan12 + tienVoBan45} đ"
+//            tvTienMuaVo.text = "${tienVoMua12 + tienVoMua45} đ"
+//            tvTienNo.text = "${mDetailRetailData?.debtAmount} đ"
+//            tvTongTienCanTT.text = "$tongTien đ"
+
+            "${CommonUtils.priceWithoutDecimal(tienKhiBan12.toDouble())} đ".also {
+                tvTienKhi12.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(tienKhiBan45.toDouble())} đ".also {
+                tvTienKhi45.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal((tienVoBan12 + tienVoBan45).toDouble())} đ".also {
+                tvTienBanVo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal((tienVoMua12 + tienVoMua45).toDouble())} đ".also {
+                tvTienMuaVo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(mDetailRetailData?.debtAmount?.toDouble())} đ".also {
+                tvTienNo.text = it
+            }
+            "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ".also {
+                tvTongTienCanTT.text = it
+            }
 
 
             btnHuy.setOnClickListener {

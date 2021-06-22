@@ -66,7 +66,7 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
     }
 
     suspend fun getHistoryAcceptRetail(orderId: Int) = flow {
-        emit(apiService.getHistoryAcceptRetail(orderId))
+        emit(apiService.getHistoryBanLe(orderId))
     }
 
 }

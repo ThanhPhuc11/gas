@@ -125,7 +125,7 @@ class RetailFragment : BaseFragment() {
             productVoThuHoi12.visibility = View.GONE
             productVoThuHoi45.visibility = View.GONE
             btnSubmit.text = "BÁN HÀNG"
-            tvHistory.visibility = View.VISIBLE
+//            tvHistory.visibility = View.VISIBLE
             transferRetailModel = arguments?.getSerializable("DATA") as TransferRetailModel?
 
             disableInput()
@@ -793,7 +793,8 @@ class RetailFragment : BaseFragment() {
         tongTien =
             tienKhiBan12 + tienKhiBan45 + tienVoBan12 + tienVoBan45 - (tienVoMua12 + tienVoMua45) - gasPrice
         tvTongTienCanTT.text = "${CommonUtils.priceWithoutDecimal(tongTien.toDouble())} đ"
-        edtTienMat.setText(tongTien.toString())
+        if ("STEP_2" != arguments?.getString("STEP"))
+            edtTienMat.setText(tongTien.toString())
     }
 
     private fun totalGasPrice(khiPrice12: Int, khiPrice45: Int) {
@@ -803,6 +804,7 @@ class RetailFragment : BaseFragment() {
         }
         gasPrice = lamTronGasPrice((gasRemain * giaKhi).toInt().toString())
         totalMustPay()
+        tinhTienSauKhiNhapGasDu(gasPrice)
         totalDebit()
         edtGasRemainPrice.setText(CommonUtils.priceWithoutDecimal(gasPrice.toDouble()))
         if (gasPrice == 0) {
@@ -861,6 +863,19 @@ class RetailFragment : BaseFragment() {
             view.toString()
                 .trim()
         )
+    }
+
+    private fun tinhTienSauKhiNhapGasDu(soTienGasDu: Int) {
+        var tienMatTemp = CommonUtils.getIntFromStringDecimal(edtTienMat.text.toString())
+        var tienCKTemp = CommonUtils.getIntFromStringDecimal(edtTienChuyenKhoan.text.toString())
+        if (soTienGasDu <= tienMatTemp) {
+            tienMatTemp -= soTienGasDu
+        } else {
+            val delta = soTienGasDu - tienMatTemp
+            tienCKTemp -= tienCKTemp - delta
+        }
+        edtTienMat.setText(CommonUtils.priceWithoutDecimal(tienMatTemp.toDouble()))
+        edtTienChuyenKhoan.setText(CommonUtils.priceWithoutDecimal(tienCKTemp.toDouble()))
     }
 
     private fun disableInput() {
