@@ -698,6 +698,90 @@
                 android:textColor="@color/blue_2C5181"
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/ic_arrow_right_circle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_nomal_top">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:text="Ngày"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_DCE0EA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Hành\nđộng"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_DCE0EA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:text="Người thực hiện"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_DCE0EA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:text="Nội dung"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_DCE0EA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:text="Ghi chú"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_13sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/bg_border_nomal_bottom" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

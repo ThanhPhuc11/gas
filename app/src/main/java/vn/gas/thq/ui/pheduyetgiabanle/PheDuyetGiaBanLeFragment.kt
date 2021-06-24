@@ -164,13 +164,6 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         })
 
         banLeViewModel.mListDataSearch.observe(viewLifecycleOwner, {
-//            it.forEach {
-//                it.approve_staffs = mutableListOf<String>().apply {
-//                    add("Phucdz1")
-//                    add("Phucdz2")
-//                    add("Phucdz3")
-//                }
-//            }
             if (isReload) {
                 mList.clear()
             }
@@ -181,8 +174,9 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
 
         banLeViewModel.detailApproveCallback.observe(viewLifecycleOwner, {
             mDetailRetailData = it
-            mapListToRetailProduct()
-            autoSelectDialog(it)
+            banLeViewModel.getHistoryAcceptRetail(orderId!!)
+//            mapListToRetailProduct()
+//            autoSelectDialog(it)
         })
 
         banLeViewModel.callbackComment.observe(viewLifecycleOwner, {
@@ -210,7 +204,14 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             listHistory.clear()
             listHistory.addAll(it)
 //            adapterHistory.notifyDataSetChanged()
-            showDiglogHistory()
+//            showDiglogHistory()
+            mapListToRetailProduct()
+            autoSelectDialog(mDetailRetailData!!)
+        })
+
+        banLeViewModel.callbackHistoryFail.observe(viewLifecycleOwner, {
+            mapListToRetailProduct()
+            autoSelectDialog(mDetailRetailData!!)
         })
 
         //TODO: chung
@@ -413,19 +414,19 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private fun autoSelectDialog(it: ApproveRequestModel) {
         showLoading()
         //xem xet can_comment_status
-        if (canCommentStatus?.get(0).toString() == "1") {
+        if (it.canCommentStatus?.gasStatus.toString() == "1") {
             // mo comment khi
             statusShowDialog = 1
             setValueApproveDetail(1)
             showDiglogDetailRetail(true)
             return
-        } else if (canCommentStatus?.get(1).toString() == "1") {
+        } else if (it.canCommentStatus?.tankStatus.toString() == "1") {
             // mo comment vo
             statusShowDialog = 2
             setValueApproveDetail(2)
             showDiglogDetailRetail(true)
             return
-        } else if (canCommentStatus?.get(2).toString() == "1") {
+        } else if (it.canCommentStatus?.debitStatus.toString() == "1") {
             // mo comment cong no
             statusShowDialog = 3
             congNoGiaTang12 = mDetailRetailData?.debtAmountTank12 ?: 0
@@ -436,9 +437,9 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         }
 
         val array = this.canApproveStatus?.toCharArray()
-        val a = array?.get(0).toString()
-        val b = array?.get(1).toString()
-        val c = array?.get(2).toString()
+        val a = it.canApproveStatus?.gasStatus
+        val b = it.canApproveStatus?.tankStatus
+        val c = it.canApproveStatus?.debitStatus
         if (a == "1" || a == "2" || a == "3") {
             // mo khi
             statusShowDialog = 1
@@ -559,6 +560,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         val btnTuChoi: Button = dialogView.findViewById(R.id.btnTuChoi)
 
         val tvLabelReason: TextView = dialogView.findViewById(R.id.tvLabelReason)
+        val rvHistoryDuyetGia: RecyclerView = dialogView.findViewById(R.id.rvHistory)
 
         tvNameLXBH.text = staffName
         tvTuyenXe.text = mDetailRetailData?.saleLineName
@@ -658,6 +660,17 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             }
         }
 
+        adapterHistory = HistoryAcceptBanLeAdapter(listHistory)
+
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvHistoryDuyetGia.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(
+            rvHistoryDuyetGia.context,
+            linearLayoutManager.orientation
+        )
+        rvHistoryDuyetGia.addItemDecoration(dividerItemDecoration)
+        rvHistoryDuyetGia.adapter = adapterHistory
+
         imgClose.setOnClickListener {
             alertDialog?.dismiss()
         }
@@ -722,9 +735,9 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
             }
         }
 
-        tvHistory.setOnClickListener {
-            banLeViewModel.getHistoryAcceptRetail(orderId!!)
-        }
+//        tvHistory.setOnClickListener {
+//            banLeViewModel.getHistoryAcceptRetail(orderId!!)
+//        }
 
         alertDialog = builder?.create()
         alertDialog?.window?.setLayout(500, 200)

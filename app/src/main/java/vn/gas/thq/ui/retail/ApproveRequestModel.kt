@@ -3,6 +3,7 @@ package vn.gas.thq.ui.retail
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import vn.gas.thq.model.ProductRetailModel
+import vn.gas.thq.ui.pheduyetgiabanle.model.CanApproveStatusModel
 
 
 class ApproveRequestModel {
@@ -56,7 +57,11 @@ class ApproveRequestModel {
 
     @SerializedName("can_approve_status")
     @Expose
-    var canApproveStatus: String? = null
+    var canApproveStatus: CanApproveStatusModel? = null
+
+    @SerializedName("can_comment_status")
+    @Expose
+    var canCommentStatus: CanApproveStatusModel? = null
 
     @SerializedName("items")
     @Expose

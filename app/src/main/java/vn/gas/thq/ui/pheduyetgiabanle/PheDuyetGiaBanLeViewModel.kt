@@ -24,6 +24,7 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
     val callbackAccept = MutableLiveData<Unit>()
     val callbackReject = MutableLiveData<Unit>()
     val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
+    val callbackHistoryFail = MutableLiveData<Unit>()
     val callbackComment = MutableLiveData<Unit>()
     val callbackListCustomer = MutableLiveData<MutableList<Customer>>()
 
@@ -270,6 +271,7 @@ class PheDuyetGiaBanLeViewModel(private val pheDuyetGiaBanLeRepository: PheDuyet
                 }
                 .catch {
                     handleError(it)
+                    callbackHistoryFail.value = Unit
                 }
                 .collect {
                     callbackSuccess.value = Unit
