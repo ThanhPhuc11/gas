@@ -14,6 +14,10 @@ class UserModel {
     @Expose
     var staffCode: String? = null
 
+    @SerializedName("channel_type_id")
+    @Expose
+    var channelTypeId: Int? = null
+
     @SerializedName("shop_name")
     @Expose
     var shopName: String? = null

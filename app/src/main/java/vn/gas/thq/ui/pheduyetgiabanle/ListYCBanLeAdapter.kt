@@ -79,9 +79,14 @@ class ListYCBanLeAdapter(
 
         var strCapDuyet = ""
         holder.llWrap.visibility = View.VISIBLE
-        obj.approve_levels?.forEach { it1 ->
-            if (it1.level != 0) {
-                strCapDuyet += "${getNameProductType(it1.productType!!)}: ${getNameLevel(it1.level!!)}\n"
+//        obj.approve_levels?.forEach { it1 ->
+//            if (it1.level != 0) {
+//                strCapDuyet += "${getNameProductType(it1.productType!!)}: ${getNameLevel(it1.level!!)}\n"
+//            }
+//        }
+        obj.approve_levels?.toList()?.forEachIndexed { index, it1 ->
+            if (it1.toString() != "0") {
+                strCapDuyet += "${getNameProductType(index + 1)}: ${getNameLevel(it1.toString().toInt())}\n"
             }
         }
         if (strCapDuyet.isEmpty()) {

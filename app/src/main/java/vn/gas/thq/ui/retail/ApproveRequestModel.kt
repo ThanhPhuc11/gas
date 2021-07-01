@@ -57,11 +57,11 @@ class ApproveRequestModel {
 
     @SerializedName("can_approve_status")
     @Expose
-    var canApproveStatus: CanApproveStatusModel? = null
+    var canApproveStatus: String? = null
 
     @SerializedName("can_comment_status")
     @Expose
-    var canCommentStatus: CanApproveStatusModel? = null
+    var canCommentStatus: String? = null
 
     @SerializedName("items")
     @Expose

@@ -23,5 +23,6 @@ class BussinesRequestModel {
 
     //Ban le new
     var sale_line: String? = null
-    var approve_levels: List<ApproveLevelModel>? = null
+//    var approve_levels: List<ApproveLevelModel>? = null
+    var approve_levels: String? = null
 }

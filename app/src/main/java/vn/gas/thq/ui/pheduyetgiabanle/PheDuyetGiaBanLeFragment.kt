@@ -414,19 +414,19 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private fun autoSelectDialog(it: ApproveRequestModel) {
         showLoading()
         //xem xet can_comment_status
-        if (it.canCommentStatus?.gasStatus.toString() == "1") {
+        if (it.canCommentStatus?.get(0).toString() == "1") {
             // mo comment khi
             statusShowDialog = 1
             setValueApproveDetail(1)
             showDiglogDetailRetail(true)
             return
-        } else if (it.canCommentStatus?.tankStatus.toString() == "1") {
+        } else if (it.canCommentStatus?.get(1).toString() == "1") {
             // mo comment vo
             statusShowDialog = 2
             setValueApproveDetail(2)
             showDiglogDetailRetail(true)
             return
-        } else if (it.canCommentStatus?.debitStatus.toString() == "1") {
+        } else if (it.canCommentStatus?.get(2).toString() == "1") {
             // mo comment cong no
             statusShowDialog = 3
             congNoGiaTang12 = mDetailRetailData?.debtAmountTank12 ?: 0
@@ -437,9 +437,9 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         }
 
         val array = this.canApproveStatus?.toCharArray()
-        val a = it.canApproveStatus?.gasStatus
-        val b = it.canApproveStatus?.tankStatus
-        val c = it.canApproveStatus?.debitStatus
+        val a = it.canApproveStatus?.get(0).toString()
+        val b = it.canApproveStatus?.get(1).toString()
+        val c = it.canApproveStatus?.get(2).toString()
         if (a == "1" || a == "2" || a == "3") {
             // mo khi
             statusShowDialog = 1
