@@ -232,7 +232,7 @@ class NhapVoFragment : BaseFragment() {
         }
         doc.show(
             activity, mArrayList,
-            getString(R.string.lxbh),
+            "Đơn vị nhận",
             getString(R.string.enter_text_search)
         ) { item ->
 //            if (AppConstants.NOT_SELECT == item.id) {
@@ -256,7 +256,7 @@ class NhapVoFragment : BaseFragment() {
         }
         doc.show(
             activity, mArrayList,
-            getString(R.string.lxbh),
+            "Xe vận chuyển",
             getString(R.string.enter_text_search)
         ) { item ->
 //            if (AppConstants.NOT_SELECT == item.id) {

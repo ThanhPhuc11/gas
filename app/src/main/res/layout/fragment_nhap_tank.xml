@@ -210,52 +210,52 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bg_border_body"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="7dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="12dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/bg_border_body"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingHorizontal="7dp"-->
+<!--                    android:paddingTop="16dp"-->
+<!--                    android:paddingBottom="12dp">-->
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center"-->
+<!--                        android:orientation="horizontal">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_print"
-                            android:gravity="center"
-                            android:text="Phiếu xuất"
-                            android:textColor="@color/blue_2C5181"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:drawableStart="@drawable/ic_print"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="Phiếu xuất"-->
+<!--                            android:textColor="@color/blue_2C5181"-->
+<!--                            android:textSize="13sp"-->
+<!--                            android:textStyle="bold" />-->
+<!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center"-->
+<!--                        android:orientation="horizontal">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_print"
-                            android:gravity="center"
-                            android:text="Phiếu nhập"
-                            android:textColor="@color/blue_2C5181"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:drawableStart="@drawable/ic_print"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="Phiếu nhập"-->
+<!--                            android:textColor="@color/blue_2C5181"-->
+<!--                            android:textSize="13sp"-->
+<!--                            android:textStyle="bold" />-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
 
                 <TextView
                     android:layout_width="wrap_content"
