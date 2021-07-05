@@ -169,7 +169,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     }
 
     override fun initObserver() {
-        viewModel.mLiveData.observe(viewLifecycleOwner, {
+        viewModel.callbackListYCXK.observe(viewLifecycleOwner, {
             if (isReload) {
                 mList.clear()
             }
@@ -399,7 +399,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                         viewModel.onSearchRetail(status, fromDate, endDate, page)
                     }
                     "1" -> {
-                        viewModel.onSubmitData(status, fromDate, endDate, totalItemsCount)
+                        viewModel.searchYCXK(status, fromDate, endDate, totalItemsCount)
                     }
                 }
             }
@@ -483,7 +483,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             viewModel.onSearchRetailTDL(status, fromDate, endDate, 0)
             return
         }
-        viewModel.onSubmitData(status, fromDate, endDate, 0)
+        viewModel.searchYCXK(status, fromDate, endDate, 0)
     }
 
     private fun showDiglogDetailYCXK(

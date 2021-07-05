@@ -1,8 +1,5 @@
 package vn.gas.thq.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-
 class BussinesRequestModel {
     var staff_name: String? = null
     var status: Int? = null
@@ -23,6 +20,9 @@ class BussinesRequestModel {
 
     //Ban le new
     var sale_line: String? = null
-//    var approve_levels: List<ApproveLevelModel>? = null
+
+    //    var approve_levels: List<ApproveLevelModel>? = null
     var approve_levels: String? = null
+
+    var displayType: String? = null
 }

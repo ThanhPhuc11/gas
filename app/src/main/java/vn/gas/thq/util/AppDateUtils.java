@@ -18,7 +18,7 @@ public class AppDateUtils {
     public static String FORMAT_3 = "dd-MM-yyyy";
     public static String FORMAT_4 = "yyyy/MM/dd hh:mm:ss";
     public static String FORMAT_5 = "yyyy-MM-dd";
-    public static String FORMAT_6 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static String FORMAT_6 = "yyyy-MM-dd'T'HH:mm:ss'Z'"; // luu y
     public static String FORMAT_7 = "dd/MM/yyyy HH:mm";
 
     public static String changeDateFormat(String currentFormat, String requiredFormat, String dateString) {
@@ -61,6 +61,18 @@ public class AppDateUtils {
             result = formatterNew.format(date);
         }
         return result;
+    }
+
+    public static String tomorrowDateInput(String strDateInput, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(strDateInput));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.add(Calendar.DATE, 1);  // number of days to add
+        return sdf.format(c.getTime());
     }
 
     public static Date convertStringDateToDate(String startDateString, String format) {

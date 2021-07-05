@@ -22,16 +22,16 @@ class QLYCCaNhanViewModel(
 ) :
     BaseViewModel() {
     var mCancelData = MutableLiveData<Unit>()
-    val mLiveData = MutableLiveData<MutableList<BussinesRequestModel>>()
+    val callbackListYCXK = MutableLiveData<MutableList<BussinesRequestModel>>()
     val listStatus = MutableLiveData<MutableList<StatusValueModel>>()
     val detailApproveCallback = MutableLiveData<ApproveRequestModel>()
     val detailApproveTDLCallback = MutableLiveData<ApproveRequestModel>()
     val callbackHistory = MutableLiveData<MutableList<HistoryModel>>()
 
-    fun onSubmitData(status: String?, fromDate: String, toDate: String, offSet: Int) {
+    fun searchYCXK(status: String?, fromDate: String, toDate: String, offSet: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             val staffCode = AppPreferencesHelper(context).userModel.staffCode
-            qlycCaNhanRepository.onSubmitRequest(staffCode, status, fromDate, toDate, offSet, 100)
+            qlycCaNhanRepository.searchYCXK(staffCode, status, fromDate, toDate, offSet, 100)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -43,7 +43,7 @@ class QLYCCaNhanViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it as MutableList<BussinesRequestModel>
+                    callbackListYCXK.value = it as MutableList<BussinesRequestModel>
                 }
         }
     }
@@ -99,7 +99,7 @@ class QLYCCaNhanViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it.listData as MutableList<BussinesRequestModel>
+                    callbackListYCXK.value = it.listData as MutableList<BussinesRequestModel>
                 }
         }
     }
@@ -121,7 +121,7 @@ class QLYCCaNhanViewModel(
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    mLiveData.value = it.listData as MutableList<BussinesRequestModel>
+                    callbackListYCXK.value = it.listData as MutableList<BussinesRequestModel>
                 }
         }
     }

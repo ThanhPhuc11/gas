@@ -14,7 +14,7 @@ class ThuKhoXuatKhoRepository(private val apiService: ApiService) : BaseReposito
         size: Int
     ) = flow {
         emit(
-            apiService.searchRequest(
+            apiService.searchRequestYCXK(
                 staffCode, status, fromDate, toDate, offSet, size
             )
         )

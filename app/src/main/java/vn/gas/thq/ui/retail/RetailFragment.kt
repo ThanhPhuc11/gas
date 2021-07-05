@@ -1,6 +1,7 @@
 package vn.gas.thq.ui.retail
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -42,12 +43,13 @@ import vn.gas.thq.ui.pheduyetgiabanle.HistoryAcceptBanLeAdapter
 import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.util.*
+import vn.gas.thq.util.AppDateUtils.*
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
 import java.util.*
 
-
+@SuppressLint("SetTextI18n")
 class RetailFragment : BaseFragment() {
     private var custId: String? = null
     private lateinit var viewModel: RetailViewModel
@@ -234,7 +236,23 @@ class RetailFragment : BaseFragment() {
             CommonUtils.showCalendarDialog(
                 context,
                 edtExpireDate.text.toString()
-            ) { strDate -> edtExpireDate.setText(strDate) }
+            ) { strDate ->
+                val expDate = changeDateFormat(
+                    FORMAT_2,
+                    FORMAT_5,
+                    strDate
+                )
+                val nowDate = changeDateFormat(
+                    FORMAT_2,
+                    FORMAT_5,
+                    getCurrentDate()
+                )
+                if (validateEndDateGreaterorEqualThanStartDate(nowDate, expDate)) {
+                    edtExpireDate.setText(strDate)
+                } else {
+                    showMess("Ngày hẹn không được nhỏ hơn ngày hiện tại")
+                }
+            }
         }
 
 //        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
@@ -417,10 +435,10 @@ class RetailFragment : BaseFragment() {
         requestInitRetail.debit = tienNo
         requestInitRetail.lat = latitude.toFloat()
         requestInitRetail.lng = longitude.toFloat()
-        requestInitRetail.debtExpireDate = AppDateUtils.changeDateFormatV2(
-            AppDateUtils.FORMAT_2,
-            AppDateUtils.FORMAT_6,
-            edtExpireDate.text.toString()
+        requestInitRetail.debtExpireDate = changeDateFormatV2(
+            FORMAT_2,
+            FORMAT_6,
+            tomorrowDateInput(edtExpireDate.text.toString(), FORMAT_2)
         )
         val listProductRetailModel = mutableListOf<ProductRetailModel>()
         listProductRetailModel.add(
@@ -542,8 +560,8 @@ class RetailFragment : BaseFragment() {
     }
 
     private fun chooseCustomer(view: View) {
-        var doc = DialogList()
-        var mArrayList = ArrayList<DialogListModel>()
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
         mListCustomer.forEach {
             mArrayList.add(DialogListModel(it.customerId ?: "", it.name ?: ""))
         }
@@ -833,6 +851,8 @@ class RetailFragment : BaseFragment() {
             if (tongTien - (tienMatTT + tienCKTT) > 0) (tongTien - (tienMatTT + tienCKTT)) else 0
         btnCongNoTien.text = CommonUtils.priceWithoutDecimal(tienNo.toDouble())
         tvTienNo.text = "${CommonUtils.priceWithoutDecimal(tienNo.toDouble())} đ"
+
+        edtExpireDate.isEnabled = tienNo > 0
     }
 
     private fun getRealNumber(view: EditText): Int {

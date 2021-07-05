@@ -642,4 +642,40 @@ public final class CommonUtils {
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
+
+    public static String getNameProductType(int type) {
+        switch (type) {
+            case 1: {
+                return "Giá khí";
+            }
+            case 2: {
+                return "Giá vỏ";
+            }
+            case 3: {
+                return "Công nợ";
+            }
+        }
+        return "";
+    }
+
+    public static String getNameLevel(int level) {
+        switch (level) {
+            case 1: {
+                return "LXBH";
+            }
+            case 2: {
+                return "NVKD";
+            }
+            case 3: {
+                return "PGD KD";
+            }
+            case 4: {
+                return "TT";
+            }
+            case 7: {
+                return "CÔNG TY";
+            }
+        }
+        return "";
+    }
 }

@@ -30,6 +30,7 @@ import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.ItemProductType1
 import vn.gas.thq.customview.ItemProductType2
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.model.*
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
@@ -64,11 +65,13 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     private var statusShowDialog: Int? = null
     private var orderId: Int? = null
     private var staffName: String? = null
+    private var lineName: String? = null
     private var custId: Int? = null
     private var createDate: String? = null
     private var canApproveStatus: String? = null
     private var canCommentStatus: String? = null
     private var obj: TransferRetailModel? = null
+    private var userModel: UserModel? = null
 
     private var fromDate: String = ""
     private var endDate: String = ""
@@ -233,6 +236,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     }
 
     override fun initData() {
+        userModel = AppPreferencesHelper(requireContext()).userModel
         banLeViewModel.getListStaff()
         banLeViewModel.onGetSaleOrderStatus()
         initRecyclerView()
@@ -562,7 +566,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
         val tvLabelReason: TextView = dialogView.findViewById(R.id.tvLabelReason)
         val rvHistoryDuyetGia: RecyclerView = dialogView.findViewById(R.id.rvHistory)
 
-        tvNameLXBH.text = staffName
+        tvNameLXBH.text = lineName
         tvTuyenXe.text = mDetailRetailData?.saleLineName
         tvNameCust.text = mDetailRetailData?.customerName
 //        tvDate.text = createDate
@@ -677,7 +681,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
 
         btnDongY.setOnClickListener {
             if (isComment) {
-                if (edtReason.text.isEmpty()) {
+                if (edtReason.text.isEmpty() && (userModel?.channelTypeId == 1 || userModel?.channelTypeId == 2)) {
                     showMess("NVKD bắt buộc phải cho ý kiến trên đơn hàng")
                 } else {
                     banLeViewModel.commentBanLe(orderId?.toString(), CommentModel().apply {
@@ -1075,6 +1079,7 @@ class PheDuyetGiaBanLeFragment : BaseFragment(), ListYCBanLeAdapter.ItemClickLis
     override fun onItemClick(view: View?, position: Int) {
         orderId = mList[position].order_id
         staffName = mList[position].staff_name
+        lineName = mList[position].sale_line
         createDate = mList[position].created_date
         canApproveStatus = mList[position].can_approve_status
         canCommentStatus = mList[position].can_comment_status

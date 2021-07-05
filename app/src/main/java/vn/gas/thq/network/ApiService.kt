@@ -91,7 +91,7 @@ interface ApiService {
 
     //Tim kiem ycxk
     @GET("orders/shop")
-    suspend fun searchRequest(
+    suspend fun searchRequestYCXK(
         @Query("staff_code") staff_code: String?,
         @Query("status") status: String?,
         @Query("from_date") from_date: String,

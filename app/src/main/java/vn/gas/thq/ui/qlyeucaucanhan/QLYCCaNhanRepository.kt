@@ -5,7 +5,7 @@ import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
 
 class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository() {
-    suspend fun onSubmitRequest(
+    suspend fun searchYCXK(
         staffCode: String?,
         status: String?,
         fromDate: String,
@@ -13,7 +13,7 @@ class QLYCCaNhanRepository(private val apiService: ApiService) : BaseRepository(
         offSet: Int,
         size: Int
     ) = flow {
-        emit(apiService.searchRequest(staffCode, status, fromDate, toDate, offSet, size))
+        emit(apiService.searchRequestYCXK(staffCode, status, fromDate, toDate, offSet, size))
     }
 
     suspend fun onCancelRequest(orderId: String?) = flow {
