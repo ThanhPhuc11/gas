@@ -25,12 +25,60 @@
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:text="Ngày nhập"
                 android:textColor="@color/gray_666E79" />
 
             <TextView
                 android:id="@+id/tvDate"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="KL khí hóa lỏng sử dụng"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvUseKHL"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="KL GAS sử dụng"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvUseGas"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -48,12 +96,12 @@
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="KL khí hóa lỏng SD"
+                android:layout_weight="1.5"
+                android:text="KL GAS dư kiểm kê sử dụng"
                 android:textColor="@color/gray_666E79" />
 
             <TextView
-                android:id="@+id/tvUseKHL"
+                android:id="@+id/tvUseGasKK"
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -72,7 +120,7 @@
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:text="Số lượng khí 12Kg"
                 android:textColor="@color/gray_666E79" />
 
@@ -98,7 +146,7 @@
                 style="@style/textStyleBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:text="Số lượng khí 45Kg"
                 android:textColor="@color/gray_666E79" />
 

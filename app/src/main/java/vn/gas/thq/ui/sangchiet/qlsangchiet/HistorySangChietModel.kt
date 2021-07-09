@@ -30,6 +30,14 @@ class HistorySangChietModel {
     @Expose
     var amountTank45: Int? = null
 
+    @SerializedName("amount_gas_remain_used")
+    @Expose
+    var amountGasRemainUsed: Int? = null
+
+    @SerializedName("amount_gas_kk_used")
+    @Expose
+    var amountGasKkUsed: Int? = null
+
     @SerializedName("created_date")
     @Expose
     var createdDate: String? = null

@@ -16,4 +16,12 @@ class InitSangChiet {
     @SerializedName("amount_gas45")
     @Expose
     var amountGas45: Int? = null
+
+    @SerializedName("amount_gas_remain_used")
+    @Expose
+    var amountGasRemainUsed: Int? = null
+
+    @SerializedName("amount_gas_kk_used")
+    @Expose
+    var amountGasKkUsed: Int? = null
 }
