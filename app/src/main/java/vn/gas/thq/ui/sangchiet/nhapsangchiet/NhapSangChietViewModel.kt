@@ -12,7 +12,7 @@ import vn.gas.thq.base.BaseViewModel
 
 class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietRepository) :
     BaseViewModel() {
-    val callbackAvailableKHL = MutableLiveData<Int>()
+    val callbackAvailableKHL = MutableLiveData<AvailableKHLResponse>()
     val callbackCheckTransfer = MutableLiveData<Boolean>()
     val callbackInitSangChietSuccess = MutableLiveData<Unit>()
 
@@ -30,7 +30,7 @@ class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietR
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackAvailableKHL.value = it.currentQuantity
+                    callbackAvailableKHL.value = it
                 }
         }
     }

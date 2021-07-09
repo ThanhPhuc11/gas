@@ -1,5 +1,6 @@
 package vn.gas.thq.ui.sangchiet.nhapsangchiet
 
+import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextUtils
 import android.view.View
@@ -20,8 +21,12 @@ class NhapSangChietFragment : BaseFragment() {
     private lateinit var viewModel: NhapSangChietViewModel
     private lateinit var suggestAdapter: CustomArrayAdapter
     private var alertDialog: AlertDialog? = null
-    private var availableKHL = 0
+    private var availableKHL = 0f
+    private var availableGas = 0f
+    private var availableGasKK = 0f
     private var useKHL = 0
+    private var useGas = 0
+    private var useGasKK = 0
 
     companion object {
         @JvmStatic
@@ -66,19 +71,54 @@ class NhapSangChietFragment : BaseFragment() {
                     }
                 })
         )
+        edtUseGasDu.addTextChangedListener(
+            NumberTextWatcher(
+                edtUseGasDu,
+                suggestAdapter,
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        useGas = getRealNumberV2(it)
+                    }
+                })
+        )
+        edtUseGasKiemKe.addTextChangedListener(
+            NumberTextWatcher(
+                edtUseGasKiemKe,
+                suggestAdapter,
+                object : CallBackChange {
+                    override fun afterEditTextChange(it: Editable?) {
+                        useGasKK = getRealNumberV2(it)
+                    }
+                })
+        )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initObserver() {
         viewModel.callbackAvailableKHL.observe(viewLifecycleOwner, {
-            availableKHL = it
+            availableKHL = it.currentGasQuantity ?: 0f
+            availableGas = it.currentGasRemainQuantity ?: 0f
+            availableGasKK = it.currentGasKkQuantity ?: 0f
             if (availableKHL >= 0) {
                 edtAvailableKHL.setText("${CommonUtils.priceWithoutDecimal(availableKHL.toDouble())} Kg")
+            }
+            if (availableGas >= 0) {
+                edtAvailableGasDu.setText("${CommonUtils.priceWithoutDecimal(availableGas.toDouble())} Kg")
+            }
+            if (availableGasKK >= 0) {
+                edtAvailableGasKiemKe.setText("${CommonUtils.priceWithoutDecimal(availableGasKK.toDouble())} Kg")
             }
         })
 
         viewModel.callbackCheckTransfer.observe(viewLifecycleOwner, {
             val obj = InitSangChiet()
-            obj.amountGasLiquidBf = edtUseKHL.text.toString().replace(".", "").toInt()
+
+            obj.amountGasLiquidBf = if (edtUseKHL.text.toString().isNotEmpty())
+                edtUseKHL.text.toString().replace(".", "").toInt() else 0
+            obj.amountGasRemainUsed = if (edtUseGasDu.text.toString().isNotEmpty())
+                edtUseGasDu.text.toString().dropWhile { it1 -> !it1.isDigit() }.toInt() else 0
+            obj.amountGasKkUsed = if (edtUseGasKiemKe.text.toString().isNotEmpty())
+                edtUseGasKiemKe.text.toString().dropWhile { it1 -> !it1.isDigit() }.toInt() else 0
             obj.amountGas12 =
                 if (TextUtils.isEmpty(edtAmount12.text)) 0 else edtAmount12.text.toString()
                     .toInt()
@@ -132,6 +172,14 @@ class NhapSangChietFragment : BaseFragment() {
         if (TextUtils.isEmpty(edtUseKHL.text) || TextUtils.isEmpty(edtAvailableKHL.text)) return
         if (useKHL > availableKHL) {
             showMess("Số lượng khí hóa lỏng sử dụng vượt quá số lượng khí đang có tại trạm")
+            return
+        }
+        if (useGas > availableGas) {
+            showMess("Số lượng gas dư sử dụng vượt quá số lượng gas dư đang có tại trạm")
+            return
+        }
+        if (useKHL > availableKHL) {
+            showMess("Số lượng gas dư kiểm kê sử dụng vượt quá số lượng gas dư kiểm kê đang có tại trạm")
             return
         }
         if (TextUtils.isEmpty(edtAmount12.text) && TextUtils.isEmpty(edtAmount45.text)) {
