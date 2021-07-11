@@ -22,8 +22,8 @@ android {
         applicationId "vn.gas.thq"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 114
-        versionName "1.1.14"
+        versionCode 118
+        versionName "1.1.18"
         flavorDimensions "default"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

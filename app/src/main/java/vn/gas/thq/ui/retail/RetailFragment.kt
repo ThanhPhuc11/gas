@@ -8,6 +8,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -375,6 +377,9 @@ class RetailFragment : BaseFragment() {
             null,
             null,
             null,
+            tienMatTT,
+            tienCKTT,
+            edtExpireDate.text.toString()
         )
         childViewController?.pushFragment(
             ScreenId.SCREEN_RETAIL_STEP_2,
@@ -934,6 +939,10 @@ class RetailFragment : BaseFragment() {
         productVoMua45.getEditTextGia().isFocusable = false
         productVoMua45.getEditTextGia().isEnabled = false
 
+        Handler(Looper.getMainLooper()).postDelayed({
+            edtExpireDate.isEnabled = false
+        }, 1000)
+
         edtTienThucTe.isFocusable = false
         edtTienThucTe.isEnabled = false
     }
@@ -963,6 +972,8 @@ class RetailFragment : BaseFragment() {
         productVoMua12.setGia("${obj.voMuaPrice12}")
         productVoMua45.setSoLuong(obj.voMua45?.toString())
         productVoMua45.setGia("${obj.voMuaPrice45}")
+
+        edtExpireDate.setText(obj.ngayHenTra)
 
         edtTienThucTe.setText(obj.tienThucTe?.toString())
         edtTienMat.setText(CommonUtils.priceWithoutDecimal(obj.tienMatTT?.toDouble()))

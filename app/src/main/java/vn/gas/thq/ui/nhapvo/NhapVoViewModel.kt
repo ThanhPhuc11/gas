@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.sangchiet.nhapsangchiet
+package vn.gas.thq.ui.nhapvo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,16 +9,20 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.model.UserModel
+import vn.gas.thq.ui.nghiphep.VacationModel
+import vn.gas.thq.ui.vitri.ShopModel
 
-class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietRepository) :
+class NhapVoViewModel(private val repository: NhapVoRepository) :
     BaseViewModel() {
-    val callbackAvailableKHL = MutableLiveData<AvailableKHLResponse>()
-    val callbackCheckTransfer = MutableLiveData<Boolean>()
-    val callbackInitSangChietSuccess = MutableLiveData<Unit>()
+    val callbackListShop = MutableLiveData<MutableList<ShopModel>>()
+    val callbackListBienXe = MutableLiveData<MutableList<BienXeModel>>()
+    val callbackListTank = MutableLiveData<MutableList<VoModel>>()
+    val callbackNhapXuatVo = MutableLiveData<Unit>()
 
-    fun getAvailableKHL() {
+    fun getListShop(query: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            nhapSangChietRepository.getAvailableKHL()
+            repository.getListShop(query)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -30,14 +34,14 @@ class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietR
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackAvailableKHL.value = it
+                    callbackListShop.value = it as MutableList<ShopModel>
                 }
         }
     }
 
-    fun checkTransfer() {
+    fun getBienXe(query: String?) {
         viewModelScope.launch(Dispatchers.Main) {
-            nhapSangChietRepository.checkTransfer()
+            repository.getBienXe(query)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -49,14 +53,14 @@ class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietR
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackCheckTransfer.value = it
+                    callbackListBienXe.value = it as MutableList<BienXeModel>
                 }
         }
     }
 
-    fun initSangChiet(obj: InitSangChiet) {
+    fun getVo() {
         viewModelScope.launch(Dispatchers.Main) {
-            nhapSangChietRepository.initSangChiet(obj)
+            repository.getVo()
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -68,7 +72,26 @@ class NhapSangChietViewModel(private val nhapSangChietRepository: NhapSangChietR
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackInitSangChietSuccess.value = Unit
+                    callbackListTank.value = it as MutableList<VoModel>
+                }
+        }
+    }
+
+    fun xuatnhapVo(shop_id: Int, license_plate_id: Int, transfer: List<VoModel>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.xuatnhapVo(shop_id, license_plate_id, transfer)
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion {
+
+                }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    callbackNhapXuatVo.value = Unit
                 }
         }
     }

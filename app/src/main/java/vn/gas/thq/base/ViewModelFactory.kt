@@ -22,6 +22,10 @@ import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepRepository
 import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepViewModel
 import vn.gas.thq.ui.nhapkho.NhapKhoRepository
 import vn.gas.thq.ui.nhapkho.NhapKhoViewModel
+import vn.gas.thq.ui.nhapvo.NhapVoRepository
+import vn.gas.thq.ui.nhapvo.NhapVoViewModel
+import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLRepository
+import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLViewModel
 import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeRepository
 import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeViewModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
@@ -65,6 +69,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             RetailBossViewModel(RetailBossRepository(apiService))
         creators[PheDuyetGiaBanLeViewModel::class.java] =
             PheDuyetGiaBanLeViewModel(PheDuyetGiaBanLeRepository(apiService))
+        creators[PheDuyetGiaTDLViewModel::class.java] =
+            PheDuyetGiaTDLViewModel(PheDuyetGiaTDLRepository(apiService))
         creators[XemKhoViewModel::class.java] =
             XemKhoViewModel(XemKhoRepository(apiService))
         creators[KiemKeKhoViewModel::class.java] =
@@ -87,6 +93,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             DKNghiPhepViewModel(DKNghiPhepRepository(apiService))
         creators[LSNghiPhepViewModel::class.java] =
             LSNghiPhepViewModel(LSNghiPhepRepository(apiService))
+        creators[NhapVoViewModel::class.java] =
+            NhapVoViewModel(NhapVoRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

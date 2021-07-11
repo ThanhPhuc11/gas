@@ -306,7 +306,7 @@ class RetailBossFragment : BaseFragment() {
     override fun initData() {
         productBanKhi12.getEditTextGia().isFocusable = false
         productBanKhi45.getEditTextGia().isFocusable = false
-        viewModel.getGiaVanChuyen(RequestInitRetail().apply {
+        viewModel.getGiaVanChuyen(RequestInitRetailBoss().apply {
             item = mutableListOf<ProductRetailModel>().apply {
                 add(
                     ProductRetailModel(
@@ -319,7 +319,7 @@ class RetailBossFragment : BaseFragment() {
             }
         }, true)
 
-        viewModel.getGiaVanChuyen(RequestInitRetail().apply {
+        viewModel.getGiaVanChuyen(RequestInitRetailBoss().apply {
             item = mutableListOf<ProductRetailModel>().apply {
                 add(
                     ProductRetailModel(
@@ -523,7 +523,7 @@ class RetailBossFragment : BaseFragment() {
 //            newInstance("STEP_2")
 //        )
 //        (parentFragment as RetailContainerFragment).stepView.setStepDone("1")
-        val requestInitRetail = RequestInitRetail()
+        val requestInitRetail = RequestInitRetailBoss()
         requestInitRetail.customerId = custId?.toInt()
         requestInitRetail.gasReturn = gasRemain
         requestInitRetail.debit = tienNo
@@ -1113,10 +1113,10 @@ class RetailBossFragment : BaseFragment() {
         var bestLocation: Location? = null
         for (provider in providers) {
             if (ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {

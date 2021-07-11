@@ -117,6 +117,7 @@
         android:layout_height="@dimen/_35sdp"
         android:background="@drawable/bg_border_nomal"
         android:hint="Nhập lý do"
+        android:maxLength="500"
         android:paddingHorizontal="13dp"
         android:singleLine="true"
         android:textColor="@color/gray_666E79"

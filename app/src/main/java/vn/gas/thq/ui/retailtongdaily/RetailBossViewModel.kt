@@ -104,7 +104,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
         }
     }
 
-    fun doRequestRetail(obj: RequestInitRetail) {
+    fun doRequestRetail(obj: RequestInitRetailBoss) {
         viewModelScope.launch(Dispatchers.Main) {
             retailRepository.doRequestRetailBoss(obj)
                 .onStart {
@@ -123,7 +123,7 @@ class RetailBossViewModel(private val retailRepository: RetailBossRepository) : 
         }
     }
 
-    fun getGiaVanChuyen(obj: RequestInitRetail, isGas12: Boolean) {
+    fun getGiaVanChuyen(obj: RequestInitRetailBoss, isGas12: Boolean) {
         viewModelScope.launch(Dispatchers.Main) {
             if (isGas12) {
                 retailRepository.getPhiVanChuyen(obj)

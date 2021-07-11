@@ -26,4 +26,5 @@ object ScreenId {
     const val SCREEN_CAP_NHAT_VI_TRI = "SCREEN_CAP_NHAT_VI_TRI"
     const val SCREEN_SANG_CHIET = "SCREEN_SANG_CHIET"
     const val SCREEN_DANG_KY_NGHI = "SCREEN_DANG_KY_NGHI"
+    const val SCREEN_XUAT_NHAP_VO = "SCREEN_XUAT_NHAP_VO"
 }

@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import vn.gas.thq.util.AppDateUtils
-import vn.gas.thq.util.AppDateUtils.FORMAT_2
-import vn.gas.thq.util.AppDateUtils.FORMAT_6
+import vn.gas.thq.util.AppDateUtils.*
 import vn.hongha.ga.R
 
 class SangChietAdapter(
@@ -29,8 +28,10 @@ class SangChietAdapter(
     override fun onBindViewHolder(holder: SangChietViewHolder, position: Int) {
         val obj: HistorySangChietModel = mList[position]
 
-        holder.tvDate.text = AppDateUtils.changeDateFormat(FORMAT_6, FORMAT_2, obj.createdDate)
+        holder.tvDate.text = changeDateFormat(FORMAT_6, FORMAT_1, obj.createdDate)
         holder.tvUseKHL.text = obj.amountGasUsed?.toString()
+        holder.tvUseGas.text = obj.amountGasRemainUsed?.toString()
+        holder.tvUseGasKK.text = obj.amountGasKkUsed?.toString()
         holder.tvGas12.text = obj.amountGas12?.toString()
         holder.tvGas45.text = obj.amountGas45?.toString()
     }
@@ -48,6 +49,8 @@ class SangChietAdapter(
         View.OnClickListener {
         var tvDate: TextView = itemView.findViewById(R.id.tvDate)
         var tvUseKHL: TextView = itemView.findViewById(R.id.tvUseKHL)
+        var tvUseGas: TextView = itemView.findViewById(R.id.tvUseGas)
+        var tvUseGasKK: TextView = itemView.findViewById(R.id.tvUseGasKK)
         var tvGas12: TextView = itemView.findViewById(R.id.tvGas12)
         var tvGas45: TextView = itemView.findViewById(R.id.tvGas45)
 

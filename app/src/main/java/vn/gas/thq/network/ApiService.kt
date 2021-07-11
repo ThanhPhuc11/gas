@@ -12,11 +12,14 @@ import vn.gas.thq.ui.nhapkho.RequestNhapKho
 import vn.gas.thq.ui.pheduyetgiabanle.CommentModel
 import vn.gas.thq.ui.pheduyetgiabanle.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
+import vn.gas.thq.ui.nhapvo.BienXeModel
+import vn.gas.thq.ui.nhapvo.VoModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.KHBHOrderModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailKHBHModel
 import vn.gas.thq.ui.qlyeucauduyetkehoach.chitiet.DetailTypeKHBHModel
 import vn.gas.thq.ui.retail.*
 import vn.gas.thq.ui.retailtongdaily.FeeVanChuyenModel
+import vn.gas.thq.ui.retailtongdaily.RequestInitRetailBoss
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.AvailableKHLResponse
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
 import vn.gas.thq.ui.sangchiet.qlsangchiet.HistorySangChietModel
@@ -62,7 +65,7 @@ interface ApiService {
     ): PriceModel
 
     @POST("orders/agent/transport")
-    suspend fun getPhiVanChuyen(@Body obj: RequestInitRetail): FeeVanChuyenModel
+    suspend fun getPhiVanChuyen(@Body obj: RequestInitRetailBoss): FeeVanChuyenModel
 
 
     @GET("stocks")
@@ -142,7 +145,7 @@ interface ApiService {
     suspend fun doRequestRetail(@Body obj: RequestInitRetail): ResponseInitRetail
 
     @POST("agent-orders")
-    suspend fun doRequestRetailBoss(@Body obj: RequestInitRetail): ResponseInitRetail
+    suspend fun doRequestRetailBoss(@Body obj: RequestInitRetailBoss): ResponseInitRetail
 
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>
@@ -303,6 +306,21 @@ interface ApiService {
     suspend fun getStaffByShopId(
         @Path("shopId") shopId: Int
     ): List<UserModel>
+
+    @GET("license-plates")
+    suspend fun getBienXe(
+        @Query("query") query: String?
+    ): List<BienXeModel>
+
+    @GET("products/tank")
+    suspend fun getTank(): List<VoModel>
+
+    @POST("stocks/tank/transfer")
+    suspend fun xuatnhapVo(
+        @Query("shop_id") shop_id: Int,
+        @Query("license_plate_id") license_plate_id: Int,
+        @Body transfer: List<VoModel>
+    )
 
     // TODO: Tong hop cac Api Ban le new
 

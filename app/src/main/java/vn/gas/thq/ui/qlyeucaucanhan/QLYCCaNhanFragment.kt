@@ -365,7 +365,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             mDetailRetailData?.feeShip,
             tongTien - mDetailRetailData?.debtAmount!!,
             mDetailRetailData?.paymentAmountMoney,
-            mDetailRetailData?.paymentAmountTransfer
+            mDetailRetailData?.paymentAmountTransfer,
+            changeDateFormat(FORMAT_6, FORMAT_2, mDetailRetailData?.debtExpireDate)
         )
     }
 

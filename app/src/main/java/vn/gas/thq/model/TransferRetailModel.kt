@@ -29,5 +29,7 @@ data class TransferRetailModel(
 
     val tienThucTe: Int?,
     var tienMatTT: Int? = 0,
-    var tienCKTT: Int? = 0
+    var tienCKTT: Int? = 0,
+
+    var ngayHenTra: String? = null
 ) : Serializable
