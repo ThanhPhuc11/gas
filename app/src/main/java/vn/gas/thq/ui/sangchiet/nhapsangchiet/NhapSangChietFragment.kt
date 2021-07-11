@@ -169,7 +169,11 @@ class NhapSangChietFragment : BaseFragment() {
     }
 
     private fun themMoiSangChiet(view: View) {
-        if (TextUtils.isEmpty(edtUseKHL.text) || TextUtils.isEmpty(edtAvailableKHL.text)) return
+//        if (TextUtils.isEmpty(edtUseKHL.text) || TextUtils.isEmpty(edtAvailableKHL.text)) return
+        if (edtUseKHL.text.toString().isEmpty() && edtUseGasDu.text.toString().isEmpty() && edtUseGasKiemKe.text.toString().isEmpty()) {
+            showMess("Chưa nhập thông tin gas hoặc khí sử dụng")
+            return
+        }
         if (useKHL > availableKHL) {
             showMess("Số lượng khí hóa lỏng sử dụng vượt quá số lượng khí đang có tại trạm")
             return
@@ -178,7 +182,7 @@ class NhapSangChietFragment : BaseFragment() {
             showMess("Số lượng gas dư sử dụng vượt quá số lượng gas dư đang có tại trạm")
             return
         }
-        if (useKHL > availableKHL) {
+        if (useGasKK > availableGasKK) {
             showMess("Số lượng gas dư kiểm kê sử dụng vượt quá số lượng gas dư kiểm kê đang có tại trạm")
             return
         }
