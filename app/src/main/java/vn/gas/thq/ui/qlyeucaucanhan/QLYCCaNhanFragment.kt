@@ -1,12 +1,10 @@
 package vn.gas.thq.ui.qlyeucaucanhan
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -473,9 +471,9 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         setEndLessScrollListener()
         isReload = true
         fromDate =
-            AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
+            changeDateFormat(FORMAT_2, FORMAT_5, edtStartDate.text.toString())
         endDate =
-            AppDateUtils.changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
+            changeDateFormat(FORMAT_2, FORMAT_5, edtEndDate.text.toString())
         if (type == "2") {
             viewModel.onSearchRetail(status, fromDate, endDate, 0)
             return
@@ -529,8 +527,8 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
                 }
             }
             tvName.text = mDetailYCXKData?.staffName
-            tvDate.text = AppDateUtils.changeDateFormat(
-                AppDateUtils.FORMAT_6,
+            tvDate.text = changeDateFormat(
+                FORMAT_6,
                 AppDateUtils.FORMAT_1,
                 mDetailYCXKData?.createdDate
             )
@@ -562,6 +560,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         hideLoading()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showDiglogDetailRetail() {
         val builder = context?.let { AlertDialog.Builder(it, R.style.AlertDialogNoBG) }
         val inflater = this.layoutInflater
@@ -598,10 +597,16 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         val tvTienNo: TextView = dialogView.findViewById(R.id.tvTienNo)
         val tvTongTienCanTT: TextView = dialogView.findViewById(R.id.tvTongTienCanTT)
 
-//        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+        val llWrapTienThucTe: LinearLayout = dialogView.findViewById(R.id.llWrapTienThucTe)
+        val tvTienThucTe: TextView = dialogView.findViewById(R.id.tvTienThucTe)
+
         val edtTienMat: TextView = dialogView.findViewById(R.id.edtTienMat)
         val edtTienChuyenKhoan: TextView = dialogView.findViewById(R.id.edtTienChuyenKhoan)
         val tvNgayHenTra: TextView = dialogView.findViewById(R.id.tvNgayHenTra)
+
+        val llWrapExpire: LinearLayout = dialogView.findViewById(R.id.llWrapExpire)
+        val llWrapTienMat: LinearLayout = dialogView.findViewById(R.id.llWrapTienMat)
+        val llWrapTienCK: LinearLayout = dialogView.findViewById(R.id.llWrapTienCK)
 
         val tvHistory: TextView = dialogView.findViewById(R.id.tvHistory)
 
@@ -635,16 +640,31 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
             productVoMua45.setSoLuong(obj?.voMua45?.toString())
             productVoMua45.setGia(CommonUtils.priceWithoutDecimal(obj?.voMuaPrice45?.toDouble()))
 
-//            tvTienThucTe.text = "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
-            edtTienMat.text =
-                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountMoney?.toDouble())
-            edtTienChuyenKhoan.text =
-                CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountTransfer?.toDouble())
-            tvNgayHenTra.text = AppDateUtils.changeDateFormat(
-                AppDateUtils.FORMAT_6,
-                AppDateUtils.FORMAT_2,
-                mDetailRetailData?.debtExpireDate
-            )
+            when (type) {
+                "2" -> {
+                    llWrapTienThucTe.visibility = View.GONE
+                    llWrapExpire.visibility = View.VISIBLE
+                    llWrapTienMat.visibility = View.VISIBLE
+                    llWrapTienCK.visibility = View.VISIBLE
+                    edtTienMat.text =
+                        CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountMoney?.toDouble())
+                    edtTienChuyenKhoan.text =
+                        CommonUtils.priceWithoutDecimal(mDetailRetailData?.paymentAmountTransfer?.toDouble())
+                    tvNgayHenTra.text = changeDateFormat(
+                        FORMAT_6,
+                        FORMAT_2,
+                        mDetailRetailData?.debtExpireDate
+                    )
+                }
+                "3" -> {
+                    llWrapExpire.visibility = View.GONE
+                    llWrapTienMat.visibility = View.GONE
+                    llWrapTienCK.visibility = View.GONE
+                    llWrapTienThucTe.visibility = View.VISIBLE
+                    tvTienThucTe.text =
+                        "${CommonUtils.priceWithoutDecimal(obj?.tienThucTe?.toDouble())} đ"
+                }
+            }
 
             btnCongNo12.text = mDetailRetailData?.debtAmountTank12?.toString() ?: "0"
             btnCongNo45.text = mDetailRetailData?.debtAmountTank45?.toString() ?: "0"
