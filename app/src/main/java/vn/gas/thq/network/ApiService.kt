@@ -9,6 +9,7 @@ import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
 import vn.gas.thq.ui.nghiphep.VacationModel
 import vn.gas.thq.ui.nhapkho.ProductShopNhapKhoModel
 import vn.gas.thq.ui.nhapkho.RequestNhapKho
+import vn.gas.thq.ui.nhapkhonguon.InitNhapGasNguon
 import vn.gas.thq.ui.pheduyetgiabanle.CommentModel
 import vn.gas.thq.ui.pheduyetgiabanle.DuyetGiaModel
 import vn.gas.thq.ui.pheduyetgiabanle.HistoryModel
@@ -320,6 +321,11 @@ interface ApiService {
         @Query("shop_id") shop_id: Int,
         @Query("license_plate_id") license_plate_id: Int,
         @Body transfer: List<VoModel>
+    )
+
+    @POST("stocks/gas/import")
+    suspend fun initNhapGasNguon(
+        @Body body: InitNhapGasNguon
     )
 
     // TODO: Tong hop cac Api Ban le new

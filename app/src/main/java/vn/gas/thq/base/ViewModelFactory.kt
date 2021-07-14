@@ -22,6 +22,8 @@ import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepRepository
 import vn.gas.thq.ui.nghiphep.lichsu.LSNghiPhepViewModel
 import vn.gas.thq.ui.nhapkho.NhapKhoRepository
 import vn.gas.thq.ui.nhapkho.NhapKhoViewModel
+import vn.gas.thq.ui.nhapkhonguon.NhapKhoNguonRepository
+import vn.gas.thq.ui.nhapkhonguon.NhapKhoNguonViewModel
 import vn.gas.thq.ui.nhapvo.NhapVoRepository
 import vn.gas.thq.ui.nhapvo.NhapVoViewModel
 import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLRepository
@@ -87,6 +89,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             ViTriKHViewModel(ViTriKHRepositoty(apiService))
         creators[NhapSangChietViewModel::class.java] =
             NhapSangChietViewModel(NhapSangChietRepository(apiService))
+        creators[NhapKhoNguonViewModel::class.java] =
+            NhapKhoNguonViewModel(NhapKhoNguonRepository(apiService))
         creators[QLSangChietViewModel::class.java] =
             QLSangChietViewModel(QLSangChietRepository(apiService))
         creators[DKNghiPhepViewModel::class.java] =

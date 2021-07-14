@@ -68,7 +68,7 @@ class NhapVoFragment : BaseFragment() {
     override fun initData() {
         initRecyclerView()
         viewModel.getListShop("status==1")
-        viewModel.getBienXe("")
+        viewModel.getBienXe("status==1")
         viewModel.getVo()
 
         val user = AppPreferencesHelper(requireContext()).userModel
