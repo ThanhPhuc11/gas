@@ -3,7 +3,6 @@ package vn.gas.thq.ui.nhapkhonguon
 import kotlinx.coroutines.flow.flow
 import vn.gas.thq.base.BaseRepository
 import vn.gas.thq.network.ApiService
-import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
 
 class NhapKhoNguonRepository(private val apiService: ApiService) : BaseRepository() {
 

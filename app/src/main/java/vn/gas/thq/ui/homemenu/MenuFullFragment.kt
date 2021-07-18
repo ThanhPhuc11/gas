@@ -25,6 +25,7 @@ import vn.gas.thq.ui.retail.RetailContainerFragment
 import vn.gas.thq.ui.retailtongdaily.RetailContainerBossFragment
 import vn.gas.thq.ui.sangchiet.SangChietFragment
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
+import vn.gas.thq.ui.trano.TraNoFragment
 import vn.gas.thq.ui.vitri.ViTriKHFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
 import vn.gas.thq.util.ScreenId
@@ -120,6 +121,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(14, "Đăng ký nghỉ", R.drawable.ic_menu_4))
         mList.add(MenuModel(15, "Xuất nhập vỏ", R.drawable.ic_menu_4))
         mList.add(MenuModel(17, "Xuất gas nguồn", R.drawable.ic_menu_4))
+        mList.add(MenuModel(18, "Khách hàng\ntrả nợ", R.drawable.ic_menu_3))
         mList.add(MenuModel(100, "Đăng xuất", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
@@ -254,6 +256,14 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
                         NhapKhoNguonFragment.newInstance()
                     )
                 else showMess("Nhân viên không có quyền truy cập")
+            }
+            18 -> {
+//                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_NHAP_GAS_NGUON" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_KHACH_HANG_TRA_NO,
+                        TraNoFragment.newInstance()
+                    )
+//                else showMess("Nhân viên không có quyền truy cập")
             }
             100 -> {
                 viewController?.popAllFragment()

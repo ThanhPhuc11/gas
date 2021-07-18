@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="Khách hàng"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtKH"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:clickable="false"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_666E79"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Loại công nợ"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtAvailableGasDu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:clickable="false"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:focusable="false"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textColorHint="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Công nợ hiện tại"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="@dimen/text_14sp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtAvailableGasKiemKe"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:hint="Nhập số tiền"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textColorHint="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Khách hàng trả"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="@dimen/text_14sp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUseKHL"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:hint="Nhập số lượng"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textColorHint="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/llWrapCongNoTien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="2dp"
+                android:text="Trả bằng tiền mặt"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTienMat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:hint="Nhập số tiền trả"
+                android:inputType="number"
+                android:maxLength="11"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:textColor="@color/blue_2C5181"
+                android:textColorHint="@color/blue_2C5181"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="2dp"
+                android:text="Trả bằng chuyển khoản"
+                android:textColor="@color/blue_2C5181"
+                android:textSize="@dimen/text_14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTienChuyenKhoan"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/bg_border_nomal"
+                android:hint="Nhập số tiền trả"
+                android:inputType="number"
+                android:maxLength="11"
+                android:paddingHorizontal="13dp"
+                android:singleLine="true"
+                android:textColor="@color/blue_2C5181"
+                android:textColorHint="@color/blue_2C5181"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Công nợ còn lại"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="@dimen/text_14sp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtCongNoConLai"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:hint="Nhập số tiền"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textColorHint="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnThemMoi"
+            android:layout_width="135dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_border_login"
+            android:text="Thêm mới"
+            android:textAllCaps="true"
+            android:textColor="@color/white_ffffff" />
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -44,8 +44,12 @@ import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietRepository
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.NhapSangChietViewModel
 import vn.gas.thq.ui.sangchiet.qlsangchiet.QLSangChietRepository
 import vn.gas.thq.ui.sangchiet.qlsangchiet.QLSangChietViewModel
+import vn.gas.thq.ui.trano.qltrano.QLTraNoRepository
+import vn.gas.thq.ui.trano.qltrano.QLTraNoViewModel
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoRepository
 import vn.gas.thq.ui.thukho.ThuKhoXuatKhoViewModel
+import vn.gas.thq.ui.trano.nhaptrano.NhapTraNoRepository
+import vn.gas.thq.ui.trano.nhaptrano.NhapTraNoViewModel
 import vn.gas.thq.ui.vitri.ViTriKHRepositoty
 import vn.gas.thq.ui.vitri.ViTriKHViewModel
 import vn.gas.thq.ui.xemkho.XemKhoRepository
@@ -99,6 +103,10 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             LSNghiPhepViewModel(LSNghiPhepRepository(apiService))
         creators[NhapVoViewModel::class.java] =
             NhapVoViewModel(NhapVoRepository(apiService))
+        creators[NhapTraNoViewModel::class.java] =
+            NhapTraNoViewModel(NhapTraNoRepository(apiService))
+        creators[QLTraNoViewModel::class.java] =
+            QLTraNoViewModel(QLTraNoRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
