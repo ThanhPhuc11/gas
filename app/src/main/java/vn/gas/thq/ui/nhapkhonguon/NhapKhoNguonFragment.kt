@@ -72,7 +72,7 @@ class NhapKhoNguonFragment : BaseFragment() {
 
     override fun initData() {
         viewModel.getListShop("status==1")
-        viewModel.getBienXe("status==0")
+        viewModel.getBienXe("status==1")
 
         val userDetail = AppPreferencesHelper(context).userModel
         edtTramOfStaff.setText(userDetail.shopName)
