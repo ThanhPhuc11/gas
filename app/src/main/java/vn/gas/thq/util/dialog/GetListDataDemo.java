@@ -24,6 +24,17 @@ public class GetListDataDemo {
         return modelArrayList;
     }
 
+    public static ArrayList<DialogListModel> getListLoaiCongNo() {
+        ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
+        modelArrayList.add(new DialogListModel("1", "Công nợ vỏ bán lẻ 12kg"));
+        modelArrayList.add(new DialogListModel("2", "Công nợ vỏ bán lẻ 45kg"));
+        modelArrayList.add(new DialogListModel("3", "Công nợ tiền bán lẻ"));
+        modelArrayList.add(new DialogListModel("4", "Công nợ tiền bán đại lý"));
+        modelArrayList.add(new DialogListModel("5", "Công nợ vỏ bán đại lý 12kg"));
+        modelArrayList.add(new DialogListModel("6", "Công nợ vỏ bán đại lý 45kg"));
+        return modelArrayList;
+    }
+
     public static ArrayList<DialogListModel> getListStatus(Context mContext) {
         ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
         modelArrayList.add(new DialogListModel("-2", mContext.getString(R.string.all)));

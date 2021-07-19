@@ -46,7 +46,7 @@
             android:textSize="@dimen/text_14sp" />
 
         <EditText
-            android:id="@+id/edtAvailableGasDu"
+            android:id="@+id/edtLoaiCongNo"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:background="@drawable/bg_border_nomal"
@@ -54,7 +54,6 @@
             android:drawableEnd="@drawable/ic_arrow_down"
             android:focusable="false"
             android:inputType="number"
-            android:maxLength="11"
             android:paddingHorizontal="13dp"
             android:singleLine="true"
             android:textColor="@color/blue_2C5181"
@@ -71,7 +70,7 @@
             android:textSize="@dimen/text_14sp" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtAvailableGasKiemKe"
+            android:id="@+id/edtCongNoHienTai"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:background="@drawable/bg_border_nomal"
@@ -85,6 +84,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/lblKHTra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
@@ -94,7 +94,7 @@
             android:textSize="@dimen/text_14sp" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtUseKHL"
+            android:id="@+id/edtKHTra"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:background="@drawable/bg_border_nomal"

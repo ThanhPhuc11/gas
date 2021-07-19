@@ -8,18 +8,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_init_tra_no.*
+import kotlinx.android.synthetic.main.fragment_retail.*
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.customview.CustomArrayAdapter
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
+import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.*
+import vn.gas.thq.util.dialog.DialogList
+import vn.gas.thq.util.dialog.DialogListModel
+import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
+import java.util.*
 
 class NhapTraNoFragment : BaseFragment() {
     private lateinit var viewModel: NhapTraNoViewModel
     private lateinit var suggestAdapter: CustomArrayAdapter
     private var alertDialog: AlertDialog? = null
+    private var mListCustomer = mutableListOf<Customer>()
 
     companion object {
         @JvmStatic
@@ -51,22 +59,32 @@ class NhapTraNoFragment : BaseFragment() {
     }
 
     override fun initData() {
+        val user = AppPreferencesHelper(context).userModel
+        val queryKH = "shopId==${user.shopId};status==1"
+        viewModel.onGetListCustomer(queryKH, 0)
+        edtKH.setOnClickListener(this::onChooseCustomer)
+
+        edtLoaiCongNo.setOnClickListener(this::onChooseLoaiCongNo)
         btnThemMoi.setOnClickListener(this::themMoiSangChiet)
         suggestAdapter = CustomArrayAdapter(context, android.R.layout.simple_list_item_1)
-        edtUseKHL.addTextChangedListener(
-            NumberTextWatcher(
-                edtUseKHL,
-                suggestAdapter,
-                object : CallBackChange {
-                    override fun afterEditTextChange(it: Editable?) {
-//                        useKHL = getRealNumberV2(it)
-                    }
-                })
-        )
+//        edtUseKHL.addTextChangedListener(
+//            NumberTextWatcher(
+//                edtUseKHL,
+//                suggestAdapter,
+//                object : CallBackChange {
+//                    override fun afterEditTextChange(it: Editable?) {
+////                        useKHL = getRealNumberV2(it)
+//                    }
+//                })
+//        )
     }
 
     @SuppressLint("SetTextI18n")
     override fun initObserver() {
+        viewModel.callbackListKH.observe(viewLifecycleOwner, {
+            mListCustomer.clear()
+            mListCustomer.addAll(it)
+        })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
             showLoading()
@@ -83,6 +101,54 @@ class NhapTraNoFragment : BaseFragment() {
         viewModel.showMessCallback.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun onChooseCustomer(view: View) {
+        val doc = DialogList()
+        val mArrayList = ArrayList<DialogListModel>()
+        mListCustomer.forEach {
+            mArrayList.add(DialogListModel(it.customerId ?: "", it.name ?: ""))
+        }
+        doc.show(
+            activity, mArrayList,
+            getString(R.string.customer),
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                return@show
+            }
+//            status = item.id
+            edtKH.setText(item.name)
+        }
+    }
+
+    private fun onChooseLoaiCongNo(view: View) {
+        val doc = DialogList()
+        val mArrayList = GetListDataDemo.getListLoaiCongNo()
+        doc.show(
+            activity, mArrayList,
+            "Loại công nợ",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                return@show
+            }
+//            status = item.id
+            edtLoaiCongNo.setText(item.name)
+            showInputCongNoTien(item.id == "3" || item.id == "4")
+        }
+    }
+
+    private fun showInputCongNoTien(isCongNoTien: Boolean) {
+        if (isCongNoTien) {
+            llWrapCongNoTien.visibility = View.VISIBLE
+            lblKHTra.visibility = View.GONE
+            edtKHTra.visibility = View.GONE
+        } else {
+            llWrapCongNoTien.visibility = View.GONE
+            lblKHTra.visibility = View.VISIBLE
+            edtKHTra.visibility = View.VISIBLE
+        }
     }
 
     private fun themMoiSangChiet(view: View) {
