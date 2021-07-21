@@ -1,5 +1,6 @@
 package vn.gas.thq.network
 
+import retrofit2.Response
 import retrofit2.http.*
 import vn.gas.thq.model.*
 import vn.gas.thq.service.RegisterDeviceResponse
@@ -25,6 +26,8 @@ import vn.gas.thq.ui.sangchiet.nhapsangchiet.AvailableKHLResponse
 import vn.gas.thq.ui.sangchiet.nhapsangchiet.InitSangChiet
 import vn.gas.thq.ui.sangchiet.qlsangchiet.HistorySangChietModel
 import vn.gas.thq.ui.thukho.RequestDetailModel
+import vn.gas.thq.ui.trano.nhaptrano.InitTraNo
+import vn.gas.thq.ui.trano.qltrano.HistoryTraNoModel
 import vn.gas.thq.ui.vitri.ListResponseCustomer
 import vn.gas.thq.ui.vitri.SaleLineModel
 import vn.gas.thq.ui.vitri.ShopModel
@@ -327,6 +330,26 @@ interface ApiService {
     suspend fun initNhapGasNguon(
         @Body body: InitNhapGasNguon
     )
+
+    //TraNo
+    @GET("debit/amount")
+    suspend fun getCongNoHienTai(
+        @Query("debitType") debitType: String,
+        @Query("custId") custId: Int
+    ): Int
+
+    @POST("debit/pay")
+    suspend fun initTraNo(
+        @Body body: InitTraNo
+    )
+
+    @GET("debit/pay/history")
+    suspend fun historyTraNo(
+        @Query("cust_id") cust_id: Int,
+        @Query("debit_type") debit_type: String,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String
+    ): MutableList<HistoryTraNoModel>
 
     // TODO: Tong hop cac Api Ban le new
 

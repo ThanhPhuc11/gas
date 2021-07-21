@@ -7,23 +7,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_ql_tra_no.*
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
+import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
-import vn.gas.thq.ui.xemkho.KhoModel
+import vn.gas.thq.ui.retail.Customer
+import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
+import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
 import java.util.*
 
 class QLTraNoFragment : BaseFragment() {
     private lateinit var viewModel: QLTraNoViewModel
     private lateinit var adapter: TraNoAdapter
-    private var listSangChiet = mutableListOf<HistoryTraNoModel>()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private var listKho = mutableListOf<KhoModel>()
-    private var shopId: String? = null
+
+    private var listTraNo = mutableListOf<HistoryTraNoModel>()
+    private var mListCustomer = mutableListOf<Customer>()
+
+    private var custID: Int? = null
+    private var typeRequestCongNo: String? = null
 
     companion object {
         @JvmStatic
@@ -55,9 +61,13 @@ class QLTraNoFragment : BaseFragment() {
     }
 
     override fun initData() {
-        viewModel.getListKho()
+        val user = AppPreferencesHelper(context).userModel
+        val queryKH = "shopId==${user.shopId};status==1"
+        viewModel.onGetListCustomer(queryKH, 0)
         initRecyclerView()
-        edtKH.setOnClickListener(this::onChooseShop)
+        edtKH.setOnClickListener(this::onChooseCustomer)
+        edtLoaiCongNo.setOnClickListener(this::onChooseLoaiCongNo)
+
         edtStartDate.setText(AppDateUtils.getYesterdayDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
@@ -73,24 +83,18 @@ class QLTraNoFragment : BaseFragment() {
                 edtEndDate.text.toString()
             ) { strDate -> edtEndDate.setText(strDate) }
         }
-        btnSearch.setOnClickListener(this::searchSangChiet)
+        btnSearch.setOnClickListener(this::searchTraNo)
     }
 
     override fun initObserver() {
-        viewModel.listKho.observe(viewLifecycleOwner, {
-            listKho.clear()
-            val listOnlyType1 = it.filter { it.type == 1 }
-            listKho.addAll(listOnlyType1)
-            if (listOnlyType1.isNotEmpty()) {
-                shopId = listOnlyType1[0].id.toString()
-                edtKH.setText(listOnlyType1[0].code + " - " + listOnlyType1[0].name)
-//                viewModel.getDataFromCode(shopCode, null)
-            }
+        viewModel.callbackListKH.observe(viewLifecycleOwner, {
+            mListCustomer.clear()
+            mListCustomer.addAll(it)
         })
 
-        viewModel.listHistory.observe(viewLifecycleOwner, {
-            listSangChiet.clear()
-            listSangChiet.addAll(it)
+        viewModel.callbackListHistory.observe(viewLifecycleOwner, {
+            listTraNo.clear()
+            listTraNo.addAll(it)
             adapter.notifyDataSetChanged()
         })
 
@@ -111,7 +115,7 @@ class QLTraNoFragment : BaseFragment() {
         })
     }
 
-    private fun searchSangChiet(view: View) {
+    private fun searchTraNo(view: View) {
         val fromDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
@@ -124,13 +128,24 @@ class QLTraNoFragment : BaseFragment() {
                 AppDateUtils.FORMAT_5,
                 edtEndDate.text.toString()
             )
-        if (shopId != null) {
-            viewModel.historySangChiet(shopId!!.toInt(), fromDate, endDate)
+
+        if (edtKH.text.isEmpty()) {
+            showMess("Bạn chưa chọn khách hàng")
+            return
+        }
+
+        if (edtLoaiCongNo.text.isEmpty()) {
+            showMess("Bạn chưa chọn Loại công nợ")
+            return
+        }
+
+        if (custID != null && typeRequestCongNo != null) {
+            viewModel.historyTraNo(custID!!, typeRequestCongNo!!, fromDate, endDate)
         }
     }
 
     private fun initRecyclerView() {
-        adapter = TraNoAdapter(listSangChiet)
+        adapter = TraNoAdapter(listTraNo)
 //        adapter.setClickListener(this)
 
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -138,32 +153,51 @@ class QLTraNoFragment : BaseFragment() {
         rvResult.adapter = adapter
     }
 
-    private fun onChooseShop(view: View) {
+    private fun onChooseCustomer(view: View) {
         val doc = DialogList()
         val mArrayList = ArrayList<DialogListModel>()
-        listKho.forEach {
-            mArrayList.add(
-                DialogListModel(
-                    it.id.toString(),
-                    "${it.code} - ${it.name}",
-                    it.type.toString()
-                )
-            )
+        mListCustomer.forEach {
+            mArrayList.add(DialogListModel(it.customerId ?: "", it.name ?: ""))
         }
-
         doc.show(
             activity, mArrayList,
-            "Trạm",
+            getString(R.string.customer),
             getString(R.string.enter_text_search)
         ) { item ->
-            shopId = item.id
-//            staffCode = null
-//            if (item.other == "1") {
-//                shopCode = item.id
-//            } else {
-//                staffCode = item.id
-//            }
+            if (AppConstants.NOT_SELECT == item.id) {
+                return@show
+            }
+//            resetAll()
+            custID = item.id.toInt()
             edtKH.setText(item.name)
+        }
+    }
+
+    private fun onChooseLoaiCongNo(view: View) {
+        val doc = DialogList()
+        val mArrayList = GetListDataDemo.getListLoaiCongNo()
+        doc.show(
+            activity, mArrayList,
+            "Loại công nợ",
+            getString(R.string.enter_text_search)
+        ) { item ->
+            if (AppConstants.NOT_SELECT == item.id) {
+                return@show
+            }
+            typeRequestCongNo = mapTypeLoaiCongNo(item.id)
+            edtLoaiCongNo.setText(item.name)
+        }
+    }
+
+    private fun mapTypeLoaiCongNo(type: String): String {
+        return when (type) {
+            "1" -> "TANK12"
+            "2" -> "TANK45"
+            "3" -> "MONEY_DEBIT"
+            "4" -> "ORDER_DEBIT"
+            "5" -> "AGENCY_TANK12"
+            "6" -> "AGENCY_TANK45"
+            else -> ""
         }
     }
 }

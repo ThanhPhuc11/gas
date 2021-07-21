@@ -5,23 +5,23 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class InitTraNo {
-    @SerializedName("amount_gas_liquid_bf")
+    @SerializedName("debit_type")
     @Expose
-    var amountGasLiquidBf: Int? = null
+    var debitType: Int? = null
 
-    @SerializedName("amount_gas12")
+    @SerializedName("cust_id")
     @Expose
-    var amountGas12: Int? = null
+    var custId: Int? = null
 
-    @SerializedName("amount_gas45")
+    @SerializedName("amount_cash")
     @Expose
-    var amountGas45: Int? = null
+    var amountCash: Int? = null
 
-    @SerializedName("amount_gas_remain_used")
+    @SerializedName("amount_transfer")
     @Expose
-    var amountGasRemainUsed: Int? = null
+    var amountTransfer: Int? = null
 
-    @SerializedName("amount_gas_kk_used")
+    @SerializedName("tank_amount")
     @Expose
-    var amountGasKkUsed: Int? = null
+    var tankAmount: Int? = null
 }

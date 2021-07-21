@@ -258,12 +258,12 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
                 else showMess("Nhân viên không có quyền truy cập")
             }
             18 -> {
-//                if (AppPreferencesHelper(context).permission.firstOrNull { it == "KHO_NHAP_GAS_NGUON" } != null)
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_TRA_NO_LEN_GIAO_DICH" } != null)
                     viewController?.pushFragment(
                         ScreenId.SCREEN_KHACH_HANG_TRA_NO,
                         TraNoFragment.newInstance()
                     )
-//                else showMess("Nhân viên không có quyền truy cập")
+                else showMess("Nhân viên không có quyền truy cập")
             }
             100 -> {
                 viewController?.popAllFragment()

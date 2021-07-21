@@ -4,41 +4,32 @@ import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
 
-
 class HistoryTraNoModel {
-    @SerializedName("amount_gas_liquid_bf")
-    @Expose
-    var amountGasLiquidBf: Int? = null
-
-    @SerializedName("amount_gas_used")
-    @Expose
-    var amountGasUsed: Int? = null
-
-    @SerializedName("amount_gas12")
-    @Expose
-    var amountGas12: Int? = null
-
-    @SerializedName("amount_gas45")
-    @Expose
-    var amountGas45: Int? = null
-
-    @SerializedName("amount_tank12")
-    @Expose
-    var amountTank12: Int? = null
-
-    @SerializedName("amount_tank45")
-    @Expose
-    var amountTank45: Int? = null
-
-    @SerializedName("amount_gas_remain_used")
-    @Expose
-    var amountGasRemainUsed: Int? = null
-
-    @SerializedName("amount_gas_kk_used")
-    @Expose
-    var amountGasKkUsed: Int? = null
-
     @SerializedName("created_date")
     @Expose
     var createdDate: String? = null
+
+    @SerializedName("audit_type")
+    @Expose
+    var auditType: String? = null
+
+    @SerializedName("debit_type")
+    @Expose
+    var debitType: String? = null
+
+    @SerializedName("debit_amount_bf")
+    @Expose
+    var debitAmountBf: String? = null
+
+    @SerializedName("debit_amount")
+    @Expose
+    var debitAmount: String? = null
+
+    @SerializedName("debit_amount_af")
+    @Expose
+    var debitAmountAf: String? = null
+
+    @SerializedName("created_by")
+    @Expose
+    var createdBy: String? = null
 }

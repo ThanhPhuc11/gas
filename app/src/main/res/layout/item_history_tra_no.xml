@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/blue_F1F5F8"
+    app:cardCornerRadius="6dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ngày thực hiện"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Loại tác động"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvLoaiTacDong"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Loại công nợ"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvLoaiCongNo"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Khách hàng trả"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvKHTra"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Công nợ trả trước"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvCongNoTraTruoc"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Công nợ trả sau"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvCongNoTraSau"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Người thực hiện"
+                android:textColor="@color/gray_666E79" />
+
+            <TextView
+                android:id="@+id/tvNguoiThucHien"
+                style="@style/textStyleBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="- -"
+                android:textColor="@color/gray_404A57" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
