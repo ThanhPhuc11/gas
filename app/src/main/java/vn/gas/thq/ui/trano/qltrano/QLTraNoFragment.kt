@@ -68,7 +68,7 @@ class QLTraNoFragment : BaseFragment() {
         edtKH.setOnClickListener(this::onChooseCustomer)
         edtLoaiCongNo.setOnClickListener(this::onChooseLoaiCongNo)
 
-        edtStartDate.setText(AppDateUtils.getYesterdayDate())
+        edtStartDate.setText(AppDateUtils.getInitMonthDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
         edtStartDate.setOnClickListener {
             CommonUtils.showCalendarDialog(
@@ -129,19 +129,17 @@ class QLTraNoFragment : BaseFragment() {
                 edtEndDate.text.toString()
             )
 
-        if (edtKH.text.isEmpty()) {
-            showMess("Bạn chưa chọn khách hàng")
-            return
-        }
+//        if (edtKH.text.isEmpty()) {
+//            showMess("Bạn chưa chọn khách hàng")
+//            return
+//        }
 
-        if (edtLoaiCongNo.text.isEmpty()) {
-            showMess("Bạn chưa chọn Loại công nợ")
-            return
-        }
+//        if (edtLoaiCongNo.text.isEmpty()) {
+//            showMess("Bạn chưa chọn Loại công nợ")
+//            return
+//        }
 
-        if (custID != null && typeRequestCongNo != null) {
-            viewModel.historyTraNo(custID!!, typeRequestCongNo!!, fromDate, endDate)
-        }
+        viewModel.historyTraNo(custID, typeRequestCongNo, fromDate, endDate)
     }
 
     private fun initRecyclerView() {

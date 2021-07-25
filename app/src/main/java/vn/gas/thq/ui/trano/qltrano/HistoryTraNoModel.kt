@@ -9,6 +9,10 @@ class HistoryTraNoModel {
     @Expose
     var createdDate: String? = null
 
+    @SerializedName("customer_name")
+    @Expose
+    var customerName: String? = null
+
     @SerializedName("audit_type")
     @Expose
     var auditType: String? = null

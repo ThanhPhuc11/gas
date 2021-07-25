@@ -197,6 +197,30 @@ public class AppDateUtils {
         return currentDate;
     }
 
+    public static String getInitMonthDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -c.get(Calendar.DAY_OF_MONTH) + 1);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        String fromMothStr = "";
+        int tempMonth = mMonth + 1;
+        if (tempMonth < 10) {
+            fromMothStr = "0" + tempMonth;
+        } else {
+            fromMothStr = "" + tempMonth;
+        }
+        String fromDayStr = "";
+        if (mDay < 10) {
+            fromDayStr = "0" + mDay;
+        } else {
+            fromDayStr = "" + mDay;
+        }
+        String currentDate = fromDayStr + "/" + fromMothStr + "/" + mYear;
+        return currentDate;
+    }
+
     /**
      * This Method is unit tested properly for very different cases , taking
      * care of Leap Year days difference in a year, and date cases month and

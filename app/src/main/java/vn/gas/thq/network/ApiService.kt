@@ -345,8 +345,8 @@ interface ApiService {
 
     @GET("debit/pay/history")
     suspend fun historyTraNo(
-        @Query("cust_id") cust_id: Int,
-        @Query("debit_type") debit_type: String,
+        @Query("cust_id") cust_id: Int?,
+        @Query("debit_type") debit_type: String?,
         @Query("from_date") from_date: String,
         @Query("to_date") to_date: String
     ): MutableList<HistoryTraNoModel>

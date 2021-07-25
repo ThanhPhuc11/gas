@@ -37,7 +37,7 @@ class QLTraNoViewModel(private val repository: QLTraNoRepository) :
     }
 
 
-    fun historyTraNo(cust_id: Int, debit_type: String, from_date: String, to_date: String) {
+    fun historyTraNo(cust_id: Int?, debit_type: String?, from_date: String, to_date: String) {
         viewModelScope.launch(Dispatchers.Main) {
             repository.historyTraNo(cust_id, debit_type, from_date, to_date)
                 .onStart {
