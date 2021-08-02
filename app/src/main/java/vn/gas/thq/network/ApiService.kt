@@ -154,6 +154,9 @@ interface ApiService {
     @GET("enums/sale-order-status")
     suspend fun saleOrderStatus(): List<StatusValueModel>
 
+    @GET("enums/sale-order-agent-status")
+    suspend fun saleOrderTDLStatus(): MutableList<StatusValueModel>
+
 
     @GET("agent-orders")
     suspend fun searchRequestRetailTDL(

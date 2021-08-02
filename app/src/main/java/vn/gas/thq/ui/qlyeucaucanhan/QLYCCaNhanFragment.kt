@@ -54,7 +54,7 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private var orderId = ""
     private var mDetailYCXKData: RequestDetailModel? = null
     private var mDetailRetailData: ApproveRequestModel? = null
-    var mList = mutableListOf<BussinesRequestModel>()
+    private var mList = mutableListOf<BussinesRequestModel>()
     private var listStatusOrderSale = mutableListOf<StatusValueModel>()
     private var listHistory = mutableListOf<HistoryModel>()
     private var loaiYC: String? = "Xuất kho"
@@ -136,8 +136,10 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
         if (ScreenId.SCREEN_RETAIL_BOSS_CONTAINER == arguments?.getString("SCREEN", "")) {
             type = "3"
             edtRequestType.setText(getString(R.string.type_ban_le_tdl))
+            viewModel.onGetSaleOrderTDLStatus()
+        } else {
+            viewModel.onGetSaleOrderStatus()
         }
-        viewModel.onGetSaleOrderStatus()
 //        } else {
 //            isRetail = false
 //            loaiYC = "Xuất kho"
@@ -425,17 +427,21 @@ class QLYCCaNhanFragment : BaseFragment(), RequestItemAdapter.ItemClickListener 
     private fun handleStatus(type: String?) {
         status = null
         edtStatus.setText("Tất cả")
-        if (type == "3") {
-//            isRetailBoss = true
-            viewModel.onGetSaleOrderStatus()
-        } else if (type == "2") {
-//            isRetail = true
-            viewModel.onGetSaleOrderStatus()
-            loaiYC = "Bán hàng"
-        } else if (type == "1") {
-//            isRetail = false
-            loaiYC = "Xuất kho"
-            initRecyclerView()
+        when (type) {
+            "3" -> {
+    //            isRetailBoss = true
+                viewModel.onGetSaleOrderTDLStatus()
+            }
+            "2" -> {
+    //            isRetail = true
+                viewModel.onGetSaleOrderStatus()
+                loaiYC = "Bán hàng"
+            }
+            "1" -> {
+    //            isRetail = false
+                loaiYC = "Xuất kho"
+                initRecyclerView()
+            }
         }
     }
 

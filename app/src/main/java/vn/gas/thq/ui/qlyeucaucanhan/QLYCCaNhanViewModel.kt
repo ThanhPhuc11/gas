@@ -82,6 +82,23 @@ class QLYCCaNhanViewModel(
         }
     }
 
+    fun onGetSaleOrderTDLStatus() {
+        viewModelScope.launch(Dispatchers.Main) {
+            qlycCaNhanRepository.onGetSaleOrderTDLStatus()
+                .onStart {
+                    callbackStart.value = Unit
+                }
+                .onCompletion { }
+                .catch {
+                    handleError(it)
+                }
+                .collect {
+                    callbackSuccess.value = Unit
+                    listStatus.value = it
+                }
+        }
+    }
+
     fun onSearchRetail(
         status: String?, fromDate: String, toDate: String, page: Int
     ) {
