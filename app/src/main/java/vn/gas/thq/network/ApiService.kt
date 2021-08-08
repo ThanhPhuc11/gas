@@ -386,4 +386,29 @@ interface ApiService {
     //History Ban le new
     @GET("sale-orders/history")
     suspend fun getHistoryBanLe(@Query("sale_order_id") sale_order_id: Int): List<HistoryModel>
+
+
+    // TODO: Cac API TDL ban truc tiep
+    @GET("direct-agency/sale-orders")
+    suspend fun searchRequestDirectTDL(
+        @Query("sale_order_type") sale_order_type: Int,
+        @Query("status") status: String?,
+        @Query("staff_code") staff_code: String?,
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): ResponseModel<BussinesRequestModel>
+
+    @POST("direct-agency/accept-order/{orderId}")
+    suspend fun doAcceptDirectTDL(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
+    )
+
+    @POST("direct-agency/reject-order/{orderId}")
+    suspend fun doRejectDirectTDL(
+        @Path("orderId") orderId: String?,
+        @Body obj: DuyetGiaModel
+    )
 }

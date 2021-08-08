@@ -139,7 +139,12 @@ class QLTraNoFragment : BaseFragment() {
 //            return
 //        }
 
-        viewModel.historyTraNo(custID, typeRequestCongNo, fromDate, endDate)
+        if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
+            viewModel.historyTraNo(custID, typeRequestCongNo, fromDate, endDate)
+        } else {
+            showMess("Từ ngày không được lớn hơn Đến ngày")
+        }
+
     }
 
     private fun initRecyclerView() {

@@ -12,7 +12,7 @@ class PheDuyetGiaTDLRepository(private val apiService: ApiService) : BaseReposit
     }
 
     suspend fun onGetSaleOrderStatus() = flow {
-        emit(apiService.saleOrderStatus())
+        emit(apiService.saleOrderTDLStatus())
     }
 
     suspend fun getHistoryAcceptRetail(orderId: Int) = flow {

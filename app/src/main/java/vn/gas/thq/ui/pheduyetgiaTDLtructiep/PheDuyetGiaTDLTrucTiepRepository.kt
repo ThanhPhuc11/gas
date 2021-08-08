@@ -12,21 +12,21 @@ class PheDuyetGiaTDLTrucTiepRepository(private val apiService: ApiService) : Bas
     }
 
     suspend fun onGetSaleOrderStatus() = flow {
-        emit(apiService.saleOrderStatus())
+        emit(apiService.saleOrderTDLStatus())
     }
 
     suspend fun getHistoryAcceptRetail(orderId: Int) = flow {
         emit(apiService.getHistoryAcceptRetail(orderId))
     }
 
-    suspend fun onSearchRetailTDL(
+    suspend fun onSearchDirectTDL(
         status: String?,
         staffCode: String?,
         fromDate: String,
         toDate: String,
         page: Int
     ) = flow {
-        emit(apiService.searchRequestRetailTDL(3, status, staffCode, fromDate, toDate, page, 100))
+        emit(apiService.searchRequestDirectTDL(4, status, staffCode, fromDate, toDate, page, 100))
     }
 
     suspend fun detailTDL(orderId: String?) = flow {
@@ -34,10 +34,10 @@ class PheDuyetGiaTDLTrucTiepRepository(private val apiService: ApiService) : Bas
     }
 
     suspend fun doAcceptDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) = flow {
-        emit(apiService.doAcceptDuyetGiaTDL(orderId, obj))
+        emit(apiService.doAcceptDirectTDL(orderId, obj))
     }
 
     suspend fun doRejectDuyetGiaTDL(orderId: String?, obj: DuyetGiaModel) = flow {
-        emit(apiService.doRejectDuyetGiaTDL(orderId, obj))
+        emit(apiService.doRejectDirectTDL(orderId, obj))
     }
 }

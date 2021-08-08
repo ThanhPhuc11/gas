@@ -28,6 +28,8 @@ import vn.gas.thq.ui.nhapvo.NhapVoRepository
 import vn.gas.thq.ui.nhapvo.NhapVoViewModel
 import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLRepository
 import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLViewModel
+import vn.gas.thq.ui.pheduyetgiaTDLtructiep.PheDuyetGiaTDLTrucTiepRepository
+import vn.gas.thq.ui.pheduyetgiaTDLtructiep.PheDuyetGiaTDLTrucTiepViewModel
 import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeRepository
 import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeViewModel
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanRepository
@@ -107,6 +109,8 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             NhapTraNoViewModel(NhapTraNoRepository(apiService))
         creators[QLTraNoViewModel::class.java] =
             QLTraNoViewModel(QLTraNoRepository(apiService))
+        creators[PheDuyetGiaTDLTrucTiepViewModel::class.java] =
+            PheDuyetGiaTDLTrucTiepViewModel(PheDuyetGiaTDLTrucTiepRepository(apiService))
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

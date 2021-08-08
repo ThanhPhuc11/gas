@@ -18,6 +18,7 @@ import vn.gas.thq.ui.nhapkho.NhapKhoFragment
 import vn.gas.thq.ui.nhapkhonguon.NhapKhoNguonFragment
 import vn.gas.thq.ui.nhapvo.NhapVoFragment
 import vn.gas.thq.ui.pheduyetgiaTDL.PheDuyetGiaTDLFragment
+import vn.gas.thq.ui.pheduyetgiaTDLtructiep.PheDuyetGiaTDLTrucTiepFragment
 import vn.gas.thq.ui.pheduyetgiabanle.PheDuyetGiaBanLeFragment
 import vn.gas.thq.ui.qlyeucaucanhan.QLYCCaNhanFragment
 import vn.gas.thq.ui.qlyeucauduyetkehoach.QLYCKeHoachFragment
@@ -108,6 +109,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(2, "Phê duyệt yêu cầu bán hàng", R.drawable.ic_menu_2))
         mList.add(MenuModel(13, "Bán hàng\nTổng đại lý", R.drawable.ic_menu_1))
         mList.add(MenuModel(16, "Phê duyệt yêu cầu bán hàng TĐL", R.drawable.ic_menu_2))
+        mList.add(MenuModel(19, "Phê duyệt yêu cầu bán trực tiếp", R.drawable.ic_menu_2))
         mList.add(MenuModel(3, "Lập yêu cầu xuất kho", R.drawable.ic_menu_3))
         mList.add(MenuModel(4, "Quản lý yêu cầu xuất kho", R.drawable.ic_menu_4))
         mList.add(MenuModel(5, "Quản lý yêu cầu cá nhân", R.drawable.ic_menu_4))
@@ -120,7 +122,7 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(12, "Sang chiết", R.drawable.ic_menu_4))
         mList.add(MenuModel(14, "Đăng ký nghỉ", R.drawable.ic_menu_4))
         mList.add(MenuModel(15, "Xuất nhập vỏ", R.drawable.ic_menu_4))
-        mList.add(MenuModel(17, "Xuất gas nguồn", R.drawable.ic_menu_4))
+        mList.add(MenuModel(17, "Nhập gas nguồn", R.drawable.ic_menu_4))
         mList.add(MenuModel(18, "Khách hàng\ntrả nợ", R.drawable.ic_menu_3))
         mList.add(MenuModel(100, "Đăng xuất", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
@@ -262,6 +264,14 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
                     viewController?.pushFragment(
                         ScreenId.SCREEN_KHACH_HANG_TRA_NO,
                         TraNoFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            19 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DL_PHE_DUYET_TRUC_TIEP" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_PHE_DUYET_GIA,
+                        PheDuyetGiaTDLTrucTiepFragment.newInstance()
                     )
                 else showMess("Nhân viên không có quyền truy cập")
             }
