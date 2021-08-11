@@ -35,6 +35,14 @@ public class GetListDataDemo {
         return modelArrayList;
     }
 
+    public static ArrayList<DialogListModel> getListTrangThaiXuatHang() {
+        ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
+        modelArrayList.add(new DialogListModel("2", "Chưa xuất"));
+        modelArrayList.add(new DialogListModel("3", "Hoàn thành xuất"));
+        modelArrayList.add(new DialogListModel("4", "Xuất một phần"));
+        return modelArrayList;
+    }
+
     public static ArrayList<DialogListModel> getListStatus(Context mContext) {
         ArrayList<DialogListModel> modelArrayList = new ArrayList<>();
         modelArrayList.add(new DialogListModel("-2", mContext.getString(R.string.all)));

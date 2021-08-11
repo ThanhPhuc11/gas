@@ -25,4 +25,6 @@ class BussinesRequestModel {
     var approve_levels: String? = null
 
     var displayType: String? = null
+
+    var completeOrder: Int? = null
 }

@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.ui.changepassword.ChangePasswordFragment
 import vn.gas.thq.ui.home.MenuModel
 import vn.gas.thq.ui.kehoachbh.LapKeHoachBHFragment
 import vn.gas.thq.ui.kiemkekho.KiemKeKhoFragment
@@ -29,6 +30,7 @@ import vn.gas.thq.ui.thukho.ThuKhoXuatKhoFragment
 import vn.gas.thq.ui.trano.TraNoFragment
 import vn.gas.thq.ui.vitri.ViTriKHFragment
 import vn.gas.thq.ui.xemkho.XemKhoFragment
+import vn.gas.thq.ui.xuatkhoKH.qlxuatkhokh.QLXuatKhoKHFragment
 import vn.gas.thq.util.ScreenId
 import vn.hongha.ga.R
 
@@ -124,6 +126,8 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
         mList.add(MenuModel(15, "Xuất nhập vỏ", R.drawable.ic_menu_4))
         mList.add(MenuModel(17, "Nhập gas nguồn", R.drawable.ic_menu_4))
         mList.add(MenuModel(18, "Khách hàng\ntrả nợ", R.drawable.ic_menu_3))
+        mList.add(MenuModel(20, "Xuất hàng TĐL", R.drawable.ic_menu_3))
+        mList.add(MenuModel(21, "Thay đổi\nmật khẩu", R.drawable.ic_menu_3))
         mList.add(MenuModel(100, "Đăng xuất", R.drawable.ic_menu_4))
         menuAdapter = MenuFullAdapter(mList)
         menuAdapter.setClickListener(this)
@@ -270,10 +274,24 @@ class MenuFullFragment : BaseFragment(), MenuFullAdapter.ItemClickListener {
             19 -> {
                 if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_DL_PHE_DUYET_TRUC_TIEP" } != null)
                     viewController?.pushFragment(
-                        ScreenId.SCREEN_PHE_DUYET_GIA,
+                        ScreenId.SCREEN_PHE_DUYET_GIA_TDL_TRUC_TIEP,
                         PheDuyetGiaTDLTrucTiepFragment.newInstance()
                     )
                 else showMess("Nhân viên không có quyền truy cập")
+            }
+            20 -> {
+                if (AppPreferencesHelper(context).permission.firstOrNull { it == "BAN_HANG_HOAN_THANH_KHO" } != null)
+                    viewController?.pushFragment(
+                        ScreenId.SCREEN_XUAT_HANG,
+                        QLXuatKhoKHFragment.newInstance()
+                    )
+                else showMess("Nhân viên không có quyền truy cập")
+            }
+            21 -> {
+                viewController?.pushFragment(
+                    ScreenId.SCREEN_CHANGE_PASSWORD,
+                    ChangePasswordFragment.newInstance()
+                )
             }
             100 -> {
                 viewController?.popAllFragment()

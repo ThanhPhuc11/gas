@@ -4,6 +4,7 @@ import retrofit2.Response
 import retrofit2.http.*
 import vn.gas.thq.model.*
 import vn.gas.thq.service.RegisterDeviceResponse
+import vn.gas.thq.ui.changepassword.NewPasswordModel
 import vn.gas.thq.ui.kehoachbh.RequestKeHoachModel
 import vn.gas.thq.ui.kiemkekho.KiemKeRequestModel
 import vn.gas.thq.ui.lapyeucauxuatkho.InitExportRequest
@@ -33,6 +34,7 @@ import vn.gas.thq.ui.vitri.SaleLineModel
 import vn.gas.thq.ui.vitri.ShopModel
 import vn.gas.thq.ui.vitri.ToaDoModel
 import vn.gas.thq.ui.xemkho.KhoModel
+import vn.gas.thq.ui.xuatkhoKH.thuchienxuatkhokh.XuatHangModel
 
 interface ApiService {
     @GET("staffs")
@@ -50,6 +52,11 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String
     ): TokenModel
+
+    @PUT("staffs/passwords")
+    suspend fun changePassword(
+        @Body body: NewPasswordModel
+    )
 
     @POST("device")
     suspend fun registerFcmDevice(@Body requestFcmDeviceModel: RequestDeviceModel): RegisterDeviceResponse
@@ -351,7 +358,9 @@ interface ApiService {
         @Query("cust_id") cust_id: Int?,
         @Query("debit_type") debit_type: String?,
         @Query("from_date") from_date: String,
-        @Query("to_date") to_date: String
+        @Query("to_date") to_date: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): MutableList<HistoryTraNoModel>
 
     // TODO: Tong hop cac Api Ban le new
@@ -391,7 +400,9 @@ interface ApiService {
     // TODO: Cac API TDL ban truc tiep
     @GET("direct-agency/sale-orders")
     suspend fun searchRequestDirectTDL(
+        @Query("customer_id") customer_id: Int?,
         @Query("sale_order_type") sale_order_type: Int,
+        @Query("complete_order") complete_order: Int?,
         @Query("status") status: String?,
         @Query("staff_code") staff_code: String?,
         @Query("from_date") from_date: String,
@@ -410,5 +421,11 @@ interface ApiService {
     suspend fun doRejectDirectTDL(
         @Path("orderId") orderId: String?,
         @Body obj: DuyetGiaModel
+    )
+
+    @POST("direct-agency/sale-order/{orderId}/export")
+    suspend fun xuatHang(
+        @Path("orderId") orderId: String?,
+        @Body obj: XuatHangModel
     )
 }

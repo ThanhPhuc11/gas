@@ -1,54 +1,50 @@
-package vn.gas.thq.ui.trano.qltrano
+package vn.gas.thq.ui.xuatkhoKH.qlxuatkhokh
 
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_ql_tra_no.*
-import kotlinx.android.synthetic.main.fragment_ql_tra_no.btnSearch
+import kotlinx.android.synthetic.main.fragment_ql_xuat_kho_kh.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
+import vn.gas.thq.MainActivity
 import vn.gas.thq.base.BaseFragment
 import vn.gas.thq.base.ViewModelFactory
 import vn.gas.thq.datasourse.prefs.AppPreferencesHelper
+import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.network.ApiService
 import vn.gas.thq.network.RetrofitBuilder
 import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.AppDateUtils
 import vn.gas.thq.util.CommonUtils
-import vn.gas.thq.util.EndlessPageRecyclerViewScrollListener
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.gas.thq.util.dialog.GetListDataDemo
 import vn.hongha.ga.R
 import java.util.*
 
-class QLTraNoFragment : BaseFragment() {
-    private lateinit var viewModel: QLTraNoViewModel
-    private lateinit var adapter: TraNoAdapter
+class QLXuatKhoKHFragment : BaseFragment() {
+    private lateinit var viewModel: QLXuatKhoKHViewModel
+    private lateinit var adapter: ListXuatKhoKHAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    private var listTraNo = mutableListOf<HistoryTraNoModel>()
+    private var listOrder = mutableListOf<BussinesRequestModel>()
     private var mListCustomer = mutableListOf<Customer>()
-    private var isReload: Boolean = false
 
     private var custID: Int? = null
-    private var typeRequestCongNo: String? = null
-
-    private var fromDate: String? = null
-    private var endDate: String? = null
+    private var completeOrder: Int? = null
 
     companion object {
         @JvmStatic
-        fun newInstance() = QLTraNoFragment()
+        fun newInstance() = QLXuatKhoKHFragment()
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_ql_tra_no
+        return R.layout.fragment_ql_xuat_kho_kh
     }
 
     override fun setViewController() {
-
+        viewController = (activity as MainActivity).viewController
     }
 
     override fun setupViewModel() {
@@ -60,11 +56,14 @@ class QLTraNoFragment : BaseFragment() {
                             ViewModelFactory(apiService, context)
                         }
                 })
-                .get(QLTraNoViewModel::class.java)
+                .get(QLXuatKhoKHViewModel::class.java)
     }
 
     override fun initView() {
-
+        tvTitle.text = "Xuất kho cho khách hàng"
+        imgBack.setOnClickListener {
+            viewController?.popFragment()
+        }
     }
 
     override fun initData() {
@@ -72,9 +71,8 @@ class QLTraNoFragment : BaseFragment() {
         val queryKH = "shopId==${user.shopId};status==1"
         viewModel.onGetListCustomer(queryKH, 0)
         initRecyclerView()
-        setEndLessScrollListener()
         edtKH.setOnClickListener(this::onChooseCustomer)
-        edtLoaiCongNo.setOnClickListener(this::onChooseLoaiCongNo)
+        edtTrangThaiXuatHang.setOnClickListener(this::onChooseTrangThaiXuatHang)
 
         edtStartDate.setText(AppDateUtils.getInitMonthDate())
         edtEndDate.setText(AppDateUtils.getCurrentDate())
@@ -91,7 +89,7 @@ class QLTraNoFragment : BaseFragment() {
                 edtEndDate.text.toString()
             ) { strDate -> edtEndDate.setText(strDate) }
         }
-        btnSearch.setOnClickListener(this::searchTraNo)
+        btnSearch.setOnClickListener(this::search)
     }
 
     override fun initObserver() {
@@ -100,13 +98,10 @@ class QLTraNoFragment : BaseFragment() {
             mListCustomer.addAll(it)
         })
 
-        viewModel.callbackListHistory.observe(viewLifecycleOwner, {
-            if(isReload) {
-                listTraNo.clear()
-            }
-            listTraNo.addAll(it)
+        viewModel.mListDataSearch.observe(viewLifecycleOwner, {
+            listOrder.clear()
+            listOrder.addAll(it)
             adapter.notifyDataSetChanged()
-            isReload = false
         })
 
         viewModel.callbackStart.observe(viewLifecycleOwner, {
@@ -126,14 +121,14 @@ class QLTraNoFragment : BaseFragment() {
         })
     }
 
-    private fun searchTraNo(view: View) {
-        fromDate =
+    private fun search(view: View) {
+        val fromDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
                 edtStartDate.text.toString()
             )
-        endDate =
+        val endDate =
             AppDateUtils.changeDateFormat(
                 AppDateUtils.FORMAT_2,
                 AppDateUtils.FORMAT_5,
@@ -151,8 +146,7 @@ class QLTraNoFragment : BaseFragment() {
 //        }
 
         if (AppDateUtils.validateEndDateGreaterorEqualThanStartDate(fromDate, endDate)) {
-            isReload = true
-            viewModel.historyTraNo(custID, typeRequestCongNo, fromDate!!, endDate!!, 0)
+            viewModel.onSearch(custID, completeOrder, fromDate, endDate, 0)
         } else {
             showMess("Từ ngày không được lớn hơn Đến ngày")
         }
@@ -160,22 +154,12 @@ class QLTraNoFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = TraNoAdapter(listTraNo)
+        adapter = ListXuatKhoKHAdapter(listOrder)
 //        adapter.setClickListener(this)
 
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvResult.layoutManager = linearLayoutManager
         rvResult.adapter = adapter
-    }
-
-    private fun setEndLessScrollListener() {
-        rvResult.clearOnScrollListeners()
-        rvResult.addOnScrollListener(object :
-            EndlessPageRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                viewModel.historyTraNo(custID, typeRequestCongNo, fromDate!!, endDate!!, page)
-            }
-        })
     }
 
     private fun onChooseCustomer(view: View) {
@@ -198,31 +182,19 @@ class QLTraNoFragment : BaseFragment() {
         }
     }
 
-    private fun onChooseLoaiCongNo(view: View) {
+    private fun onChooseTrangThaiXuatHang(view: View) {
         val doc = DialogList()
-        val mArrayList = GetListDataDemo.getListLoaiCongNo()
+        val mArrayList = GetListDataDemo.getListTrangThaiXuatHang()
         doc.show(
             activity, mArrayList,
-            "Loại công nợ",
+            "Trạng thái xuất hàng",
             getString(R.string.enter_text_search)
         ) { item ->
             if (AppConstants.NOT_SELECT == item.id) {
                 return@show
             }
-            typeRequestCongNo = mapTypeLoaiCongNo(item.id)
-            edtLoaiCongNo.setText(item.name)
-        }
-    }
-
-    private fun mapTypeLoaiCongNo(type: String): String {
-        return when (type) {
-            "1" -> "TANK12"
-            "2" -> "TANK45"
-            "3" -> "MONEY_DEBIT"
-            "4" -> "ORDER_DEBIT"
-            "5" -> "AGENCY_TANK12"
-            "6" -> "AGENCY_TANK45"
-            else -> ""
+            completeOrder = item.id.toInt()
+            edtTrangThaiXuatHang.setText(item.name)
         }
     }
 }

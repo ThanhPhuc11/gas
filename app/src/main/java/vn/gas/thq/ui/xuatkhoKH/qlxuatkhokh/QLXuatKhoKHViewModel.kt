@@ -1,4 +1,4 @@
-package vn.gas.thq.ui.trano.qltrano
+package vn.gas.thq.ui.xuatkhoKH.qlxuatkhokh
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vn.gas.thq.base.BaseViewModel
+import vn.gas.thq.model.BussinesRequestModel
 import vn.gas.thq.ui.retail.Customer
 
-class QLTraNoViewModel(private val repository: QLTraNoRepository) :
+class QLXuatKhoKHViewModel(private val repository: QLXuatKhoKHRepository) :
     BaseViewModel() {
-    val callbackListHistory = MutableLiveData<MutableList<HistoryTraNoModel>>()
     val callbackListKH = MutableLiveData<MutableList<Customer>>()
+    val mListDataSearch = MutableLiveData<MutableList<BussinesRequestModel>>()
 
     fun onGetListCustomer(query: String?, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -37,9 +38,15 @@ class QLTraNoViewModel(private val repository: QLTraNoRepository) :
     }
 
 
-    fun historyTraNo(cust_id: Int?, debit_type: String?, from_date: String, to_date: String, page: Int) {
+    fun onSearch(
+        customer_id: Int?,
+        complete_order: Int?,
+        fromDate: String,
+        toDate: String,
+        page: Int
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.historyTraNo(cust_id, debit_type, from_date, to_date, page, 10)
+            repository.onSearchDirectTDL(customer_id, 4, complete_order, fromDate, toDate, page)
                 .onStart {
                     callbackStart.value = Unit
                 }
@@ -48,10 +55,11 @@ class QLTraNoViewModel(private val repository: QLTraNoRepository) :
                 }
                 .catch {
                     handleError(it)
+                    mListDataSearch.value?.clear()
                 }
                 .collect {
                     callbackSuccess.value = Unit
-                    callbackListHistory.value = it
+                    mListDataSearch.value = (it.listData) as MutableList<BussinesRequestModel>
                 }
         }
     }

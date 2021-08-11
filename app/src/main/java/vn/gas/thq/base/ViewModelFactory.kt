@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import vn.gas.thq.network.ApiService
+import vn.gas.thq.ui.changepassword.ChangePasswordRepository
+import vn.gas.thq.ui.changepassword.ChangePasswordViewModel
 import vn.gas.thq.ui.home.FcmHomeRepository
 import vn.gas.thq.ui.home.FcmHomeViewModel
 import vn.gas.thq.ui.home.HomeRepository
@@ -56,6 +58,8 @@ import vn.gas.thq.ui.vitri.ViTriKHRepositoty
 import vn.gas.thq.ui.vitri.ViTriKHViewModel
 import vn.gas.thq.ui.xemkho.XemKhoRepository
 import vn.gas.thq.ui.xemkho.XemKhoViewModel
+import vn.gas.thq.ui.xuatkhoKH.qlxuatkhokh.QLXuatKhoKHRepository
+import vn.gas.thq.ui.xuatkhoKH.qlxuatkhokh.QLXuatKhoKHViewModel
 
 class ViewModelFactory(apiService: ApiService, context: Context?) :
     ViewModelProvider.Factory {
@@ -111,6 +115,11 @@ class ViewModelFactory(apiService: ApiService, context: Context?) :
             QLTraNoViewModel(QLTraNoRepository(apiService))
         creators[PheDuyetGiaTDLTrucTiepViewModel::class.java] =
             PheDuyetGiaTDLTrucTiepViewModel(PheDuyetGiaTDLTrucTiepRepository(apiService))
+        creators[QLXuatKhoKHViewModel::class.java] =
+            QLXuatKhoKHViewModel(QLXuatKhoKHRepository(apiService))
+        creators[ChangePasswordViewModel::class.java] =
+            ChangePasswordViewModel(ChangePasswordRepository(apiService))
+
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

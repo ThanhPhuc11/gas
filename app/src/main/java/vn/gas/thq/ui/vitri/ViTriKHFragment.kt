@@ -33,7 +33,6 @@ import vn.gas.thq.ui.retail.Customer
 import vn.gas.thq.util.AppConstants
 import vn.gas.thq.util.CommonUtils
 import vn.gas.thq.util.EndlessPageRecyclerViewScrollListener
-import vn.gas.thq.util.EndlessRecyclerViewScrollListener
 import vn.gas.thq.util.dialog.DialogList
 import vn.gas.thq.util.dialog.DialogListModel
 import vn.hongha.ga.R
@@ -331,10 +330,10 @@ class ViTriKHFragment : BaseFragment(), CustomerAdapter.ItemClickListener {
         var bestLocation: Location? = null
         for (provider in providers) {
             if (ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {

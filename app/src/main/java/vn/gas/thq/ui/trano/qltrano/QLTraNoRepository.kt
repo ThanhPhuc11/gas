@@ -9,8 +9,8 @@ class QLTraNoRepository(private val apiService: ApiService) : BaseRepository() {
         emit(apiService.queryCustomer(query, page, size))
     }
 
-    suspend fun historyTraNo(cust_id: Int?, debit_type: String?, from_date: String, to_date: String) =
+    suspend fun historyTraNo(cust_id: Int?, debit_type: String?, from_date: String, to_date: String, page: Int, size: Int) =
         flow {
-            emit(apiService.historyTraNo(cust_id, debit_type, from_date, to_date))
+            emit(apiService.historyTraNo(cust_id, debit_type, from_date, to_date, page, size))
         }
 }

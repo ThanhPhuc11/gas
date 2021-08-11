@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Trạm"
+            android:textColor="@color/gray_404A57"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtTram"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Khách hàng"
+            android:textColor="@color/gray_404A57"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtKH"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Loại đơn hàng"
+            android:textColor="@color/gray_404A57"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtLoaiDonHang"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:text="Đại lý bán trực tiếp"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="2dp"
+            android:text="Ngày bán"
+            android:textColor="@color/gray_404A57"
+            android:textSize="@dimen/text_14sp" />
+
+        <EditText
+            android:id="@+id/edtTrangThaiXuatHang"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/bg_border_nomal"
+            android:drawableEnd="@drawable/ic_calendar"
+            android:focusable="false"
+            android:paddingHorizontal="13dp"
+            android:singleLine="true"
+            android:textColor="@color/blue_2C5181"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_border_login"
+            android:gravity="center"
+            android:text="Thực hiện"
+            android:textColor="@color/white_ffffff">
+
+        </Button>
+
+
+    </LinearLayout>
+</LinearLayout>

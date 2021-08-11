@@ -26,7 +26,19 @@ class PheDuyetGiaTDLTrucTiepRepository(private val apiService: ApiService) : Bas
         toDate: String,
         page: Int
     ) = flow {
-        emit(apiService.searchRequestDirectTDL(4, status, staffCode, fromDate, toDate, page, 100))
+        emit(
+            apiService.searchRequestDirectTDL(
+                null,
+                4,
+                null,
+                status,
+                staffCode,
+                fromDate,
+                toDate,
+                page,
+                100
+            )
+        )
     }
 
     suspend fun detailTDL(orderId: String?) = flow {
